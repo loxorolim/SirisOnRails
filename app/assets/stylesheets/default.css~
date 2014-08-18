@@ -1,0 +1,122 @@
+#radioBackground
+{
+
+	
+}
+
+#dialogBackground {
+    position:absolute;
+	left: 290px;
+	top:2px;
+	height:0px;
+}
+.ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+.dialogHeader
+{
+font: bold 14px
+ "helvetica", sans-serif;
+ color: #FFFFFF;
+	
+}
+
+#radio
+{
+
+}
+#xmldisplay
+{
+
+	width: 500px;
+	height:500px;
+}
+.ui-accordion-header  {  
+
+    text-align: center;  
+
+} 
+button
+{
+	width:158px;
+	padding:0px;
+	margin: 0px;
+	
+}
+.dbButtons
+{
+	width:80px;
+	padding:0px;
+	margin: 0px;
+}
+
+#accordion
+{
+	
+	float:right;
+	width: 160px;
+}
+#techAccordion
+{
+	
+	float:right;
+	width: 160px;
+	overflow: hidden;
+}
+#controls
+{
+
+	width:160px;
+
+
+}
+#insertionBackground
+{
+	width:158px;
+}
+#powerbackground
+{
+	width:158px;
+	overflow: hidden;
+}
+
+#scenarioBackground
+{
+	width:158px;
+}
+#technologyBackground
+{
+	width:158px;
+}
+
+
+
+
+#topRight{
+
+	height: 840px;
+	width:  420px;
+
+	overflow:scroll;
+	border-style: solid;
+    border-width: 2px;
+	margin-left: auto;
+    margin-right: auto;	
+	background-color: #FFFFFF
+}
+
+html, body, #map_canvas {
+        margin: 0;
+        padding: 0;
+        height: 800px;
+		width: 1600px;
+		
+      }
+html
+{
+	font-size: 80%;
+}
+
+#wrapper { position: relative; height:100% }
+#over_map { position: absolute; top: 1px; z-index: 99; }
+

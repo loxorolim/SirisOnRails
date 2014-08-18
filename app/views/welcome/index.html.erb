@@ -1,0 +1,176 @@
+﻿
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Siris Map</title>
+    <meta name= "viewport" content= "initial-scale=1.0, user-scalable=no">
+    <meta charset= "utf-8">
+      
+
+     
+      
+
+
+     
+
+  </head>
+  <body>
+
+      
+      
+     
+          <div id=" wrapper">
+              <div id="map_canvas">
+                  
+              </div>
+             
+              <div id="over_map">
+                  <div id="controller">
+                      <div id="trapezoid">
+                          <div id="insideTrapezoid">
+                              <div id="chooseScenario" class="insideOptions">
+                                  <div style=" display: table; margin: 0 auto;">
+                                      <div id="scenario" class="selections">Urbano</div>
+                                      <button id="selectScenario" style="float:left; height: 30px"></button>
+                                  </div>
+                                  <ul style=" z-index: 1000">
+                                      <li id="urbanRadio">Urbano</li>
+                                      <li id="suburbanRadio">Suburbano</li>
+                                      <li id="ruralRadio">Rural</li>
+                                  </ul>
+                              </div>
+                              <div id="chooseTechnology" class="insideOptions">
+                                  <div style=" display: table; margin: 0 auto;">
+                                      <div id="technology" class="selections">ZigBee</div>
+                                      <button id="selectTechnology" style="float:left; height: 30px"></button>
+                                  </div>
+                                  <ul style =" z-index: 1000">
+                                      <li id="ZigBee">ZigBee</></li>
+                                      <li id="80211a">802.11.a</></li>
+                                      <li id="80211g">802.11.g</></li>
+                                  </ul>
+                              </div>
+                              <div id="choosePower" class="insideOptions">
+                                  <div style=" display: table; margin: 0 auto;">
+                                      <span id="power" class="selections">-20 dBm</span>
+                                  </div>
+
+                                  <div id="slider" style=" display: table; margin: 0 auto;"></div>
+                              </div>
+                              
+                          </div>
+                          <div id="radio" style="position: absolute;margin-top: 64px;margin-left:60px;">
+                              <input type="radio" id="viewRadio" name="radio" checked="checked"><label for="viewRadio">Visualização</label>
+                              <input type="radio" id="dapRadio" name="radio"><label for="dapRadio">DAP</label>
+                              <input type="radio" id="meterRadio" name="radio" ><label for="meterRadio">Medidor</label>
+                              <input type="radio" id="pole" name="radio"><label for="pole">Poste</label>
+                              <input type="radio" id="eraserRadio" name="radio"><label for="eraserRadio">Remoção</label>
+
+                              <button id="autoPlanning" style="margin-left: 50px">Auto Planejamento</button>
+                              <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Mapa de calor</label>
+                              <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
+                              <input type="checkbox" id="checkRFMesh"><label for="checkRFMesh">RF-Mesh</label>
+                              
+                          </div>
+                          
+                          <!-- <div id="scenario">Urbano</div>-->
+                          <!--<span id="scenario">Urbano</span>
+            <span id="technology">ZigBee</span>
+            <span id="power">-20dBm</span>-->
+                      </div>
+                  </div>
+
+                      <div id="controls">
+                          <!--<input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Mapa de calor</label>-->
+                          <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
+                          <!--<input type="checkbox" id="checkRFMesh"><label for="checkRFMesh">RF-Mesh</label>
+                          <button id="autoPlanning">Auto Planejamento</button>-->
+                          <!--<ul id="menu">
+                              <li>
+                                  <a href="#">Planejamento</a>
+                                  <ul>
+                                      <li>
+                                          <a href="#">Inserção</a>
+                                          <ul>
+                                              <li><a id="dapRadio">DAP</a></li>
+                                              <li><a id="meterRadio">Medidor</a></li>
+                                              <li><a id="pole">Poste</a></li>
+                                          </ul>
+                                      </li>
+                                      <li><a id="Removal">Remoção</a></li>
+                                  </ul>
+                              </li>-->
+                              <!--<li>
+                                  <a href="#">Tecnologia</a>
+                                  <ul>
+                                      <li><a id="ZigBee">ZigBee</a></li>
+                                      <li><a id="80211a">802.11.a</a></li>
+                                      <li><a id="80211g">802.11.g</a></li>
+                                      <li>
+                                          <a href="#">Potência</a>
+                                          <ul>
+                                              <li><a id="z0dbm">0 dbm</a></li>
+                                              <li><a id="z6dbm">6 dbm</a></li>
+                                              <li><a id="z12dbm">12 dbm</a></li>
+                                              <li> <a id="z18dbm">18 dbm</a> </li>
+                                              <li><a id="z24dbm">24 dbm</a></li>
+                                              <li><a id="z30dbm">30 dbm</a></li>
+                                          </ul>
+                                      </li>
+                                  </ul>
+                              </li>
+                              <li>
+                                  <a href="#">Cenário</a>
+                                  <ul>
+                                      <li><a id="urbanRadio">Urbano</a></li>
+                                      <li><a id="suburbanRadio">Suburbano</a></li>
+                                      <li><a id="ruralRadio">Rural</a></li>
+                                  </ul>
+                              </li>-->
+                              <!--<li>
+                    <a href="#">Exibição</a>
+                    <ul>
+                        <li><a id="lineRadio">Modo Linha</a></li>
+                        <li><a id="radiusRadio">Modo Raio</a></li>
+                    </ul>
+                </li>-->
+                              <!--<li>
+                    <a id="RFMesh">RFMesh</a>
+                </li>-->
+                              <!--<li>
+                    <a id="help">Ajuda</a>
+                </li>
+                <li>
+                    <a id="xml">Arquivos XML (TESTE!)</a>
+                </li>-->
+
+
+
+                          <!--</ul>-->
+                      </div>
+                      <!--<div id="dialog" title="Ajuda">
+
+                          <span style="float: left; margin:0 0px 0px 0; width:654px; height:451px;"><img src="helpmenu.png"></span>
+
+                      </div>
+                      <div id="xmltextnodes" title="Nodes">
+                          <span style="float: left; margin:0 0px 0px 0; width:654px; height:451px;"></span>
+                          <!--<span style="float: left; margin:0 0px 0px 0; width:654px; height:451px;"><img src="helpmenu.png"></span>-->
+
+                      </div>
+                      <div id="xmltextpoles" title="Poles">
+
+                          <!--<span style="float: left; margin:0 0px 0px 0; width:654px; height:451px;"><img src="helpmenu.png"></span>-->
+
+                      </div>-->
+
+                  </div>
+      </div>
+
+
+  </body>
+
+</html>
+

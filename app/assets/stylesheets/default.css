@@ -1,0 +1,133 @@
+
+#slider{
+    width:80px;
+}
+.ui-button .ui-icon.dap {
+     background-image: url(dapicon.png); 
+}
+.ui-button .ui-icon.meter {
+     background-image: url(metericon.png); 
+}
+.ui-button .ui-icon.pole {
+     background-image: url(poleicon.png); 
+}
+.ui-button .ui-icon.view {
+     background-image: url(viewicon.png); 
+}
+.ui-button .ui-icon.eraser {
+     background-image: url(removecursor.png); 
+}
+.ui-button .ui-icon.heatmap {
+     background-image: url(heatmap.png); 
+}
+.ui-button .ui-icon.mesh {
+     background-image: url(meshicon.png); 
+}
+.selections{
+
+    font-weight:bold;
+    font-size:18px;
+    float:left; 
+    color:#1c94c4;
+    margin: 1px;
+}
+
+.insideOptions{
+    width: 135px;
+    margin: 2px;
+    margin-top: 15px;
+    float: left;
+}
+#power {
+     
+    font-weight:bold;
+    font-size:16px;
+    color:#1c94c4;
+
+    
+}
+#insideTrapezoid{
+    width:420px;
+    /*height: 80px;*/
+    margin-left: 45px;
+}
+#trapezoid {
+	
+    width: 510px;
+height: 54px;
+
+/*-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+filter: alpha(opacity=80);*/
+-moz-opacity: 0.8;
+-khtml-opacity: 0.8;
+/*opacity: 0.8;*/
+border: 9px #888888 solid;
+
+/*background-color: #ffffff;*/
+background-color: rgba(255,255,255,0.8);
+
+-webkit-border-bottom-left-radius: 80px;
+-moz-border-radius-bottomleft: 80px;
+border-bottom-left-radius: 80px;
+
+-webkit-border-bottom-right-radius: 80px;
+-moz-border-radius-bottomright: 80px;
+border-bottom-right-radius: 80px;
+
+-moz-box-shadow: -3px 3px 11px 0px #575757;
+-webkit-box-shadow: -3px 3px 11px 0px #575757;
+box-shadow: -3px 3px 11px 0px #575757;
+
+    
+}
+
+
+
+
+.labels {
+     color: red;
+     background-color: white;
+     font-family: "Lucida Grande", "Arial", sans-serif;
+     font-size: 10px;
+     font-weight: bold;
+     text-align: center;
+     width: 40px;     
+     border: 2px solid black;
+     white-space: nowrap;
+   }
+
+
+
+
+
+
+
+
+
+#topRight{
+
+	height: 840px;
+	width:  420px;
+
+	overflow:scroll;
+	border-style: solid;
+    border-width: 2px;
+	margin-left: auto;
+    margin-right: auto;	
+	background-color: #FFFFFF
+}
+
+html, body, #map_canvas {
+        margin: 0;
+        padding: 0;
+        height: 800px;
+      }
+
+html
+{
+	font-size: 80%;
+}
+
+#wrapper { position: relative; height:100% }
+#over_map { position: absolute; top: 1px; z-index: 99; }
+
