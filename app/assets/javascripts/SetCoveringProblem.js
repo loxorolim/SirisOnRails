@@ -1,9 +1,51 @@
 ﻿
 
 function sendSCPToServer() {
-    var data = printScpMatrixTeste();
+
+    //var data = prepareNetworkToSend();
    // var data = data.toString();
-    _ajax_request("http://localhost:3000/autoplan",data , 'POST');
+    //_ajax_request("http://localhost:3000/autoplan", data, 'POST');
+   sendDataToServer("http://localhost:3000/autoplan", 'POST')
+}
+
+function prepareNetworkToSend(){
+    var reach = getDapMaximumReach();
+    var uncMeters = meters.filter(function (item) {
+            return (item.connected == false);
+        });
+    var toSend ={
+        "uncoveredMeters": uncMeters,
+        "polesPositions": poles,
+        "reach": reach 
+    };
+    return toSend;
+
+}
+function sendDataToServer(url,method) {
+    var uncoveredMeters = meters.filter(function (item) {
+            return (item.connected != true);
+    });
+    var data = printScpMatrixTeste(uncoveredMeters);
+
+    $.ajax({
+            url: url,
+            type: method,
+            data: {
+                'data': data,
+            },
+            dataType: "text",
+            success: function (data) {
+                var split = data.split(" ");
+                
+                for(var i = 0 ; i < split.length-1; i ++){
+                    var toAdd = parseInt(split[i].slice(1));
+                    var latLng = poles[toAdd-1].position;
+                    var newDap = createDAP();
+                    newDap.place(latLng.lat(),latLng.lng());
+                    
+                }
+            }
+        });
 }
 
 function _ajax_request(url, data ,method) {
@@ -25,17 +67,22 @@ function _ajax_request(url, data ,method) {
 				var latLng = poles[toAdd-1].position;
 				var newDap = createDAP();
 				newDap.place(latLng.lat(),latLng.lng());
-				
+                
 			}
         }
     });
 }
-function printScpMatrixTeste() {
-    Matrixes = createMeshScpMatrixes();
-    var scpMatrix = Matrixes.scpMatrix;
-    var coverageMatrix = Matrixes.coverageMatrix;
+function printScpMatrixTeste(uncoveredMeters) {
+  //   if(meshEnabled)
+  //      Matrixes = createMeshScpMatrixes();
+  //  else
+  //      scpMatrix = createScpMatrix();
+
+    var scpMatrix = createScpMatrix(uncoveredMeters);
+    //var scpMatrix = Matrixes.scpMatrix;
+    //var coverageMatrix = Matrixes.coverageMatrix;
     var Z = scpMatrix.length;
-    var Y = coverageMatrix.length;
+    var Y = poles.length;
     //TEM Q MUDAR ESSE NEGÓCIO AQUI!
     var ret = "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
     ret += "set Z:= ";
@@ -75,6 +122,78 @@ function printScpMatrixTeste() {
     
 
    // for(var i = 0; i < )
+}
+
+function covers2(pt1, pt2, r) {
+
+    return (google.maps.geometry.spherical.computeDistanceBetween(pt1.getPosition(), pt2.getPosition()) <= r)
+}
+
+function createScpMatrix(uncoveredMeters){
+
+    var r = getDapMaximumReach();
+    var sM = [];
+    for (var i = 0 ; i < uncoveredMeters.length ; i++) {
+        var polesThatCover = [];
+        for (var j = 0; j < poles.length; j++)
+            if (covers2(uncoveredMeters[i], poles[j], r)) {
+                polesThatCover.push(j);
+            }
+        if(polesThatCover.length > 0)
+            sM.push(polesThatCover);
+    }
+    //Essa função depende de como o Mesh está implementado, talvez devesse estar no script do mesh?
+    if(meshEnabled){
+        var sMCopy = [];
+        for(var i = 0; i < sM.length; i++){
+            var toAdd = [];
+            for(var j = 0; j < sM[i].length; j++)
+                toAdd.push(sM[i][j])
+            sMCopy.push(toAdd);
+        }
+
+        var nM = createMeterNeighbourhoodMatrix2(uncoveredMeters);
+        for(var i = 0; i < uncoveredMeters.length; i++){
+            var neighbours = nM[i];
+            for(var j = 0 ; j < meshMaxJumps; j++){
+                var newNeighbours = [];
+                for(var k = 0; k < neighbours.length; k++){
+                    sM[i] = sM[i].concat(sMCopy[neighbours[k]])
+                    newNeighbours = newNeighbours.concat(nM[neighbours[k]]);
+                }
+                sM[i] = sM[i].filter(function (elem, pos) {
+                    return sM[i].indexOf(elem) == pos;
+                });
+                newNeighbours = newNeighbours.filter(function (elem, pos) {
+                return newNeighbours.indexOf(elem) == pos;
+                });
+                neighbours = newNeighbours;
+
+            }
+        }
+    }
+
+
+
+
+    return sM;
+}
+function createMeterNeighbourhoodMatrix2(uncoveredMeters) {
+   // var points = metersToPoints(meters);
+    var r = getDapMaximumReach();
+    var M = [];
+
+    for (var i = 0 ; i < uncoveredMeters.length ; i++) {
+        var pointsCovered = [];
+        for (var j = 0; j < uncoveredMeters.length; j++)
+            if (i != j && covers2(uncoveredMeters[i], uncoveredMeters[j], r)) {
+                pointsCovered.push(j);
+
+            }
+        M.push(pointsCovered);
+    }
+
+    return M;
 }
 function createScpMatrixes() {
     var points = metersToPoints(meters);

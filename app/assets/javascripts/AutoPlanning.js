@@ -30,6 +30,7 @@ function covers(c, pt, r) {
     var latlng2 = pointToLatLng(c, meters);
     return (google.maps.geometry.spherical.computeDistanceBetween(latlng, latlng2) <= r)
 }
+
 //function containsPoint(elem, vet) {
 //    for (var i = 0; i < vet.length; i++) {
 //        if (vet[i].x == elem.x && vet[i].y == elem.y)

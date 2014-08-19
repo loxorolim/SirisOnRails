@@ -256,11 +256,12 @@ function setButtons()
         
         //createMeshCoverageMatrix(poles);
         $(this).blur();
-        $.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Carregando </h1>' });
+        $.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
         // autoPlanningGrasp();
         setTimeout('applyPlanning()', 1000);
-        if (meshEnabled) {
-            connectViaMesh();
+        //applyPlanning();
+        //if (meshEnabled) {
+        //   connectViaMesh();
            // meshEnabled = true;
             //markerCluster.clearMarkers();
             //$('#checkRFMesh').button({
@@ -268,7 +269,7 @@ function setButtons()
             //        primary: "ui-icon-check"
             //    }
             //})
-        }
+        //}
 
 
 
