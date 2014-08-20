@@ -25,8 +25,8 @@ function sendDataToServer(url,method) {
     var uncoveredMeters = meters.filter(function (item) {
             return (item.connected != true);
     });
-    var data = printScpMatrixTeste(uncoveredMeters);
-
+    //var data = printScpMatrixTeste(uncoveredMeters);
+    var data = createFileModel();
     $.ajax({
             url: url,
             type: method,
@@ -128,7 +128,27 @@ function covers2(pt1, pt2, r) {
 
     return (google.maps.geometry.spherical.computeDistanceBetween(pt1.getPosition(), pt2.getPosition()) <= r)
 }
+function createFileModel(){
+    var uncoveredMeters = meters.filter(function (item) {
+            return (item.connected != true);
+    }); 
 
+    var ret = getDapMaximumReach() + "\n";
+    //ret+= "\n";
+    //ret += "\nMeters\n";
+    ret+= uncoveredMeters.length+"\n";
+    for(var i = 0; i <uncoveredMeters.length; i++){
+        ret += uncoveredMeters[i].getPosition().lat() + " " + uncoveredMeters[i].getPosition().lng();
+        ret += "\n";
+    }
+    ret += +poles.length;
+    ret += "\n";
+    for(var i = 0; i <poles.length; i++){
+        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
+        ret += "\n";
+    }
+    return ret;
+}
 function createScpMatrix(uncoveredMeters){
 
     var r = getDapMaximumReach();

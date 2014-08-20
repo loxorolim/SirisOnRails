@@ -1,4 +1,6 @@
-﻿function createDAP() {
+﻿
+
+function createDAP() {
     var marker = new MarkerWithLabel({
         ID: null,
         type: "DAP",
@@ -97,7 +99,8 @@
             var toCover = [];
             var allMarkers = meters.concat(daps);
             for (var i = 0; i < allMarkers.length; i++) {
-                var dist = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), allMarkers[i].position);
+                var dist = getDistance(this.getPosition(), allMarkers[i].position);
+                
                 var values = getValuesFromTable(dist);
                 if (values != -1 && this.ID != allMarkers[i].ID) {
                     var toAdd = {
@@ -281,7 +284,7 @@ function createDAP2() {
             //var toCover = [];
             //var allMarkers = meters.concat(daps);
             //for (var i = 0; i < allMarkers.length; i++) {
-            //    var dist = google.maps.geometry.spherical.computeDistanceBetween(newDistance, allMarkers[i].position);
+            //    var dist = getDistance(newDistance, allMarkers[i].position);
             //    var values = getValuesFromTable(dist);
             //    if (values != -1 && this.ID != allMarkers[i].ID) {
             //        var toAdd = {
@@ -296,7 +299,7 @@ function createDAP2() {
             //toCover = toCover.sort(function (a, b) { return a.distance - b.distance });
             var toCover = this.normalCoverage();
             for (var i = 0; i < toCover.length; i++) {
-                // var dist = google.maps.geometry.spherical.computeDistanceBetween(newDistance, allMarkers[i].position);
+                // var dist = getDistance(newDistance, allMarkers[i].position);
                 // var values = getValuesFromTable(dist);
                 //  if (values != -1 && this.ID != allMarkers[i].ID) {
 
@@ -398,7 +401,7 @@ function createDAP2() {
             var toCover = [];
             var allMarkers = meters.concat(daps);
             for (var i = 0; i < allMarkers.length; i++) {
-                var dist = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), allMarkers[i].position);
+                var dist = getDistance(this.getPosition(), allMarkers[i].position);
                 var values = getValuesFromTable(dist);
                 if (values != -1 && this.ID != allMarkers[i].ID) {
                     var toAdd = {
@@ -442,8 +445,8 @@ function createDAP2() {
                 var mesh = [];
                 for (var i = 0; i < aux.length; i++) {
                     for (var j = 0; j < disconnectedMeters.length; j++) {
-                        var dist = google.maps.geometry.spherical.computeDistanceBetween(aux[i].getPosition(), disconnectedMeters[j].getPosition());
-                        var distToDap = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), disconnectedMeters[j].position);
+                        var dist = getDistance(aux[i].getPosition(), disconnectedMeters[j].getPosition());
+                        var distToDap = getDistance(this.getPosition(), disconnectedMeters[j].position);
                         var values = getValuesFromTable(dist);
                         if (values != -1) {
                             var toAdd = {
@@ -502,8 +505,8 @@ function createDAP2() {
                 var mesh = [];
                 for (var i = 0; i < aux.length; i++) {
                     for (var j = 0; j < disconnectedMeters.length; j++) {
-                        var dist = google.maps.geometry.spherical.computeDistanceBetween(aux[i].getPosition(), disconnectedMeters[j].getPosition());
-                        var distToDap = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), disconnectedMeters[j].position);
+                        var dist = getDistance(aux[i].getPosition(), disconnectedMeters[j].getPosition());
+                        var distToDap = getDistance(this.getPosition(), disconnectedMeters[j].position);
                         var values = getValuesFromTable(dist);
                         if (values != -1) {
                             var toAdd = {
@@ -556,7 +559,7 @@ function createDAP2() {
         },
         removeConnections: function (newDistance) {
             for (var i = 0; i < this.neighbours.length; i++) {
-                //  var dist = google.maps.geometry.spherical.computeDistanceBetween(newDistance, this.neighbours[i].position);
+                //  var dist = getDistance(newDistance, this.neighbours[i].position);
                 // var values = getValuesFromTable(dist);
                 //if (values == -1) {
                 this.neighbours[i].disconnectTarget(this);

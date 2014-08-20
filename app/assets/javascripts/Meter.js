@@ -47,7 +47,7 @@
             var color;
             var dist = -1;
             for (i = 0; i < this.neighbours.length; i++) {
-                var auxDist = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), this.neighbours[i].getPosition());
+                var auxDist = getDistance(this.getPosition(), this.neighbours[i].getPosition());
                 if (dist == -1 || auxDist < dist)
                     dist = auxDist;
 
@@ -120,7 +120,7 @@
 
         connectByDistance: function (newDistance) {
             for (var i = 0; i < daps.length; i++) {
-                var dist = google.maps.geometry.spherical.computeDistanceBetween(newDistance, daps[i].position);
+                var dist = getDistance(newDistance, daps[i].position);
                 var values = getValuesFromTable(dist);
                 if (values != -1) {
 
@@ -236,7 +236,7 @@ function createMeter2() {
             var color;
             var dist = -1;
             for (i = 0; i < this.neighbours.length; i++) {
-                var auxDist = google.maps.geometry.spherical.computeDistanceBetween(this.getPosition(), this.neighbours[i].getPosition());
+                var auxDist = getDistance(this.getPosition(), this.neighbours[i].getPosition());
                 if (dist == -1 || auxDist < dist)
                     dist = auxDist;
 
@@ -295,7 +295,7 @@ function createMeter2() {
 
         connectByDistance: function (newDistance) {
             for (var i = 0; i < daps.length; i++) {
-                var dist = google.maps.geometry.spherical.computeDistanceBetween(newDistance, daps[i].position);
+                var dist = getDistance(newDistance, daps[i].position);
                 var values = getValuesFromTable(dist);
                 if (values != -1) {
 
