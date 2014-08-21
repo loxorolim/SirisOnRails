@@ -132,8 +132,12 @@ function createFileModel(){
     var uncoveredMeters = meters.filter(function (item) {
             return (item.connected != true);
     }); 
-
-    var ret = getDapMaximumReach() + "\n";
+    var ret = "";
+    if(meshEnabled)
+        ret+=meshMaxJumps;
+    else
+        ret+="0";
+    ret += "\n" + getDapMaximumReach() + "\n";
     //ret+= "\n";
     //ret += "\nMeters\n";
     ret+= uncoveredMeters.length+"\n";

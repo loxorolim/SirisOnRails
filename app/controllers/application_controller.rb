@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   def autoplan
 	
 	File.open('teste.txt', 'w') {|f| f.write(params['data'])}
-	system('C:\Users\Guilherme\Downloads\glpk-4.54\w64\glpsol.exe --math C:\Sites\first_app\teste.txt');
+	system('C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe C:\Sites\first_app\teste.txt C:\Sites\first_app\teste2.txt');
+	system('C:\Users\Guilherme\Downloads\glpk-4.54\w64\glpsol.exe --math C:\Sites\first_app\teste2.txt');
 	answer = File.read('Results.txt') 
 	respond_to do |format|
     msg =  answer 
