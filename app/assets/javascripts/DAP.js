@@ -41,11 +41,11 @@ function createDAP() {
         changeIcon: function (newIcon) {
             this.icon = newIcon;
         },
-        connect: function (target, color) {
-            this.connectOneWay(target, color);
-            target.connectOneWay(this, color);
+        connect: function (target, tableValue) {
+            this.connectOneWay(target, tableValue);
+            target.connectOneWay(this, tableValue);
         },
-        connectOneWay: function (target, color) {
+        connectOneWay: function (target, tableValue) {
             this.coveredMeters++;
             for (var i = 0; i < this.neighbours.length; i++) {
                 if (this.neighbours[i].ID == target.ID) {
@@ -62,14 +62,17 @@ function createDAP() {
             }
             this.neighbours.push(target);
             var markerPositions = [this.getPosition(), target.getPosition()];
+            
             var routerPath = new google.maps.Polyline(
 	        {
 	            targetID: target.ID,
 	            path: markerPositions,
-	            strokeColor: color,
+	            strokeColor: tableValue.color,
 	            strokeOpacity: 1.0,
 	            strokeWeight: 2,
-	            clickable: false
+	            clickable: false,
+                distance: tableValue.distance,
+                efficiency: tableValue.efficiency                
 	        });
             this.connectionLines.push(routerPath);
             routerPath.setMap(map);
@@ -104,16 +107,15 @@ function createDAP() {
                 var values = getValuesFromTable(dist);
                 if (values != -1 && this.ID != allMarkers[i].ID) {
                     var toAdd = {
-                        marker: allMarkers[i],
-                        distance: dist,
+                        marker: allMarkers[i],                       
                         value: values
                     };
                     toCover.push(toAdd);
                 }
             }
-            toCover = toCover.sort(function (a, b) { return a.distance - b.distance });          
+            toCover = toCover.sort(function (a, b) { return a.value.distance - b.value.distance });          
             for (var i = 0; i < toCover.length; i++) 
-                this.connect(toCover[i].marker, toCover[i].value.color);
+                this.connect(toCover[i].marker, toCover[i].value);
 
             
         },
@@ -151,7 +153,46 @@ function createDAP() {
 
             infowindow.setContent(content);
             infowindow.open(map, this);
+        },
+        statisticalData: function () {
+           /* var avgQualitySum = 0;
+            var metersConnected = 0;
+            var avgDistanceSum = 0;
+            var directNeighbours = this.neighbours;
+            for(var i = 0; i < directNeighbours.length; i ++){
+                var dist = getDistance(this, directNeighbours[i]);
+                var value = getValuesFromTable(dist);
+                avgQualitySum += value.efficiency;
+
+            }
+            metersConnected += directNeighbours.length;
+
+            if(meshEnabled){
+
+                var neighbours ;
+                var getNewNeighbours = function(neighbours){
+                    var ret = [];
+                    for(var i = 0; i < meters.length; i++){
+                        var dist = 
+                    }
+
+
+                }
+                for(var j = 0 ; j < meshMaxJumps; j++){
+                    var newNeighbours = [];
+                    for(var k = 0; k < neighbours.length; k++){
+                        
+                    }
+
+                    newNeighbours = newNeighbours.filter(function (elem, pos) {
+                    return newNeighbours.indexOf(elem) == pos;
+                    });
+                    neighbours = newNeighbours;
+                }
+            }
+        */   
         }
+        
 
     });
     google.maps.event.addListener(marker, 'click', function (event) {

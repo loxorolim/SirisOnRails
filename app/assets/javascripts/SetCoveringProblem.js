@@ -153,7 +153,7 @@ function createFileModel(){
     }
     return ret;
 }
-function createScpMatrix(uncoveredMeters){
+/*function createScpMatrix(uncoveredMeters){
 
     var r = getDapMaximumReach();
     var sM = [];
@@ -219,6 +219,7 @@ function createMeterNeighbourhoodMatrix2(uncoveredMeters) {
 
     return M;
 }
+*/
 function createScpMatrixes() {
     var points = metersToPoints(meters);
     var electricPoles = [];
