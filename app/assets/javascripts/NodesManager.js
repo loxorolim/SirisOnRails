@@ -1,4 +1,4 @@
-﻿/// <reference path="/js/jquery-1.10.2.min.js" />
+/// <reference path="/js/jquery-1.10.2.min.js" />
 
 
 

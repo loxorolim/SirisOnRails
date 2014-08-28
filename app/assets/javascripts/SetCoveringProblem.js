@@ -36,7 +36,10 @@ function sendDataToServer(url,method) {
             dataType: "text",
             success: function (data) {
                 var split = data.split(" ");
-                
+                for(var i = 0; i < daps.length; i++){ //REMOVER DEPOIS! ESTÁ AQUI PARA NÃO BUGAR O PLANEJAMENTO!
+                    daps[i].remove();
+                    i--;
+                }
                 for(var i = 0 ; i < split.length-1; i ++){
                     var toAdd = parseInt(split[i].slice(1));
                     var latLng = poles[toAdd-1].position;
@@ -44,6 +47,8 @@ function sendDataToServer(url,method) {
                     newDap.place(latLng.lat(),latLng.lng());
                     
                 }
+                //var d2 = new Date();
+                //alert(d2-d);
             }
         });
 }
@@ -60,6 +65,8 @@ function _ajax_request(url, data ,method) {
         },
         dataType: 'text',
         success: function (data) {
+
+
             var split = data.split(" ");
 			
 			for(var i = 0 ; i < split.length-1; i ++){
@@ -129,9 +136,10 @@ function covers2(pt1, pt2, r) {
     return (google.maps.geometry.spherical.computeDistanceBetween(pt1.getPosition(), pt2.getPosition()) <= r)
 }
 function createFileModel(){
-    var uncoveredMeters = meters.filter(function (item) {
-            return (item.connected != true);
-    }); 
+    //var uncoveredMeters = meters.filter(function (item) {
+    //        return (item.connected != true);
+    //});
+    var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
     var ret = "";
     if(meshEnabled)
         ret+=meshMaxJumps;

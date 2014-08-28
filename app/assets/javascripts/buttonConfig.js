@@ -1,3 +1,4 @@
+//var d;
 function setRadio() {
     $("#radio").buttonset();
     $("#Insertion").click(function () {
@@ -256,10 +257,11 @@ function setButtons()
         
         //createMeshCoverageMatrix(poles);
         $(this).blur();
-        //$.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
+        $.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
         // autoPlanningGrasp();
-        //setTimeout('applyPlanning()', 1000);
-        statisticalMatrix();
+        //d = new Date();
+        setTimeout('applyPlanning()', 1000);
+        //statisticalMatrix();
         //applyPlanning();
         //if (meshEnabled) {
         //   connectViaMesh();

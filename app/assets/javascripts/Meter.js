@@ -37,7 +37,10 @@
                 this.neighbours[i].disconnectTarget(this);
             }
 
+
             markerCluster.removeMarker(this, true);
+            if (meshEnabled)
+            resetMesh();
         },
         changeIcon: function (newIcon) {
             this.setIcon(newIcon);

@@ -1,14 +1,17 @@
 var overralQualitySum = 0;
 
 function collectInfo(){
+	var sL = statisticalList();
+	var numOfDaps = sl.length;
 
 	var coveredMeters = meters.filter(function (item) {
             return (item.connected == true && connectedMeters.indexOf(item) < 0);
         });
-	var coveredMetersNum = coveredMeters.length;
-	var numOfDaps = daps.length;
+//	var coveredMetersNum = coveredMeters.length;
+//	var numOfDaps = daps.length;
 
-	var metricInfo
+//	var metricInfo
+	
 }
 function averageDirectLinkQuality(){
 	var avgQuality = 0 , numOfLinks=0;
@@ -21,6 +24,24 @@ function averageDirectLinkQuality(){
 	}
 	return avgQuality/numOfLinks;
 
+}
+function averageLinksPerDap(statisticalList){
+	var lpdSum = 0, max=-1, min =-1;
+	for(var i = 0; i < statisticalList.length; i++){
+		var nLinks = statisticalList[i].length;
+		cSum+= nLinks;
+		if(max == -1 || nLinks > max)
+			max = nLinks;
+		if(min == -1 || nLinks < min)
+			min = nLinks;
+	}
+	var alpdInfo = {
+		avgLPD : lpdSum/statisticalList.length,
+		maxLPD : max,
+		minLPD : min
+	};
+	return alpdInfo;
+	//calcular desvio padrão
 }
 /*function c(){
 
@@ -61,8 +82,8 @@ function averageDirectLinkQuality(){
 }
 */
 
-function statisticalMatrix() {
-	var sM = [];
+function statisticalList() {
+	var sL = [];
 	for(var i = 0 ; i < daps.length; i++){
 		var toAdd = [];
 		for(var j = 0; j < meters.length; j++){
@@ -73,7 +94,8 @@ function statisticalMatrix() {
 					index: j,
 					distance: values.distance,
 					efficiency: values.efficiency,
-					hop: 0
+					hop: 0,
+					meshFather: null 
 				};
 				toAdd.push(component);
 			}
@@ -100,7 +122,8 @@ function statisticalMatrix() {
 	            				index: aux[l].index,
 			            		distance: aux[l].distance,
 			            		efficiency: aux[l].efficiency,
-								hop: k+1
+								hop: k+1,
+								meshFather:neighbours[j]
 		            		};
 
 			                meshToAdd = meshToAdd.concat(meshComponent);
@@ -117,8 +140,9 @@ function statisticalMatrix() {
 	            toAdd = toAdd.concat(meshToAdd);
 			}
 		}
-		sM.push(toAdd);
+		sL.push(toAdd);
 	}
+	return sL;
 }
 function createNeighbourhoodMatrix() {
    // var points = metersToPoints(meters);
