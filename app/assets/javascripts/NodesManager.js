@@ -248,7 +248,36 @@ function getMeterColor(meter)
 function getValuesFromTable(dist)
 {
     //var rounddist = Math.round(dist);
-    if (dist > table[table.length - 1])
+
+    var sp = getHataSRDSuccessRate(dist/1000);
+            
+            var c;
+            if (sp >= 0.98)
+                //  c = "GREEN";
+                c = GREEN;
+            else if (0.95 <= sp && sp < 0.98)
+                //  c = "YELLOW";
+                c = YELLOW;
+            else
+                c = BLUE;
+             //   c = "RED";
+
+            if (sp >= 0.9)
+            {
+                var value =
+                {
+                    distance: dist,
+                    efficiency: sp,
+                    color: c
+
+                }
+                return value;
+            }
+    return -1;
+
+
+
+    /*if (dist > table[table.length - 1])
     {
         return -1;
     }
@@ -256,8 +285,8 @@ function getValuesFromTable(dist)
         if (table[i].distance <= dist && dist < table[i + 1].distance) {
             return table[i + 1];
         }
-    }
-    return -1;
+    }*/
+
 }
 
 function createTableFromOptions()
