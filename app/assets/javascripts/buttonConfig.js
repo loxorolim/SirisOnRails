@@ -257,10 +257,11 @@ function setButtons()
         
         //createMeshCoverageMatrix(poles);
         $(this).blur();
-        $.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
+        //$.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
         // autoPlanningGrasp();
         //d = new Date();
-        setTimeout('applyPlanning()', 1000);
+        //setTimeout('applyPlanning()', 1000);
+        collectInfo();
         //statisticalMatrix();
         //applyPlanning();
         //if (meshEnabled) {

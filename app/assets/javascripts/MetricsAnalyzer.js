@@ -2,11 +2,15 @@ var overralQualitySum = 0;
 
 function collectInfo(){
 	var sL = statisticalList();
-	var numOfDaps = sl.length;
+	var numOfDaps = sL.length;
+//	var coveredMeters = meters.filter(function (item) {
+//            return (item.connected == true && connectedMeters.indexOf(item) < 0);
+//        });
+	var alpd = averageLinksPerDap(sL);
+	var ampd = averageMetersPerDap(sL);
+	var ammpd = avaregeMeshMetersPerDap(sL);
+	var avgHops = averageHops(sL);
 
-	var coveredMeters = meters.filter(function (item) {
-            return (item.connected == true && connectedMeters.indexOf(item) < 0);
-        });
 //	var coveredMetersNum = coveredMeters.length;
 //	var numOfDaps = daps.length;
 
@@ -25,11 +29,45 @@ function averageDirectLinkQuality(){
 	return avgQuality/numOfLinks;
 
 }
+function averageHops(statisticalList){
+	var avgHop = [];
+	for(var i = 0; i < meshMaxJumps+1; i++){
+		var sum = 0;
+		var qnt = 0;
+		for(var j = 0; j < statisticalList.length; j++){
+			for(var k = 0; k < statisticalList[j].length; k++){
+				if(statisticalList[j][k].hop == i){
+					var calcEfficiency = function(meter){
+						var eff = 1;
+						var hops = meter.hop;
+						var m = meter;
+						for(var i = 0; i < hops+1;i++){
+							eff*= m.efficiency;
+							m = m.meshFather;
+
+						}
+						return eff;
+					};
+
+					sum+= calcEfficiency(statisticalList[j][k]);
+					qnt++;
+				}
+			}
+		}
+		var toAdd = {
+			hop: i,
+			avgHopEfficiency: sum/qnt,
+			hopQnt: qnt
+		};
+		avgHop.push(toAdd);
+	}
+	return avgHop;
+}
 function averageLinksPerDap(statisticalList){
 	var lpdSum = 0, max=-1, min =-1;
 	for(var i = 0; i < statisticalList.length; i++){
 		var nLinks = statisticalList[i].length;
-		cSum+= nLinks;
+		lpdSum+= nLinks;
 		if(max == -1 || nLinks > max)
 			max = nLinks;
 		if(min == -1 || nLinks < min)
@@ -43,44 +81,83 @@ function averageLinksPerDap(statisticalList){
 	return alpdInfo;
 	//calcular desvio padrão
 }
-/*function c(){
+function avaregeMeshMetersPerDap(statisticalList){
+	var mmpdSum = [];
+	for(var z = 0; z < meshMaxJumps+1; z++){
+		var sum =0 , max=-1, min =-1;;
+		for(var i = 0; i < statisticalList.length; i++){
+		var noRepeat = function(list){
+			var ret = [];
+			for(var i = 0; i < list.length; i++){
+				var add = true;
+				for(var j = 0; j < ret.length;j++)
+					if(list[i].index == ret[j].index){
+						add = false;
+						break;
+					}
+				if(add)
+					ret.push(list[i]);
+			}
+			return ret;
+		};
+		var uniqueArray = noRepeat(statisticalList[i]);	
+		var nMeters =0;
+		for(var j =0; j< uniqueArray.length; j++)
+			if(uniqueArray[j].hop==z)
+				nMeters++;
 
-	var avgQualitySum = 0;
-    var metersConnected = 0;
-    var avgDistanceSum = 0;
-    var nM = createNeighbourhoodMatrix();
-    for(var i = 0; i < daps.length; i ++){
-    	var directNeighbours = daps[i].neighbours;
-    	var metersCovered = 0;
-    	 for(var i = 0; i < directNeighbours.length; i ++){
-	        var dist = getDistance(this, directNeighbours[i]);
-	        var value = getValuesFromTable(dist);
-	        avgQualitySum += value.efficiency;
-	        metersCovered++;
-   		 }
-   		 if(meshEnabled){
-   		 	
-   		 	var nextHopNeighbours = function(neighbours){
-   		 		var newNeighbours = [];
-   		 		 	for(var k = 0; k < neighbours.length; k++){
-                    newNeighbours = newNeighbours.concat(nM[neighbours[k]]);
-                }
-                newNeighbours = newNeighbours.filter(function (elem, pos) {
-                return newNeighbours.indexOf(elem) == pos;
-                });
-                return newNeighbours;
-   		 	}
-   			
-   		 	for(var j = 0; j < meshMaxJumps; j ++){
-   		 		var newNeighbours = nextHopNeighbours(directNeighbours);
-   		 	}
-   		 }
-
-
-    }
-
+		sum += nMeters;
+		if(max == -1 || nMeters > max)
+			max = nMeters;
+		if(min == -1 || nMeters < min)
+			min = nMeters;
+		}
+		var ammpdInfo = {
+			avgMMPD : sum/statisticalList.length,
+			maxMMPD : max,
+			minMMPD : min,
+			hop: z
+		};
+		mmpdSum.push(ammpdInfo);
+	}
+	
+	return mmpdSum;
 }
-*/
+function averageMetersPerDap(statisticalList){
+	var mpdSum = 0, max=-1, min =-1;
+
+	for(var i = 0; i < statisticalList.length; i++){
+		var noRepeat = function(list){
+			var ret = [];
+			for(var i = 0; i < list.length; i++){
+				var add = true;
+				for(var j = 0; j < ret.length;j++)
+					if(list[i].index == ret[j].index){
+						add = false;
+						break;
+					}
+				if(add)
+					ret.push(list[i]);
+			}
+			return ret;
+		};
+		var uniqueArray = noRepeat(statisticalList[i]);	
+		var nMeters = uniqueArray.length;
+		mpdSum+= nMeters;
+		if(max == -1 || nMeters > max)
+			max = nMeters;
+		if(min == -1 || nMeters < min)
+			min = nMeters;
+	}
+	var ampdInfo = {
+		avgMPD : mpdSum/statisticalList.length,
+		maxMPD : max,
+		minMPD : min
+	};
+	return ampdInfo;
+	//calcular desvio padrão
+}
+
 
 function statisticalList() {
 	var sL = [];
@@ -118,12 +195,21 @@ function statisticalList() {
 								};
 									
 	            		if(!containsElement(toAdd,aux[l].index)){
+	            			var father;
+	            			for(var z = 0; z < toAdd.length;z++){
+	            				if(toAdd[z].index == neighbours[j].index){
+	            					father = toAdd[z];
+	            					break;
+	            				}
+	            			}
+	            			
+
             				var meshComponent = {
 	            				index: aux[l].index,
 			            		distance: aux[l].distance,
 			            		efficiency: aux[l].efficiency,
 								hop: k+1,
-								meshFather:neighbours[j]
+								meshFather:father
 		            		};
 
 			                meshToAdd = meshToAdd.concat(meshComponent);
