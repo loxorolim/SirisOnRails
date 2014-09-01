@@ -14,23 +14,23 @@ using namespace std;
 
 
 
-//float rad (float x) 
+//double rad (double x) 
 //{
 //	return x * M_PI / 180;
 //}
-//float getDistance(Position p1, Position p2)
+//double getDistance(Position p1, Position p2)
 //{
-//	float R = 6378137; // Earth’s mean radius in meter
-//	float dLat = rad(p2.latitude - p1.latitude);
-//	float dLong = rad(p2.longitude - p1.longitude);
-//	float a = sin(dLat / 2) * sin(dLat / 2) +
+//	double R = 6378137; // Earth’s mean radius in meter
+//	double dLat = rad(p2.latitude - p1.latitude);
+//	double dLong = rad(p2.longitude - p1.longitude);
+//	double a = sin(dLat / 2) * sin(dLat / 2) +
 //		cos(rad(p1.latitude)) * cos(rad(p2.latitude)) *
 //		sin(dLong / 2) * sin(dLong / 2);
-//	float c = 2 * atan2(sqrt(a), sqrt(1 - a));
-//	float d = R * c;
+//	double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+//	double d = R * c;
 //	return d; // returns the distance in meter
 //}
-vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position> &uncoveredMeters, float r) {
+vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position*> &uncoveredMeters, double r) {
 	// var points = metersToPoints(meters);
 
 	vector<vector<int>> M;
@@ -79,7 +79,7 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 //		
 //
 //}
-vector<vector<int>> createScpMatrix(vector<Position>& uncoveredMeters, vector<Position>& poles, float r, int meshEnabled){
+vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, double r, int meshEnabled){
 
 	vector<vector<int>> sM;
 	for (int i = 0; i < uncoveredMeters.size(); i++) {
@@ -127,7 +127,7 @@ vector<vector<int>> createScpMatrix(vector<Position>& uncoveredMeters, vector<Po
 
 	return sM;
 }
-void saveGLPKFile(vector<vector<int>> &SCP, vector<Position> &poles, string filename)
+void saveGLPKFile(vector<vector<int>> &SCP, vector<Position*> &poles, string filename)
 {
 	FILE *file;
 	fopen_s(&file, filename.c_str(), "w");
@@ -140,7 +140,7 @@ void saveGLPKFile(vector<vector<int>> &SCP, vector<Position> &poles, string file
 		int Z = SCP.size();
 		int Y = poles.size();
 		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
-		fprintf_s(file,"%s","set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
+		fprintf_s(file,"%s","set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n fminimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
 		//ret += "set Z:= ";
 		fprintf_s(file, "set Z:= ");
 		for (int i = 0; i < Z; i++)
@@ -183,9 +183,9 @@ void saveGLPKFile(vector<vector<int>> &SCP, vector<Position> &poles, string file
 
 int main(int argc, char* argv[])
 {
-	//argc = 3;
-	//argv[1] = "C:\\Sites\\first_app\\teste.txt";
-	//argv[2] = "C:\\Sites\\first_app\\teste2.txt";
+	argc = 3;
+	argv[1] = "C:\\Sites\\first_app\\teste.txt";
+	argv[2] = "C:\\Sites\\first_app\\teste2.txt";
 	if (argc > 2)
 	{
 		 FILE *file;
@@ -201,22 +201,22 @@ int main(int argc, char* argv[])
 		else
 		{
 			int meshEnabled = 0;
-			float reach = 0;
+			double reach = 0;
 			int metersLength = 0;
 			fscanf_s(file, "%d", &meshEnabled);
 			fscanf_s(file,"%f", &reach);
 			fscanf_s(file, "%d", &metersLength);
-			vector<Position> meters;
-			vector<Position> poles;
+			vector<Position*> meters;
+			vector<Position*> poles;
 			for (int i = 0; i < metersLength; i++)
 			{
-				float lat;
-				float lng;
+				double lat;
+				double lng;
 				fscanf_s(file, "%f %f", &lat, &lng);
 				//Position *toAdd = (Position*)malloc(sizeof(Position));
-				Position toAdd;
-				toAdd.latitude = lat;
-				toAdd.longitude = lng;
+				Position *toAdd = new Position(lat,lng);
+				//toAdd.latitude = lat;
+				//toAdd.longitude = lng;
 				meters.push_back(toAdd);
 
 			}
@@ -224,19 +224,22 @@ int main(int argc, char* argv[])
 			fscanf_s(file, "%d", &polesLength);
 			for (int i = 0; i < polesLength; i++)
 			{
-				float lat;
-				float lng;
+				double lat;
+				double lng;
 				fscanf_s(file, "%f %f", &lat, &lng);
 				//Position *toAdd = (Position*)malloc(sizeof(Position));
-				Position toAdd;
-				toAdd.latitude = lat;
-				toAdd.longitude = lng;
+				Position *toAdd = new Position(lat,lng);
+				//toAdd.latitude = lat;
+				//toAdd.longitude = lng;
 				poles.push_back(toAdd);
 			}
 			
 			fclose(file);
 			vector<vector<int>> SCP = createScpMatrix(meters, poles, reach, meshEnabled);
 			saveGLPKFile(SCP, poles, argv[2]);
+			SCP.clear();
+			meters.clear();
+			poles.clear();
 		}
 		
 	}
