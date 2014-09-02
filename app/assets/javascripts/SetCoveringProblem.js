@@ -135,18 +135,54 @@ function covers2(pt1, pt2, r) {
 
     return (google.maps.geometry.spherical.computeDistanceBetween(pt1.getPosition(), pt2.getPosition()) <= r)
 }
+function propagationValuesToSend(){
+    var s;
+    if(scenario == "Urbano") 
+        s = 0;
+    else if (scenario == "Suburbano")
+        s = 1;
+    else
+        s = 2;
+
+    var t;
+    if(technology == "802_15_4") 
+        t = 0;
+    else if (scenario == "802_11_a")
+        t = 1;
+    else
+        t = 2;
+
+    var srdv;
+    if(SRD)
+        srdv = 1;
+    else
+        srdv = 0;
+
+    var ret = "";
+    ret+= s + "\n";
+    ret+= t + "\n";
+    ret+= H_TX + "\n";
+    ret+= H_RX + "\n";
+    ret+= BIT_RATE + "\n";
+    ret+= TRANSMITTER_POWER + "\n";
+    ret+= srdv + "\n";
+    return ret;
+
+}
 function createFileModel(){
     //var uncoveredMeters = meters.filter(function (item) {
     //        return (item.connected != true);
     //});
     var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
-    var ret = "";
+    var ret = propagationValuesToSend();
+    
+
     if(meshEnabled)
         ret+=meshMaxJumps;
     else
         ret+="0";
-    ret += "\n" + getDapMaximumReach() + "\n";
-    //ret+= "\n";
+  //  ret += "\n" + getDapMaximumReach() + "\n";
+    ret+= "\n";
     //ret += "\nMeters\n";
     ret+= uncoveredMeters.length+"\n";
     for(var i = 0; i <uncoveredMeters.length; i++){

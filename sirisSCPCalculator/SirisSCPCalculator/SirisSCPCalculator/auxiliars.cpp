@@ -25,10 +25,15 @@ double getDistance(Position* p1, Position* p2)
 	double d = R * c;
 	return d; // returns the distance in meter
 }
+void deleteVector(vector<sComponent*> &v)
+{
+	for (int i = 0; i < v.size(); i++)
+		delete v[i];
+}
 
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
-	return 1 - bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance, SRD);
+	return 1 - bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);
 	
 
 }
@@ -42,8 +47,8 @@ double bit_error_probability(int env, int technology, double bit_rate, double tr
 
 	//N_0 para cada tipo de ambiente
 
-	double N_0, frequency, E_b, gama_b, bit_error;
-	double signal_power, signal_power_W;
+	double N_0, frequency = -1, E_b = -1, gama_b = -1, bit_error = -1;
+	double signal_power = -1, signal_power_W = -1;
 
 	if (env == Urbano)
 		N_0 = 3.1548e-19;
@@ -141,7 +146,7 @@ double bit_error_probability(int env, int technology, double bit_rate, double tr
 double loss(double f, double h_tx, double h_rx, double d, int environment, bool SRD){
 
 
-	double path_loss;
+	double path_loss = -1;
 	//Como d <= 20km
 	double alpha = 1;
 
@@ -187,31 +192,31 @@ double loss(double f, double h_tx, double h_rx, double d, int environment, bool 
 
 	return path_loss;
 }
-double log10(double val) {
-	return log(val) / log(10);
-}
-double erf(double x)
-{
-	// constants
-	double a1 = 0.254829592;
-	double a2 = -0.284496736;
-	double a3 = 1.421413741;
-	double a4 = -1.453152027;
-	double a5 = 1.061405429;
-	double p = 0.3275911;
-
-	// Save the sign of x
-	int sign = 1;
-	if (x < 0)
-		sign = -1;
-	x = abs(x);
-
-	// A&S formula 7.1.26
-	double t = 1.0 / (1.0 + p*x);
-	double y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*exp(-x*x);
-
-	return sign*y;
-}
+//double log10(double val) {
+//	return log(val) / log(10);
+//}
+//double erf(double x)
+//{
+//	// constants
+//	double a1 = 0.254829592;
+//	double a2 = -0.284496736;
+//	double a3 = 1.421413741;
+//	double a4 = -1.453152027;
+//	double a5 = 1.061405429;
+//	double p = 0.3275911;
+//
+//	// Save the sign of x
+//	int sign = 1;
+//	if (x < 0)
+//		sign = -1;
+//	x = abs(x);
+//
+//	// A&S formula 7.1.26
+//	double t = 1.0 / (1.0 + p*x);
+//	double y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*exp(-x*x);
+//
+//	return sign*y;
+//}
 double erfc( double x) {
 	return 1 - erf(x);
 }

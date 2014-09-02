@@ -1,34 +1,46 @@
-﻿Build started 01/09/2014 12:46:15.
+﻿Build started 02/09/2014 15:54:47.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SirisSCPCalculator.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MetricsCalculator.cpp SirisSCPCalculator.cpp auxiliars.cpp
          auxiliars.cpp
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(53): warning C4273: 'erf' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(60): warning C4273: 'erf' : inconsistent dll linkage
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(486) : see previous definition of 'erf'
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(54): warning C4273: 'erfc' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(61): warning C4273: 'erfc' : inconsistent dll linkage
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(487) : see previous definition of 'erfc'
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.cpp(30): warning C4018: '<' : signed/unsigned mismatch
          SirisSCPCalculator.cpp
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(53): warning C4273: 'erf' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(60): warning C4273: 'erf' : inconsistent dll linkage
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(486) : see previous definition of 'erf'
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(54): warning C4273: 'erfc' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(61): warning C4273: 'erfc' : inconsistent dll linkage
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(487) : see previous definition of 'erfc'
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(38): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(40): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(53): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(55): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(58): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(85): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(87): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(97): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(100): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(106): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(112): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(163): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(43): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(59): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(61): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(64): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(91): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(93): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(108): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(111): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(117): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(123): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(174): warning C4018: '<' : signed/unsigned mismatch
          MetricsCalculator.cpp
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(53): warning C4273: 'erf' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(60): warning C4273: 'erf' : inconsistent dll linkage
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(486) : see previous definition of 'erf'
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(54): warning C4273: 'erfc' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(61): warning C4273: 'erfc' : inconsistent dll linkage
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(487) : see previous definition of 'erfc'
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(15): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(18): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(35): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(47): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(50): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(64): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(71): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(74): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(80): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(121): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\metricscalculator.cpp(123): warning C4018: '<' : signed/unsigned mismatch
          Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.lib" /MACHINE:X86 Debug\auxiliars.obj
@@ -41,4 +53,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:06.30
+Time Elapsed 00:00:05.29

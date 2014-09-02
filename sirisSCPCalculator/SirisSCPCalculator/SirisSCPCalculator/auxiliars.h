@@ -1,3 +1,5 @@
+#ifndef _AUXILIARS_H
+#define _AUXILIARS_H
 
 #define MARGIN_VALUE 0.9
 #define M_PI 3.14159265358979323846
@@ -41,6 +43,7 @@ class sComponent
 			meshFather = mf;
 		}
 };
+void deleteVector(vector<sComponent*> &v);
 
 double rad(double x);
 double getDistance(Position * p1, Position * p2);
@@ -56,3 +59,5 @@ double loss(double f, double h_tx, double h_rx, double d, int environment, bool 
 double log10(double val);
 double erf(double x);
 double erfc(double x);
+
+#endif

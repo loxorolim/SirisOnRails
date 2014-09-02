@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include "auxiliars.h"
+#include "MetricsCalculator.h"
 using namespace std;
 
 
@@ -30,7 +31,9 @@ using namespace std;
 //	double d = R * c;
 //	return d; // returns the distance in meter
 //}
-vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position*> &uncoveredMeters, double r) {
+vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position*> &uncoveredMeters, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
+{
+	
 	// var points = metersToPoints(meters);
 
 	vector<vector<int>> M;
@@ -38,9 +41,12 @@ vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position*> &uncoveredM
 	for (int i = 0; i < uncoveredMeters.size(); i++) {
 		vector<int> pointsCovered ;
 		for (int j = 0; j < uncoveredMeters.size(); j++)
-		if (i != j && getDistance(uncoveredMeters[i], uncoveredMeters[j]) <= r) {
-			pointsCovered.push_back(j);
-
+		{
+			double dist = getDistance(uncoveredMeters[i], uncoveredMeters[j]);
+			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+			if (i != j && eff >= MARGIN_VALUE) 
+				pointsCovered.push_back(j);
+		
 		}
 		M.push_back(pointsCovered);
 	}
@@ -79,14 +85,19 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 //		
 //
 //}
-vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, double r, int meshEnabled){
+vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD){
 
 	vector<vector<int>> sM;
 	for (int i = 0; i < uncoveredMeters.size(); i++) {
 		vector<int> polesThatCover;
 		for (int j = 0; j < poles.size(); j++)
-			if (getDistance(uncoveredMeters[i], poles[j]) <= r) 
-				polesThatCover.push_back(j);		
+		{
+			double dist = getDistance(uncoveredMeters[i], poles[j]);
+			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+			if (eff >= MARGIN_VALUE)
+				polesThatCover.push_back(j);
+		}
+					
 		//if (polesThatCover.length > 0)
 			sM.push_back(polesThatCover);
 	}
@@ -102,7 +113,7 @@ vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<P
 			sMCopy.push_back(toAdd);
 		}
 
-		vector<vector<int>> nM = createMeterNeighbourhoodMatrix(uncoveredMeters,r);
+		vector<vector<int>> nM = createMeterNeighbourhoodMatrix(uncoveredMeters, env,  technology,  bit_rate,  transmitter_power,  h_tx,  h_rx,  SRD);
 		for (int i = 0; i < uncoveredMeters.size(); i++)
 		{
 			vector<int> neighbours = nM[i];
@@ -200,11 +211,27 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
+			int scenario = 0;
+			int technology = 0;
+			double H_TX = 0;
+			double H_RX = 0;
+			double BIT_RATE = 0;
+			double TRANSMITTER_POWER = 0;
+			bool SRD = 0;
+
 			int meshEnabled = 0;
-			double reach = 0;
+			//double reach = 0;
 			int metersLength = 0;
+			fscanf_s(file, "%d", &scenario);
+			fscanf_s(file, "%d", &technology);
+			fscanf_s(file, "%lf", &H_TX);
+			fscanf_s(file, "%lf", &H_RX);
+			fscanf_s(file, "%lf", &BIT_RATE);
+			fscanf_s(file, "%lf", &TRANSMITTER_POWER);
+			fscanf_s(file, "%d", &SRD);
+
 			fscanf_s(file, "%d", &meshEnabled);
-			fscanf_s(file,"%f", &reach);
+			//fscanf_s(file,"%lf", &reach);
 			fscanf_s(file, "%d", &metersLength);
 			vector<Position*> meters;
 			vector<Position*> poles;
@@ -212,7 +239,7 @@ int main(int argc, char* argv[])
 			{
 				double lat;
 				double lng;
-				fscanf_s(file, "%f %f", &lat, &lng);
+				fscanf_s(file, "%lf %lf", &lat, &lng);
 				//Position *toAdd = (Position*)malloc(sizeof(Position));
 				Position *toAdd = new Position(lat,lng);
 				//toAdd.latitude = lat;
@@ -226,7 +253,7 @@ int main(int argc, char* argv[])
 			{
 				double lat;
 				double lng;
-				fscanf_s(file, "%f %f", &lat, &lng);
+				fscanf_s(file, "%lf %lf", &lat, &lng);
 				//Position *toAdd = (Position*)malloc(sizeof(Position));
 				Position *toAdd = new Position(lat,lng);
 				//toAdd.latitude = lat;
@@ -235,9 +262,16 @@ int main(int argc, char* argv[])
 			}
 			
 			fclose(file);
-			vector<vector<int>> SCP = createScpMatrix(meters, poles, reach, meshEnabled);
+			vector<vector<int>> SCP = createScpMatrix(meters, poles,  meshEnabled,  scenario, technology,  BIT_RATE,  TRANSMITTER_POWER, H_TX,  H_RX,  SRD);
 			saveGLPKFile(SCP, poles, argv[2]);
-			SCP.clear();
+			
+			vector<Position*> daps;
+			Position* dap1 = new Position(-22.918997592942823, - 43.090025782585144);
+			daps.push_back(dap1);
+
+			//vector<vector<sComponent*>> sl = statisticalList(daps, meters, 1, 3, 0, 0, 6, -20, 3, 5, true);
+			
+			SCP.clear(); //CLEAR NAO DA DELETE!
 			meters.clear();
 			poles.clear();
 		}
