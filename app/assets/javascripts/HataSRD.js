@@ -13,6 +13,7 @@ var SRD = true;
 
 function getHataSRDSuccessRate(distance) {
     return 1 - bit_error_probability(scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, distance, SRD);
+    
 }
 function refresh() {
     createTableFromOptions();
@@ -28,7 +29,7 @@ function refresh() {
 
 //BER para diversas tecnologias
 //2014-07-14
-
+/*
 //Calculo da taxa de erro de bits
 function bit_error_probability(env,technology,bit_rate,transmitter_power,h_tx,h_rx,d,SRD){
 
@@ -206,3 +207,4 @@ return sign*y;
 function erfc(x) {
     return 1 - erf(x);
 }
+*/
