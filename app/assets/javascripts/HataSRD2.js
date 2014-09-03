@@ -252,7 +252,7 @@ function coded_modulation(modulation_type,code_rate,decode_type,gamma_b){
     	}
         // Coded
         else {
-        
+        	var d_free;
             if (code_rate == 1.0/2.0){
                 d_free = 10;
                 alpha_d = [36,0,211,0,1404,0,11633,0,77433,0];       
@@ -267,26 +267,26 @@ function coded_modulation(modulation_type,code_rate,decode_type,gamma_b){
             }
 
             switch(decode_type){
-             /*   
+                
                 case "hdd":
                 case "hard":
                 P_e_HDD = 0;
 
-                for d = d_free:(d_free+constraint ) {
+                for (var d = 0; d < d_free + constraint; d++){
                     P_b = uncoded_modulation(modulation_type,code_rate*gamma_b);
                     
                     p_2 = 0;
                     
-                    for k_ = ceil((d+1)/2):d
-                        p_2 = p_2 + nchoosek(d, k_) * P_b.^k_ .* (1-P_b).^(d-k_);
+                    for (var k_ = 0; k_ < Math.ceil((d+1)/2)/d; k_++)
+                        p_2 = p_2 + nchoosek(d, k_) * Math.pow(P_b,k_) * Math.pow((1-P_b),(d-k_));
                     
 
-                    if (ceil(d/2) == d/2)
-                        p_2 = p_2 + nchoosek(d, d/2) * (P_b.*(1-P_b)).^(d/2)/2;
+                    if (Math.ceil(d/2) == d/2)
+                        p_2 = p_2 + nchoosek(d, d/2) * Math.pow((P_b*(1-P_b)),(d/2))/2;
                     
-                    P_e_HDD = P_e_HDD + alpha_d(d-d_free+1)*p_2;              
+                    P_e_HDD = P_e_HDD + alpha_d[d-d_free+1]*p_2;              
                 
-                        ber = P_e_HDD;    
+                    ber = P_e_HDD;    
                 }
 
                 case 'soft':
@@ -295,9 +295,10 @@ function coded_modulation(modulation_type,code_rate,decode_type,gamma_b){
                         case 'bpsk':
                         case 'qpsk':
                             P_e_SDD = 0;
-                            for d = d_free:(d_free+constraint ){
+
+                            for (var d = 0; d < d_free + constraint; d++){
                                 p_2 = uncoded_modulation(modulation_type,code_rate*d*gamma_b);
-                                P_e_SDD = P_e_SDD + alpha_d(d-d_free+1)* p_2;
+                                P_e_SDD = P_e_SDD + alpha_d[d-d_free+1]* p_2;
                             }
 
                             ber = P_e_SDD;
@@ -305,11 +306,11 @@ function coded_modulation(modulation_type,code_rate,decode_type,gamma_b){
                         case "16_qam":
                             P_e_SDD_max = 0;
                             P_e_SDD_min = 0;
-                            for d = d_free:(d_free+constraint ) {
-                                p_2_max =  0.5 * erfc(  sqrt(  (2.0/5.0)*code_rate*d*gamma_b)	);
-                                p_2_min =  0.5 * erfc(  sqrt( (18.0/5.0)*code_rate*d*gamma_b)	);
-                                P_e_SDD_max = alpha_d(d-d_free+1)* p_2_min;
-                                P_e_SDD_min = alpha_d(d-d_free+1)* p_2_max;
+                            for (var d = 0; d < d_free + constraint; d++){
+                                p_2_max =  0.5 * erfc(  Math.sqrt(  (2.0/5.0)*code_rate*d*gamma_b)	);
+                                p_2_min =  0.5 * erfc(  Math.sqrt( (18.0/5.0)*code_rate*d*gamma_b)	);
+                                P_e_SDD_max = alpha_d[d-d_free+1]* p_2_min;
+                                P_e_SDD_min = alpha_d[d-d_free+1]* p_2_max;
 
                             }
                             P_e_SDD = 0.5 *(P_e_SDD_max + P_e_SDD_min);
@@ -318,11 +319,11 @@ function coded_modulation(modulation_type,code_rate,decode_type,gamma_b){
                         case "64_qam":
                             P_e_SDD_max = 0;
                             P_e_SDD_min = 0;
-                            for d = d_free:(d_free+constraint ) {
-                                p_2_max =  0.5 * erfc(  sqrt(  (1.0/7.0)*code_rate*d*gamma_b)	);
-                                p_2_min =  0.5 * erfc(  sqrt(   (7.0) * code_rate*d*gamma_b)	);
-                                P_e_SDD_max = alpha_d(d-d_free+1)* p_2_min;
-                                P_e_SDD_min = alpha_d(d-d_free+1)* p_2_max;
+                            for (var d = 0; d < d_free + constraint; d++){
+                                p_2_max =  0.5 * erfc(  Math.sqrt(  (1.0/7.0)*code_rate*d*gamma_b)	);
+                                p_2_min =  0.5 * erfc(  Math.sqrt(   (7.0) * code_rate*d*gamma_b)	);
+                                P_e_SDD_max = alpha_d[d-d_free+1]* p_2_min;
+                                P_e_SDD_min = alpha_d[d-d_free+1]* p_2_max;
 
                             }
                             P_e_SDD = 0.5 *(P_e_SDD_max + P_e_SDD_min);
@@ -331,7 +332,7 @@ function coded_modulation(modulation_type,code_rate,decode_type,gamma_b){
 						default:
 							break;                      
                     }
-                */
+                
             }
 
             
@@ -458,7 +459,19 @@ function loss( f , h_tx , h_rx , d, environment, SRD){
         }
     return path_loss;
 }
+function nchoosek(n, k){
+	return fac(n)/(fac(n-k)*fac(k));
+}
+function fac(n){
+	if(n<=1)
+		return 1;
+	var ret = 1;
+	while(n!=1){
+		ret *= n;
+		n--;
+	}
 
+}
 function uncoded_modulation(modulation_type,gamma_b){
 
     
@@ -479,7 +492,7 @@ function uncoded_modulation(modulation_type,gamma_b){
             case "dqpsk":
                 a = Math.sqrt((2*gamma_b)*(1-Math.sqrt(0.5)));
                 b = Math.sqrt((2*gamma_b)*(1+Math.sqrt(0.5)));
-                ber = marcumq(a,b) - 0.5*besseli(0,a*b)*exp(-0.5*(a^2 + b^2));
+                ber = marcumq(a,b) - 0.5*besseli(0,a*b)*exp(-0.5*(a*a + b*b));
                 break;
 
             case '16_qam':
