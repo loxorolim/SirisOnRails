@@ -4,6 +4,10 @@
 #define MARGIN_VALUE 0.9
 #define M_PI 3.14159265358979323846
 
+#define AUTOPLAN 0
+#define PROPAGATION 1
+#define METRIC 2
+
 #define Urbano  0
 #define Suburbano  1
 #define Rural  2
@@ -24,6 +28,41 @@ class Position
 			latitude = lat;
 			longitude = lng;
 		}
+};
+class DrawInfo
+{
+public:
+	Position* a;
+	Position* b;
+	int color;
+	double efficiency;
+	double distance;
+	DrawInfo(Position* p1, Position* p2, int c, double eff, double d)
+	{
+		a = p1;
+		b = p2;
+		color = c;
+		efficiency = eff;
+		distance = d;
+	};
+	string toString()
+	{
+		string ret;
+		ret += to_string(a->latitude) + "<>";
+		ret += to_string(a->longitude);
+		ret += "/";
+		ret += to_string(b->latitude) + "<>";
+		ret += to_string(b->longitude);
+		ret += "/";
+		ret += to_string(color);
+		ret += "/";
+		ret += to_string(efficiency);
+		ret += "/";
+		ret += to_string(distance);
+		ret += "/";
+		return ret;
+	}
+
 };
 
 class sComponent 

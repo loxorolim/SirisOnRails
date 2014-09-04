@@ -191,92 +191,286 @@ void saveGLPKFile(vector<vector<int>> &SCP, vector<Position*> &poles, string fil
 	}
 	
 }
+string executeAutoPlanOption()
+{
+
+
+	int scenario = 0;
+	int technology = 0;
+	double H_TX = 0;
+	double H_RX = 0;
+	double BIT_RATE = 0;
+	double TRANSMITTER_POWER = 0;
+	bool SRD = 0;
+
+	int meshEnabled = 0;
+	//double reach = 0;
+	int metersLength = 0;
+	scanf_s("%d", &scenario);
+	scanf_s("%d", &technology);
+	scanf_s("%lf", &H_TX);
+	scanf_s("%lf", &H_RX);
+	scanf_s("%lf", &BIT_RATE);
+	scanf_s("%lf", &TRANSMITTER_POWER);
+	scanf_s("%d", &SRD);
+
+	scanf_s("%d", &meshEnabled);
+	//fscanf_s(file,"%lf", &reach);
+	scanf_s("%d", &metersLength);
+	vector<Position*> meters;
+	vector<Position*> poles;
+	for (int i = 0; i < metersLength; i++)
+	{
+		double lat;
+		double lng;
+		scanf_s("%lf %lf", &lat, &lng);
+		//Position *toAdd = (Position*)malloc(sizeof(Position));
+		Position *toAdd = new Position(lat, lng);
+		//toAdd.latitude = lat;
+		//toAdd.longitude = lng;
+		meters.push_back(toAdd);
+
+	}
+	int polesLength = 0;
+	scanf_s("%d", &polesLength);
+	for (int i = 0; i < polesLength; i++)
+	{
+		double lat;
+		double lng;
+		scanf_s("%lf %lf", &lat, &lng);
+		//Position *toAdd = (Position*)malloc(sizeof(Position));
+		Position *toAdd = new Position(lat, lng);
+		//toAdd.latitude = lat;
+		//toAdd.longitude = lng;
+		poles.push_back(toAdd);
+	}
+
+
+	vector<vector<int>> SCP = createScpMatrix(meters, poles, meshEnabled, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+	saveGLPKFile(SCP, poles, "C:\\Sites\\first_app\\teste2.txt");
+	return "";
+}
+vector<DrawInfo*> calculateDrawingInfo(vector<Position*> meters, vector<Position*> daps, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, bool SRD)
+{
+
+
+	vector<DrawInfo*> toCover;
+	vector<Position*> allMarkers;
+	allMarkers.insert(allMarkers.end(), meters.begin(), meters.end());
+	//allMarkers.insert(allMarkers.end(),daps.begin(), daps.end());
+	//POR ENQUANTO SÓ COM METERS
+	for (int d = 0; d < daps.size(); d++)
+	{
+		for (int i = 0; i < allMarkers.size(); i++) {
+			double dist = getDistance(daps[d], allMarkers[i]);
+			double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			if (effs >= MARGIN_VALUE ) { //SE CONSIDERAR DAPS TEM Q ALTERA AKI PRA NAO CRIAR UMA LINHA COM ELE MESMO
+				DrawInfo* toAdd = new DrawInfo(daps[d], allMarkers[i], 1, effs, dist);
+				toCover.push_back(toAdd);
+			}
+		}
+		//toCover = toCover.sort(function(a, b) { return a.value.distance - b.value.distance });
+		//for (int i = 0; i < toCover.size(); i++)
+		//	this.connect(toCover[i].marker, toCover[i].value);
+	}
+	return toCover;
+	
+
+
+
+}
+string executePropagationOption()
+{
+	//FILE *file;
+	//	 fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
+		
+	//double distance = 0;
+	int scenario = 0;
+	int technology = 0;
+	double H_TX = 0;
+	double H_RX = 0;
+	double BIT_RATE = 0;
+	double TRANSMITTER_POWER = 0;
+	int SRD = 0;
+	int meshEnabled;
+
+
+	scanf_s("%d", &scenario);
+	scanf_s("%d", &technology);
+	scanf_s("%lf", &H_TX);
+	scanf_s("%lf", &H_RX);
+	scanf_s("%lf", &BIT_RATE);
+	scanf_s("%lf", &TRANSMITTER_POWER);
+	scanf_s("%d", &SRD);
+	scanf_s("%d", &meshEnabled);
+
+	//fscanf_s(file,"%d", &scenario);
+	//fscanf_s(file, "%d", &technology);
+	//fscanf_s(file, "%lf", &H_TX);
+	//fscanf_s(file, "%lf", &H_RX);
+	//fscanf_s(file, "%lf", &BIT_RATE);
+	//fscanf_s(file, "%lf", &TRANSMITTER_POWER);
+	//fscanf_s(file, "%d", &SRD);
+	//fscanf_s(file, "%d", &meshEnabled);
+
+	int metersLength;
+	scanf_s("%d", &metersLength);
+	//fscanf_s(file,"%d", &metersLength);
+	vector<Position*> meters;
+	vector<Position*> daps;
+	for (int i = 0; i < metersLength; i++)
+	{
+		double lat;
+		double lng;
+		scanf_s("%lf %lf", &lat, &lng);
+		//fscanf_s(file,"%lf %lf", &lat, &lng);
+		//Position *toAdd = (Position*)malloc(sizeof(Position));
+		Position *toAdd = new Position(lat, lng);
+		//toAdd.latitude = lat;
+		//toAdd.longitude = lng;
+		meters.push_back(toAdd);
+
+	}
+	int dapsLength = 0;
+	scanf_s("%d", &dapsLength);
+	//fscanf_s(file,"%d", &dapsLength);
+	for (int i = 0; i < dapsLength; i++)
+	{
+		double lat;
+		double lng;
+		scanf_s("%lf %lf", &lat, &lng);
+		//fscanf_s(file,"%lf %lf", &lat, &lng);
+		//Position *toAdd = (Position*)malloc(sizeof(Position));
+		Position *toAdd = new Position(lat, lng);
+		//toAdd.latitude = lat;
+		//toAdd.longitude = lng;
+		daps.push_back(toAdd);
+	}
+
+	vector<DrawInfo*> drawInfos = calculateDrawingInfo(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+	string ret = "";
+	for (int i = 0; i < drawInfos.size(); i++)
+		ret += drawInfos[i]->toString() + " ";
+
+	//double ret = getHataSRDSuccessRate(distance, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+	return ret;
+}
+string executeMetricOption()
+{
+	return "";
+}
+string readFromPopen()
+{
+	int option = -1;
+	scanf_s("%d", &option);
+
+	switch (option)
+	{
+		case AUTOPLAN:
+			return executeAutoPlanOption();
+			break;
+		case PROPAGATION:
+			return executePropagationOption();
+			break;
+		case METRIC:
+			return executeMetricOption();
+			break;
+		default:
+			return "";
+			break;
+	}
+}
 
 int main(int argc, char* argv[])
 {
-	argc = 3;
-	argv[1] = "C:\\Sites\\first_app\\teste.txt";
-	argv[2] = "C:\\Sites\\first_app\\teste2.txt";
-	if (argc > 2)
-	{
-		 FILE *file;
-		 //printf(argv[1]);
-		 //printf("%s\n", argv[1]);
-		 fopen_s(&file,argv[1], "r");
-		// fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
-		/* fopen returns 0, the NULL pointer, on failure */
-		if (file == 0)
-		{
-			printf("Could not open file\n");
-		}
-		else
-		{
-			int scenario = 0;
-			int technology = 0;
-			double H_TX = 0;
-			double H_RX = 0;
-			double BIT_RATE = 0;
-			double TRANSMITTER_POWER = 0;
-			bool SRD = 0;
+	string answer = "";
+	answer = readFromPopen();
+	printf_s(answer.c_str());
 
-			int meshEnabled = 0;
-			//double reach = 0;
-			int metersLength = 0;
-			fscanf_s(file, "%d", &scenario);
-			fscanf_s(file, "%d", &technology);
-			fscanf_s(file, "%lf", &H_TX);
-			fscanf_s(file, "%lf", &H_RX);
-			fscanf_s(file, "%lf", &BIT_RATE);
-			fscanf_s(file, "%lf", &TRANSMITTER_POWER);
-			fscanf_s(file, "%d", &SRD);
+		//printf(argv[1]);
+	//argc = 3;
+	//argv[1] = "C:\\Sites\\first_app\\teste.txt";
+	//argv[2] = "C:\\Sites\\first_app\\teste2.txt";
+	//if (argc > 2)
+	//{
+	//	 FILE *file;
+	//	 //printf(argv[1]);
+	//	 //printf("%s\n", argv[1]);
+	//	 fopen_s(&file,argv[1], "r");
+	//	// fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
+	//	/* fopen returns 0, the NULL pointer, on failure */
+	//	if (file == 0)
+	//	{
+	//		printf("Could not open file\n");
+	//	}
+	//	else
+	//	{
+	//		int scenario = 0;
+	//		int technology = 0;
+	//		double H_TX = 0;
+	//		double H_RX = 0;
+	//		double BIT_RATE = 0;
+	//		double TRANSMITTER_POWER = 0;
+	//		bool SRD = 0;
 
-			fscanf_s(file, "%d", &meshEnabled);
-			//fscanf_s(file,"%lf", &reach);
-			fscanf_s(file, "%d", &metersLength);
-			vector<Position*> meters;
-			vector<Position*> poles;
-			for (int i = 0; i < metersLength; i++)
-			{
-				double lat;
-				double lng;
-				fscanf_s(file, "%lf %lf", &lat, &lng);
-				//Position *toAdd = (Position*)malloc(sizeof(Position));
-				Position *toAdd = new Position(lat,lng);
-				//toAdd.latitude = lat;
-				//toAdd.longitude = lng;
-				meters.push_back(toAdd);
+	//		int meshEnabled = 0;
+	//		//double reach = 0;
+	//		int metersLength = 0;
+	//		fscanf_s(file, "%d", &scenario);
+	//		fscanf_s(file, "%d", &technology);
+	//		fscanf_s(file, "%lf", &H_TX);
+	//		fscanf_s(file, "%lf", &H_RX);
+	//		fscanf_s(file, "%lf", &BIT_RATE);
+	//		fscanf_s(file, "%lf", &TRANSMITTER_POWER);
+	//		fscanf_s(file, "%d", &SRD);
 
-			}
-			int polesLength = 0;
-			fscanf_s(file, "%d", &polesLength);
-			for (int i = 0; i < polesLength; i++)
-			{
-				double lat;
-				double lng;
-				fscanf_s(file, "%lf %lf", &lat, &lng);
-				//Position *toAdd = (Position*)malloc(sizeof(Position));
-				Position *toAdd = new Position(lat,lng);
-				//toAdd.latitude = lat;
-				//toAdd.longitude = lng;
-				poles.push_back(toAdd);
-			}
-			
-			fclose(file);
-			vector<vector<int>> SCP = createScpMatrix(meters, poles,  meshEnabled,  scenario, technology,  BIT_RATE,  TRANSMITTER_POWER, H_TX,  H_RX,  SRD);
-			saveGLPKFile(SCP, poles, argv[2]);
-			
-			vector<Position*> daps;
-			Position* dap1 = new Position(-22.918997592942823, - 43.090025782585144);
-			daps.push_back(dap1);
+	//		fscanf_s(file, "%d", &meshEnabled);
+	//		//fscanf_s(file,"%lf", &reach);
+	//		fscanf_s(file, "%d", &metersLength);
+	//		vector<Position*> meters;
+	//		vector<Position*> poles;
+	//		for (int i = 0; i < metersLength; i++)
+	//		{
+	//			double lat;
+	//			double lng;
+	//			fscanf_s(file, "%lf %lf", &lat, &lng);
+	//			//Position *toAdd = (Position*)malloc(sizeof(Position));
+	//			Position *toAdd = new Position(lat,lng);
+	//			//toAdd.latitude = lat;
+	//			//toAdd.longitude = lng;
+	//			meters.push_back(toAdd);
 
-			//vector<vector<sComponent*>> sl = statisticalList(daps, meters, 1, 3, 0, 0, 6, -20, 3, 5, true);
-			
-			SCP.clear(); //CLEAR NAO DA DELETE!
-			meters.clear();
-			poles.clear();
-		}
-		
-	}
+	//		}
+	//		int polesLength = 0;
+	//		fscanf_s(file, "%d", &polesLength);
+	//		for (int i = 0; i < polesLength; i++)
+	//		{
+	//			double lat;
+	//			double lng;
+	//			fscanf_s(file, "%lf %lf", &lat, &lng);
+	//			//Position *toAdd = (Position*)malloc(sizeof(Position));
+	//			Position *toAdd = new Position(lat,lng);
+	//			//toAdd.latitude = lat;
+	//			//toAdd.longitude = lng;
+	//			poles.push_back(toAdd);
+	//		}
+	//		
+	//		fclose(file);
+	//		vector<vector<int>> SCP = createScpMatrix(meters, poles,  meshEnabled,  scenario, technology,  BIT_RATE,  TRANSMITTER_POWER, H_TX,  H_RX,  SRD);
+	//		saveGLPKFile(SCP, poles, argv[2]);
+	//		
+	//		vector<Position*> daps;
+	//		Position* dap1 = new Position(-22.918997592942823, - 43.090025782585144);
+	//		daps.push_back(dap1);
+
+	//		//vector<vector<sComponent*>> sl = statisticalList(daps, meters, 1, 3, 0, 0, 6, -20, 3, 5, true);
+	//		
+	//		SCP.clear(); //CLEAR NAO DA DELETE!
+	//		meters.clear();
+	//		poles.clear();
+	//	}
+	//	
+	//}
 
 	
 	return 0;

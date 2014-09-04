@@ -1,11 +1,13 @@
-﻿
+﻿const AUTO_PLAN_FILE_ID = 0;
+const PROPAGATION_FILE_ID = 1;
+const METRIC_FILE_ID = 2;
 
 function sendSCPToServer() {
 
     //var data = prepareNetworkToSend();
    // var data = data.toString();
     //_ajax_request("http://localhost:3000/autoplan", data, 'POST');
-   sendDataToServer("http://localhost:3000/autoplan", 'POST')
+   sendDataToServer("http://localhost:3000/autoplan", 'POST', AUTO_PLAN_FILE_ID);
 }
 
 function prepareNetworkToSend(){
@@ -21,12 +23,27 @@ function prepareNetworkToSend(){
     return toSend;
 
 }
-function sendDataToServer(url,method) {
+function sendDataToServer(url,method,type) {
     var uncoveredMeters = meters.filter(function (item) {
             return (item.connected != true);
     });
     //var data = printScpMatrixTeste(uncoveredMeters);
-    var data = createFileModel();
+    var data ;
+    switch(type){
+        case AUTO_PLAN_FILE_ID:
+            data = createAutoPlanningFileModel();
+            break;
+        case PROPAGATION_FILE_ID:
+            data = createPropagationFileModel();
+            break;
+        case METRIC_FILE_ID:
+            break;
+        default:
+            data = -1;
+            break;
+
+    }
+
     $.ajax({
             url: url,
             type: method,
@@ -35,7 +52,29 @@ function sendDataToServer(url,method) {
             },
             dataType: "text",
             success: function (data) {
-                var split = data.split(" ");
+
+                switch(type){
+                    case AUTO_PLAN_FILE_ID:
+                        readAutoPlanResponse(data);
+                        break;
+                    case PROPAGATION_FILE_ID:
+                        return data;
+                        break;
+                    case METRIC_FILE_ID:
+                        readMetricResponse();
+                        break;
+                    default:
+                        break;
+
+    }
+                
+                //var d2 = new Date();
+                //alert(d2-d);
+            }
+        });
+}
+function readAutoPlanResponse(data){
+    var split = data.split(" ");
                 for(var i = 0; i < daps.length; i++){ //REMOVER DEPOIS! ESTÁ AQUI PARA NÃO BUGAR O PLANEJAMENTO!
                     daps[i].remove();
                     i--;
@@ -47,37 +86,12 @@ function sendDataToServer(url,method) {
                     newDap.place(latLng.lat(),latLng.lng());
                     
                 }
-                //var d2 = new Date();
-                //alert(d2-d);
-            }
-        });
 }
+function readPropagationResponse(){
 
-function _ajax_request(url, data ,method) {
+}
+function readMetricResponse(){
 
-
-    $.ajax({
-        url: url,
-        type: method,
-        data: {
-            'data': data
-            
-        },
-        dataType: 'text',
-        success: function (data) {
-
-
-            var split = data.split(" ");
-			
-			for(var i = 0 ; i < split.length-1; i ++){
-				var toAdd = parseInt(split[i].slice(1));
-				var latLng = poles[toAdd-1].position;
-				var newDap = createDAP();
-				newDap.place(latLng.lat(),latLng.lng());
-                
-			}
-        }
-    });
 }
 function printScpMatrixTeste(uncoveredMeters) {
   //   if(meshEnabled)
@@ -169,7 +183,7 @@ function propagationValuesToSend(){
     return ret;
 
 }
-function createFileModel(){
+function createAutoPlanningFileModel(){
     //var uncoveredMeters = meters.filter(function (item) {
     //        return (item.connected != true);
     //});
@@ -189,12 +203,48 @@ function createFileModel(){
         ret += uncoveredMeters[i].getPosition().lat() + " " + uncoveredMeters[i].getPosition().lng();
         ret += "\n";
     }
-    ret += +poles.length;
+    ret += poles.length;
     ret += "\n";
     for(var i = 0; i <poles.length; i++){
         ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
         ret += "\n";
     }
+    return ret;
+}
+function createPropagationFileModel(){
+    
+       //var uncoveredMeters = meters.filter(function (item) {
+    //        return (item.connected != true);
+    //});
+    
+    var ret = PROPAGATION_FILE_ID + '\n';
+    ret += propagationValuesToSend();
+    
+    if(meshEnabled)
+        ret+=meshMaxJumps;
+    else
+        ret+="0";
+  //  ret += "\n" + getDapMaximumReach() + "\n";
+    ret+= "\n";
+    //ret += "\nMeters\n";
+    ret+= meters.length+"\n";
+    for(var i = 0; i <meters.length; i++){
+        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
+        ret += "\n";
+    }
+    ret += daps.length;
+    ret += "\n";
+    for(var i = 0; i <daps.length; i++){
+        ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
+        ret += "\n";
+    }
+    return ret;
+}
+function createPropagationFileModel2(distance){
+    
+    var ret = PROPAGATION_FILE_ID + '\n';
+    ret += distance + '\n';
+    ret += propagationValuesToSend();
     return ret;
 }
 /*function createScpMatrix(uncoveredMeters){

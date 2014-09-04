@@ -248,7 +248,7 @@ function getMeterColor(meter)
 function getValuesFromTable(dist)
 {
     //var rounddist = Math.round(dist);
-
+    //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID, dist);
     var sp = getHataSRDSuccessRate(dist/1000);
             
             var c;
