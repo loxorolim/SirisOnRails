@@ -2,6 +2,11 @@
 const PROPAGATION_FILE_ID = 1;
 const METRIC_FILE_ID = 2;
 
+function sendDrawRequisition(){
+    sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
+    
+}
+
 function sendSCPToServer() {
 
     //var data = prepareNetworkToSend();
@@ -53,20 +58,23 @@ function sendDataToServer(url,method,type) {
             dataType: "text",
             success: function (data) {
 
+                
                 switch(type){
                     case AUTO_PLAN_FILE_ID:
                         readAutoPlanResponse(data);
                         break;
                     case PROPAGATION_FILE_ID:
-                        return data;
+                        readPropagationResponse(data);
                         break;
                     case METRIC_FILE_ID:
                         readMetricResponse();
                         break;
                     default:
                         break;
+                }
+                
 
-    }
+                
                 
                 //var d2 = new Date();
                 //alert(d2-d);
@@ -87,7 +95,27 @@ function readAutoPlanResponse(data){
                     
                 }
 }
-function readPropagationResponse(){
+function readPropagationResponse(data){
+    resetDraw();
+    var drawInfo = data.split(" ");
+    for(var i = 0; i < drawInfo.length-1; i++){
+        var split = drawInfo[i].split("/");
+        var latlng1 = split[0].split("<>");
+        var lat1 = parseFloat(latlng1[0]);
+        var lng1 = parseFloat(latlng1[1]);
+        var pos1 = new google.maps.LatLng(lat1,lng1);
+        var latlng2 = split[1].split("<>");
+        var lat2 = parseFloat(latlng2[0]);
+        var lng2 = parseFloat(latlng2[1]);
+        var pos2 = new google.maps.LatLng(lat2,lng2);
+        var color = parseInt(split[2]);
+        var efficiency = parseFloat(split[3]);
+        var distance = parseFloat(split[4]);
+        var dashed = parseInt(split[5]);
+        drawLine(pos1,pos2,color,efficiency,distance,dashed);
+
+    }
+   
 
 }
 function readMetricResponse(){
@@ -188,7 +216,8 @@ function createAutoPlanningFileModel(){
     //        return (item.connected != true);
     //});
     var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
-    var ret = propagationValuesToSend();
+    var ret = AUTO_PLAN_FILE_ID + '\n';
+    ret += propagationValuesToSend();
     
 
     if(meshEnabled)

@@ -2,6 +2,13 @@
 #define _AUXILIARS_H
 
 #define MARGIN_VALUE 0.9
+#define GREEN_VALUE 0.98 
+#define YELLOW_VALUE 0.95
+#define BLUE_VALUE 0.90
+
+#define GREEN 0
+#define YELLOW 1
+#define BLUE 2
 #define M_PI 3.14159265358979323846
 
 #define AUTOPLAN 0
@@ -32,18 +39,28 @@ class Position
 class DrawInfo
 {
 public:
+	int dashed;
 	Position* a;
 	Position* b;
 	int color;
 	double efficiency;
 	double distance;
-	DrawInfo(Position* p1, Position* p2, int c, double eff, double d)
+	DrawInfo(Position* p1, Position* p2, double eff, double d, int da)
 	{
+		
+		if (eff >= BLUE_VALUE)
+			color = BLUE;
+		if (eff >= YELLOW_VALUE)
+			color = YELLOW;
+		if (eff >= GREEN_VALUE)
+			color = GREEN;
+
 		a = p1;
 		b = p2;
-		color = c;
+
 		efficiency = eff;
 		distance = d;
+		dashed = da;
 	};
 	string toString()
 	{
@@ -60,6 +77,8 @@ public:
 		ret += "/";
 		ret += to_string(distance);
 		ret += "/";
+		ret += to_string(dashed);
+		//ret += "/";
 		return ret;
 	}
 

@@ -1,28 +1,37 @@
-﻿Build started 04/09/2014 17:07:10.
+﻿Build started 05/09/2014 15:45:30.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
          SirisSCPCalculator.cpp
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(99): warning C4273: 'erf' : inconsistent dll linkage
+     1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
+                 Add macro to precompiled header instead of defining here
+                 SirisSCPCalculator.cpp(4) : use of precompiled header
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(118): warning C4273: 'erf' : inconsistent dll linkage
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(486) : see previous definition of 'erf'
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(100): warning C4273: 'erfc' : inconsistent dll linkage
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(119): warning C4273: 'erfc' : inconsistent dll linkage
                  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(487) : see previous definition of 'erfc'
-     1>SirisSCPCalculator.cpp(41): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(43): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(59): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(61): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(64): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(91): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(93): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(108): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(111): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(117): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(123): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(174): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(262): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(264): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(350): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>SirisSCPCalculator.cpp(352): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(42): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(44): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(60): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(62): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(65): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(92): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(94): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(109): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(112): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(118): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(124): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(175): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(265): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(289): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(309): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(311): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(335): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(423): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>SirisSCPCalculator.cpp(425): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(428): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(431): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(434): warning C4018: '<' : signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\auxiliars.obj
          Release\MetricsCalculator.obj
@@ -36,4 +45,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.08
+Time Elapsed 00:00:01.76

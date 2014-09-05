@@ -257,11 +257,11 @@ function setButtons()
         
         //createMeshCoverageMatrix(poles);
         $(this).blur();
-        //$.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
+        $.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
         // autoPlanningGrasp();
         //d = new Date();
-        //setTimeout('applyPlanning()', 1000);
-        var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
+        setTimeout('applyPlanning()', 1000);
+        //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
         //collectInfo();
         //statisticalMatrix();
         //applyPlanning();

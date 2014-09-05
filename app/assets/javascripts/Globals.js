@@ -1,8 +1,11 @@
 ﻿//var enableMarkerClusterer = true;
 var markerCluster;
-var GREEN = "#00FF00";
-var YELLOW = "#FFFF00";
-var BLUE = "#0000FF";
+const GREEN_ID = 0;
+const YELLOW_ID = 1;
+const BLUE_ID = 2;
+const GREEN = "#00FF00";
+const YELLOW = "#FFFF00";
+const BLUE = "#0000FF";
 
 var drawHeatmap = false;
 var heatmap;

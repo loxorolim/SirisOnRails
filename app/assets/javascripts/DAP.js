@@ -134,8 +134,8 @@ function createDAP() {
 
         },
         refresh: function () {
-
-            if (meshEnabled) {
+            sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
+            /*if (meshEnabled) {
                 resetMesh();
             }
             this.removeConnections();
@@ -144,6 +144,7 @@ function createDAP() {
             if (meshEnabled) {
                 connectViaMesh();
             }
+            */
         },
         displayInfoWindow: function () {
             var content = 'ID: ' + this.ID +
