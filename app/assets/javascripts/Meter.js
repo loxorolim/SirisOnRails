@@ -8,6 +8,7 @@
         connected: false,
         draggable: true,
         load: 0,
+        ghost: null,
 
         //        meshConnectionLines: [],
         icon: meterOffIconImage,
@@ -104,6 +105,20 @@
 
             //target.neighbours.push(this);
         },
+        createGhost: function () {
+            var pos = this.getPosition();
+            this.ghost =  new google.maps.Marker({
+                position: pos,
+                map: map,
+                zIndex: 1,
+                draggable: false,
+                icon: meterGhostIconImage,
+             });
+        },
+        removeGhost: function () {
+            if(this.ghost != null)
+                this.ghost.setMap(null);
+        },
         disconnectTarget: function (target) {
             for (var i = 0; i < this.neighbours.length; i++) {
                 if (this.neighbours[i].ID == target.ID) {
@@ -173,6 +188,7 @@
         if (meshEnabled)
             resetMesh();
         infowindow.setMap(null);
+        marker.createGhost();
         // removeMesh();
     });
     google.maps.event.addListener(marker, 'drag', function (event) {
@@ -186,6 +202,7 @@
         marker.setPosition(event.latLng);
         if (meshEnabled)
             connectViaMesh();
+        marker.removeGhost();
     });
     return marker;
 }

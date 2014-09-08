@@ -62,6 +62,18 @@ var dapOffIconImage =
         size: new google.maps.Size(19, 19),
         anchor: new google.maps.Point(9.5, 9.5)
     };
+var dapGhostIconImage =
+   {
+       url: '/assets/dapghost.png',
+       size: new google.maps.Size(19, 19),
+       anchor: new google.maps.Point(9.5, 9.5)
+   };
+var meterGhostIconImage =
+{
+    url: '/assets/meterghost.png',
+    size: new google.maps.Size(10, 10),
+    anchor: new google.maps.Point(5,5)
+}
 var meterOffIconImage =
     {
         url: '/assets/blackSquare.png',

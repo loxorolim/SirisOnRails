@@ -9,6 +9,8 @@
 #include "auxiliars.h"
 #include "MetricsCalculator.h"
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 
@@ -251,12 +253,21 @@ string executeAutoPlanOption()
 	saveGLPKFile(SCP, poles, "C:\\Sites\\first_app\\teste2.txt");
 	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\teste2.txt");
 
-	FILE* file;
-	fopen_s(&file, "C:\\Sites\\first_app\\Results.txt", "r");
-	string x;
-	fscanf_s(file, "%s",&x);
-	fclose(file);
-	return x;
+
+	//FILE* file;
+	//fopen_s(&file, "C:\\Sites\\first_app\\Results.txt", "r");
+	ifstream file("C:\\Sites\\first_app\\Results.txt");
+	string str;
+	string file_contents;
+	while (getline(file, str))
+	{
+		file_contents += str;
+		file_contents.push_back('\n');
+	}
+	return str;
+
+
+
 }
 DrawInfo* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, bool SRD)
 {
@@ -469,7 +480,7 @@ int main(int argc, char* argv[])
 	{ //essas chaves tao aki por causa do teste do memory leak
 		string answer = "";
 		answer = readFromPopen();
-		printf_s(answer.c_str());
+		printf_s("%s",answer);
 	}
 
 	FILE *pFile;

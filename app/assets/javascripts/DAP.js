@@ -12,6 +12,7 @@ function createDAP() {
         coveredMeters: 0,
         neighbours: [],
         connectionLines: [],
+        ghost: null,
         //meshMeters: [],
         labelContent: "0",
         labelAnchor: new google.maps.Point(22, 25),
@@ -36,7 +37,8 @@ function createDAP() {
             markerCluster.removeMarker(this, true);
             if (meshEnabled) 
                 resetMesh();
-            this.removeConnections();                     
+            this.removeConnections();  
+            this.refresh();                   
         },
         changeIcon: function (newIcon) {
             this.icon = newIcon;
@@ -155,6 +157,20 @@ function createDAP() {
             infowindow.setContent(content);
             infowindow.open(map, this);
         },
+        createGhost: function () {
+            var pos = this.getPosition();
+            this.ghost =  new google.maps.Marker({
+                position: pos,
+                map: map,
+                zIndex: 1,
+                draggable: false,
+                icon: dapGhostIconImage,
+             });
+        },
+        removeGhost: function () {
+            if(this.ghost != null)
+                this.ghost.setMap(null);
+        },
         statisticalData: function () {
            /* var avgQualitySum = 0;
             var metersConnected = 0;
@@ -211,6 +227,7 @@ function createDAP() {
         if (meshEnabled)
             resetMesh();
         marker.removeConnections(event.latLng);
+        marker.createGhost();
     });
     google.maps.event.addListener(marker, 'drag', function (event) {
     });
@@ -218,6 +235,7 @@ function createDAP() {
     google.maps.event.addListener(marker, 'dragend', function (event) {
         marker.setPosition(event.latLng);
         marker.refresh();
+        marker.removeGhost();
     });
     return marker;
 }
