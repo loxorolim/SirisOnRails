@@ -12,7 +12,7 @@
 #define M_PI 3.14159265358979323846
 
 #define AUTOPLAN 0
-#define PROPAGATION 1
+#define DRAW 1
 #define METRIC 2
 
 #define Urbano  0
@@ -117,5 +117,6 @@ double loss(double f, double h_tx, double h_rx, double d, int environment, bool 
 double log10(double val);
 double erf(double x);
 double erfc(double x);
+void readConfiguration(int *scenario, int* technology, double* H_TX, double *H_RX, double *BIT_RATE, double *TRANSMITTER_POWER, int *SRD, int *meshEnabled);
 
 #endif

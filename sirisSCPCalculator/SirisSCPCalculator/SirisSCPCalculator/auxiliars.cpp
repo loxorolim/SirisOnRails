@@ -8,7 +8,17 @@ using namespace std;
 
 
 
-
+void readConfiguration(int *scenario,int* technology, double* H_TX, double *H_RX, double *BIT_RATE, double *TRANSMITTER_POWER,int *SRD,int *meshEnabled)
+{
+	scanf_s("%d", scenario);
+	scanf_s("%d", technology);
+	scanf_s("%lf", H_TX);
+	scanf_s("%lf", H_RX);
+	scanf_s("%lf", BIT_RATE);
+	scanf_s("%lf", TRANSMITTER_POWER);
+	scanf_s("%d", SRD);
+	scanf_s("%d", meshEnabled);
+}
 double rad(double x)
 {
 	return x * M_PI / 180;

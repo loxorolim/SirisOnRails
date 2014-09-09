@@ -1,4 +1,42 @@
-//var d;
+
+function setInfoWindowNull()
+{
+    infowindow.setMap(null);
+}
+function setOpMode(mode)
+{
+    opMode = mode;
+}
+function setInsertionOptions(type)
+{
+    currentIns = type;
+    insertListener.remove();
+    google.maps.event.removeListener(insertListener);
+    insertListener = google.maps.event.addListener(map, 'click', function (event) {
+        if (opMode == "Insertion")
+        {
+            if (type == "DAP") {
+                var dap = createDAP();
+                dap.place(event.latLng.lat(), event.latLng.lng());
+                sendDrawRequest();
+            }
+              //  placeDAP(event.latLng.lat(), event.latLng.lng(), currentTech);           
+            if (type == "Meter") {
+                var meter = createMeter();
+                meter.place(event.latLng.lat(), event.latLng.lng());
+                sendDrawRequest();
+            }
+                //placeMeter(event.latLng.lat(), event.latLng.lng());
+            if (type == "Pole") {
+                var pole = createPole();
+                pole.place(event.latLng.lat(), event.latLng.lng());
+                sendDrawRequest();
+            }
+              //  placePole(event.latLng.lat(), event.latLng.lng());
+        }
+
+    });
+}
 function setRadio() {
     $("#radio").buttonset();
     $("#Insertion").click(function () {
@@ -81,57 +119,7 @@ function setButtons()
 
     setRadio();
     $(document).tooltip();
-		$("#DisplayXML").click(function() {
-			showNodesXml();
-			setInfoWindowNull();
-		});
-		$("#Technology").click(function() {
-			setInfoWindowNull();
-		});
-		$("#Scenario").click(function() {
-			setInfoWindowNull();
-		});
-		$("#help").click(function () {
-		    $("#dialog").dialog("open");
-		    //$.blockUI({
-		    //    message: $('#displayBox'),
-		    //    onOverlayClick: $.unblockUI,
-		    //    css: {
-		    //        top: ($(window).height() - 451) / 2 + 'px',
-		    //        left: ($(window).width() - 654) / 2 + 'px',
-		    //        width: '654px',
-            //        height: '451px'
-		    //    }
-		        
-		    //});
-		});
-		$("#xml").click(function () {
-		    showNodesKml();
-		    showPolesXml();
-		    $("#xmltextnodes").dialog("open");
-		    $("#xmltextpoles").dialog("open");
-		    //$.blockUI({
-		    //    message: $('#displayBox'),
-		    //    onOverlayClick: $.unblockUI,
-		    //    css: {
-		    //        top: ($(window).height() - 451) / 2 + 'px',
-		    //        left: ($(window).width() - 654) / 2 + 'px',
-		    //        width: '654px',
-		    //        height: '451px'
-		    //    }
 
-		    //});
-		});
-
-		
-		var radioSize = 155;
-	   $('#insertionBackground').buttonset().find('label').width(radioSize);
-	   $('#powerbackground').buttonset().find('label').width(76);
-	   $('#scenarioBackground').buttonset().find('label').width(radioSize);
-	   $('#technologyBackground').buttonset().find('label').width(radioSize);
-	  // $('#configMessage').html(getConfigurations());
-	   //$('#check').click(function (ev) { ev.preventDefault(); });
-    // $('#check').unbind('mouseout keyup mouseup hover');
 	   $("#scenario")        
          .next()
            .button({
@@ -195,7 +183,7 @@ function setButtons()
 	   $("#slider").slider({
 	       stop: function (event, ui) {
 	           TRANSMITTER_POWER = ui.value;
-	           refresh();
+	           sendDrawRequest();
 	       }
 	   });
 	   $("#choosePower").hover(function () {
@@ -260,8 +248,9 @@ function setButtons()
         $.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
         // autoPlanningGrasp();
         //d = new Date();
-        setTimeout('applyPlanning()', 1000);
+        //setTimeout('applyPlanning()', 1000);
         //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
+        sendDataToServer("http://localhost:3000/autoplan", 'POST', METRIC_FILE_ID);
         //collectInfo();
         //statisticalMatrix();
         //applyPlanning();
@@ -289,229 +278,44 @@ function setButtons()
 
     }).click(function () {
         $(this).blur();
-        $.blockUI({ fadeIn: 0, message: '<h1><img src="siri2.gif" /> Carregando </h1>' });
-        if (meshEnabled) {
-            resetMesh();
-            //$(this).button({
-            //    icons: {
-            //        primary: "ui-icon-closethick"
-            //    }
-            //})
-        }
-
-        else {
-            //setRFMesh();
-            connectViaMesh();         
-            
-            //markerCluster.clearMarkers();
-            //$(this).button({
-            //    icons: {
-            //        primary: "ui-icon-check"
-            //    }
-            //})
-        }
+//        $.blockUI({ fadeIn: 0, message: '<h1><img src="siri2.gif" /> Carregando </h1>' });
         meshEnabled = !meshEnabled;
-
+		sendDrawRequest();
         //$('#check').button.removeClass("ui-state-focus ui-state-hover");
-        $.unblockUI();
+//        $.unblockUI();
 
 
     });
-    $('#checkCluster').button({
-        icons: {
-            primary: "ui-icon-check"
-        }
-
-    }).click(function () {
-        $(this).blur();
-        $.blockUI({ fadeIn: 0, message: '<h1><img src="siri2.gif" /> Carregando </h1>' });
-        enableMarkerClusterer = !enableMarkerClusterer;
-        if (enableMarkerClusterer) {
-            clusterMap();
-            $(this).button({
-                icons: {
-                    primary: "ui-icon-check"
-                }
-            })
-        }
-
-        else {
-            unclusterMap();
-            //markerCluster.clearMarkers();
-            $(this).button({
-                icons: {
-                    primary: "ui-icon-closethick"
-                }
-            })
-        }
-
-        //$('#check').button.removeClass("ui-state-focus ui-state-hover");
-        $.unblockUI();
-
-
-    });
-	  // $('#RFMesh').button();
-	   $("#dialog").dialog({
-	       autoOpen: false,
-	       show: {
-	           effect: "scale",
-	           duration: 1000
-	       },
-	       hide: {
-	           effect: "scale",
-	           duration: 1000
-	       },
-	       width: 680
-	   });
-	   $("#xmltextnodes").dialog({
-	       autoOpen: false,
-	       show: {
-	           effect: "scale",
-	           duration: 1000
-	       },
-	       hide: {
-	           effect: "scale",
-	           duration: 1000
-	       },
-	       width: 680,
-           height: 500
-	   });
-	   $("#xmltextpoles").dialog({
-	       autoOpen: false,
-	       show: {
-	           effect: "scale",
-	           duration: 1000
-	       },
-	       hide: {
-	           effect: "scale",
-	           duration: 1000
-	       },
-	       width: 680,
-	       height: 500
-	   });
-
-       
-	        $("#menu").menu();
-       
-	   $( "#radioBackground" ).buttonset().find('label').width(122);
-
-		
-	   //$('#dapRadio').button({
-	   //    icons: { primary: 'ui-icon-dap', secondary: null }
-	   //});
 	   
-		$("#ZigBee").click(function () {
-		    $("#technology").text("ZigBee");
-		    technology = "802_15_4";
-		    BIT_RATE = 1/4;
-		    refresh();
-		});
-		$("#80211a").click(function () {
-		    $("#technology").text("802.11a");
-		    technology = "802_11_a";
-		    BIT_RATE = 6;
-		    refresh();
-		});
-		$("#80211g").click(function () {
-		    $("#technology").text("802.11g");
-		    technology = "802_11_g";
-		    BIT_RATE = 6;
-		    refresh();
-		});
-		$("#urbanRadio").click(function () {
-		    $("#scenario").text("Urbano");
-		    scenario = "Urbano";
-		    refresh();
-		});
-		$("#suburbanRadio").click(function () {
-		    $("#scenario").text("Suburbano");
-		    scenario = "Suburbano";
-		    refresh();
-		});
-		$("#ruralRadio").click(function () {
-		    $("#scenario").text("Rural");
-		    scenario = "Rural";
-		    refresh();
-		});
-		
-		//$("#metropolitanRadio").click(function() 
-		//{
-		//	setScenario("Metropolitan")
-
-		//});
-		//$("#urbanRadio").click(function()
-		//{
-		//	setScenario("Urban")
-
-		//});
-		//$("#ruralRadio").click(function() 
-		//{
-		//	setScenario("Rural")
-		//	$('#configMessage').html(getConfigurations());
-		//});
-
-		
-		//$("#ZigBee").click(function() 
-		//{
-		//	setCurrentTech("ZigBee");
-		//	setInsertionOptions("DAP")
-		//	setDapsToTechnology();
-		//	$('#configMessage').html(getConfigurations());
-			
-		//});
-		//$("#80211").click(function()
-		//{		
-		//	setCurrentTech("w80211");
-		//	setInsertionOptions("DAP")
-		//	setDapsToTechnology();
-		//	$('#configMessage').html(getConfigurations());
-		//});
-
-		//$("#z0dbm").click(function() 
-		//{
-		//	setdbm("dbm0");
-		//	$('#configMessage').html(getConfigurations());
-		//});
-		//$("#z6dbm").click(function() 
-		//{
-		//	setdbm("dbm6");
-		//	$('#configMessage').html(getConfigurations());
-		//});
-		//$("#z12dbm").click(function() 
-		//{
-		//	setdbm("dbm12");
-		//	$('#configMessage').html(getConfigurations());
-		//});
-		//$("#z18dbm").click(function() 
-		//{
-		//	setdbm("dbm18");
-		//	$('#configMessage').html(getConfigurations());
-		//});
-		//$("#z24dbm").click(function() 
-		//{
-		//	setdbm("dbm24");
-		//	$('#configMessage').html(getConfigurations());
-		//});
-		//$("#z30dbm").click(function() 
-		//{
-		//	setdbm("dbm30");
-		//	$('#configMessage').html(getConfigurations());
-		//});		
-		
-			
-	
-		
-	
-	$("#lineRadio").click(function()
-	{
-		setRadioMode("Line");
-		setLinesVisible();
-		setCirclesInvisible();
+	$("#ZigBee").click(function () {
+	    $("#technology").text("ZigBee");
+	    technology = t802_15_4;
+	    sendDrawRequest();
 	});
-	$("#radiusRadio").click(function()
-	{
-		setRadioMode("Radius");
-		setLinesInvisible();
-		setCirclesVisible();
+	$("#80211a").click(function () {
+	    $("#technology").text("802.11a");
+	    technology = t802_11_a;
+	    sendDrawRequest();
 	});
+	$("#80211g").click(function () {
+	    $("#technology").text("802.11g");
+	    technology = t802_11_g;
+	    sendDrawRequest();
+	});
+	$("#urbanRadio").click(function () {
+	    $("#scenario").text("Urbano");
+	    scenario = Urbano;
+	    sendDrawRequest();
+	});
+	$("#suburbanRadio").click(function () {
+	    $("#scenario").text("Suburbano");
+	    scenario = Suburbano;
+	    sendDrawRequest();
+	});
+	$("#ruralRadio").click(function () {
+	    $("#scenario").text("Rural");
+	    scenario = Rural;
+	    sendDrawRequest();
+	});
+		
 }

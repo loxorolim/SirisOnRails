@@ -130,6 +130,7 @@ function loadNodesFromXml()
 					var dap = createDap();
 					dap.place(latitude, longitude);
 				});
+				sendDrawRequest();
 			}
 		});
 	});
@@ -188,6 +189,7 @@ function loadDapPositionsFromXml() {
                     //});
 
 		        })
+		        sendDrawRequest();
 		    }
 		});
     });

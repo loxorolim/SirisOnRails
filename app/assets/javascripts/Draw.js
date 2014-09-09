@@ -1,4 +1,6 @@
-﻿function resetDraw(){
+﻿
+
+function resetDraw(){
     for(var i = 0; i < lines.length; i++){
         lines[i].setMap(null);
     }

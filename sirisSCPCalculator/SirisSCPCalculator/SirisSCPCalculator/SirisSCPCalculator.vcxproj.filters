@@ -27,7 +27,13 @@
     <ClInclude Include="auxiliars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MetricsCalculator.h">
+    <ClInclude Include="DrawResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoPlanResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MetricsResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,10 +44,16 @@
     <ClCompile Include="SirisSCPCalculator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MetricsCalculator.cpp">
+    <ClCompile Include="auxiliars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="auxiliars.cpp">
+    <ClCompile Include="AutoPlanResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MetricsResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

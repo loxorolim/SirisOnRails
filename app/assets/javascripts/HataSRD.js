@@ -2,15 +2,6 @@
 //2014-07-14
 
 
-
-var scenario = "Urbano";
-var technology = "802_15_4";
-var H_TX = 3;
-var H_RX = 5;
-var BIT_RATE = 6;
-var TRANSMITTER_POWER = -20;
-var SRD = true;
-
 function getHataSRDSuccessRate(distance) {
     return 1 - bit_error_probability(scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, distance, SRD);
     
