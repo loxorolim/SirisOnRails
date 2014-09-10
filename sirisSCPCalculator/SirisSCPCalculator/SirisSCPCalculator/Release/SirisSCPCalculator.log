@@ -1,47 +1,32 @@
-﻿Build started 09/09/2014 16:16:46.
+﻿Build started 10/09/2014 17:09:37.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MetricsResponse.cpp
-         MetricsResponse.cpp
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(118): warning C4273: 'erf' : inconsistent dll linkage
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(486) : see previous definition of 'erf'
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\auxiliars.h(119): warning C4273: 'erfc' : inconsistent dll linkage
-                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(487) : see previous definition of 'erfc'
-     1>MetricsResponse.cpp(15): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(18): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(35): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(47): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(50): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(64): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(71): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(74): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(80): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(121): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(123): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(141): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(143): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(173): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(175): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(193): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(213): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(216): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(233): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(237): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(267): warning C4018: '<' : signed/unsigned mismatch
-     1>MetricsResponse.cpp(325): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt HataSRD.cpp
+         HataSRD.cpp
+     1>HataSRD.cpp(294): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(310): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>HataSRD.cpp(313): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(328): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(329): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(345): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(346): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(508): warning C4101: 'a' : unreferenced local variable
+     1>HataSRD.cpp(508): warning C4101: 'b' : unreferenced local variable
+     1>HataSRD.cpp(569): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
          Release\auxiliars.obj
          Release\DrawResponse.obj
+         Release\HataSRD.obj
          Release\MetricsResponse.obj
          Release\SirisSCPCalculator.obj
          Release\stdafx.obj
-            Creating library C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib and object C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exp
          Generating code
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(503): warning C4715: 'fac' : not all control paths return a value
          Finished generating code
          SirisSCPCalculator.vcxproj -> C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
      1>Done Building Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.41
+Time Elapsed 00:00:02.46

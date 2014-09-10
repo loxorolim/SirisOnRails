@@ -5,6 +5,7 @@
 #include <string>
 #include "auxiliars.h"
 #include "MetricsResponse.h"
+#include "HataSRD.h"
 
 using namespace std;
 
@@ -230,7 +231,8 @@ vector<vector<double>> avaregeMeshMetersPerDap(vector<vector<sComponent*>> stati
 	for (int z = 0; z < meshMaxJumps + 1; z++)
 	{
 		int sum = 0, max = -1, min = -1;;
-		for (int i = 0; i < statisticalList.size(); i++){
+		for (int i = 0; i < statisticalList.size(); i++)
+		{
 
 			vector<sComponent*> uniqueArray = noRepeat(statisticalList[i]);
 			int nMeters = 0;
@@ -287,53 +289,54 @@ vector<double> averageMetersPerDap(vector<vector<sComponent*>> statisticalList)
 }
 string executeMetricsOption()
 {
-	FILE *file;
-	fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
-	int wow = 0;
-	if (file)
-	for (int i = 0; i < 9; i ++)
-		fscanf_s(file, "%d",&wow);
+	//FILE *file;
+	//fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
+	//int wow = 0;
+	//if (file)
+	//for (int i = 0; i < 9; i ++)
+	//	fscanf_s(file, "%d",&wow);
 	int scenario = 0;
 	int technology = 0;
 	double H_TX = 3;
 	double H_RX = 5;
 	double BIT_RATE = 6;
-	double TRANSMITTER_POWER = -6;
+	double TRANSMITTER_POWER = -14;
 	int SRD = 1;
 	int meshEnabled = 0;
 
-	//readConfiguration(&scenario, &technology, &H_TX, &H_RX, &BIT_RATE, &TRANSMITTER_POWER, &SRD, &meshEnabled);
+	readConfiguration(&scenario, &technology, &H_TX, &H_RX, &BIT_RATE, &TRANSMITTER_POWER, &SRD, &meshEnabled);
 
 	int metersLength;
-	//scanf_s("%d", &metersLength);
-	fscanf_s(file, "%d", &metersLength);
+	scanf_s("%d", &metersLength);
+	//fscanf_s(file, "%d", &metersLength);
 	vector<Position*> meters;
 	vector<Position*> daps;
 	for (int i = 0; i < metersLength; i++)
 	{
 		double lat;
 		double lng;
-		//scanf_s("%lf %lf", &lat, &lng);
-		fscanf_s(file, "%lf %lf", &lat, &lng);
+		scanf_s("%lf %lf", &lat, &lng);
+		//fscanf_s(file, "%lf %lf", &lat, &lng);
 		Position *toAdd = new Position(lat, lng);
 		meters.push_back(toAdd);
 
 	}
 	int dapsLength = 0;
-	//scanf_s("%d", &dapsLength);
-	fscanf_s(file, "%d", &dapsLength);
+	scanf_s("%d", &dapsLength);
+	//fscanf_s(file, "%d", &dapsLength);
 	for (int i = 0; i < dapsLength; i++)
 	{
 		double lat;
 		double lng;
-		//scanf_s("%lf %lf", &lat, &lng);
-		fscanf_s(file, "%lf %lf", &lat, &lng);
+		scanf_s("%lf %lf", &lat, &lng);
+		//fscanf_s(file, "%lf %lf", &lat, &lng);
 		Position *toAdd = new Position(lat, lng);
 		daps.push_back(toAdd);
 	}
 
 	vector<vector<sComponent*>> sL = statisticalList( daps,  meters,  meshEnabled,  meshEnabled, scenario, technology,  BIT_RATE,TRANSMITTER_POWER,  H_TX,  H_RX, SRD);
-	
+	//COLOCAR A FUNÇÃO DE ROBUSTEZ!
+	//ARMAZENAR ESSA STATISTICAL LIST
 	string answer = "";
 	int numOfDaps = sL.size();
 	answer += "Number of DAPs: " + to_string(numOfDaps) +"\n";
@@ -357,27 +360,32 @@ string executeMetricsOption()
 	answer += "Minimum Number of Meters in a DAP: " + to_string(ampdmin) + "\n";
 
 	vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL,meshEnabled);
-	for (int i = 0; i < meshEnabled; i++)
+	for (int i = 0; i < meshEnabled + 1; i++)
 	{
 		double ammpdmedia = ammpd[i][0];
 		double ammpdmax = ammpd[i][1];
 		double ammpdmin = ammpd[i][2];
-		double hop = ammpd[i][4];
-
-		answer += "Average " + to_string(i) + " mesh hops meters: " + to_string(ammpdmedia) + "\n";
-		answer += "Maximum "+ to_string(i) + " mesh hops meters: " + to_string(ammpdmax) + "\n";
-		answer += "Minimum " + to_string(i) + " mesh hops meters: " + to_string(ammpdmin) + "\n";
+		double hop = ammpd[i][3];
+		if (ammpdmedia > 0)
+		{			
+			answer += "Average " + to_string(i) + " mesh hops links: " + to_string(ammpdmedia) + "\n";
+			answer += "Maximum " + to_string(i) + " mesh hops links: " + to_string(ammpdmax) + "\n";
+			answer += "Minimum " + to_string(i) + " mesh hops links: " + to_string(ammpdmin) + "\n";
+		}
 	}
 	vector<vector<double>> avgHops = averageHops(sL, meshEnabled);
-	for (int i = 0; i < meshEnabled; i++)
+	for (int i = 0; i < meshEnabled+1; i++)
 	{
-		double avgHopsEff = ammpd[i][0];
-		double avgHopsQnt = ammpd[i][1];
-		answer += "Average " + to_string(i) + " mesh hops efficiency: " + to_string(avgHopsEff) + "\n";
-		answer += "Average " + to_string(i) + " mesh hops meters quantity: " + to_string(avgHopsQnt) + "\n";
+		double avgHopsEff = avgHops[i][0];
+		double avgHopsQnt = avgHops[i][1];
+		if (avgHopsEff > 0)
+		{
+			answer += "Average " + to_string(i) + " mesh hops efficiency: " + to_string(avgHopsEff) + "\n";
+			answer += "Average " + to_string(i) + " mesh hops meters quantity: " + to_string(avgHopsQnt) + "\n";
+		}
 
 	}
-	return "banana";
+	return answer.c_str();
 	//	var coveredMetersNum = coveredMeters.length;
 	//	var numOfDaps = daps.length;
 

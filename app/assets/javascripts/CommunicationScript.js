@@ -67,7 +67,7 @@ function sendDataToServer(url,method,type) {
                         readPropagationResponse(data);
                         break;
                     case METRIC_FILE_ID:
-                        readMetricResponse();
+                        readMetricResponse(data);
                         break;
                     default:
                         break;
@@ -127,8 +127,8 @@ function readPropagationResponse(data){
    
 
 }
-function readMetricResponse(){
-
+function readMetricResponse(data){
+    alert(data);
 }
 
 function propagationValuesToSend(){

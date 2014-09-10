@@ -22,7 +22,9 @@
 #define t802_15_4  0
 #define t802_11_a  1
 #define t802_11_g  2
-
+#define t802_11_b  3
+#include<string>
+#include <vector>
 using namespace std;
 
 class Position
@@ -111,12 +113,10 @@ double getDistance(Position * p1, Position * p2);
 
 
 
-double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD);
-double bit_error_probability(int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, double d, bool SRD);
-double loss(double f, double h_tx, double h_rx, double d, int environment, bool SRD);
-double log10(double val);
-double erf(double x);
-double erfc(double x);
+//double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD);
+//double bit_error_probability(int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, double d, bool SRD);
+//double loss(double f, double h_tx, double h_rx, double d, int environment, bool SRD);
+
 void readConfiguration(int *scenario, int* technology, double* H_TX, double *H_RX, double *BIT_RATE, double *TRANSMITTER_POWER, int *SRD, int *meshEnabled);
 
 #endif

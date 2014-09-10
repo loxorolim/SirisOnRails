@@ -42,11 +42,13 @@ function drawLine(latlng1,latlng2,color,efficiency,distance,dashed){
                 offset: '0',
                 repeat: '15px'
             }],
-            clickable: false,
+            clickable: true,
             strokeWeight: 2,
             distance: distance,
-            efficiency: efficiency
+            efficiency: efficiency,
+            
         });
+ 
 
     }
     else{
@@ -56,12 +58,15 @@ function drawLine(latlng1,latlng2,color,efficiency,distance,dashed){
         strokeColor: c,
         strokeOpacity: 1.0,
         strokeWeight: 2,
-        clickable: false,
+        clickable: true,
         distance: distance,
         efficiency: efficiency
         });
     }
-    
+           google.maps.event.addListener(routerPath, 'click', function (event) {
+            alert(routerPath.distance + " " + routerPath.efficiency);
+
+            });
     lines.push(routerPath);
     routerPath.setMap(map);
 }

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include "DrawResponse.h"
+#include "HataSRD.h"
 using namespace std;
 
 vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position*> &uncoveredMeters, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)

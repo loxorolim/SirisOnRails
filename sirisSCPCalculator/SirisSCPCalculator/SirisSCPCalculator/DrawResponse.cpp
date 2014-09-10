@@ -5,6 +5,7 @@
 #include <string>
 #include "auxiliars.h"
 #include <algorithm>
+#include "HataSRD.h"
 
 using namespace std;
 

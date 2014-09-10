@@ -14,6 +14,7 @@
 #include "DrawResponse.h"
 #include "AutoPlanResponse.h"
 #include "MetricsResponse.h"
+#include "HataSRD.h"
 using namespace std;
 
 
@@ -41,6 +42,8 @@ string readFromPopen()
 
 int main(int argc, char* argv[])
 {
+	double wow = getHataSRDSuccessRate(8, 0, 0, 0.25, 0, 3, 5, 1);
+	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
 		string answer = "";
 		answer = readFromPopen();
