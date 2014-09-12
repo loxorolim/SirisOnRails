@@ -56,10 +56,13 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 
 }
 
-vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD){
+vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
+{
 
+	vector<int> aux;
 	vector<vector<int>> sM;
-	for (int i = 0; i < uncoveredMeters.size(); i++) {
+	for (int i = 0; i < uncoveredMeters.size(); i++) 
+	{
 		vector<int> polesThatCover;
 		for (int j = 0; j < poles.size(); j++)
 		{
@@ -67,12 +70,13 @@ vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<P
 			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
 			if (eff >= MARGIN_VALUE)
 				polesThatCover.push_back(j);
+
+
 		}
 
 		//if (polesThatCover.length > 0)
 		sM.push_back(polesThatCover);
 	}
-	//Essa função depende de como o Mesh está implementado, talvez devesse estar no script do mesh?
 	if (meshEnabled)
 	{
 		vector<vector<int>> sMCopy;
@@ -109,6 +113,52 @@ vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<P
 
 	return sM;
 }
+
+//vector<vector<int>> createScpMatrix2(vector<Position*>& meters, vector<Position*>& poles, int meshMaxJumps, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
+//{
+//
+//	vector<vector<int>> sM;
+//	for (int i = 0; i < poles.size(); i++)
+//	{
+//		vector<int> coverage;
+//		for (int j = 0; j < meters.size(); j++)
+//		{
+//			double dist = getDistance(poles[i], meters[j]);
+//			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+//			if (eff >= MARGIN_VALUE)
+//				coverage.push_back(j);
+//		}
+//		if (meshMaxJumps)
+//		{
+//			vector<vector<int>> nM = createMeterNeighbourhoodMatrix(meters, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+//			vector<int> begin = coverage;
+//			//vector<int> toAdd;
+//			for (int z = 0; z < meshMaxJumps; z++)
+//			{
+//				vector<int> neighbours;
+//				for (int k = 0; k < begin.size(); k++)
+//				for (int l = 0; l < nM[begin[k]].size(); l++)
+//					neighbours.push_back(nM[coverage[k]][l]);
+//				sort(neighbours.begin(), neighbours.end());
+//				neighbours.erase(unique(neighbours.begin(), neighbours.end()), neighbours.end());
+//				vector<int> notAdded;
+//				
+//				sort(coverage.begin(), coverage.end());
+//				set_difference(neighbours.begin(), neighbours.end(), coverage.begin(), coverage.end(), notAdded.begin());
+//				coverage.insert(coverage.end(), notAdded.begin(), notAdded.end());
+//				//for (int k = 0; k < notAdded.size(); k++)
+//				//{
+//				//	toAdd.push_back(notAdded[k]);
+//				//}
+//				begin = notAdded;
+//			}
+//		}
+//		sM.push_back(coverage);
+//	}
+//	
+//	return sM;
+//}
+
 void saveGLPKFile(vector<vector<int>> &SCP, vector<Position*> &poles, string filename)
 {
 	FILE *file;
@@ -176,9 +226,14 @@ string executeAutoPlanOption()
 	int meshEnabled;
 
 	readConfiguration(&scenario, &technology, &H_TX, &H_RX, &BIT_RATE, &TRANSMITTER_POWER, &SRD, &meshEnabled);
-
+	//FILE *file;
+	//fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
+	//int wow = 0;
+	//for (int i = 0; i < 9; i++)
+	//	fscanf_s(file, "%d",&wow);
 	int metersLength;
 	scanf_s("%d", &metersLength);
+	//fscanf_s(file,"%d", &metersLength);
 	vector<Position*> meters;
 	vector<Position*> poles;
 	for (int i = 0; i < metersLength; i++)
@@ -186,6 +241,7 @@ string executeAutoPlanOption()
 		double lat;
 		double lng;
 		scanf_s("%lf %lf", &lat, &lng);
+		//fscanf_s(file,"%lf %lf", &lat, &lng);
 		//Position *toAdd = (Position*)malloc(sizeof(Position));
 		Position *toAdd = new Position(lat, lng);
 		//toAdd.latitude = lat;
@@ -195,18 +251,20 @@ string executeAutoPlanOption()
 	}
 	int polesLength = 0;
 	scanf_s("%d", &polesLength);
+	//fscanf_s(file,"%d", &polesLength);
 	for (int i = 0; i < polesLength; i++)
 	{
 		double lat;
 		double lng;
 		scanf_s("%lf %lf", &lat, &lng);
+		//fscanf_s(file,"%lf %lf", &lat, &lng);
 		//Position *toAdd = (Position*)malloc(sizeof(Position));
 		Position *toAdd = new Position(lat, lng);
 		//toAdd.latitude = lat;
 		//toAdd.longitude = lng;
 		poles.push_back(toAdd);
 	}
-
+//	fclose(file);
 
 	vector<vector<int>> SCP = createScpMatrix(meters, poles, meshEnabled, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
 	saveGLPKFile(SCP, poles, "C:\\Sites\\first_app\\teste2.txt");
@@ -215,14 +273,15 @@ string executeAutoPlanOption()
 
 	//FILE* file;
 	//fopen_s(&file, "C:\\Sites\\first_app\\Results.txt", "r");
-	ifstream file("C:\\Sites\\first_app\\Results.txt");
+	ifstream f("C:\\Sites\\first_app\\Results.txt");
 	string str;
-	string file_contents;
-	while (getline(file, str))
-	{
-		file_contents += str;
-		file_contents.push_back('\n');
-	}
+	getline(f, str);
+	//string file_contents;
+	//while (getline(f, str))
+	//{
+	//	file_contents += str;
+	//	file_contents.push_back('\n');
+	//}
 	return str;
 
 

@@ -215,9 +215,9 @@ vector<sComponent*> noRepeat(vector<sComponent*> list)
 	{
 		bool add = true;
 		for (int j = 0; j < ret.size(); j++)
-		if (list[i]->index == ret[j]->index){
-			add = false;
-			break;
+		if (list[i]->index == ret[j]->index && add)
+		{
+			add = false;		
 		}
 		if (add)
 			ret.push_back(list[i]);
@@ -230,7 +230,7 @@ vector<vector<double>> avaregeMeshMetersPerDap(vector<vector<sComponent*>> stati
 	vector<vector<double>> mmpdSum;
 	for (int z = 0; z < meshMaxJumps + 1; z++)
 	{
-		int sum = 0, max = -1, min = -1;;
+		double sum = 0, max = -1, min = -1;;
 		for (int i = 0; i < statisticalList.size(); i++)
 		{
 
@@ -338,52 +338,61 @@ string executeMetricsOption()
 	//COLOCAR A FUNÇÃO DE ROBUSTEZ!
 	//ARMAZENAR ESSA STATISTICAL LIST
 	string answer = "";
-	int numOfDaps = sL.size();
-	answer += "Number of DAPs: " + to_string(numOfDaps) +"\n";
-	vector<double> alpd = averageLinksPerDap(sL);
-
-	double alpdmedia = alpd[0];
-	double alpdmax = alpd[1];
-	double alpdmin = alpd[2];
-
-	answer += "Average Links per DAP: " + to_string(alpdmedia) + "\n";
-	answer += "Maximum Links in a DAP: " + to_string(alpdmax) + "\n";
-	answer += "Minimum Links in a DAP: " + to_string(alpdmin) + "\n";
-
-	vector<double> ampd = averageMetersPerDap(sL);
-	double ampdmedia = ampd[0];
-	double ampdmax = ampd[1];
-	double ampdmin = ampd[2];
-
-	answer += "Average Number of Meters per DAP: " + to_string(ampdmedia) + "\n";
-	answer += "Maximum Number of Meters in a DAP: " + to_string(ampdmax) + "\n";
-	answer += "Minimum Number of Meters in a DAP: " + to_string(ampdmin) + "\n";
-
-	vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL,meshEnabled);
-	for (int i = 0; i < meshEnabled + 1; i++)
+	if (sL.size() > 0)
 	{
-		double ammpdmedia = ammpd[i][0];
-		double ammpdmax = ammpd[i][1];
-		double ammpdmin = ammpd[i][2];
-		double hop = ammpd[i][3];
-		if (ammpdmedia > 0)
-		{			
-			answer += "Average " + to_string(i) + " mesh hops links: " + to_string(ammpdmedia) + "\n";
-			answer += "Maximum " + to_string(i) + " mesh hops links: " + to_string(ammpdmax) + "\n";
-			answer += "Minimum " + to_string(i) + " mesh hops links: " + to_string(ammpdmin) + "\n";
+
+
+		int numOfDaps = sL.size();
+		answer += "Number of DAPs: " + to_string(numOfDaps) + "\n";
+		vector<double> alpd = averageLinksPerDap(sL);
+
+		double alpdmedia = alpd[0];
+		double alpdmax = alpd[1];
+		double alpdmin = alpd[2];
+
+		answer += "Average Links per DAP: " + to_string(alpdmedia) + "\n";
+		answer += "Maximum Links in a DAP: " + to_string(alpdmax) + "\n";
+		answer += "Minimum Links in a DAP: " + to_string(alpdmin) + "\n";
+
+		vector<double> ampd = averageMetersPerDap(sL);
+		double ampdmedia = ampd[0];
+		double ampdmax = ampd[1];
+		double ampdmin = ampd[2];
+
+		answer += "Average Number of Meters per DAP: " + to_string(ampdmedia) + "\n";
+		answer += "Maximum Number of Meters in a DAP: " + to_string(ampdmax) + "\n";
+		answer += "Minimum Number of Meters in a DAP: " + to_string(ampdmin) + "\n";
+
+		vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL, meshEnabled);
+		for (int i = 0; i < meshEnabled + 1; i++)
+		{
+			double ammpdmedia = ammpd[i][0];
+			double ammpdmax = ammpd[i][1];
+			double ammpdmin = ammpd[i][2];
+			double hop = ammpd[i][3];
+			if (ammpdmedia > 0)
+			{
+				answer += "Average " + to_string(i) + " mesh hops links: " + to_string(ammpdmedia) + "\n";
+				answer += "Maximum " + to_string(i) + " mesh hops links: " + to_string(ammpdmax) + "\n";
+				answer += "Minimum " + to_string(i) + " mesh hops links: " + to_string(ammpdmin) + "\n";
+			}
+		}
+		vector<vector<double>> avgHops = averageHops(sL, meshEnabled);
+		for (int i = 0; i < meshEnabled + 1; i++)
+		{
+			double avgHopsEff = avgHops[i][0];
+			double avgHopsQnt = avgHops[i][1];
+			if (avgHopsEff > 0)
+			{
+				answer += "Average " + to_string(i) + " mesh hops efficiency: " + to_string(avgHopsEff) + "\n";
+				answer += to_string(i) + " mesh hops links quantity: " + to_string(avgHopsQnt) + "\n";
+			}
+
 		}
 	}
-	vector<vector<double>> avgHops = averageHops(sL, meshEnabled);
-	for (int i = 0; i < meshEnabled+1; i++)
+	else
 	{
-		double avgHopsEff = avgHops[i][0];
-		double avgHopsQnt = avgHops[i][1];
-		if (avgHopsEff > 0)
-		{
-			answer += "Average " + to_string(i) + " mesh hops efficiency: " + to_string(avgHopsEff) + "\n";
-			answer += "Average " + to_string(i) + " mesh hops meters quantity: " + to_string(avgHopsQnt) + "\n";
-		}
-
+		answer = "Nao ha DAPs para se coletar estatasticas!";
 	}
 	return answer.c_str();
 	//	var coveredMetersNum = coveredMeters.length;

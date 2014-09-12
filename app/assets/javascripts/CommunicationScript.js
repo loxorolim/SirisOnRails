@@ -3,7 +3,7 @@ const DRAW_FILE_ID = 1;
 const METRIC_FILE_ID = 2;
 
 function sendDrawRequest(){
-    sendDataToServer("http://localhost:3000/autoplan", 'POST', DRAW_FILE_ID);
+    sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
 }
 
 function sendSCPToServer() {
@@ -11,7 +11,7 @@ function sendSCPToServer() {
     //var data = prepareNetworkToSend();
    // var data = data.toString();
     //_ajax_request("http://localhost:3000/autoplan", data, 'POST');
-   sendDataToServer("http://localhost:3000/autoplan", 'POST', AUTO_PLAN_FILE_ID);
+   sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
 }
 
 function prepareNetworkToSend(){
@@ -128,7 +128,25 @@ function readPropagationResponse(data){
 
 }
 function readMetricResponse(data){
-    alert(data);
+   // alert(data);
+   
+    $(function() {
+        $( "#statisticDialog" ).dialog({
+            show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+    $( "#statisticDialog" ).text(data);
+
+
+    });
+
+
 }
 
 function propagationValuesToSend(){

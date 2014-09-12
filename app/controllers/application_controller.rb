@@ -3,19 +3,24 @@ class ApplicationController < ActionController::Base
 
   def autoplan
 	toPass = params['data']
+
   	answer = ""
+  	answer2 = ""
 	IO.popen('C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe', 'r+') do |pipe|
 	  pipe.puts(toPass)
 	  pipe.close_write
 	  answer = pipe.read
+	  answer2 = pipe.read
+	  pipe.close_read
 	end
 	print answer
+	print answer2
 	#print shell_output
-	
-
-
-
 	File.open('teste.txt', 'w') {|f| f.write(toPass)}
+
+
+
+	
 
 	#print toPass
 

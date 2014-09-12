@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "auxiliars.h"
+#include <stdlib.h>
 using namespace std;
 
 
@@ -18,6 +19,18 @@ void readConfiguration(int *scenario,int* technology, double* H_TX, double *H_RX
 	scanf_s("%lf", TRANSMITTER_POWER);
 	scanf_s("%d", SRD);
 	scanf_s("%d", meshEnabled);
+	//FILE *file;
+	//fopen_s(&file, "C:\\Sites\\first_app\\teste.txt", "r");
+	//fscanf_s(file,"%d");
+	//fscanf_s(file,"%d", scenario);
+	//fscanf_s(file, "%d", technology);
+	//fscanf_s(file, "%lf", H_TX);
+	//fscanf_s(file, "%lf", H_RX);
+	//fscanf_s(file, "%lf", BIT_RATE);
+	//fscanf_s(file, "%lf", TRANSMITTER_POWER);
+	//fscanf_s(file, "%d", SRD);
+	//fscanf_s(file, "%d", meshEnabled);
+	//fclose(file);
 }
 double rad(double x)
 {

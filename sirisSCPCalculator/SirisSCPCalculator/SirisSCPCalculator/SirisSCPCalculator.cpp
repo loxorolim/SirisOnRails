@@ -42,12 +42,13 @@ string readFromPopen()
 
 int main(int argc, char* argv[])
 {
-	double wow = getHataSRDSuccessRate(8, 0, 0, 0.25, 0, 3, 5, 1);
-	double wow2 = 1 - wow;
+
+//	double wow = getHataSRDSuccessRate(50, 0, 0, 0.25, 0, 3, 5, 1);
+//	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
 		string answer = "";
 		answer = readFromPopen();
-		printf_s("%s",answer);
+		printf_s("%s",answer.c_str());
 	}
 
 	FILE *pFile;
@@ -64,5 +65,6 @@ int main(int argc, char* argv[])
 	
 	return 0;
 }
+
 
 

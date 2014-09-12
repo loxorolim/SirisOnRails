@@ -1,4 +1,4 @@
-
+.hidden { display: none }
 #slider{
     width:80px;
 }
@@ -22,6 +22,9 @@
 }
 .ui-button .ui-icon.mesh {
      background-image: url(meshicon.png); 
+}
+.ui-button .ui-icon.statistic {
+     background-image: url(statistic.png); 
 }
 .selections{
 

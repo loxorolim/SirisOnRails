@@ -118,7 +118,10 @@ function setButtons()
 {
 
     setRadio();
-    $(document).tooltip();
+    $( document ).tooltip({
+      items: '*:not(.ui-dialog-titlebar-close)'
+    });
+
 
 	   $("#scenario")        
          .next()
@@ -250,7 +253,7 @@ function setButtons()
         //d = new Date();
         //setTimeout('applyPlanning()', 1000);
         //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
-        sendDataToServer("http://localhost:3000/autoplan", 'POST', METRIC_FILE_ID);
+        sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
         //collectInfo();
         //statisticalMatrix();
         //applyPlanning();
@@ -285,6 +288,17 @@ function setButtons()
 //        $.unblockUI();
 
 
+    });
+        $('#statistic').button({
+        icons: {
+            primary: "statistic"
+        },
+ 
+        text: false
+
+    }).click(function () {
+        $(this).blur();
+        sendDataToServer(serverAddress, 'POST', METRIC_FILE_ID);
     });
 	   
 	$("#ZigBee").click(function () {
