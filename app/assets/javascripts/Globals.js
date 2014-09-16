@@ -12,6 +12,7 @@ const t802_11_a = 1;
 const t802_11_g = 2;
 const serverAddress = "http://localhost:3000/autoplan";
 
+var directionsService;
 var markerCluster;
 var scenario = Urbano;
 var technology = t802_15_4;

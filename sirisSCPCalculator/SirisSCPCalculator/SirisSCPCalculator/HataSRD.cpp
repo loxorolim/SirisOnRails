@@ -4,6 +4,8 @@
 #include <vector>
 #include "HataSRD.h"
 
+vector<vector<double>> table;
+
 double bit_error_probability(int env, int technology, int  bit_rate, int  transmitter_power, int  h_tx, int  h_rx, double  d, int SRD)
 {
 
@@ -564,11 +566,77 @@ double uncoded_modulation(int modulation_type, double gamma_b)
 	return ber;
 
 }
+//double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
+//{
+//	return 1 - bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);
+//	
+//
+//}
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
-	return 1 - bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);
-	
+	int distAprox = ceil(distance);
+	if (distAprox == 0)
+		return 1;
+	else if (distAprox > table.size())
+		return 0;
+	else
+	{
+		switch (env)
+		{
+			case Urbano:
+				return table[distAprox-1][2];
+				break;
+			case Suburbano:
+				return table[distAprox - 1][1];
+				break;
+			case Rural:
+				return table[distAprox - 1][0];
+				break;
+			default:
+				return 0;
+				break;
+		}
+	}
+
+
+
+
 
 }
+void propagationTable()
+{
+	FILE *file;
+	vector<vector<double>> ret;
+	try
+	{
+
+		
+		fopen_s(&file, "C:\\Sites\\first_app\\dadossiris.txt", "r");
+		double rur = 0 ;
+		double subur = 0;
+		double urb = 0;
+		int size = 0;
+		fscanf_s(file, "%d", &size);
+		for (int i = 0; i < size; i++)
+		{
+			vector<double> toAdd;
+			fscanf_s(file, "%lf %lf %lf", &rur, &subur,&urb);
+
+			toAdd.push_back(rur);
+			toAdd.push_back(subur);
+			toAdd.push_back(urb);
+			ret.push_back(toAdd);
+			toAdd.clear();
+		}
+	}
+	catch (exception e)
+	{
+		
+	}
+	fclose(file);
+	table = ret;
+	
+}
+
 
 

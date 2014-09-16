@@ -33,7 +33,16 @@ function setInsertionOptions(type)
                 sendDrawRequest();
             }
               //  placePole(event.latLng.lat(), event.latLng.lng());
+
         }
+        if (type == "Generator") {
+                if(generatorPositions.length < 2)
+                  generatorPositions.push(event.latLng);
+                if(generatorPositions.length == 2){
+                  generateScenario();
+                  generatorPositions = [];
+                }
+            }
 
     });
 }
@@ -254,6 +263,7 @@ function setButtons()
         //setTimeout('applyPlanning()', 1000);
         //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
         sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
+       // teste();
         //collectInfo();
         //statisticalMatrix();
         //applyPlanning();
@@ -300,6 +310,15 @@ function setButtons()
         $(this).blur();
         sendDataToServer(serverAddress, 'POST', METRIC_FILE_ID);
     });
+    $('#generator').button({
+
+        text: false
+
+    }).click(function () {
+        $(this).blur();
+        setInsertionOptions("Generator");
+        //generateScenario();
+    });
 	   
 	$("#ZigBee").click(function () {
 	    $("#technology").text("ZigBee");
@@ -331,5 +350,15 @@ function setButtons()
 	    scenario = Rural;
 	    sendDrawRequest();
 	});
+  function teste(){
+   wow(meters[0].getPosition(), meters[50].getPosition());
+}
+ function teste2(){
+   var proj = map.getProjection();
+    var pos = new google.maps.Point(742477.38,6945784.23);
+    var p = proj.fromPointToLatLng(pos);
+    var dap = createDAP();
+    dap.place(p.lat(), p.lng());
+}
 		
 }

@@ -1,7 +1,7 @@
-﻿Build started 12/09/2014 15:48:40.
+﻿Build started 16/09/2014 10:29:02.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt AutoPlanResponse.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt AutoPlanResponse.cpp DrawResponse.cpp HataSRD.cpp MetricsResponse.cpp SirisSCPCalculator.cpp
          AutoPlanResponse.cpp
      1>AutoPlanResponse.cpp(1): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
@@ -19,6 +19,59 @@
      1>AutoPlanResponse.cpp(98): warning C4018: '<' : signed/unsigned mismatch
      1>AutoPlanResponse.cpp(195): warning C4018: '<' : signed/unsigned mismatch
      1>AutoPlanResponse.cpp(269): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         DrawResponse.cpp
+     1>DrawResponse.cpp(1): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
+                 Add macro to precompiled header instead of defining here
+                 DrawResponse.cpp(2) : use of precompiled header
+     1>DrawResponse.cpp(16): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(31): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(61): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(63): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(87): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(153): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>DrawResponse.cpp(155): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(158): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(161): warning C4018: '<' : signed/unsigned mismatch
+     1>DrawResponse.cpp(164): warning C4018: '<' : signed/unsigned mismatch
+         HataSRD.cpp
+     1>HataSRD.cpp(296): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(312): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>HataSRD.cpp(315): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(330): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(331): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(347): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(348): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(510): warning C4101: 'a' : unreferenced local variable
+     1>HataSRD.cpp(510): warning C4101: 'b' : unreferenced local variable
+     1>HataSRD.cpp(577): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>HataSRD.cpp(580): warning C4018: '>' : signed/unsigned mismatch
+         MetricsResponse.cpp
+     1>MetricsResponse.cpp(16): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(19): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(36): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(48): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(51): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(65): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(72): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(75): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(81): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(122): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(124): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(142): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(144): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(174): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(176): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(194): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(214): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(217): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(234): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(239): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(269): warning C4018: '<' : signed/unsigned mismatch
+     1>MetricsResponse.cpp(337): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         SirisSCPCalculator.cpp
+     1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
+                 Add macro to precompiled header instead of defining here
+                 SirisSCPCalculator.cpp(4) : use of precompiled header
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
          Release\auxiliars.obj
@@ -28,11 +81,10 @@
          Release\SirisSCPCalculator.obj
          Release\stdafx.obj
          Generating code
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(503): warning C4715: 'fac' : not all control paths return a value
          Finished generating code
          SirisSCPCalculator.vcxproj -> C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
      1>Done Building Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.51
+Time Elapsed 00:00:04.96

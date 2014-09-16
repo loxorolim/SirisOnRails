@@ -27,3 +27,7 @@ double uncoded_modulation(int modulation_type, double gamma_b);
 int nchoosek(int n, int k);
 int fac(int n);
 
+
+
+void propagationTable();
+
