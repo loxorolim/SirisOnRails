@@ -116,7 +116,7 @@ function loadNodesFromXml()
 					var longitude = $(this).find('Longitude').text();
 				    //placeMeter(latitude, longitude);
 					var meter = createMeter();
-					meter.place(latitude, longitude);
+					meter.placeOnMap(latitude, longitude);
 				})
 				$(xml).find('DAP').each(function()
 				{
@@ -128,7 +128,7 @@ function loadNodesFromXml()
 					// loadMarker(latitude,longitude);
 				    //placeDAP(latitude, longitude, technology, setInsertionOptions);
 					var dap = createDap();
-					dap.place(latitude, longitude);
+					dap.placeOnMap(latitude, longitude);
 				});
 				sendDrawRequest();
 			}
@@ -176,7 +176,7 @@ function loadDapPositionsFromXml() {
 		            var longitude = parseFloat($(this).find('Longitude').text());
 		            //placePole(latitude, longitude);
 		            var pole = createPole();
-		            pole.place(latitude, longitude);
+		            pole.placeOnMap(latitude, longitude);
 		            //var point = new google.maps.LatLng(latitude, longitude);
 		            //dapPositions.push(point);
 		            //var marker = new google.maps.Marker(

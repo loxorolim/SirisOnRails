@@ -7,7 +7,7 @@
         icon: poleIcon,
         zIndex: 0,
         ID: null,
-        place: function (latitude, longitude) {
+        placeOnMap: function (latitude, longitude) {
             var latLng = new google.maps.LatLng(latitude, longitude);
             this.position = latLng;
             poles.push(this);

@@ -28,6 +28,10 @@ function initialize() {
     //var overlay = new google.maps.OverlayView();
     //overlay.setMap(map);
     
+     var ctaLayer = new google.maps.KmlLayer({
+    url: 'http://www.midiacom.uff.br/~grolim/DadosSirisKml.kml'
+  });
+  ctaLayer.setMap(map);
 
     loadCarDriveFromXml();
     loadNodesFromXml();
@@ -52,6 +56,7 @@ function initialize() {
     });
     
     setButtons();
+
 
    // applyPlanning();
 }

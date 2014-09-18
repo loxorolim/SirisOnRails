@@ -85,7 +85,7 @@ function putPoles(directionResult) {
 		   		
 		   		pos=geo.computeOffset(ini,poleOffset,geo.computeHeading(ini,seq));
 		   		var pole = createPole();
-		   		pole.place(pos.lat(),pos.lng());
+		   		pole.placeOnMap(pos.lat(),pos.lng());
 		    	ini = pos;
 		   	}
 		   	else{
@@ -103,9 +103,9 @@ function generateMeters(latlng, direction){
 	meterOffset = randomBetween(meterOffsetMin,meterOffsetMax);
 	pos2=geo.computeOffset(latlng,meterOffset,direction);
 	var meter = createMeter();
-	meter.place(pos1.lat(), pos1.lng());
+	meter.placeOnMap(pos1.lat(), pos1.lng());
 	var meter2 = createMeter();
-	meter2.place(pos2.lat(), pos2.lng());
+	meter2.placeOnMap(pos2.lat(), pos2.lng());
 }
 function randomBetween(num1,num2){
 	return Math.floor(Math.random() * num2) + num1

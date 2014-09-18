@@ -13,7 +13,7 @@
         icon: meterOffIconImage,
         //        dapsConnected: [],
 
-        place: function (latitude, longitude) {
+        placeOnMap: function (latitude, longitude) {
 
             var latLng = new google.maps.LatLng(latitude, longitude);
             this.position = latLng;

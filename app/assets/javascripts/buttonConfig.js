@@ -17,19 +17,19 @@ function setInsertionOptions(type)
         {
             if (type == "DAP") {
                 var dap = createDAP();
-                dap.place(event.latLng.lat(), event.latLng.lng());
+                dap.placeOnMap(event.latLng.lat(), event.latLng.lng());
                 sendDrawRequest();
             }
               //  placeDAP(event.latLng.lat(), event.latLng.lng(), currentTech);           
             if (type == "Meter") {
                 var meter = createMeter();
-                meter.place(event.latLng.lat(), event.latLng.lng());
+                meter.placeOnMap(event.latLng.lat(), event.latLng.lng());
                 sendDrawRequest();
             }
                 //placeMeter(event.latLng.lat(), event.latLng.lng());
             if (type == "Pole") {
                 var pole = createPole();
-                pole.place(event.latLng.lat(), event.latLng.lng());
+                pole.placeOnMap(event.latLng.lat(), event.latLng.lng());
                 sendDrawRequest();
             }
               //  placePole(event.latLng.lat(), event.latLng.lng());
@@ -358,7 +358,7 @@ function setButtons()
     var pos = new google.maps.Point(742477.38,6945784.23);
     var p = proj.fromPointToLatLng(pos);
     var dap = createDAP();
-    dap.place(p.lat(), p.lng());
+    dap.placeOnMap(p.lat(), p.lng());
 }
 		
 }

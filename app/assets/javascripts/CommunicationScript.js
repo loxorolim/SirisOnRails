@@ -99,7 +99,7 @@ function readAutoPlanResponse(data){
         var toAdd = parseInt(split[i].slice(1));
         var latLng = poles[toAdd-1].position;
         var newDap = createDAP();
-        newDap.place(latLng.lat(),latLng.lng());
+        newDap.placeOnMap(latLng.lat(),latLng.lng());
         
     }
     sendDrawRequest();

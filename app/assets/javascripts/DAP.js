@@ -24,7 +24,7 @@ function createDAP() {
         labelAnchor: new google.maps.Point(22, 25),
         labelClass: "labels", // the CSS class for the label
         labelStyle: { opacity: 0.75 },
-        place: function (latitude, longitude) {
+        placeOnMap: function (latitude, longitude) {
             var latLng = new google.maps.LatLng(latitude, longitude);
             this.position = latLng;
             daps.push(this);

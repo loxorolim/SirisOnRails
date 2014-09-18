@@ -17,7 +17,7 @@ function applySolution(solution) {
         if (solution[i] == 1) {
             var latLng = poles[i].position;
             var newDap = createDAP();
-            newDap.place(latLng.lat(),latLng.lng());
+            newDap.placeOnMap(latLng.lat(),latLng.lng());
             //placeDAP(latLng.lat(), latLng.lng(), "bla");
         }
             
