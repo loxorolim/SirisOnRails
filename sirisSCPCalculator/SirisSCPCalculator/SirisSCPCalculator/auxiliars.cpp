@@ -54,6 +54,7 @@ void deleteVector(vector<sComponent*> &v)
 		delete v[i];
 }
 
+
 //double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 //{
 //	return 1 - bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);

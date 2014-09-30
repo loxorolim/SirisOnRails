@@ -86,6 +86,21 @@ function putPoles(directionResult) {
 		   		pos=geo.computeOffset(ini,poleOffset,geo.computeHeading(ini,seq));
 		   		var pole = createPole();
 		   		pole.placeOnMap(pos.lat(),pos.lng());
+		   		//var latLng = new google.maps.LatLng(latitude, longitude);
+				//	var meter = createMeter();
+				//	meter.placeOnMap(latitude, longitude);
+					var populationOptions = {
+				      strokeColor: '#FF0000',
+				      strokeOpacity: 0.8,
+				      strokeWeight: 2,
+				      fillColor: '#FF0000',
+				      fillOpacity: 0.35,
+				      map: map,
+				      center: pos,
+				      radius: 1
+				    };
+    // Add the circle for this city to the map.
+    			var cityCircle = new google.maps.Circle(populationOptions);
 		    	ini = pos;
 		   	}
 		   	else{
@@ -106,6 +121,30 @@ function generateMeters(latlng, direction){
 	meter.placeOnMap(pos1.lat(), pos1.lng());
 	var meter2 = createMeter();
 	meter2.placeOnMap(pos2.lat(), pos2.lng());
+	var populationOptions = {
+				      strokeColor: '#FF0000',
+				      strokeOpacity: 0.8,
+				      strokeWeight: 2,
+				      fillColor: '#FF0000',
+				      fillOpacity: 0.35,
+				      map: map,
+				      center: pos2,
+				      radius: 1
+				    };
+    // Add the circle for this city to the map.
+    			var cityCircle = new google.maps.Circle(populationOptions);
+    			var populationOptions = {
+				      strokeColor: '#FF0000',
+				      strokeOpacity: 0.8,
+				      strokeWeight: 2,
+				      fillColor: '#FF0000',
+				      fillOpacity: 0.35,
+				      map: map,
+				      center: pos1,
+				      radius: 1
+				    };
+    // Add the circle for this city to the map.
+    			var cityCircle = new google.maps.Circle(populationOptions);
 }
 function randomBetween(num1,num2){
 	return Math.floor(Math.random() * num2) + num1

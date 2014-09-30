@@ -13,7 +13,7 @@ function createDAP() {
         ID: null,
         type: "DAP",
         position: null,
-        map: map,
+        map: null,
         zIndex: 1,
         draggable: true,
         icon: dapOnIconImage,   
@@ -28,6 +28,7 @@ function createDAP() {
             var latLng = new google.maps.LatLng(latitude, longitude);
             this.position = latLng;
             daps.push(this);
+            this.map = map;
             markerCluster.addMarker(this, true);
             this.ID = generateUUID();
 

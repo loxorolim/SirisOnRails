@@ -1,4 +1,4 @@
-﻿
+
 function initialize() {
 
     var MY_MAPTYPE_ID = 'custom_style';
@@ -20,7 +20,7 @@ function initialize() {
 	}
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-   
+    // google.maps.event.addListener(map, 'idle', showMarkers);
 
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
@@ -28,14 +28,18 @@ function initialize() {
     //var overlay = new google.maps.OverlayView();
     //overlay.setMap(map);
     
-     var ctaLayer = new google.maps.KmlLayer({
-    url: 'http://www.midiacom.uff.br/~grolim/DadosSirisKml.kml'
-  });
-  ctaLayer.setMap(map);
+//             var ctaLayer = new google.maps.KmlLayer({
+//    url: 'http://www.midiacom.uff.br/~grolim/DadosSiris.kml',
+//    
+//  });
 
-    loadCarDriveFromXml();
+
+  //          ctaLayer.setMap(map);
+
+
+    //loadCarDriveFromXml();
     loadNodesFromXml();
-    loadDapPositionsFromXml();
+    //loadDapPositionsFromXml();
     //var trapezoid = $('#trapezoid');
     //trapezoid.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(
@@ -56,10 +60,12 @@ function initialize() {
     });
     
     setButtons();
+    //init();
 
 
    // applyPlanning();
 }
+
 function clusterMap() {
     for (var i = 0; i < allMarkers.length; i++) {
         allMarkers[i].setOptions({ map: map, visible: true });
@@ -76,5 +82,22 @@ function unclusterMap() {
     for (var i = 0; i < allMarkers.length; i++) {
         allMarkers[i].setOptions({ map: map, visible: true });
     }
+}
+var pi_180 = Math.PI / 180.0;
+var pi_4 = Math.PI * 4;
+
+function LatLongToPixelXY(latitude, longitude) {
+
+    var sinLatitude = Math.sin(latitude * pi_180);
+    var pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) /(pi_4)) * 256;
+    var pixelX = ((longitude + 180) / 360) * 256;
+
+    //var pixel = new Object();
+    //pixel.x = (0.5 + pixelX) | 0;
+    //pixel.y = (0.5 + pixelY) | 0;
+
+    var pixel =  { x: pixelX, y: pixelY};
+    
+    return pixel;
 }
 google.maps.event.addDomListener(window, 'load', initialize);

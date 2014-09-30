@@ -39,10 +39,52 @@ string readFromPopen()
 			break;
 	}
 }
+// essa função aqui é só uma auxiliar, deletar depois!!!
+void funcConversaoDadosHomma(string arq)
+{
+	FILE* file;
+	fopen_s(&file, "dadoshomma.txt", "r");
+	if (file)
+	{
+		//while (true)
+		//{
+		//	ifstream f("dadoshomma.txt");
+		//	string str;
+		//	string str2;
+		//	getline(f, str);
+		//	getline(f, str2);
+		//}
+		FILE* filemeters;
+		fopen_s(&file, "dadoshomma.txt", "r");
+		FILE* filepoles;
+		fopen_s(&file, "dadoshomma.txt", "r");
+		
+		int uc = -1, fu = -1;
+		double ramal = -1, x = -1, y = -1, x2 = -1, y2 = -1;
+		//fscanf_s(file, "%f", &uc);
+		while (true)
+		{
+			
+
+			fscanf_s(file, "%d", &uc);
+			fscanf_s(file, "%d", &fu);
+			fscanf_s(file, "%lf", &ramal);
+			fscanf_s(file, "%lf", &x);
+			fscanf_s(file, "%lf", &y);
+			fscanf_s(file, "%lf", &x2);
+			fscanf_s(file, "%lf", &y2);
+
+		}
+	}
+
+	
+	fclose(file);
+
+}
 
 int main(int argc, char* argv[])
 {
-
+	funcConversaoDadosHomma("dadoshomma2.txt");
 //	double wow = getHataSRDSuccessRate(50, 0, 0, 0.25, 0, 3, 5, 1);
 //	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak

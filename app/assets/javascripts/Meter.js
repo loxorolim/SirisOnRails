@@ -3,7 +3,7 @@
         ID: null,
         type: "Meter",
         position: null,
-        map: map,
+        map: null,
         zIndex: 2,
         draggable: true,
         ghost: null,
@@ -20,6 +20,7 @@
             meters.push(this);
             markerCluster.addMarker(this, true);
             this.ID = generateUUID();
+            //this.map = map;
         //    sendDrawRequest();
 
         },

@@ -2,8 +2,28 @@
 
 
 
-      
-      
+ <script id="pointVertexShader" type="x-shader/x-vertex">
+    attribute vec4 worldCoord;
+    attribute float aPointSize;
+
+    uniform mat4 mapMatrix;
+
+    void main() {
+        // transform world coordinate by matrix uniform variable
+        gl_Position = mapMatrix * worldCoord;
+        gl_PointSize = aPointSize;
+
+    }
+</script>
+ <script id="pointFragmentShader" type="x-shader/x-vertex">
+    precision mediump float;
+
+        void main() {
+            gl_FragColor = vec4(1.0, 0.0, 0.0, 0.5);
+        }
+</script>
+
+
      
 <div id=" wrapper">
     <div id="map_canvas">

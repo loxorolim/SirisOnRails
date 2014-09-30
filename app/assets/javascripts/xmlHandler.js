@@ -128,7 +128,7 @@ function loadNodesFromXml()
 					// loadMarker(latitude,longitude);
 				    //placeDAP(latitude, longitude, technology, setInsertionOptions);
 					var dap = createDap();
-					dap.placeOnMap(latitude, longitude);
+					//dap.placeOnMap(latitude, longitude);
 				});
 				sendDrawRequest();
 			}
