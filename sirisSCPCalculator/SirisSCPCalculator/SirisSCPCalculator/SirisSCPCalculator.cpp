@@ -40,6 +40,10 @@ string readFromPopen()
 	}
 }
 // essa função aqui é só uma auxiliar, deletar depois!!!
+float RandomNumber(float Min, float Max)
+{
+	return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
+}
 void funcConversaoDadosHomma(string arq)
 {
 	FILE* file;
@@ -55,24 +59,89 @@ void funcConversaoDadosHomma(string arq)
 		//	getline(f, str2);
 		//}
 		FILE* filemeters;
-		fopen_s(&file, "dadoshomma.txt", "r");
+		fopen_s(&filemeters, "filemeters.txt", "w");
 		FILE* filepoles;
-		fopen_s(&file, "dadoshomma.txt", "r");
+		fopen_s(&filepoles, "filepoles.txt", "w");
 		
-		int uc = -1, fu = -1;
-		double ramal = -1, x = -1, y = -1, x2 = -1, y2 = -1;
+		
+		//double poleX=-1, poleY=-1;
+		int poleAux=-1;
+		//double meterX = -1, meterY = -1;
+		int meterAux=-1;
 		//fscanf_s(file, "%f", &uc);
+		vector<double> poleX, poleY,poleX2, poleY2;
+		double meterX, meterY;
+		//vector<double> poleY;
+		int i = 0;
 		while (true)
 		{
-			
 
+			int uc = -1, fu = -1;
+			double ramal = -1, x = -1, y = -1, x2 = -1, y2 = -1;
 			fscanf_s(file, "%d", &uc);
 			fscanf_s(file, "%d", &fu);
+			
 			fscanf_s(file, "%lf", &ramal);
+			
 			fscanf_s(file, "%lf", &x);
 			fscanf_s(file, "%lf", &y);
 			fscanf_s(file, "%lf", &x2);
 			fscanf_s(file, "%lf", &y2);
+
+			if (fu == poleAux || poleAux == -1)
+			{
+				poleX.push_back(x);
+				poleY.push_back(y);
+				poleX2.push_back(x2);
+				poleY2.push_back(y2);
+			}
+			else
+			{
+				double xSum = 0, ySum = 0;
+				for (int i = 0; i < poleX.size(); i++)
+				{
+					xSum += (poleX[i]+poleX2[i])/2;
+					ySum += (poleY[i]+poleY2[i])/2;
+				}
+				double poleXToAdd = xSum / poleX.size();
+				double poleYToAdd = ySum / poleY.size();
+				for (int i = 0; i < poleX.size(); i++)
+				{
+					int r = 5;
+					//double ang = (360 / poleX.size())*i;
+					//double mx = poleXToAdd + r*cos(ang); 
+					//double my = poleYToAdd + r*sin(ang);
+					double mx = poleXToAdd + RandomNumber(-10, 10);
+					
+					double my = poleYToAdd + RandomNumber(-10, 10);
+					fprintf(filemeters, "%lf %lf\n", mx,my);
+				}
+				poleX.clear();
+				poleY.clear();
+				poleX.push_back(x);
+				poleY.push_back(y);
+				poleX2.clear();
+				poleY2.clear();
+				poleX2.push_back(x2);
+				poleY2.push_back(y2);
+				fprintf(filepoles, "%lf %lf\n", poleXToAdd, poleYToAdd);
+				//fazer fprintf aki
+			}
+			
+			//if (ramal != meterAux && meterAux != -1)
+			//	fprintf(filemeters, "%lf %lf\n", meterX,meterY);
+
+
+			poleAux = fu;
+			//meterAux = ramal;
+			//meterX = x;
+			//meterY = y;
+			if (fu == -1)
+				break;
+			
+
+
+
 
 		}
 	}
