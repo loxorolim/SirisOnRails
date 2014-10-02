@@ -90,6 +90,7 @@
   <ItemGroup>
     <ClCompile Include="AutoPlanResponse.cpp" />
     <ClCompile Include="auxiliars.cpp" />
+    <ClCompile Include="ClusterMethods.cpp" />
     <ClCompile Include="DrawResponse.cpp" />
     <ClCompile Include="HataSRD.cpp" />
     <ClCompile Include="MetricsResponse.cpp" />

@@ -150,14 +150,106 @@ void funcConversaoDadosHomma(string arq)
 	fclose(file);
 
 }
+int checkFeasibleTest(vector<vector<int>> &scp)
+{
+	for (int i = 0; i < scp.size(); i++)
+	{
+		if (scp[i].size() == 0)
+			return 0;
+	}
+	return 1;
+}
+
+void functeste(vector<Position*> meters)
+{
+	int clusterSize = 500;
+	vector<vector<Position*>> sets;
+	Position* startPoint = meters[0];
+	while (meters.size() != 0)
+	{
+		vector<Position*> aux;
+		for (int i = 0; i < clusterSize; i++)
+		{
+			double minD = -1;
+			int pos;
+			if (meters.size() == 0)
+				break;
+			for (int j = 0; j < meters.size(); j++)
+			{
+				double d = getDistance(meters[j], startPoint);
+				if (minD == -1 || d < minD)
+				{
+					pos = j;
+					minD = d;
+				}
+					
+			}
+			if (i != clusterSize - 1)
+			{
+				aux.push_back(meters[pos]);
+				meters.erase(meters.begin() + pos);
+			}
+			else
+				startPoint = meters[pos];
+		}
+		sets.push_back(aux);
+		printf("push");
+
+
+		
+	}
+}
+void createSCPTeste()
+{
+
+	FILE * file;
+	fopen_s(&file, "filemetersconvertidos.txt", "r");
+	FILE * file2;
+	fopen_s(&file2, "filepolesconvertidos.txt", "r");
+
+
+	vector<Position*> meters;
+	vector<Position*> poles;
+	while (true)
+	{
+		double lat=-1;
+		double lng=-1;
+		fscanf_s(file,"%lf %lf", &lat, &lng);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng);
+		meters.push_back(toAdd);
+
+	}
+
+	while (true)
+	{
+		double lat=-1;
+		double lng=-1;
+
+		fscanf_s(file2,"%lf %lf", &lat, &lng);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng);
+		poles.push_back(toAdd);
+	}
+
+	functeste(meters);
+	//vector<vector<int>> SCP = createScpMatrix(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
+	printf("Cheguei!");
+//	int r = checkFeasibleTest(SCP);
+//	printf("%d", r);
+}
 
 int main(int argc, char* argv[])
 {
-	funcConversaoDadosHomma("dadoshomma2.txt");
+	//funcConversaoDadosHomma("dadoshomma2.txt");
 //	double wow = getHataSRDSuccessRate(50, 0, 0, 0.25, 0, 3, 5, 1);
 //	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
 		propagationTable();
+		createSCPTeste();
+		//functeste();
 //		for (int i = 0; i < 200; i++)
 //			double wow = getHataSRDSuccessRate(i, 0, 0, 0.25, 0, 3, 5, 1);
 		string answer = "";

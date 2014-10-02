@@ -60,22 +60,35 @@ vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<P
 {
 
 	vector<int> aux;
-	vector<vector<int>> sM;
+	vector<vector<int>> sM = vector<vector<int>>(uncoveredMeters.size());
+	//sM.reserve(uncoveredMeters.size());
+
+		
+	//for (int i = 0; i < sM.size(); i++)
+	//	sM[i].reserve(poles.size());
+	//vector<int> polesThatCover;
+	//polesThatCover.reserve(poles.size());
 	for (int i = 0; i < uncoveredMeters.size(); i++) 
 	{
 		vector<int> polesThatCover;
 		for (int j = 0; j < poles.size(); j++)
 		{
 			double dist = getDistance(uncoveredMeters[i], poles[j]);
+			//double dist = 5;
 			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+			//double eff = 1;
 			if (eff >= MARGIN_VALUE)
-				polesThatCover.push_back(j);
-
-
+			{
+				//polesThatCover.push_back(j);
+				sM[i].push_back(j);
+			}
 		}
 
 		//if (polesThatCover.length > 0)
-		sM.push_back(polesThatCover);
+		if (i % 1000 == 0)
+			printf("%d",i);
+
+		//sM.push_back(polesThatCover);
 	}
 	if (meshEnabled)
 	{
