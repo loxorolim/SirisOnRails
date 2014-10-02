@@ -607,12 +607,11 @@ void propagationTable()
 {
 	FILE *file;
 	vector<vector<double>> ret;
-	try
-	{
 
-		
-		fopen_s(&file, "C:\\Sites\\first_app\\dadossiris.txt", "r");
-		double rur = 0 ;
+	fopen_s(&file, "C:\\Sites\\first_app\\dadossiris.txt", "r");
+	if (file)
+	{
+		double rur = 0;
 		double subur = 0;
 		double urb = 0;
 		int size = 0;
@@ -620,7 +619,7 @@ void propagationTable()
 		for (int i = 0; i < size; i++)
 		{
 			vector<double> toAdd;
-			fscanf_s(file, "%lf %lf %lf", &rur, &subur,&urb);
+			fscanf_s(file, "%lf %lf %lf", &rur, &subur, &urb);
 
 			toAdd.push_back(rur);
 			toAdd.push_back(subur);
@@ -628,12 +627,10 @@ void propagationTable()
 			ret.push_back(toAdd);
 			toAdd.clear();
 		}
+		fclose(file);
 	}
-	catch (exception e)
-	{
-		
-	}
-	fclose(file);
+
+	
 	table = ret;
 	
 }

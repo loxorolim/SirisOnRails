@@ -186,13 +186,13 @@ void functeste(vector<Position*> meters)
 			}
 			if (i != clusterSize - 1)
 			{
-				aux.push_back(meters[pos]);
+				//aux.push_back(meters[pos]);
 				meters.erase(meters.begin() + pos);
 			}
 			else
 				startPoint = meters[pos];
 		}
-		sets.push_back(aux);
+		//sets.push_back(aux);
 		printf("push");
 
 
@@ -247,7 +247,7 @@ int main(int argc, char* argv[])
 //	double wow = getHataSRDSuccessRate(50, 0, 0, 0.25, 0, 3, 5, 1);
 //	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
-		propagationTable();
+		//propagationTable();
 		createSCPTeste();
 		//functeste();
 //		for (int i = 0; i < 200; i++)
@@ -259,12 +259,16 @@ int main(int argc, char* argv[])
 
 	FILE *pFile;
 	freopen_s(&pFile, "C:\\Sites\\first_app\\MeMLeakTest.txt", "w", stdout);
-	
-	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
-	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
-	_CrtDumpMemoryLeaks();
+	if (pFile)
+	{
 
-	fclose(pFile);
+		_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+		_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
+		_CrtDumpMemoryLeaks();
+		fclose(pFile);
+	}
+
+
 
 
 
