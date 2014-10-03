@@ -1,49 +1,19 @@
-<<<<<<< HEAD
-﻿Build started 03/10/2014 17:43:09.
+﻿Build started 03/10/2014 18:02:34.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt AutoPlanResponse.cpp
-         AutoPlanResponse.cpp
-     1>AutoPlanResponse.cpp(1): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
-                 Add macro to precompiled header instead of defining here
-                 AutoPlanResponse.cpp(2) : use of precompiled header
-     1>AutoPlanResponse.cpp(22): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(24): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(40): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(42): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(45): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(70): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(74): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(96): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(99): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(105): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(111): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(142): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(145): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(167): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(170): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(176): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(182): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(279): warning C4018: '<' : signed/unsigned mismatch
-     1>AutoPlanResponse.cpp(353): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-=======
-﻿Build started 02/10/2014 20:51:12.
-     1>Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
          SirisSCPCalculator.cpp
      1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
                  SirisSCPCalculator.cpp(4) : use of precompiled header
-     1>SirisSCPCalculator.cpp(101): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(108): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(73): warning C4101: 'meterY' : unreferenced local variable
-     1>SirisSCPCalculator.cpp(73): warning C4101: 'meterX' : unreferenced local variable
-     1>SirisSCPCalculator.cpp(155): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(177): warning C4018: '<' : signed/unsigned mismatch
->>>>>>> origin/master
+     1>SirisSCPCalculator.cpp(102): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(109): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(74): warning C4101: 'meterY' : unreferenced local variable
+     1>SirisSCPCalculator.cpp(74): warning C4101: 'meterX' : unreferenced local variable
+     1>SirisSCPCalculator.cpp(157): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(179): warning C4018: '<' : signed/unsigned mismatch
        Link:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
          Release\auxiliars.obj
          Release\ClusterMethods.obj
          Release\DrawResponse.obj
@@ -54,13 +24,9 @@
          Release\stdafx.obj
          Generating code
          Finished generating code
-         SirisSCPCalculator.vcxproj -> C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
-     1>Done Building Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
+         SirisSCPCalculator.vcxproj -> C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
+     1>Done Building Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-<<<<<<< HEAD
-Time Elapsed 00:00:03.09
-=======
-Time Elapsed 00:00:01.67
->>>>>>> origin/master
+Time Elapsed 00:00:02.77

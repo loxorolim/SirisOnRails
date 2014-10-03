@@ -23,3 +23,15 @@
 *.tlog
 *.log
 *.pch
+*.exe
+*.exe
+*.ilk
+*.pdb
+*.ipch
+*.pdb
+*.sdf
+*.suo
+*.obj
+*.tlog
+*.lastbuildstate
+*.log
