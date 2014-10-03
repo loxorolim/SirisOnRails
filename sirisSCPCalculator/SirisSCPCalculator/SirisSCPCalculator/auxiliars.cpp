@@ -53,6 +53,65 @@ void deleteVector(vector<sComponent*> &v)
 	for (int i = 0; i < v.size(); i++)
 		delete v[i];
 }
+int binary_search( vector<Position*>& sorted_vec, double key,int latOrlng) 
+{
+	size_t mid = 0, left = 0;
+	size_t right = sorted_vec.size(); // one position passed the right end
+	while (left != right) 
+	{
+		mid = left + (right - left) / 2;
+		if (latOrlng == 0)
+		{
+			if (key > sorted_vec[mid]->latitude)
+			{
+				left = mid + 1;
+			}
+			else if (key <= sorted_vec[mid]->latitude)
+			{
+				right = mid;
+			}
+		}
+		else
+		{
+			if (key > sorted_vec[mid]->longitude)
+			{
+				left = mid + 1;
+			}
+			else if (key <= sorted_vec[mid]->longitude)
+			{
+				right = mid;
+			}
+		}
+		
+	}
+
+	return left;//ou right
+}
+bool compareByLongitude(Position* a, Position *b)
+{
+	return a->longitude < b->longitude;
+}
+bool compareByLatitude(Position* a, Position *b)
+{
+	return a->latitude < b->latitude;
+}
+vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, double d)
+{
+	
+	int ind1 = binary_search(v,reference->latitude-d,0);
+	int ind2 = binary_search(v, reference->latitude + d,0);
+	vector<Position*>::const_iterator first = v.begin() + ind1;
+	vector<Position*>::const_iterator last = v.begin() + ind2;
+	vector<Position*> newVec(first, last);
+	sort(newVec.begin(), newVec.end(), compareByLongitude);
+	ind1 = binary_search(newVec, reference->longitude - d,1);
+	ind2 = binary_search(newVec, reference->longitude + d,1);
+	vector<Position*>::const_iterator first2 = newVec.begin() + ind1;
+	vector<Position*>::const_iterator last2 = newVec.begin() + ind2;
+	vector<Position*> newVec2(first2, last2);
+
+	return newVec;
+}
 
 
 //double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)

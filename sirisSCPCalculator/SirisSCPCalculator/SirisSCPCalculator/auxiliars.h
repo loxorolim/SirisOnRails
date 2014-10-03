@@ -25,6 +25,7 @@
 #define t802_11_b  3
 #include<string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 class Position
@@ -32,10 +33,17 @@ class Position
 	public: 
 		double latitude;
 		double longitude;
+		int index;
 		Position(double lat, double lng)
 		{
 			latitude = lat;
 			longitude = lng;
+		}
+		Position(double lat, double lng, int i)
+		{
+			latitude = lat;
+			longitude = lng;
+			index = i;
 		}
 };
 class DrawInfo
@@ -118,5 +126,7 @@ double getDistance(Position * p1, Position * p2);
 //double loss(double f, double h_tx, double h_rx, double d, int environment, bool SRD);
 
 void readConfiguration(int *scenario, int* technology, double* H_TX, double *H_RX, double *BIT_RATE, double *TRANSMITTER_POWER, int *SRD, int *meshEnabled);
-
+int binary_search(vector<Position*>& sorted_vec, double key, int i);
+vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, double d);
+bool compareByLatitude(Position* a, Position *b);
 #endif

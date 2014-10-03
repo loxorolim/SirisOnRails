@@ -15,6 +15,7 @@
 #include "AutoPlanResponse.h"
 #include "MetricsResponse.h"
 #include "HataSRD.h"
+#include "Grid.h"
 using namespace std;
 
 
@@ -152,12 +153,13 @@ void funcConversaoDadosHomma(string arq)
 }
 int checkFeasibleTest(vector<vector<int>> &scp)
 {
+	int ret=0;
 	for (int i = 0; i < scp.size(); i++)
 	{
 		if (scp[i].size() == 0)
-			return 0;
+			ret++;
 	}
-	return 1;
+	return ret;
 }
 
 void functeste(vector<Position*> meters)
@@ -199,6 +201,8 @@ void functeste(vector<Position*> meters)
 		
 	}
 }
+
+
 void createSCPTeste()
 {
 
@@ -212,33 +216,62 @@ void createSCPTeste()
 	vector<Position*> poles;
 	while (true)
 	{
-		double lat=-1;
-		double lng=-1;
-		fscanf_s(file,"%lf %lf", &lat, &lng);
+		double lat = -1;
+		double lng = -1;
+		fscanf_s(file, "%lf %lf", &lat, &lng);
 		if (lat == -1)
 			break;
-		Position *toAdd = new Position(lat, lng);
+		Position *toAdd = new Position(lat, lng, meters.size());
 		meters.push_back(toAdd);
 
 	}
 
 	while (true)
 	{
-		double lat=-1;
-		double lng=-1;
+		double lat = -1;
+		double lng = -1;
 
-		fscanf_s(file2,"%lf %lf", &lat, &lng);
+		fscanf_s(file2, "%lf %lf", &lat, &lng);
 		if (lat == -1)
 			break;
-		Position *toAdd = new Position(lat, lng);
+		Position *toAdd = new Position(lat, lng, poles.size());
 		poles.push_back(toAdd);
 	}
 
-	functeste(meters);
-	//vector<vector<int>> SCP = createScpMatrix(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
-	printf("Cheguei!");
-//	int r = checkFeasibleTest(SCP);
-//	printf("%d", r);
+	//sort(poles.begin(), poles.end(), compareByLatitude);
+	vector<Position*> wow;
+
+	Position* testez = new Position(0, 0);
+	for (int i = 1; i < 3; i++)
+	{
+		Position* teste = new Position(0, i);
+		Position* teste2 = new Position(i, 0);
+		Position* teste3 = new Position(0, -i);
+		Position* teste4 = new Position(-i, 0);
+		Position* teste5 = new Position(i, i);
+		Position* teste6 = new Position(i, -i);
+		Position* teste7 = new Position(-i, i);
+		Position* teste8 = new Position(-i, -i);
+		wow.push_back(teste);
+		wow.push_back(teste2);
+		wow.push_back(teste3);
+		wow.push_back(teste4);
+		wow.push_back(teste5);
+		wow.push_back(teste6);
+		wow.push_back(teste7);
+		wow.push_back(teste8);
+	}
+
+	//Grid* g = new Grid(meters,0.01);
+	//int x = 0;
+	//vector<Position*> vizinhos = g->getCell(meters[242]);
+	sort(wow.begin(), wow.end(), compareByLatitude);
+//	getRegionFromVector(wow, testez, 500);
+	
+	vector<vector<int>> SCP = createScpMatrixFromSorted(meters, poles, 0, 2, 0, 0, 15, 3, 5, 1);
+
+	int r = checkFeasibleTest(SCP);
+	printf("\n%d", r);
 }
 
 int main(int argc, char* argv[])

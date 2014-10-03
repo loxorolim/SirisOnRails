@@ -82,6 +82,7 @@
     <ClInclude Include="AutoPlanResponse.h" />
     <ClInclude Include="auxiliars.h" />
     <ClInclude Include="DrawResponse.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="HataSRD.h" />
     <ClInclude Include="MetricsResponse.h" />
     <ClInclude Include="stdafx.h" />
@@ -92,12 +93,14 @@
     <ClCompile Include="auxiliars.cpp" />
     <ClCompile Include="ClusterMethods.cpp" />
     <ClCompile Include="DrawResponse.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HataSRD.cpp" />
     <ClCompile Include="MetricsResponse.cpp" />
     <ClCompile Include="SirisSCPCalculator.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ProgramDatabase</DebugInformationFormat>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

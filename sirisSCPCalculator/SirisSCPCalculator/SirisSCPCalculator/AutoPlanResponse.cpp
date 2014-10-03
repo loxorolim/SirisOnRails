@@ -55,6 +55,77 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 	return ret;
 
 }
+vector<vector<int>> createScpMatrixFromSorted(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
+{
+
+	vector<int> aux;
+	vector<vector<int>> sM;// = vector<vector<int>>(uncoveredMeters.size());
+	sM.reserve(uncoveredMeters.size());
+	sort(poles.begin(), poles.end(), compareByLatitude);
+
+	//for (int i = 0; i < sM.size(); i++)
+	//	sM[i].reserve(poles.size());
+	//vector<int> polesThatCover;
+	//polesThatCover.reserve(poles.size());
+	for (int i = 0; i < uncoveredMeters.size(); i++)
+	{
+		vector<int> polesThatCover;
+		vector<Position*> polesReduced = getRegionFromVector(poles, uncoveredMeters[i], 0.005);
+		for (int j = 0; j < polesReduced.size(); j++)
+		{
+			double dist = getDistance(uncoveredMeters[i], polesReduced[j]);
+			//double dist = 5;
+			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+			//double eff = 1;
+			if (eff >= MARGIN_VALUE)
+			{
+				//polesThatCover.push_back(j);
+				polesThatCover.push_back(polesReduced[j]->index);
+			}
+		}
+
+		//if (polesThatCover.length > 0)
+		if (i % 1000 == 0)
+			printf("%d", i);
+
+		sM.push_back(polesThatCover);
+	}
+	if (meshEnabled)
+	{
+		vector<vector<int>> sMCopy;
+		for (int i = 0; i < sM.size(); i++)
+		{
+			vector<int> toAdd;
+			for (int j = 0; j < sM[i].size(); j++)
+				toAdd.push_back(sM[i][j]);
+			sMCopy.push_back(toAdd);
+		}
+
+		vector<vector<int>> nM = createMeterNeighbourhoodMatrix(uncoveredMeters, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+		for (int i = 0; i < uncoveredMeters.size(); i++)
+		{
+			vector<int> neighbours = nM[i];
+			for (int j = 0; j < meshEnabled; j++)
+			{
+				vector<int> newNeighbours;
+				for (int k = 0; k < neighbours.size(); k++)
+				{
+					sM[i] = concatVectors(sM[i], sMCopy[neighbours[k]]);
+					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
+				}
+				//sM[i] = removeRepeated(sM[i]);
+				//newNeighbours = removeRepeated(newNeighbours);
+				neighbours = newNeighbours;
+
+			}
+		}
+	}
+
+
+
+
+	return sM;
+}
 
 vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {

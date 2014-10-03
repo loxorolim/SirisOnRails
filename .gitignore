@@ -14,3 +14,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+*.pdb
+*.pdb
+*.ipch
+*.sdf
+*.obj
+*.tlog
+*.log
+*.pch
