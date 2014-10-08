@@ -87,14 +87,14 @@ int binary_search( vector<Position*>& sorted_vec, double key,int latOrlng)
 
 	return left;//ou right
 }
-bool compareByLongitude(Position* a, Position *b)
-{
-	return a->longitude < b->longitude;
-}
-bool compareByLatitude(Position* a, Position *b)
-{
-	return a->latitude < b->latitude;
-}
+//bool compareByLongitude(Position* a, Position *b)
+//{
+//	return a->longitude < b->longitude;
+//}
+//bool compareByLatitude(Position* a, Position *b)
+//{
+//	return a->latitude < b->latitude;
+//}
 vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, double d)
 {
 	
@@ -103,7 +103,7 @@ vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, 
 	vector<Position*>::const_iterator first = v.begin() + ind1;
 	vector<Position*>::const_iterator last = v.begin() + ind2;
 	vector<Position*> newVec(first, last);
-	sort(newVec.begin(), newVec.end(), compareByLongitude);
+//	sort(newVec.begin(), newVec.end(), compareByLongitude);
 	ind1 = binary_search(newVec, reference->longitude - d,1);
 	ind2 = binary_search(newVec, reference->longitude + d,1);
 	vector<Position*>::const_iterator first2 = newVec.begin() + ind1;

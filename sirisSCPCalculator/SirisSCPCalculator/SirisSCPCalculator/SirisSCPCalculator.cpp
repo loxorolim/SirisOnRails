@@ -16,6 +16,7 @@
 #include "MetricsResponse.h"
 #include "HataSRD.h"
 #include "Grid.h"
+#include "Requisition.h"
 using namespace std;
 
 
@@ -27,13 +28,13 @@ string readFromPopen()
 	switch (option)
 	{
 		case AUTOPLAN:
-			return executeAutoPlanOption();
+		//	return executeAutoPlanOption();
 			break;
 		case DRAW:
-			return executeDrawOption();
+		//	return executeDrawOption();
 			break;
 		case METRIC:
-			return executeMetricsOption();
+		//	return executeMetricsOption();
 			break;
 		default:
 			return "";
@@ -45,10 +46,10 @@ float RandomNumber(float Min, float Max)
 {
 	return ((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
 }
-void funcConversaoDadosHomma(string arq)
+void funcConversaoDadosHomma(string arq, int mSize)
 {
 	FILE* file;
-	fopen_s(&file, "dadoshomma.txt", "r");
+	fopen_s(&file, arq.c_str(), "r");
 	if (file)
 	{
 		//while (true)
@@ -59,10 +60,13 @@ void funcConversaoDadosHomma(string arq)
 		//	getline(f, str);
 		//	getline(f, str2);
 		//}
+		string ms = to_string(mSize);
+		string um = "arqsTeste//filemeters" + ms + ".txt";
+		string dois = "arqsTeste//filepoles" + ms + ".txt";
 		FILE* filemeters;
-		fopen_s(&filemeters, "filemeters.txt", "w");
+		fopen_s(&filemeters, um.c_str(), "w");
 		FILE* filepoles;
-		fopen_s(&filepoles, "filepoles.txt", "w");
+		fopen_s(&filepoles, dois.c_str(), "w");
 		
 		
 		//double poleX=-1, poleY=-1;
@@ -70,11 +74,11 @@ void funcConversaoDadosHomma(string arq)
 		//double meterX = -1, meterY = -1;
 		int meterAux=-1;
 		//fscanf_s(file, "%f", &uc);
-		vector<double> poleX, poleY,poleX2, poleY2;
+		vector<double> poleX, poleY;
 		double meterX, meterY;
 		//vector<double> poleY;
 		int i = 0;
-		while (true)
+		while (i<mSize)
 		{
 
 			int uc = -1, fu = -1;
@@ -86,23 +90,23 @@ void funcConversaoDadosHomma(string arq)
 			
 			fscanf_s(file, "%lf", &x);
 			fscanf_s(file, "%lf", &y);
-			fscanf_s(file, "%lf", &x2);
-			fscanf_s(file, "%lf", &y2);
+			//fscanf_s(file, "%lf", &x2);
+			//fscanf_s(file, "%lf", &y2);
 
 			if (fu == poleAux || poleAux == -1)
 			{
 				poleX.push_back(x);
 				poleY.push_back(y);
-				poleX2.push_back(x2);
-				poleY2.push_back(y2);
+				//poleX2.push_back(x2);
+				//poleY2.push_back(y2);
 			}
 			else
 			{
 				double xSum = 0, ySum = 0;
 				for (int i = 0; i < poleX.size(); i++)
 				{
-					xSum += (poleX[i]+poleX2[i])/2;
-					ySum += (poleY[i]+poleY2[i])/2;
+					xSum += (poleX[i]);
+					ySum += (poleY[i]);
 				}
 				double poleXToAdd = xSum / poleX.size();
 				double poleYToAdd = ySum / poleY.size();
@@ -112,19 +116,21 @@ void funcConversaoDadosHomma(string arq)
 					//double ang = (360 / poleX.size())*i;
 					//double mx = poleXToAdd + r*cos(ang); 
 					//double my = poleYToAdd + r*sin(ang);
-					double mx = poleXToAdd + RandomNumber(-10, 10);
+					//1grau de latitude = aprox 111km = 111000metros
+					//1
+					double mx = poleXToAdd + RandomNumber(-0.0001, +0.0001);
 					
-					double my = poleYToAdd + RandomNumber(-10, 10);
+					double my = poleYToAdd + RandomNumber(-0.0001, +0.0001);
 					fprintf(filemeters, "%lf %lf\n", mx,my);
 				}
 				poleX.clear();
 				poleY.clear();
 				poleX.push_back(x);
 				poleY.push_back(y);
-				poleX2.clear();
-				poleY2.clear();
-				poleX2.push_back(x2);
-				poleY2.push_back(y2);
+				//poleX2.clear();
+				//poleY2.clear();
+				//poleX2.push_back(x2);
+				//poleY2.push_back(y2);
 				fprintf(filepoles, "%lf %lf\n", poleXToAdd, poleYToAdd);
 				//fazer fprintf aki
 			}
@@ -142,13 +148,16 @@ void funcConversaoDadosHomma(string arq)
 			
 
 
-
+			i++;
 
 		}
+		fclose(file);
+		fclose(filemeters);
+		fclose(filepoles);
 	}
 
 	
-	fclose(file);
+	
 
 }
 int checkFeasibleTest(vector<vector<int>> &scp)
@@ -203,13 +212,13 @@ void functeste(vector<Position*> meters)
 }
 
 
-void createSCPTeste()
+void createSCPTeste(string arqm, string arqp)
 {
 
 	FILE * file;
-	fopen_s(&file, "filemetersconvertidos.txt", "r");
+	fopen_s(&file, arqm.c_str(), "r");
 	FILE * file2;
-	fopen_s(&file2, "filepolesconvertidos.txt", "r");
+	fopen_s(&file2, arqp.c_str(), "r");
 
 
 	vector<Position*> meters;
@@ -238,50 +247,38 @@ void createSCPTeste()
 		poles.push_back(toAdd);
 	}
 
-	//sort(poles.begin(), poles.end(), compareByLatitude);
-	vector<Position*> wow;
-
-	Position* testez = new Position(0, 0);
-	for (int i = 1; i < 3; i++)
-	{
-		Position* teste = new Position(0, i);
-		Position* teste2 = new Position(i, 0);
-		Position* teste3 = new Position(0, -i);
-		Position* teste4 = new Position(-i, 0);
-		Position* teste5 = new Position(i, i);
-		Position* teste6 = new Position(i, -i);
-		Position* teste7 = new Position(-i, i);
-		Position* teste8 = new Position(-i, -i);
-		wow.push_back(teste);
-		wow.push_back(teste2);
-		wow.push_back(teste3);
-		wow.push_back(teste4);
-		wow.push_back(teste5);
-		wow.push_back(teste6);
-		wow.push_back(teste7);
-		wow.push_back(teste8);
-	}
-
-	//Grid* g = new Grid(meters,0.01);
-	//int x = 0;
-	//vector<Position*> vizinhos = g->getCell(meters[242]);
-	sort(wow.begin(), wow.end(), compareByLatitude);
-//	getRegionFromVector(wow, testez, 500);
-	
-	vector<vector<int>> SCP = createScpMatrixFromSorted(meters, poles, 0, 2, 0, 0, 15, 3, 5, 1);
-
+	Requisition* req = new Requisition();
+	req->setConfig(3, 1, 0, 0, 15, 3, 5, 1);
+	req->setMeters(meters);
+	req->setPoles(poles);
+	//vector<vector<int>> SCP2 = req->createScp2();
+	vector<vector<int>> SCP =  req->createScp();
+	//vector<vector<int>> SCP = createScpMatrixFromSorted(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
 	int r = checkFeasibleTest(SCP);
 	printf("\n%d", r);
+//	saveGLPKFile(SCP, poles, "C:\\Sites\\first_app\\teste2.txt");
+//	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\teste2.txt");
+
+	
 }
 
 int main(int argc, char* argv[])
 {
-	//funcConversaoDadosHomma("dadoshomma2.txt");
+	
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv",1000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 2000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 3000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 4000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 5000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 10000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 9999999);
 //	double wow = getHataSRDSuccessRate(50, 0, 0, 0.25, 0, 3, 5, 1);
 //	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
+
 		propagationTable();
-		createSCPTeste();
+		createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
+		//createSCPTeste();
 		//functeste();
 //		for (int i = 0; i < 200; i++)
 //			double wow = getHataSRDSuccessRate(i, 0, 0, 0.25, 0, 3, 5, 1);
