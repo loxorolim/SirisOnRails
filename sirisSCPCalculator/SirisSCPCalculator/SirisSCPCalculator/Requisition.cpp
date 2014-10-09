@@ -168,7 +168,7 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 }
 vector<vector<int>> Requisition::createScp()
 {
-	Grid* g = new Grid(meters, 0.005);
+	Grid* g = new Grid(meters, 0.001);
 	vector<int> aux;
 	vector<vector<int>> sM;
 	sM.reserve(meters.size());
@@ -243,4 +243,71 @@ vector<vector<int>> Requisition::createMeterNeighbourhood(Grid *g)
 	}
 
 	return M;
+}
+void Requisition::saveGLPKFile(vector<vector<int>> SCP)
+{
+	FILE *file;
+		//fopen_s(&file, filename.c_str(), "w");
+	//	if (file == 0)
+	//	{
+	//		printf("Could not open file\n");
+	//	}
+	//	else
+		{
+
+			//TEM Q MUDAR ESSE NEGÓCIO AQUI!
+			string resp;
+			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
+			//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
+			//ret += "set Z:= ";
+			//fprintf_s(file, "set Z:= ");
+			resp += "set Z:= ";
+			for (int i = 0; i < meters.size(); i++)
+				resp += "Z" + to_string(i + 1) + " ";
+
+			resp += ";\n";
+			resp += "set Y:= ";
+
+			for (int i = 0; i < poles.size(); i++)
+				resp += "Y" + to_string(i + 1) + " ";
+
+			resp += ";\n";
+
+			resp += "param A : ";
+	
+			for (int i = 0; i < poles.size(); i++)
+				resp += "Y" + to_string(i + 1) + " ";
+
+			resp += ":= \n";
+			for (int i = 0; i < meters.size(); i++) 
+			{
+				resp += "Z" + to_string(i + 1) + " ";
+				//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+				for (int j = 0; j < poles.size(); j++)
+				{
+					//bool um = false;
+					//for (int k = 0; k < SCP.size(); k++)
+					int cov = -1;
+					cov = find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end();
+					if (cov)
+						resp += "1 ";
+					else
+						resp += "0 ";
+	
+				}
+	
+			}
+			resp += "\n";
+			resp += ";";
+			resp += "end;";
+		
+			ofstream f("GlpkFile.txt");
+
+			f << resp;
+			f.close();
+
+	
+	
+		}
+	
 }

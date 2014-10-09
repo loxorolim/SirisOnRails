@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <vector>
 #include <algorithm>
+#include <fstream>
 #include "auxiliars.h"
 #include "HataSRD.h"
 #include "Grid.h"
@@ -33,6 +34,7 @@ class Requisition
 
 		void readConfiguration();
 		void readPositions(int id);
+		void saveGLPKFile(vector<vector<int>> scp);
 		vector<vector<int>> createScp();
 		vector<vector<int>> createScp2();
 		vector<DrawInfo*> getDrawResponse();

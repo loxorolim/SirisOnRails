@@ -17,6 +17,7 @@
 #include "HataSRD.h"
 #include "Grid.h"
 #include "Requisition.h"
+#include <glpk.h>
 using namespace std;
 
 
@@ -77,8 +78,8 @@ void funcConversaoDadosHomma(string arq, int mSize)
 		vector<double> poleX, poleY;
 		double meterX, meterY;
 		//vector<double> poleY;
-		int i = 0;
-		while (i<mSize)
+		int z = 0;
+		while (z<mSize)
 		{
 
 			int uc = -1, fu = -1;
@@ -121,6 +122,7 @@ void funcConversaoDadosHomma(string arq, int mSize)
 					double mx = poleXToAdd + RandomNumber(-0.0001, +0.0001);
 					
 					double my = poleYToAdd + RandomNumber(-0.0001, +0.0001);
+
 					fprintf(filemeters, "%lf %lf\n", mx,my);
 				}
 				poleX.clear();
@@ -148,7 +150,7 @@ void funcConversaoDadosHomma(string arq, int mSize)
 			
 
 
-			i++;
+			z++;
 
 		}
 		fclose(file);
@@ -160,15 +162,25 @@ void funcConversaoDadosHomma(string arq, int mSize)
 	
 
 }
-int checkFeasibleTest(vector<vector<int>> &scp)
+int checkFeasibleTest(vector<vector<int>> &scp, int mSize)
 {
 	int ret=0;
+	int* v = (int*)malloc(sizeof(int)*mSize);
 	for (int i = 0; i < scp.size(); i++)
 	{
-		if (scp[i].size() == 0)
-			ret++;
+		for (int j = 0; j < scp[i].size();j++)
+		{
+			v[scp[i][j]] = 1;
+		}
 	}
-	return ret;
+	int notCovered = 0;
+	for (int i = 0; i < mSize; i++)
+	{
+		if (v[i] != 1)
+			notCovered++;
+	}
+	free(v);
+	return notCovered;
 }
 
 void functeste(vector<Position*> meters)
@@ -249,16 +261,25 @@ void createSCPTeste(string arqm, string arqp)
 //	Grid* g = new Grid(meters, 0.005);
 //	vector<Position*> vp = g->getCell(meters[100]);
 	Requisition* req = new Requisition();
-	req->setConfig(3, 1, 0, 0, 15, 3, 5, 1);
+	req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
 	req->setMeters(meters);
 	req->setPoles(poles);
-//	vector<vector<int>> SCP2 = req->createScp2();
 	vector<vector<int>> SCP =  req->createScp();
-	//vector<vector<int>> SCP = createScpMatrixFromSorted(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
-//	int r = checkFeasibleTest(SCP);
-//	printf("\n%d", r);
-//	saveGLPKFile(SCP, poles, "C:\\Sites\\first_app\\teste2.txt");
-//	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\teste2.txt");
+	int r = checkFeasibleTest(SCP,meters.size());
+	printf("\n%d", r);
+	req->saveGLPKFile(SCP);
+	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	//req = new Requisition();
+	//req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
+	//req->setMeters(meters);
+	//req->setPoles(poles);
+	//SCP = req->createScp();
+	//r = checkFeasibleTest(SCP, meters.size());
+	//printf("\n%d", r);
+	//req->saveGLPKFile(SCP);
+	//system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	delete req;
+
 
 	
 }
@@ -272,13 +293,17 @@ int main(int argc, char* argv[])
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 4000);
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 5000);
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 10000);
+	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 15000);
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 9999999);
 //	double wow = getHataSRDSuccessRate(50, 0, 0, 0.25, 0, 3, 5, 1);
 //	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
 
 		propagationTable();
-		createSCPTeste("arqsTeste//filemeters5000.txt", "arqsTeste//filepoles5000.txt");
+		createSCPTeste("arqsTeste//filemeters15000.txt", "arqsTeste//filepoles15000.txt");
+//		glp_print_mip(problem, "broken_solution.txt");
+//	glp_write_prob(problem, 0, "broken_glp.mod");
+		//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
 
 		//createSCPTeste();
 		//functeste();
