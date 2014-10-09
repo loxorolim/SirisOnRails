@@ -1,7 +1,19 @@
-﻿Build started 08/10/2014 15:56:34.
-     1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
+﻿Build started 08/10/2014 21:09:30.
+     1>Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Requisition.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt HataSRD.cpp Requisition.cpp SirisSCPCalculator.cpp
+         HataSRD.cpp
+     1>HataSRD.cpp(296): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(312): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>HataSRD.cpp(315): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(330): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(331): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(347): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(348): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>HataSRD.cpp(510): warning C4101: 'a' : unreferenced local variable
+     1>HataSRD.cpp(510): warning C4101: 'b' : unreferenced local variable
+     1>HataSRD.cpp(577): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>HataSRD.cpp(580): warning C4018: '>' : signed/unsigned mismatch
          Requisition.cpp
      1>Requisition.cpp(91): warning C4018: '<' : signed/unsigned mismatch
      1>Requisition.cpp(95): warning C4018: '<' : signed/unsigned mismatch
@@ -9,16 +21,43 @@
      1>Requisition.cpp(151): warning C4018: '<' : signed/unsigned mismatch
      1>Requisition.cpp(153): warning C4018: '<' : signed/unsigned mismatch
      1>Requisition.cpp(156): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(175): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(179): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(182): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(197): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(203): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(226): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(176): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(182): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(185): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(200): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(206): warning C4018: '<' : signed/unsigned mismatch
      1>Requisition.cpp(229): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(233): error C2065: 'eff' : undeclared identifier
-     1>Done Building Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)) -- FAILED.
+     1>Requisition.cpp(234): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(237): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         SirisSCPCalculator.cpp
+     1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
+                 Add macro to precompiled header instead of defining here
+                 SirisSCPCalculator.cpp(4) : use of precompiled header
+     1>SirisSCPCalculator.cpp(106): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(113): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(121): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>SirisSCPCalculator.cpp(123): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>SirisSCPCalculator.cpp(78): warning C4101: 'meterY' : unreferenced local variable
+     1>SirisSCPCalculator.cpp(78): warning C4101: 'meterX' : unreferenced local variable
+     1>SirisSCPCalculator.cpp(166): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(188): warning C4018: '<' : signed/unsigned mismatch
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
+         Release\auxiliars.obj
+         Release\ClusterMethods.obj
+         Release\DrawResponse.obj
+         Release\Grid.obj
+         Release\HataSRD.obj
+         Release\MetricsResponse.obj
+         Release\Requisition.obj
+         Release\SirisSCPCalculator.obj
+         Release\stdafx.obj
+         Generating code
+     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(43): warning C4715: 'readFromPopen' : not all control paths return a value
+         Finished generating code
+         SirisSCPCalculator.vcxproj -> C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
+     1>Done Building Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.50
+Time Elapsed 00:00:02.49

@@ -246,16 +246,17 @@ void createSCPTeste(string arqm, string arqp)
 		Position *toAdd = new Position(lat, lng, poles.size());
 		poles.push_back(toAdd);
 	}
-
+//	Grid* g = new Grid(meters, 0.005);
+//	vector<Position*> vp = g->getCell(meters[100]);
 	Requisition* req = new Requisition();
 	req->setConfig(3, 1, 0, 0, 15, 3, 5, 1);
 	req->setMeters(meters);
 	req->setPoles(poles);
-	//vector<vector<int>> SCP2 = req->createScp2();
+//	vector<vector<int>> SCP2 = req->createScp2();
 	vector<vector<int>> SCP =  req->createScp();
 	//vector<vector<int>> SCP = createScpMatrixFromSorted(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
-	int r = checkFeasibleTest(SCP);
-	printf("\n%d", r);
+//	int r = checkFeasibleTest(SCP);
+//	printf("\n%d", r);
 //	saveGLPKFile(SCP, poles, "C:\\Sites\\first_app\\teste2.txt");
 //	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\teste2.txt");
 
@@ -277,7 +278,8 @@ int main(int argc, char* argv[])
 	{ //essas chaves tao aki por causa do teste do memory leak
 
 		propagationTable();
-		createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
+		createSCPTeste("arqsTeste//filemeters5000.txt", "arqsTeste//filepoles5000.txt");
+
 		//createSCPTeste();
 		//functeste();
 //		for (int i = 0; i < 200; i++)

@@ -15,9 +15,9 @@ Grid::Grid(vector<Position*> v, double cS)
 	minX = mindx;
 	minY = mindy;
 
-	cells = vector<vector<vector<Position*>>>(nx);
-	for (int i = 0; i < nx; i++)
-		cells[i] = vector<vector<Position*>>(ny);
+	//cells = vector<vector<vector<Position*>>>(nx);
+	//for (int i = 0; i < nx; i++)
+	//	cells[i] = vector<vector<Position*>>(ny);
 	cellSize = cS;
 	for (int i = 0; i < v.size(); i++)
 		putPosition(v[i]);
@@ -31,7 +31,8 @@ void Grid::putPosition(Position* p)
 		posX = ceil((p->latitude - minX)/cellSize)-1;
 	if (p->longitude != minY)
 		posY = ceil((p->longitude -minY)/cellSize)-1;
-	cells[posX][posY].push_back(p);
+	//cells[posX][posY].push_back(p);
+	cells[make_pair(posX, posY)].push_back(p);
 }
 vector<Position*> Grid::getCell(Position* reference)
 {
@@ -46,7 +47,8 @@ vector<Position*> Grid::getCell(Position* reference)
 		 return ret;
 	}
 	
-	return cells[posX][posY];
+	//return cells[posX][posY];
+	return cells[make_pair(posX, posY)];
 }
 double getMinX(vector<Position*> v)
 {

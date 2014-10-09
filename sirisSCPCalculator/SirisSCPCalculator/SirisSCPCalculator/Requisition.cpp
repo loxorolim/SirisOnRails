@@ -168,6 +168,7 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 }
 vector<vector<int>> Requisition::createScp()
 {
+	Grid* g = new Grid(meters, 0.005);
 	vector<int> aux;
 	vector<vector<int>> sM;
 	sM.reserve(meters.size());
@@ -175,7 +176,9 @@ vector<vector<int>> Requisition::createScp()
 	for (int i = 0; i < poles.size(); i++)
 	{
 		vector<int> metersCovered;
-		vector<Position*> metersReduced = getActiveRegion(meters, poles[i]);
+		//vector<Position*> metersReduced = getActiveRegion(meters, poles[i]);
+		vector<Position*> metersReduced = g->getCell(poles[i]);
+
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
@@ -193,7 +196,7 @@ vector<vector<int>> Requisition::createScp()
 	if (meshEnabled)
 	{
 
-		vector<vector<int>> nM = createMeterNeighbourhood();
+		vector<vector<int>> nM = createMeterNeighbourhood(g);
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> neighbours = sM[i];
@@ -213,19 +216,21 @@ vector<vector<int>> Requisition::createScp()
 		}
 
 	}
-
+	delete g;
 
 
 
 	return sM;
 }
-vector<vector<int>> Requisition::createMeterNeighbourhood()
+vector<vector<int>> Requisition::createMeterNeighbourhood(Grid *g)
 {
 	vector<vector<int>> M;
 
-	for (int i = 0; i < meters.size(); i++) {
+	for (int i = 0; i < meters.size(); i++) 
+	{
 		vector<int> pointsCovered;
-		vector<Position*> meterRegion = getActiveRegion(meters, meters[i]);
+		//vector<Position*> meterRegion = getActiveRegion(meters, meters[i]);
+		vector<Position*> meterRegion = g->getCell(meters[i]);
 		for (int j = 0; j < meterRegion.size(); j++)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);

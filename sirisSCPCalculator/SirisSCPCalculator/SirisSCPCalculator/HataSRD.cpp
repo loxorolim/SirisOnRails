@@ -608,7 +608,7 @@ void propagationTable()
 	FILE *file;
 	vector<vector<double>> ret;
 
-	fopen_s(&file, "C:\\Sites\\first_app\\dadossiris.txt", "r");
+	fopen_s(&file, "dadossiris.txt", "r");
 	if (file)
 	{
 		double rur = 0;

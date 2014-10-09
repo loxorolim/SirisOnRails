@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "auxiliars.h"
 #include "HataSRD.h"
+#include "Grid.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ class Requisition
 		vector<DrawInfo*> getDrawResponse();
 		void getMetricResponse();
 		vector<Position*> getActiveRegion(vector<Position*> &sorted,Position* ref);
-		vector<vector<int>> createMeterNeighbourhood();
+		vector<vector<int>> createMeterNeighbourhood(Grid *g);
 		void setConfig(int meshEnabled, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD)
 		{
 			this->scenario = scenario; this->technology = technology; this->H_TX = H_TX; this->H_RX = H_RX; this->BIT_RATE = BIT_RATE;
@@ -45,18 +46,18 @@ class Requisition
 		}
 		void setMeters(vector<Position*> &v)
 		{
-			sort(v.begin(), v.end(), compareByLatitude);
+			//sort(v.begin(), v.end(), compareByLatitude);
 			meters = v;
 			
 		}
 		void setPoles(vector<Position*> &v)
 		{
-			sort(v.begin(), v.end(), compareByLatitude);
+			//sort(v.begin(), v.end(), compareByLatitude);
 			poles = v;
 		}
 		void setDAPs(vector<Position*> v)
 		{
-			sort(v.begin(), v.end(), compareByLatitude);
+			//sort(v.begin(), v.end(), compareByLatitude);
 			daps = v;
 
 		}
