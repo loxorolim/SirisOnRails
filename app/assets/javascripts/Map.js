@@ -38,7 +38,7 @@ function initialize() {
 
 
     //loadCarDriveFromXml();
-    loadNodesFromXml();
+    //loadNodesFromXml();
     //loadDapPositionsFromXml();
     //var trapezoid = $('#trapezoid');
     //trapezoid.index = 1;

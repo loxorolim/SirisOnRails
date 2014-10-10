@@ -264,11 +264,14 @@ void createSCPTeste(string arqm, string arqp)
 	req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
 	req->setMeters(meters);
 	req->setPoles(poles);
-	vector<vector<int>> SCP =  req->createScp();
-	int r = checkFeasibleTest(SCP,meters.size());
-	printf("\n%d", r);
-	req->saveGLPKFile(SCP);
-	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	//vector<vector<int>> SCP =  req->createScp();
+	vector<vector<int>> scp2 = createScpMatrix22(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
+	saveGLPKFile2(scp2,poles,"glpk2.txt");
+	req->getAutoPlanResponse();
+	//int r = checkFeasibleTest(SCP,meters.size());
+//	printf("\n%d", r);
+	
+	
 	//req = new Requisition();
 	//req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
 	//req->setMeters(meters);
@@ -300,7 +303,7 @@ int main(int argc, char* argv[])
 	{ //essas chaves tao aki por causa do teste do memory leak
 
 		propagationTable();
-		createSCPTeste("arqsTeste//filemeters15000.txt", "arqsTeste//filepoles15000.txt");
+		//createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
 //		glp_print_mip(problem, "broken_solution.txt");
 //	glp_write_prob(problem, 0, "broken_glp.mod");
 		//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
@@ -310,8 +313,10 @@ int main(int argc, char* argv[])
 //		for (int i = 0; i < 200; i++)
 //			double wow = getHataSRDSuccessRate(i, 0, 0, 0.25, 0, 3, 5, 1);
 		string answer = "";
-		answer = readFromPopen();
+		Requisition *req = new Requisition();
+		answer = req->getResponse();
 		printf_s("%s",answer.c_str());
+		delete req;
 	}
 
 	FILE *pFile;

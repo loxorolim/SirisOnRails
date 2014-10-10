@@ -29,7 +29,16 @@ class Requisition
 	public:
 		Requisition()
 		{
-			//readConfiguration();
+			readConfiguration();
+		}
+		~Requisition()
+		{
+			for (int i = 0; i < meters.size(); i++)
+				delete meters[i];
+			for (int i = 0; i < poles.size(); i++)
+				delete poles[i];
+			for (int i = 0; i < daps.size(); i++)
+				delete daps[i];
 		}
 
 		void readConfiguration();
@@ -37,8 +46,11 @@ class Requisition
 		void saveGLPKFile(vector<vector<int>> scp);
 		vector<vector<int>> createScp();
 		vector<vector<int>> createScp2();
-		vector<DrawInfo*> getDrawResponse();
-		void getMetricResponse();
+		vector<DrawInfo*> calculateDrawingInfo();
+		string getResponse();
+		string getDrawResponse();
+		string getMetricResponse();
+		string getAutoPlanResponse();
 		vector<Position*> getActiveRegion(vector<Position*> &sorted,Position* ref);
 		vector<vector<int>> createMeterNeighbourhood(Grid *g);
 		void setConfig(int meshEnabled, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD)

@@ -44,12 +44,12 @@ void Requisition::readPositions(int id)
 		if (id == POLE)
 			poles.push_back(toAdd);	
 	}
-	if(id == DAP)
-		sort(daps.begin(), daps.end(), compareByLatitude);
-	if (id == METER)
-		sort(meters.begin(), meters.end(), compareByLatitude);
-	if (id == POLE)
-		sort(poles.begin(), poles.end(), compareByLatitude);
+	//if(id == DAP)
+	//	sort(daps.begin(), daps.end(), compareByLatitude);
+	//if (id == METER)
+	//	sort(meters.begin(), meters.end(), compareByLatitude);
+	//if (id == POLE)
+	//	sort(poles.begin(), poles.end(), compareByLatitude);
 }
 
 void Requisition::readConfiguration()
@@ -82,69 +82,7 @@ void Requisition::readConfiguration()
 		break;
 	}
 }
-vector<vector<int>> Requisition::createScp2()
-{
-	vector<int> aux;
-	vector<vector<int>> sM;
-	sM.reserve(meters.size());
 
-	for (int i = 0; i < meters.size(); i++)
-	{
-		vector<int> polesThatCover;
-		vector<Position*> polesReduced = getActiveRegion(poles, meters[i]);
-		for (int j = 0; j < polesReduced.size(); j++)
-		{
-			double dist = getDistance(meters[i], polesReduced[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-			if (eff >= MARGIN_VALUE)
-				polesThatCover.push_back(polesReduced[j]->index);
-		}
-
-		//if (polesThatCover.length > 0)
-		if (i % 1000 == 0)
-			printf("%d", i);
-
-		sM.push_back(polesThatCover);
-	}
-	//if (meshEnabled)
-	//{
-	//	vector<vector<int>> sMCopy;
-	//	for (int i = 0; i < sM.size(); i++)
-	//	{
-	//		vector<int> toAdd;
-	//		for (int j = 0; j < sM[i].size(); j++)
-	//			toAdd.push_back(sM[i][j]);
-	//		sMCopy.push_back(toAdd);
-	//	}
-
-	//	vector<vector<int>> nM = createMeterNeighbourhood();
-	//	for (int i = 0; i < meters.size(); i++)
-	//	{
-	//		vector<int> neighbours = nM[i];
-	//		for (int j = 0; j < meshEnabled; j++)
-	//		{
-	//			vector<int> newNeighbours;
-	//			for (int k = 0; k < neighbours.size(); k++)
-	//			{
-	//				sM[i] = concatVectors(sM[i], sMCopy[neighbours[k]]);
-	//				newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
-	//			}
-	//			//sM[i] = removeRepeated(sM[i]);
-	//			//newNeighbours = removeRepeated(newNeighbours);
-	//			neighbours = newNeighbours;
-
-	//		}
-	//		if (i % 1000 == 0)
-	//			printf("MESH%d", i);
-	//	}
-
-	//}
-
-
-
-
-	return sM;
-}
 vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 {
 	vector<int> ret;
@@ -183,13 +121,14 @@ vector<vector<int>> Requisition::createScp()
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
 			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+
 			if (eff >= MARGIN_VALUE)
 				metersCovered.push_back(metersReduced[j]->index);
 		}
 
 		//if (polesThatCover.length > 0)
-		if (i % 1000 == 0)
-			printf("%d", i);
+		//if (i % 1000 == 0)
+		//	printf("%d", i);
 
 		sM.push_back(metersCovered);
 	}
@@ -212,7 +151,7 @@ vector<vector<int>> Requisition::createScp()
 
 			}
 			
-				printf("MESH%d", i);
+			//	printf("MESH%d", i);
 		}
 
 	}
@@ -236,7 +175,7 @@ vector<vector<int>> Requisition::createMeterNeighbourhood(Grid *g)
 			double dist = getDistance(meters[i], meterRegion[j]);
 			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD);
 			if (i != j && eff >= MARGIN_VALUE)
-				pointsCovered.push_back(j);
+				pointsCovered.push_back(meterRegion[j]->index);
 
 		}
 		M.push_back(pointsCovered);
@@ -257,7 +196,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 
 			//TEM Q MUDAR ESSE NEGÓCIO AQUI!
 			string resp;
-			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
+			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"C:\\Sites\\first_app\\Results.txt\";\n data;\n";
 			//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
 			//ret += "set Z:= ";
 			//fprintf_s(file, "set Z:= ");
@@ -288,7 +227,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 					//bool um = false;
 					//for (int k = 0; k < SCP.size(); k++)
 					int cov = -1;
-					cov = find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end();
+					cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
 					if (cov)
 						resp += "1 ";
 					else
@@ -301,7 +240,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 			resp += ";";
 			resp += "end;";
 		
-			ofstream f("GlpkFile.txt");
+			ofstream f("C:\\Sites\\first_app\\GlpkFile.txt");
 
 			f << resp;
 			f.close();
@@ -310,4 +249,139 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 	
 		}
 	
+}
+string Requisition::getAutoPlanResponse()
+{
+	vector<vector<int>> SCP = createScp();
+	saveGLPKFile(SCP);
+	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
+	
+
+	ifstream f("C:\\Sites\\first_app\\Results.txt");
+	string str;
+	getline(f, str);
+	//string file_contents;
+	//while (getline(f, str))
+	//{
+	//	file_contents += str;
+	//	file_contents.push_back('\n');
+	//}
+	return str;
+}
+vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2)
+{
+	//remove v2 do v1
+	vector<Position*> ret;
+	for (int i = 0; i < v1.size(); i++)
+	{
+		auto it = find(v2.begin(), v2.end(), v1[i]);
+		if (it == v2.end())
+		{
+			ret.push_back(v1[i]);
+		}
+	}
+	return ret;
+}
+
+DrawInfo* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, bool SRD)
+{
+	double minDist = -1;
+	Position* meterToConnect = NULL;
+	for (int i = 0; i < connectedMeters.size(); i++)
+	{
+		double dist = getDistance(meter, connectedMeters[i]);
+		if (dist < minDist || minDist == -1)
+		{
+			minDist = dist;
+			meterToConnect = connectedMeters[i];
+		}
+	}
+	if (minDist != -1)
+	{
+		double dist = getDistance(meter, meterToConnect);
+		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		if (effs >= MARGIN_VALUE) {
+			DrawInfo* ret = new DrawInfo(meter, meterToConnect, effs, dist, 1);
+			return ret;
+		}
+	}
+	return NULL;
+}
+vector<DrawInfo*> Requisition::calculateDrawingInfo()
+{
+
+
+	vector<DrawInfo*> toCover;
+	vector<Position*> coveredMeters;
+	vector<Position*> allMarkers;
+	allMarkers.insert(allMarkers.end(), meters.begin(), meters.end());
+
+	for (int d = 0; d < daps.size(); d++)
+	{
+		for (int i = 0; i < allMarkers.size(); i++) {
+			double dist = getDistance(daps[d], allMarkers[i]);
+			double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			if (effs >= MARGIN_VALUE)
+			{ //SE CONSIDERAR DAPS TEM Q ALTERA AKI PRA NAO CRIAR UMA LINHA COM ELE MESMO
+
+				DrawInfo* toAdd = new DrawInfo(daps[d], allMarkers[i], effs, dist, 0);
+				toCover.push_back(toAdd);
+				coveredMeters.push_back(allMarkers[i]);
+			}
+		}
+		//toCover = toCover.sort(function(a, b) { return a.value.distance - b.value.distance });
+		//for (int i = 0; i < toCover.size(); i++)
+		//	this.connect(toCover[i].marker, toCover[i].value);
+	}
+	if (meshEnabled)
+	{
+		sort(coveredMeters.begin(), coveredMeters.end());
+		coveredMeters.erase(unique(coveredMeters.begin(), coveredMeters.end()), coveredMeters.end());
+		vector<Position*> uncoveredMeters = removeVectorFromAnother(allMarkers, coveredMeters);
+		vector<Position*> aux = coveredMeters;
+		for (int i = 0; i < meshEnabled; i++)
+		{
+			vector<Position*> newCovered;
+			for (int j = 0; j < uncoveredMeters.size(); j++)
+			{
+				DrawInfo* toAdd = chooseMeterToConnect(uncoveredMeters[j], aux, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+				if (toAdd)
+				{
+					toCover.push_back(toAdd);
+					newCovered.push_back(uncoveredMeters[j]);
+				}
+			}
+			aux = newCovered;
+			uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+		}
+
+	}
+	return toCover;
+}
+string Requisition::getDrawResponse()
+{
+	vector<DrawInfo*> drawInfos = calculateDrawingInfo();
+	string ret = "";
+	for (int i = 0; i < drawInfos.size(); i++)
+		ret += drawInfos[i]->toString() + " ";
+
+	for (int i = 0; i < drawInfos.size(); i++)
+		delete drawInfos[i];
+	
+
+	return ret;
+}
+string Requisition::getMetricResponse()
+{
+	return "";
+}
+string Requisition::getResponse()
+{
+	if (option == AUTOPLAN)
+		return getAutoPlanResponse();
+	if (option == DRAW)
+		return getDrawResponse();
+	if (option == METRIC)
+		return getMetricResponse();
+	return "";
 }

@@ -3,7 +3,7 @@
         ID: null,
         type: "Meter",
         position: null,
-        map: null,
+        map: map,
         zIndex: 2,
         draggable: true,
         ghost: null,

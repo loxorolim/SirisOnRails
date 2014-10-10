@@ -127,76 +127,75 @@ using namespace std;
 //	return sM;
 //}
 //
-//vector<vector<int>> createScpMatrix(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
-//{
-//
-//	vector<int> aux;
-//	vector<vector<int>> sM = vector<vector<int>>(uncoveredMeters.size());
-//	//sM.reserve(uncoveredMeters.size());
-//
-//		
-//	//for (int i = 0; i < sM.size(); i++)
-//	//	sM[i].reserve(poles.size());
-//	//vector<int> polesThatCover;
-//	//polesThatCover.reserve(poles.size());
-//	for (int i = 0; i < uncoveredMeters.size(); i++) 
-//	{
-//		vector<int> polesThatCover;
-//		for (int j = 0; j < poles.size(); j++)
-//		{
-//			double dist = getDistance(uncoveredMeters[i], poles[j]);
-//			//double dist = 5;
-//			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
-//			//double eff = 1;
-//			if (eff >= MARGIN_VALUE)
-//			{
-//				//polesThatCover.push_back(j);
-//				sM[i].push_back(j);
-//			}
-//		}
-//
-//		//if (polesThatCover.length > 0)
-//		if (i % 1000 == 0)
-//			printf("%d",i);
-//
-//		//sM.push_back(polesThatCover);
-//	}
-//	if (meshEnabled)
-//	{
-//		vector<vector<int>> sMCopy;
-//		for (int i = 0; i < sM.size(); i++)
-//		{
-//			vector<int> toAdd;
-//			for (int j = 0; j < sM[i].size(); j++)
-//				toAdd.push_back(sM[i][j]);
-//			sMCopy.push_back(toAdd);
-//		}
-//
-//		vector<vector<int>> nM = createMeterNeighbourhoodMatrix(uncoveredMeters, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
-//		for (int i = 0; i < uncoveredMeters.size(); i++)
-//		{
-//			vector<int> neighbours = nM[i];
-//			for (int j = 0; j < meshEnabled; j++)
-//			{
-//				vector<int> newNeighbours;
-//				for (int k = 0; k < neighbours.size(); k++)
-//				{
-//					sM[i] = concatVectors(sM[i], sMCopy[neighbours[k]]);
-//					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
-//				}
-//				//sM[i] = removeRepeated(sM[i]);
-//				//newNeighbours = removeRepeated(newNeighbours);
-//				neighbours = newNeighbours;
-//
-//			}
-//		}
-//	}
-//
-//
-//
-//
-//	return sM;
-//}
+vector<vector<int>> createScpMatrix22(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
+{
+
+	vector<int> aux;
+	vector<vector<int>> sM = vector<vector<int>>(uncoveredMeters.size());
+	//sM.reserve(uncoveredMeters.size());
+
+		
+	//for (int i = 0; i < sM.size(); i++)
+	//	sM[i].reserve(poles.size());
+	//vector<int> polesThatCover;
+	//polesThatCover.reserve(poles.size());
+	for (int i = 0; i < uncoveredMeters.size(); i++) 
+	{
+		vector<int> polesThatCover;
+		for (int j = 0; j < poles.size(); j++)
+		{
+			double dist = getDistance(uncoveredMeters[i], poles[j]);
+			//double dist = 5;
+			double eff = getHataSRDSuccessRate(dist, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+			//double eff = 1;
+			if (eff >= MARGIN_VALUE)
+			{
+				//polesThatCover.push_back(j);
+				sM[i].push_back(j);
+			}
+		}
+
+		//if (polesThatCover.length > 0)
+
+
+		//sM.push_back(polesThatCover);
+	}
+	//if (meshEnabled)
+	//{
+	//	vector<vector<int>> sMCopy;
+	//	for (int i = 0; i < sM.size(); i++)
+	//	{
+	//		vector<int> toAdd;
+	//		for (int j = 0; j < sM[i].size(); j++)
+	//			toAdd.push_back(sM[i][j]);
+	//		sMCopy.push_back(toAdd);
+	//	}
+
+	//	vector<vector<int>> nM = createMeterNeighbourhoodMatrix(uncoveredMeters, env, technology, bit_rate, transmitter_power, h_tx, h_rx, SRD);
+	//	for (int i = 0; i < uncoveredMeters.size(); i++)
+	//	{
+	//		vector<int> neighbours = nM[i];
+	//		for (int j = 0; j < meshEnabled; j++)
+	//		{
+	//			vector<int> newNeighbours;
+	//			for (int k = 0; k < neighbours.size(); k++)
+	//			{
+	//				sM[i] = concatVectors(sM[i], sMCopy[neighbours[k]]);
+	//				newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
+	//			}
+	//			//sM[i] = removeRepeated(sM[i]);
+	//			//newNeighbours = removeRepeated(newNeighbours);
+	//			neighbours = newNeighbours;
+
+	//		}
+	//	}
+	//}
+
+
+
+
+	return sM;
+}
 //
 ////vector<vector<int>> createScpMatrix2(vector<Position*>& meters, vector<Position*>& poles, int meshMaxJumps, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 ////{
@@ -243,81 +242,81 @@ using namespace std;
 ////	return sM;
 ////}
 //
-//void saveGLPKFile(vector<vector<int>> &SCP, vector<Position*> &poles, string filename)
-//{
-//	FILE *file;
-//	//fopen_s(&file, filename.c_str(), "w");
-////	if (file == 0)
-////	{
-////		printf("Could not open file\n");
-////	}
-////	else
+void saveGLPKFile2(vector<vector<int>> &SCP, vector<Position*> &poles, string filename)
+{
+	FILE *file;
+	//fopen_s(&file, filename.c_str(), "w");
+//	if (file == 0)
 //	{
-//		int Z = SCP.size();
-//		int Y = poles.size();
-//		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
-//		string resp;
-//		resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
-//		//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
-//		//ret += "set Z:= ";
-//		//fprintf_s(file, "set Z:= ");
-//		resp += "set Z:= ";
-//		for (int i = 0; i < Z; i++)
-//			resp += "Z" + to_string(i + 1) + " ";
-//			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
-//		resp += ";\n";
-//		resp += "set Y:= ";
-//		//fprintf_s(file, ";\n");
-//		//fprintf_s(file, "set Y:= ");
-//		for (int i = 0; i < Y; i++)
-//			resp += "Y" + to_string(i + 1) + " ";
-//			//fprintf_s(file, "%s%d%s", "Y", (i + 1), " ");
-//		//fprintf_s(file, ";\n");
-//		resp += ";\n";
-//		//fprintf_s(file, "param A : ");
-//		resp += "param A : ";
-//
-//		for (int i = 0; i < Y; i++)
-//			resp += "Y" + to_string(i + 1) + " ";
-//			//fprintf_s(file, "%s%d%s", "Y", (i + 1), " ");
-//		//fprintf_s(file, ":= \n");
-//		resp += ":= \n";
-//		for (int i = 0; i < Z; i++) {
-//			resp += "Z" + to_string(i + 1) + " ";
-//			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
-//			for (int j = 0; j < Y; j++) {
-//				bool um = false;
-//				for (int k = 0; k < SCP[i].size(); k++)
-//				if (j == SCP[i][k])
-//					um = true;
-//				if (um)
-//					resp += "1 ";
-//					//fprintf_s(file, "1 ");
-//				else
-//					resp += "0 ";
-//					//fprintf_s(file, "0 ");
-//
-//			}
-//
-//		}
-//		resp += "\n";
-//		resp += ";";
-//		resp += "end;";
-////		fprintf_s(file, "\n");
-////		fprintf_s(file, ";");
-////		fprintf_s(file, "end;");
-//		//fprintf_s(file, resp.c_str());
-//		ofstream f(filename.c_str());
-//		//string str;
-//		//getline(f, str);
-//		f << resp;
-//		f.close();
-//		//fclose(file);
-//
-//
+//		printf("Could not open file\n");
 //	}
-//
-//}
+//	else
+	{
+		int Z = SCP.size();
+		int Y = poles.size();
+		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
+		string resp;
+		resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
+		//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
+		//ret += "set Z:= ";
+		//fprintf_s(file, "set Z:= ");
+		resp += "set Z:= ";
+		for (int i = 0; i < Z; i++)
+			resp += "Z" + to_string(i + 1) + " ";
+			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+		resp += ";\n";
+		resp += "set Y:= ";
+		//fprintf_s(file, ";\n");
+		//fprintf_s(file, "set Y:= ");
+		for (int i = 0; i < Y; i++)
+			resp += "Y" + to_string(i + 1) + " ";
+			//fprintf_s(file, "%s%d%s", "Y", (i + 1), " ");
+		//fprintf_s(file, ";\n");
+		resp += ";\n";
+		//fprintf_s(file, "param A : ");
+		resp += "param A : ";
+
+		for (int i = 0; i < Y; i++)
+			resp += "Y" + to_string(i + 1) + " ";
+			//fprintf_s(file, "%s%d%s", "Y", (i + 1), " ");
+		//fprintf_s(file, ":= \n");
+		resp += ":= \n";
+		for (int i = 0; i < Z; i++) {
+			resp += "Z" + to_string(i + 1) + " ";
+			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+			for (int j = 0; j < Y; j++) {
+				bool um = false;
+				for (int k = 0; k < SCP[i].size(); k++)
+				if (j == SCP[i][k])
+					um = true;
+				if (um)
+					resp += "1 ";
+					//fprintf_s(file, "1 ");
+				else
+					resp += "0 ";
+					//fprintf_s(file, "0 ");
+
+			}
+
+		}
+		resp += "\n";
+		resp += ";";
+		resp += "end;";
+//		fprintf_s(file, "\n");
+//		fprintf_s(file, ";");
+//		fprintf_s(file, "end;");
+		//fprintf_s(file, resp.c_str());
+		ofstream f(filename.c_str());
+		//string str;
+		//getline(f, str);
+		f << resp;
+		f.close();
+		//fclose(file);
+
+
+	}
+
+}
 //string executeAutoPlanOption()
 //{
 //
