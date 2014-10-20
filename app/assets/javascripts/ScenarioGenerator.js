@@ -1,7 +1,7 @@
 var generatorPositions = [];
 var offset = 5;
-var offsetMin = 3;
-var offsetMax = 8; // metros para colocar os postes
+var offsetMin = 12;
+var offsetMax = 16; 
 var meterOffset = 2;
 var meterOffsetMin = 0.5;
 var meterOffsetMax = 2;
@@ -39,8 +39,9 @@ function putMeters(directionResult) {
   // can keep track of it and remove it when calculating new
   // routes.
    var geo=google.maps.geometry.spherical;
-	   for(var j = 0; j < directionResult.routes.length; j++){
-	   var myRoute = directionResult.routes[j].overview_path;
+	//for(var j = 0; j < directionResult.routes.length; j++){
+	   //var myRoute = directionResult.routes[j].overview_path;
+	   var myRoute = directionResult.routes[0].overview_path;
 	   var i = 1
 	   var ini = myRoute[0];
 	   var seq ;
@@ -62,7 +63,7 @@ function putMeters(directionResult) {
 		   		i++;
 		   	}
 	   }
-   }
+  // }
    
 }
 function putPoles(directionResult) {
@@ -71,8 +72,9 @@ function putPoles(directionResult) {
   // can keep track of it and remove it when calculating new
   // routes.
    var geo=google.maps.geometry.spherical;
-   for(var j = 0; j < directionResult.routes.length; j++){
-   		var myRoute = directionResult.routes[j].overview_path;
+   //for(var j = 0; j < directionResult.routes.length; j++){
+   	//	var myRoute = directionResult.routes[j].overview_path;
+       var myRoute = directionResult.routes[0].overview_path;
 	   var i = 1
 	   var ini = myRoute[0];
 	   var seq ;
@@ -84,12 +86,9 @@ function putPoles(directionResult) {
 		   	if(distToSeq > poleOffset){
 		   		
 		   		pos=geo.computeOffset(ini,poleOffset,geo.computeHeading(ini,seq));
-		   		var pole = createPole();
-		   		pole.placeOnMap(pos.lat(),pos.lng());
-		   		//var latLng = new google.maps.LatLng(latitude, longitude);
-				//	var meter = createMeter();
-				//	meter.placeOnMap(latitude, longitude);
-				/*
+		   		//var pole = createPole();
+		   		//pole.placeOnMap(pos.lat(),pos.lng());
+		   		
 					var populationOptions = {
 				      strokeColor: '#FF0000',
 				      strokeOpacity: 0.8,
@@ -102,14 +101,14 @@ function putPoles(directionResult) {
 				    };
     // Add the circle for this city to the map.
     			var cityCircle = new google.maps.Circle(populationOptions);
-    			*/
+    			poles.push(cityCircle);
 		    	ini = pos;
 		   	}
 		   	else{
 		   		i++;
 		   	}
 	   }
-   }
+   //}
   
 }
 function generateMeters(latlng, direction){
@@ -119,10 +118,10 @@ function generateMeters(latlng, direction){
 	pos1=geo.computeOffset(latlng,-meterOffset,direction);
 	meterOffset = randomBetween(meterOffsetMin,meterOffsetMax);
 	pos2=geo.computeOffset(latlng,meterOffset,direction);
-	var meter = createMeter();
-	meter.placeOnMap(pos1.lat(), pos1.lng());
-	var meter2 = createMeter();
-	meter2.placeOnMap(pos2.lat(), pos2.lng());
+	//var meter = createMeter();
+	//meter.placeOnMap(pos1.lat(), pos1.lng());
+	//var meter2 = createMeter();
+	//meter2.placeOnMap(pos2.lat(), pos2.lng());
 	var populationOptions = {
 				      strokeColor: '#FF0000',
 				      strokeOpacity: 0.8,
@@ -134,7 +133,8 @@ function generateMeters(latlng, direction){
 				      radius: 1
 				    };
     // Add the circle for this city to the map.
-   /* 			var cityCircle = new google.maps.Circle(populationOptions);
+    			var cityCircle = new google.maps.Circle(populationOptions);
+    			meters.push(cityCircle);
     			var populationOptions = {
 				      strokeColor: '#FF0000',
 				      strokeOpacity: 0.8,
@@ -147,7 +147,8 @@ function generateMeters(latlng, direction){
 				    };
     // Add the circle for this city to the map.
     			var cityCircle = new google.maps.Circle(populationOptions);
-    */
+    			meters.push(cityCircle);
+    
 }
 function randomBetween(num1,num2){
 	return Math.floor(Math.random() * num2) + num1

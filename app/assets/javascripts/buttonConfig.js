@@ -263,7 +263,22 @@ function setButtons()
         //setTimeout('applyPlanning()', 1000);
         //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
         sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
+        var s ="";
+        for(var i = 0; i < meters.length;i++)
+        {
+            var latlng = meters[i].getPosition();
+            s+= latlng.lat().toString() + " " + latlng.lng().toString() + "\n";
 
+        }
+        var s2 = "";
+        for(var i = 0; i < poles.length;i++)
+        {
+            var latlng = poles[i].getPosition();
+            s2+= latlng.lat().toString() + " " + latlng.lng().toString() + "\n";
+
+        }
+
+        var x = "wow";
 
 
 

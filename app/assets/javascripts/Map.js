@@ -21,7 +21,7 @@ function initialize() {
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
     // google.maps.event.addListener(map, 'idle', showMarkers);
-
+    google.maps.event.addListener(map,'bounds_changed', removeMarkers);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
 
@@ -65,7 +65,40 @@ function initialize() {
 
    // applyPlanning();
 }
+function removeMarkers() {
 
+   var bounds = map.getBounds();
+
+  // var sw = bounds.getSouthWest();
+  // var ne = bounds.getNorthEast();
+  // var bounds = new google.maps.LatLngBounds(sw, ne);
+    for (var i = 0 ; i < meters.length; i++){
+        if (!bounds.contains(new google.maps.LatLng(meters[i].getPosition().lat(), meters[i].getPosition().lng()))) {
+            meters[i].setVisible(false);     
+        }
+        else{
+            meters[i].setVisible(true);
+        }   
+    }
+    for (var i = 0 ; i < poles.length; i++){
+        if (!bounds.contains(new google.maps.LatLng(poles[i].getPosition().lat(), poles[i].getPosition().lng()))) {
+            poles[i].setVisible(false);     
+        }
+        else{
+            poles[i].setVisible(true);
+        }   
+    }
+    for (var i = 0 ; i < daps.length; i++){
+        if (!bounds.contains(new google.maps.LatLng(daps[i].getPosition().lat(),daps[i].getPosition().lng()))) {
+            daps[i].setVisible(false);     
+        }
+        else{
+            daps[i].setVisible(true);
+        }   
+    }
+       
+
+}
 function clusterMap() {
     for (var i = 0; i < allMarkers.length; i++) {
         allMarkers[i].setOptions({ map: map, visible: true });

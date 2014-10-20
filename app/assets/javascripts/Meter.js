@@ -54,10 +54,10 @@
         displayInfoWindow: function () {
             var content = 'ID: ' + this.ID +
                 '<br>Latitude: ' + this.position.lat() +
-                '<br>Longitude: ' + this.position.lng() +
-                '<br>Quantidade de vizinhos: ' + this.neighbours.length +
-                '<br>Carga: ' + this.load +
-                '<br>Conectado?: ' + this.connected;
+                '<br>Longitude: ' + this.position.lng() ;
+               // '<br>Quantidade de vizinhos: ' + this.neighbours.length +
+               // '<br>Carga: ' + this.load +
+               // '<br>Conectado?: ' + this.connected;
 
             infowindow.setContent(content);
             infowindow.open(map, this);
