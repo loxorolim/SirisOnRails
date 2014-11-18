@@ -6,8 +6,8 @@ var meterOffset = 2;
 var meterOffsetMin = 0.5;
 var meterOffsetMax = 2;
 var poleOffset = 10;
-var poleOffsetMin = 5;
-var poleOffsetMax = 15;
+var poleOffsetMin = 15;
+var poleOffsetMax = 30;
 
 
 function generateScenario (){
@@ -27,7 +27,7 @@ function generateScenario (){
       //var warnings = document.getElementById('warnings_panel');
       //warnings.innerHTML = '<b>' + response.routes[0].warnings + '</b>';
       //directionsDisplay.setDirections(response);
-      putMeters(response);
+  //    putMeters(response);
       putPoles(response);
     }
   });
@@ -86,10 +86,10 @@ function putPoles(directionResult) {
 		   	if(distToSeq > poleOffset){
 		   		
 		   		pos=geo.computeOffset(ini,poleOffset,geo.computeHeading(ini,seq));
-		   		//var pole = createPole();
-		   		//pole.placeOnMap(pos.lat(),pos.lng());
+		   		var pole = createPole();
+		   		pole.placeOnMap(pos.lat(),pos.lng());
 		   		
-					var populationOptions = {
+				/*	var populationOptions = {
 				      strokeColor: '#FF0000',
 				      strokeOpacity: 0.8,
 				      strokeWeight: 2,
@@ -102,7 +102,9 @@ function putPoles(directionResult) {
     // Add the circle for this city to the map.
     			var cityCircle = new google.maps.Circle(populationOptions);
     			poles.push(cityCircle);
+    			*/
 		    	ini = pos;
+
 		   	}
 		   	else{
 		   		i++;

@@ -40,6 +40,8 @@ function initialize() {
     //loadCarDriveFromXml();
     //loadNodesFromXml();
     //loadDapPositionsFromXml();
+    loadMetersFromTxt();
+    loadPolesFromTxt();
     //var trapezoid = $('#trapezoid');
     //trapezoid.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(

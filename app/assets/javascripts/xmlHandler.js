@@ -29,6 +29,50 @@ function showNodesXml()
 	fin += "<br>&lt\/Nodes&gt";
 	$("#xmltextnodes").html(init+meters+daps+fin);
 }
+function loadMetersFromTxt()
+{
+	$(document).ready(function()
+	{
+		$.ajax(
+		{
+			type : "GET",
+			url : "/assets/metersInstanciaMédia3666.txt",
+			dataType : "text",
+			success : function(text)
+			{
+				var split = text.split("\n");
+				for(var i = 0; i < split.length; i++)
+				{
+					var pos = split[i].split(" ");
+					var meter = createMeter();
+					meter.placeOnMap(pos[1], pos[0]);
+				}
+			}
+		});
+	});
+}
+function loadPolesFromTxt()
+{
+	$(document).ready(function()
+	{
+		$.ajax(
+		{
+			type : "GET",
+			url : "/assets/polesInstanciaMédia.txt",
+			dataType : "text",
+			success : function(text)
+			{
+				var split = text.split("\n");
+				for(var i = 0; i < split.length; i++)
+				{
+					var pos = split[i].split(" ");
+					var pole = createPole();
+					pole.placeOnMap(pos[1], pos[0]);
+				}
+			}
+		});
+	});
+}
 function showNodesKml() {
     var init = "&lt?xml version=\"1.0\" encoding=\"UTF-8\"?&gt" + "<br>&ltkml xmlns=\"http://earth.google.com/kml/2.2\"&gt<br>&ltDocument&gt";
     var style = "<br>&ltStyle id=\"greenLine\"&gt<br>&ltLineStyle&gt<br>&ltcolor&gtFF00D214&lt\/color&gt<br>&ltwidth&gt5&lt\/width&gt<br>&lt\/LineStyle&gt<br>&lt\/Style&gt<br>&ltStyle id=\"blueLine\"&gt<br>&ltLineStyle&gt<br>&ltcolor&gtFFB40014&lt\/color&gt<br>&ltwidth&gt5&lt\/width&gt<br>&lt\/LineStyle&gt<br>&lt\/Style&gt<br>&ltStyle id=\"yellowLine\"&gt<br>&ltLineStyle&gt<br>&ltcolor&gtFF14F0FF&lt\/color&gt<br>&ltwidth&gt5&lt\/width&gt<br>&lt\/LineStyle&gt<br>&lt\/Style&gt";
