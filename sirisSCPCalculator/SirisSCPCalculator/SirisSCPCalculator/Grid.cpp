@@ -2,14 +2,20 @@
 #include "Grid.h"
 
 
-Grid::Grid(vector<Position*> v, double cS)
+Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 {
 	if (cS <= 0)
 		return;
-	double mindx = getMinX(v);
-	double mindy = getMinY(v);
-	double maxdx = getMaxX(v);
-	double maxdy = getMaxY(v);
+	vector<Position*> vUnion;
+	for (int i = 0; i < v.size(); i++)
+		vUnion.push_back(v[i]);
+	for (int i = 0; i < v2.size(); i++)
+		vUnion.push_back(v2[i]);
+
+	double mindx = getMinX(vUnion);
+	double mindy = getMinY(vUnion);
+	double maxdx = getMaxX(vUnion);
+	double maxdy = getMaxY(vUnion);
 	int nx = ceil((maxdx - mindx) / cS);
 	int ny = ceil((maxdy - mindy) / cS);
 	minX = mindx;

@@ -574,6 +574,17 @@ double uncoded_modulation(int modulation_type, double gamma_b)
 //}
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
+	if (env == Suburbano)
+	{
+		if (distance <= 49)
+			return 1;
+		else
+			return 0;
+
+	}
+		
+
+
 	int distAprox = ceil(distance);
 	if (distAprox == 0)
 		return 1;
@@ -605,6 +616,7 @@ double getHataSRDSuccessRate(double distance, int env, int technology, double bi
 }
 void propagationTable()
 {
+
 	FILE *file;
 	vector<vector<double>> ret;
 

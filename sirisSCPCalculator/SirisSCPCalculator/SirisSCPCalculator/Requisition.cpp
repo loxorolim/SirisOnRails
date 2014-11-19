@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Requisition.h"
+#include <sstream>
+
 
 bool compareByLongitude(Position* a, Position *b)
 {
@@ -106,17 +108,20 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 }
 vector<vector<int>> Requisition::createScp()
 {
-	Grid* g = new Grid(meters, 0.001);
+	Grid* g = new Grid(meters,poles, 0.001);
 	vector<int> aux;
 	vector<vector<int>> sM;
-	sM.reserve(meters.size());
+	//sM.reserve(meters.size());
 
 	for (int i = 0; i < poles.size(); i++)
 	{
 		vector<int> metersCovered;
 		//vector<Position*> metersReduced = getActiveRegion(meters, poles[i]);
 		vector<Position*> metersReduced = g->getCell(poles[i]);
-
+		//printf("%d - ", i);
+		//for (int z = 0; z < metersReduced.size(); z++)
+		//	printf("%d ", metersReduced[z]->index);
+		//printf("\n");
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
@@ -183,7 +188,7 @@ vector<vector<int>> Requisition::createMeterNeighbourhood(Grid *g)
 
 	return M;
 }
-void Requisition::saveGLPKFile(vector<vector<int>> SCP)
+void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 {
 	FILE *file;
 		//fopen_s(&file, filename.c_str(), "w");
@@ -195,6 +200,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 		{
 
 			//TEM Q MUDAR ESSE NEGÓCIO AQUI!
+		    vector<int> uncMeters = uncoverableMeters(SCP);
 			string resp;
 			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"C:\\Sites\\first_app\\Results.txt\";\n data;\n";
 			//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
@@ -202,7 +208,12 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 			//fprintf_s(file, "set Z:= ");
 			resp += "set Z:= ";
 			for (int i = 0; i < meters.size(); i++)
-				resp += "Z" + to_string(i + 1) + " ";
+			{
+				int uncov = -1;
+				uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
+				if (!uncov)
+					resp += "Z" + to_string(i + 1) + " ";
+			}
 
 			resp += ";\n";
 			resp += "set Y:= ";
@@ -220,19 +231,24 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 			resp += ":= \n";
 			for (int i = 0; i < meters.size(); i++) 
 			{
-				resp += "Z" + to_string(i + 1) + " ";
-				//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
-				for (int j = 0; j < poles.size(); j++)
+				int uncov = -1;
+				uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
+				if (!uncov)
 				{
-					//bool um = false;
-					//for (int k = 0; k < SCP.size(); k++)
-					int cov = -1;
-					cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
-					if (cov)
-						resp += "1 ";
-					else
-						resp += "0 ";
-	
+					resp += "Z" + to_string(i + 1) + " ";
+					//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+					for (int j = 0; j < poles.size(); j++)
+					{
+						//bool um = false;
+						//for (int k = 0; k < SCP.size(); k++)
+						int cov = -1;
+						cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
+						if (cov)
+							resp += "1 ";
+						else
+							resp += "0 ";
+
+					}
 				}
 	
 			}
@@ -250,9 +266,108 @@ void Requisition::saveGLPKFile(vector<vector<int>> SCP)
 		}
 	
 }
+vector<int> Requisition::uncoverableMeters(vector<vector<int>> &SCP)
+{
+	vector<int> uncoverableMeters;
+	for (int i = 0; i < meters.size(); i++)
+	{
+		int coverable = 0;
+		for (int j = 0; j < poles.size(); j++)
+		{
+			int cov = -1;
+			cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
+			if (cov)
+			{
+				coverable = 1;
+				break;
+			}
+		}
+		if (!coverable)
+			uncoverableMeters.push_back(i);
+	}
+	return uncoverableMeters;
+}
+
+
+void Requisition::dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDaps)
+{
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		Position* d = poles[chosenDaps[i]];
+		vector<Position*> m;
+		for (int j = 0; j < scp[chosenDaps[i]].size(); j++)
+		{
+			m.push_back(meters[scp[chosenDaps[i]][j]]);
+		}
+		vector<Position*> v;
+		v.push_back(d);
+		for (int z = 0; z < m.size(); z++)
+			v.push_back(m[z]);
+
+		double dx = v[0]->latitude;
+		for (int z = 1; z < v.size(); z++)
+		{
+			if (v[z]->latitude < dx)
+				dx = v[z]->latitude;
+		}
+		double dy = v[0]->longitude;
+		for (int z = 1; z < v.size(); z++)
+		{
+			if (v[z]->longitude < dy)
+				dy = v[z]->longitude;
+		}
+		FILE *f;
+		
+		string fname = "C:\\Sites\\first_app\\ns3files\\dapns3-" + to_string(i) + ".txt";
+		//printf(fname.c_str());
+		//printf("\n-----%lf %lf------", dx,dy);
+		fopen_s(&f, fname.c_str(), "w");
+		if (f)
+		{
+			//printf("\n-----%d------", v.size());
+			fprintf_s(f, "%d\n", v.size());
+			Position *ref = new Position(dx, dy);
+			for (int z = 0; z < v.size(); z++)
+			{
+				Position *aux = new Position(v[z]->latitude, dy);
+				Position *aux2 = new Position(dx, v[z]->longitude);
+				//printf("\n-----%lf %lf------", getDistance(ref, aux), getDistance(ref, aux2));
+				fprintf_s(f, "%lf %lf\n", getDistance(ref,aux),getDistance(ref,aux2));
+				delete(aux);
+				delete(aux2);
+			}
+			delete(ref);
+			fclose(f);
+		}
+
+	}
+
+}
+vector<string> &split(const string &s, char delim, vector<string> &elems)
+{
+	stringstream ss(s);
+	string item;
+	while (getline(ss, item, delim)) 
+	{
+		elems.push_back(item);
+	}
+	return elems;
+}
+std::vector<std::string> split(const std::string &s, char delim) {
+	std::vector<std::string> elems;
+	split(s, delim, elems);
+	return elems;
+}
 string Requisition::getAutoPlanResponse()
 {
 	vector<vector<int>> SCP = createScp();
+	//for (int i = 0; i < SCP.size(); i++)
+	//{
+	//	printf("%d - ", i);
+	//	for (int j = 0; j < SCP[i].size(); j++)
+	//		printf("%d", SCP[i][j]);
+	//	printf("\n");
+	//}
 	saveGLPKFile(SCP);
 	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
 	
@@ -260,6 +375,17 @@ string Requisition::getAutoPlanResponse()
 	ifstream f("C:\\Sites\\first_app\\Results.txt");
 	string str;
 	getline(f, str);
+	vector<string> x = split(str, ' ');
+	vector<int> chosenDaps;
+	for (int i = 0; i < x.size(); i++)
+	{
+		string snum = x[i].substr(1);
+		
+		chosenDaps.push_back(stoi(snum)-1);
+	}
+	dapsToNs3File(SCP, chosenDaps);
+
+	
 	//string file_contents;
 	//while (getline(f, str))
 	//{

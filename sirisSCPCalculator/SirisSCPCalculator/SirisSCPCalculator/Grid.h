@@ -16,7 +16,7 @@ class Grid
 		
 
 	public:
-		Grid(vector<Position*> v, double size);
+		Grid(vector<Position*> v,vector<Position*> v2, double size);
 		void putPosition(Position* p);
 		vector<Position*> getCell(Position* reference);
 };

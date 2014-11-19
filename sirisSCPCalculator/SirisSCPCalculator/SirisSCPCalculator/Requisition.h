@@ -43,7 +43,9 @@ class Requisition
 
 		void readConfiguration();
 		void readPositions(int id);
-		void saveGLPKFile(vector<vector<int>> scp);
+		vector<int> uncoverableMeters(vector<vector<int>> &SCP);
+		void dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDaps);
+		void saveGLPKFile(vector<vector<int>> &scp);
 		vector<vector<int>> createScp();
 		vector<vector<int>> createScp2();
 		vector<DrawInfo*> calculateDrawingInfo();
