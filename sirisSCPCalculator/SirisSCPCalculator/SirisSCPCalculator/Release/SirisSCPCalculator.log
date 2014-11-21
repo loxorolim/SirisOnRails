@@ -1,51 +1,36 @@
-﻿Build started 19/11/2014 15:45:11.
+﻿Build started 21/11/2014 14:45:28.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Requisition.cpp
-         Requisition.cpp
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(36): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(38): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(40): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(91): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(93): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(96): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(116): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(125): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(128): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(144): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(150): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(173): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(178): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(181): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(210): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(221): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(228): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(232): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(240): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(193): warning C4101: 'file' : unreferenced local variable
-     1>Requisition.cpp(272): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(275): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(294): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(298): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(304): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(308): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(314): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(330): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(380): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(401): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(416): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(445): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(447): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(449): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(471): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(473): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(491): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(494): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Grasp.cpp
+         Grasp.cpp
+     1>Grasp.cpp(10): warning C4305: 'initializing' : truncation from 'double' to 'float'
+     1>Grasp.cpp(17): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>Grasp.cpp(24): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(26): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(67): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(102): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(126): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(177): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(179): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(242): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>Grasp.cpp(278): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(316): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(318): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(331): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(344): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(362): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(424): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(436): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(438): warning C4018: '<' : signed/unsigned mismatch
+     1>Grasp.cpp(451): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>Grasp.cpp(456): warning C4101: 'bestSolutionTime' : unreferenced local variable
+     1>Grasp.cpp(457): warning C4101: 'totalTime' : unreferenced local variable
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Guilherme\Downloads\glpk-4.54\w32\glpk_4_54.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
          Release\auxiliars.obj
          Release\ClusterMethods.obj
          Release\DrawResponse.obj
+         Release\Grasp.obj
          Release\Grid.obj
          Release\HataSRD.obj
          Release\MetricsResponse.obj
@@ -53,10 +38,11 @@
          Release\SirisSCPCalculator.obj
          Release\stdafx.obj
          Generating code
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\grasp.cpp(225): warning C4715: 'isBetterSolution' : not all control paths return a value
          Finished generating code
          SirisSCPCalculator.vcxproj -> C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
      1>Done Building Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.59
+Time Elapsed 00:00:03.13

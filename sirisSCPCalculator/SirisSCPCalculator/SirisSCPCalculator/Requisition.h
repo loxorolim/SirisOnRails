@@ -24,7 +24,7 @@ class Requisition
 		int scenario, technology, SRD, meshEnabled;
 		double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
 		vector<Position*> meters, poles, daps;
-		double regionLimiter = 0.005;
+		double regionLimiter = 0.001;
 	
 	public:
 		Requisition()
@@ -46,6 +46,7 @@ class Requisition
 		vector<int> uncoverableMeters(vector<vector<int>> &SCP);
 		void dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDaps);
 		void saveGLPKFile(vector<vector<int>> &scp);
+		vector<vector<sComponent*>> statisticalList();
 		vector<vector<int>> createScp();
 		vector<vector<int>> createScp2();
 		vector<DrawInfo*> calculateDrawingInfo();
@@ -53,6 +54,7 @@ class Requisition
 		string getDrawResponse();
 		string getMetricResponse();
 		string getAutoPlanResponse();
+		void getTestResponse(); //ESSA REQUISIÇÃO É PARA SALVAR EM UM ARQUIVO DADOS DO PLANEJAMENTO, NÃO DEVE ESTAR NA VERSÃO FINAL!
 		vector<Position*> getActiveRegion(vector<Position*> &sorted,Position* ref);
 		vector<vector<int>> createMeterNeighbourhood(Grid *g);
 		void setConfig(int meshEnabled, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD)

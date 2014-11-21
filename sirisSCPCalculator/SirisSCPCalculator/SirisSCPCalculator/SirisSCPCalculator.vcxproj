@@ -86,6 +86,7 @@
     <ClInclude Include="AutoPlanResponse.h" />
     <ClInclude Include="auxiliars.h" />
     <ClInclude Include="DrawResponse.h" />
+    <ClInclude Include="Grasp.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HataSRD.h" />
     <ClInclude Include="MetricsResponse.h" />
@@ -98,6 +99,7 @@
     <ClCompile Include="auxiliars.cpp" />
     <ClCompile Include="ClusterMethods.cpp" />
     <ClCompile Include="DrawResponse.cpp" />
+    <ClCompile Include="Grasp.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="HataSRD.cpp" />
     <ClCompile Include="MetricsResponse.cpp" />

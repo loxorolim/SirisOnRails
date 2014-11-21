@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "Requisition.h"
+#include "MetricsResponse.h"
+#include "Grasp.h"
+#include <time.h>
 #include <sstream>
 
 
@@ -80,6 +83,10 @@ void Requisition::readConfiguration()
 		readPositions(METER);
 		readPositions(DAP);
 		break;
+	case TEST:
+		readPositions(METER);
+		readPositions(POLE);		
+		break;
 	default:
 		break;
 	}
@@ -108,7 +115,7 @@ vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
 }
 vector<vector<int>> Requisition::createScp()
 {
-	Grid* g = new Grid(meters,poles, 0.001);
+	Grid* g = new Grid(meters,poles, regionLimiter);
 	vector<int> aux;
 	vector<vector<int>> sM;
 	//sM.reserve(meters.size());
@@ -140,7 +147,7 @@ vector<vector<int>> Requisition::createScp()
 	if (meshEnabled)
 	{
 
-		vector<vector<int>> nM = createMeterNeighbourhood(g);
+		vector<vector<int>> nM = createMeterNeighbourhood(g);// ESSE MÉTODO NÃO PODERIA ESTAR NO INICIO DO MÉTODO PARA QUE NÃO FOSSE CHAMADO VÁRIAS VEZES???!?!?!?
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> neighbours = sM[i];
@@ -166,6 +173,7 @@ vector<vector<int>> Requisition::createScp()
 
 	return sM;
 }
+
 vector<vector<int>> Requisition::createMeterNeighbourhood(Grid *g)
 {
 	vector<vector<int>> M;
@@ -369,8 +377,21 @@ string Requisition::getAutoPlanResponse()
 	//	printf("\n");
 	//}
 	saveGLPKFile(SCP);
+	double seconds;
+	double clo = clock();
+	//time_t timerini, timerend;
+	//time(&timerini);
 	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
-	
+	//time(&timerend);
+	seconds = (clock() - clo)/1000;
+	FILE *fi;
+	fopen_s(&fi, "C:\\Sites\\first_app\\ns3files\\AutoPlanningResults.txt", "w");
+	if (fi)
+	{
+		//printf("\n-----%d------", v.size());
+		fprintf_s(fi, "%f\n", seconds);
+		fclose(fi);
+	}
 
 	ifstream f("C:\\Sites\\first_app\\Results.txt");
 	string str;
@@ -385,6 +406,7 @@ string Requisition::getAutoPlanResponse()
 	}
 	dapsToNs3File(SCP, chosenDaps);
 
+
 	
 	//string file_contents;
 	//while (getline(f, str))
@@ -393,6 +415,109 @@ string Requisition::getAutoPlanResponse()
 	//	file_contents.push_back('\n');
 	//}
 	return str;
+}
+void Requisition::getTestResponse()
+{
+
+	FILE *fi;
+	fopen_s(&fi, "C:\\Sites\\first_app\\ns3files\\AutoPlanningResults.txt", "w");
+	if (fi)
+	{
+		//FAZ PELO MÉTODO EXATO
+		vector<vector<int>> SCP = createScp();
+		saveGLPKFile(SCP);
+		double seconds;
+		double clo = clock();
+		system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
+		seconds = (clock() - clo) / 1000;
+
+
+		fprintf_s(fi, "Optimal solution time: %f\n", seconds);
+
+		ifstream f("C:\\Sites\\first_app\\Results.txt");
+		string str;
+		getline(f, str);
+		vector<string> x = split(str, ' ');
+		for (int i = 0; i < x.size(); i++)
+		{
+			string snum = x[i].substr(1);
+			daps.push_back(poles[stoi(snum) - 1]);
+		}
+		string result = getMetricResponse();
+		fprintf(fi,result.c_str());
+		//------------------------------------------------
+		//FAZ PELO MÉTODO GRASP
+		
+		int cSatisfied, nColumns, columnsSize = SCP.size();
+		vector<vector<int>> graspscp;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			vector<int> aux;
+			graspscp.push_back(aux);
+		}
+		for (int i = 0; i < SCP.size(); i++)
+		{
+			for (int j = 0; j < SCP[i].size(); j++)
+			{
+				graspscp[SCP[i][j]].push_back(i);
+			}
+		}
+		clo = clock();
+		double alpha = 0.8;
+		int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
+		seconds = (clock() - clo) / 1000;
+		fprintf_s(fi, "Grasp solution time: %f\n", seconds);
+		
+
+		vector<Position*> dg;
+		for (int i = 0; i < columnsSize; i++)
+		{
+			if (sol[i] == 1)
+			{
+				dg.push_back(poles[i]);
+				
+			}
+		//	fprintf(fi, " %d ",sol[i]);
+				
+		}
+		daps = dg;
+		result = getMetricResponse();
+		fprintf(fi, result.c_str());
+
+
+		//------------------------------------------------
+		//FAZ PELO MÉTODO GULOSO
+		
+		clo = clock();
+		alpha = 1;
+		sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
+		seconds = (clock() - clo) / 1000;
+		fprintf_s(fi, "Greedy solution time: %f\n", seconds);
+
+		vector<Position*> dguloso;
+		for (int i = 0; i < columnsSize; i++)
+		{
+			if (sol[i] == 1)
+			{
+				dguloso.push_back(poles[i]);
+			}
+			//	fprintf(fi, " %d ",sol[i]);
+
+		}
+		//------------------------------------------------
+		daps = dguloso;
+		result = getMetricResponse();
+		fprintf(fi, result.c_str());
+		free(sol);
+		fclose(fi);
+	}
+
+
+	//dapsToNs3File(SCP, chosenDaps);
+
+
+
+
 }
 vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2)
 {
@@ -407,6 +532,81 @@ vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position
 		}
 	}
 	return ret;
+}
+vector<vector<sComponent*>> Requisition::statisticalList()
+{
+	vector<vector<sComponent*>> sL;
+	for (int i = 0; i < daps.size(); i++)
+	{
+		vector<sComponent*> toAdd;
+		for (int j = 0; j < meters.size(); j++)
+		{
+			double dist = getDistance(daps[i], meters[j]);
+			double efficiency = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+
+			if (efficiency >= MARGIN_VALUE){
+				sComponent* component = new sComponent(j, dist, efficiency, 0, NULL);
+				toAdd.push_back(component);
+			}
+		}
+		if (meshEnabled)
+		{
+			Grid* g = new Grid(meters,daps, regionLimiter);
+			vector<vector<int>> nM = createMeterNeighbourhood(g);
+			//vector<sComponent*> neighbours = toAdd;
+			vector<int> neighbours;
+			for (int h = 0; h < toAdd.size(); h++)
+				neighbours.push_back(toAdd[h]->index);
+
+
+			for (int k = 0; k < meshEnabled; k++){
+				vector<int> newNeighbourhood;
+				vector<sComponent*> meshToAdd;
+				for (int j = 0; j < neighbours.size(); j++){
+
+					vector<int> aux = nM[neighbours[j]];
+					for (int l = 0; l < aux.size(); l++)
+					{
+
+						if (!(contains(toAdd, aux[l])))
+						{
+							sComponent* father = NULL;
+							for (int z = 0; z < toAdd.size(); z++){
+								if (toAdd[z]->index == neighbours[j]){
+									father = toAdd[z];
+									break;
+								}
+							}
+
+							double distBetweenMeters = getDistance(meters[father->index], meters[aux[l]]);
+							double effBetweenMeters = getHataSRDSuccessRate(distBetweenMeters, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+							sComponent* meshComponent = new sComponent(aux[l], distBetweenMeters, effBetweenMeters, k + 1, father);
+
+							meshToAdd.push_back(meshComponent);
+							//meshToAdd = meshToAdd.concat(meshComponent);
+							newNeighbourhood.insert(newNeighbourhood.end(), nM[neighbours[j]].begin(), nM[neighbours[j]].end());
+							//newNeighbourhood = newNeighbourhood.concat(nM[neighbours[j].index]);
+						}
+
+					}
+
+
+				}
+				/*	neighbours = newNeighbourhood.filter(function(elem, pos) {
+				return newNeighbourhood.indexOf(elem) == pos;
+				});*/
+				neighbours = removeRepeated(newNeighbourhood);
+				//				deleteVector(neighbours);
+				//	neighbours = newNeighbourhood;
+				toAdd.insert(toAdd.end(), meshToAdd.begin(), meshToAdd.end());
+				//toAdd = toAdd.concat(meshToAdd);
+				
+			}
+			delete g;
+		}
+		sL.push_back(toAdd);
+	}
+	return sL;
 }
 
 DrawInfo* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, bool SRD)
@@ -499,7 +699,70 @@ string Requisition::getDrawResponse()
 }
 string Requisition::getMetricResponse()
 {
-	return "";
+	
+	vector<vector<sComponent*>> sL = statisticalList();
+	//COLOCAR A FUNÇÃO DE ROBUSTEZ!
+	//ARMAZENAR ESSA STATISTICAL LIST
+
+	string answer = "";
+	if (sL.size() > 0)
+	{
+		
+		int numOfDaps = sL.size();
+		
+		answer += "Number of DAPs: " + to_string(numOfDaps) + "\n";
+	
+		vector<double> alpd = averageLinksPerDap(sL);
+
+		double alpdmedia = alpd[0];
+		double alpdmax = alpd[1];
+		double alpdmin = alpd[2];
+
+		answer += "Average Links per DAP: " + to_string(alpdmedia) + "\n";
+		answer += "Maximum Links in a DAP: " + to_string(alpdmax) + "\n";
+		answer += "Minimum Links in a DAP: " + to_string(alpdmin) + "\n";
+
+		vector<double> ampd = averageMetersPerDap(sL);
+		double ampdmedia = ampd[0];
+		double ampdmax = ampd[1];
+		double ampdmin = ampd[2];
+
+		answer += "Average Number of Meters per DAP: " + to_string(ampdmedia) + "\n";
+		answer += "Maximum Number of Meters in a DAP: " + to_string(ampdmax) + "\n";
+		answer += "Minimum Number of Meters in a DAP: " + to_string(ampdmin) + "\n";
+
+		vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL, meshEnabled);
+		for (int i = 0; i < meshEnabled + 1; i++)
+		{
+			double ammpdmedia = ammpd[i][0];
+			double ammpdmax = ammpd[i][1];
+			double ammpdmin = ammpd[i][2];
+			double hop = ammpd[i][3];
+			if (ammpdmedia > 0)
+			{
+				answer += "Average " + to_string(i) + " mesh hops links: " + to_string(ammpdmedia) + "\n";
+				answer += "Maximum " + to_string(i) + " mesh hops links: " + to_string(ammpdmax) + "\n";
+				answer += "Minimum " + to_string(i) + " mesh hops links: " + to_string(ammpdmin) + "\n";
+			}
+		}
+		vector<vector<double>> avgHops = averageHops(sL, meshEnabled);
+		for (int i = 0; i < meshEnabled + 1; i++)
+		{
+			double avgHopsEff = avgHops[i][0];
+			double avgHopsQnt = avgHops[i][1];
+			if (avgHopsEff > 0)
+			{
+				answer += "Average " + to_string(i) + " mesh hops efficiency: " + to_string(avgHopsEff) + "\n";
+				answer += to_string(i) + " mesh hops links quantity: " + to_string(avgHopsQnt) + "\n";
+			}
+
+		}
+	}
+	else
+	{
+		answer = "Nao ha DAPs para se coletar estatasticas!";
+	}
+	return answer.c_str();
 }
 string Requisition::getResponse()
 {
@@ -509,5 +772,8 @@ string Requisition::getResponse()
 		return getDrawResponse();
 	if (option == METRIC)
 		return getMetricResponse();
+	if (option == TEST)
+		getTestResponse();
+
 	return "";
 }

@@ -18,6 +18,7 @@
 #include "Grid.h"
 #include "Requisition.h"
 #include <glpk.h>
+#include "Grasp.h"
 using namespace std;
 
 
@@ -289,7 +290,28 @@ void createSCPTeste(string arqm, string arqp)
 
 int main(int argc, char* argv[])
 {
+	//int rs=0, cs=0;
+	//vector<vector<int>> SCP = createSCPFromFile("scp410.txt", &rs, &cs);
+//	vector<vector<int>> SCPfeasible;
+//	for (int i = 0; i < SCP.size(); i++)
+//	{
+//		vector<int> toAdd;
+//		for (int j = 0; j < SCP[i].size(); j++)
+//		{
+//			toAdd.push_back(SCP[i][j]);
+//		}
+//		if (SCP[i].size() > 0)
+//		{
+//			SCPfeasible.push_back(toAdd);
+//		}
+//}
 	
+	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
+	//saveGLPKFile(cMatrix, rs, cs);
+	//vector<vector<int>> scp = { { 0, 1 }, { 0, 1 }, { 0, 1, 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1 }, {} };
+	//int nc, ns;
+	//metaheuristic(scp, 3, &nc, &ns);
+
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv",1000);
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 2000);
 	//funcConversaoDadosHomma("dadoshommaconvertidos.csv", 3000);

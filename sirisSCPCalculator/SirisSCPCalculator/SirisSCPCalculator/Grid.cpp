@@ -46,6 +46,24 @@ Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 	//fclose(f);
 
 }
+Grid::Grid(vector<Position*> v, double cS)
+{
+	if (cS <= 0)
+		return;
+	double mindx = getMinX(v);
+	double mindy = getMinY(v);
+	double maxdx = getMaxX(v);
+	double maxdy = getMaxY(v);
+	int nx = ceil((maxdx - mindx) / cS);
+	int ny = ceil((maxdy - mindy) / cS);
+	minX = mindx;
+	minY = mindy;
+
+	cellSize = cS;
+	for (int i = 0; i < v.size(); i++)
+		putPosition(v[i]);
+
+}
 void Grid::putPosition(Position* p)
 {
 	//se for igual ao min fazer algo...

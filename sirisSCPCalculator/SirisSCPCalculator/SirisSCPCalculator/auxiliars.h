@@ -14,6 +14,7 @@
 #define AUTOPLAN 0
 #define DRAW 1
 #define METRIC 2
+#define TEST 3
 
 #define Urbano  0
 #define Suburbano  1

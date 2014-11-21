@@ -40,7 +40,7 @@ function initialize() {
     //loadCarDriveFromXml();
     //loadNodesFromXml();
     //loadDapPositionsFromXml();
-    //loadMetersFromTxt();
+    loadMetersFromTxt();
     loadPolesFromTxt();
     //var trapezoid = $('#trapezoid');
     //trapezoid.index = 1;

@@ -1,6 +1,7 @@
 ﻿const AUTO_PLAN_FILE_ID = 0;
 const DRAW_FILE_ID = 1;
 const METRIC_FILE_ID = 2;
+const TEST_COLLECTION_FILE_ID = 3;
 
 function sendDrawRequest(){
     sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
@@ -42,6 +43,9 @@ function sendDataToServer(url,method,type) {
             break;
         case METRIC_FILE_ID:
             data = createMetricsFileModel();
+            break;
+        case TEST_COLLECTION_FILE_ID:
+            data = createTestFileModel();
             break;
         default:
             data = -1;
@@ -227,6 +231,25 @@ function createMetricsFileModel(){
     ret += "\n";
     for(var i = 0; i <daps.length; i++){
         ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
+        ret += "\n";
+    }
+    return ret;
+}
+function createTestFileModel(){
+    
+    var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
+    var ret = TEST_COLLECTION_FILE_ID + '\n';
+    ret += propagationValuesToSend();
+
+    ret+= uncoveredMeters.length+"\n";
+    for(var i = 0; i <uncoveredMeters.length; i++){
+        ret += uncoveredMeters[i].getPosition().lat() + " " + uncoveredMeters[i].getPosition().lng();
+        ret += "\n";
+    }
+    ret += poles.length;
+    ret += "\n";
+    for(var i = 0; i <poles.length; i++){
+        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
         ret += "\n";
     }
     return ret;
