@@ -34,11 +34,18 @@ class Requisition
 		~Requisition()
 		{
 			for (int i = 0; i < meters.size(); i++)
+			{
+
 				delete meters[i];
+			}
 			for (int i = 0; i < poles.size(); i++)
+			{
 				delete poles[i];
+			}
 			for (int i = 0; i < daps.size(); i++)
+			{
 				delete daps[i];
+			}
 		}
 
 		void readConfiguration();

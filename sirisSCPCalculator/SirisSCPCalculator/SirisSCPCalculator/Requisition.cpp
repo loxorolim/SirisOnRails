@@ -210,7 +210,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 			//TEM Q MUDAR ESSE NEGÓCIO AQUI!
 		    vector<int> uncMeters = uncoverableMeters(SCP);
 			string resp;
-			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"C:\\Sites\\first_app\\Results.txt\";\n data;\n";
+			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
 			//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
 			//ret += "set Z:= ";
 			//fprintf_s(file, "set Z:= ");
@@ -264,7 +264,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 			resp += ";";
 			resp += "end;";
 		
-			ofstream f("C:\\Sites\\first_app\\GlpkFile.txt");
+			ofstream f("GlpkFile.txt");
 
 			f << resp;
 			f.close();
@@ -282,7 +282,7 @@ void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
 		vector<int> uncMeters = uncoverableMeters(SCP);
 		string resp;
-		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"C:\\Sites\\first_app\\Results.txt\";\n data;\n";
+		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
 		//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
 		//ret += "set Z:= ";
 		//fprintf_s(file, "set Z:= ");
@@ -333,7 +333,7 @@ void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 		resp += ";";
 		resp += "end;";
 
-		ofstream f("C:\\Sites\\first_app\\GlpkFile.txt");
+		ofstream f("GlpkFile.txt");
 
 		f << resp;
 		f.close();
@@ -395,7 +395,7 @@ void Requisition::dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDap
 		}
 		FILE *f;
 		
-		string fname = "C:\\Sites\\first_app\\ns3files\\dapns3-" + to_string(i) + ".txt";
+		string fname = "ns3files\\dapns3-" + to_string(i) + ".txt";
 		//printf(fname.c_str());
 		//printf("\n-----%lf %lf------", dx,dy);
 		fopen_s(&f, fname.c_str(), "w");
@@ -451,11 +451,11 @@ string Requisition::getAutoPlanResponse()
 	double clo = clock();
 	//time_t timerini, timerend;
 	//time(&timerini);
-	system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
+	system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
 	//time(&timerend);
 	seconds = (clock() - clo)/1000;
 	FILE *fi;
-	fopen_s(&fi, "C:\\Sites\\first_app\\ns3files\\AutoPlanningResults.txt", "w");
+	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
 	if (fi)
 	{
 		//printf("\n-----%d------", v.size());
@@ -463,7 +463,7 @@ string Requisition::getAutoPlanResponse()
 		fclose(fi);
 	}
 
-	ifstream f("C:\\Sites\\first_app\\Results.txt");
+	ifstream f("Results.txt");
 	string str;
 	getline(f, str);
 	vector<string> x = split(str, ' ');
@@ -490,35 +490,35 @@ void Requisition::getTestResponse()
 {
 
 	FILE *fi;
-	fopen_s(&fi, "C:\\Sites\\first_app\\ns3files\\AutoPlanningResults.txt", "w");
+	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
 	if (fi)
 	{
 		//FAZ PELO MÉTODO EXATO
 		vector<vector<int>> SCP = createScp();
 		//saveGLPKFile(SCP);
-		//saveGLPKFileReduced(SCP);
+		saveGLPKFileReduced(SCP);
 		double seconds;
 		double clo = clock();
-		//system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
+		system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
 		seconds = (clock() - clo) / 1000;
 
 
-		//fprintf_s(fi, "Optimal solution time: %f\n", seconds);
+		fprintf_s(fi, "Optimal solution time: %f\n", seconds);
 
-		//ifstream f("C:\\Sites\\first_app\\Results.txt");
-		//string str;
-		//getline(f, str);
-		/*vector<string> x = split(str, ' ');
+		ifstream f("Results.txt");
+		string str;
+		getline(f, str);
+		vector<string> x = split(str, ' ');
 		for (int i = 0; i < x.size(); i++)
 		{
 			string snum = x[i].substr(1);
 			daps.push_back(poles[stoi(snum) - 1]);
 		}
 		string result = getMetricResponse();
-		fprintf(fi,result.c_str());*/
+		fprintf(fi,result.c_str());
 		//------------------------------------------------
 		//FAZ PELO MÉTODO GRASP
-		string result = "";
+//		string result = "";
 
 		int cSatisfied, nColumns, columnsSize = SCP.size();
 		vector<vector<int>> graspscp;
@@ -534,35 +534,35 @@ void Requisition::getTestResponse()
 				graspscp[SCP[i][j]].push_back(i);
 			}
 		}
-		clo = clock();
-		double alpha = 0.8;
-		int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
-		seconds = (clock() - clo) / 1000;
-		fprintf_s(fi, "Grasp solution time: %f\n", seconds);
-		
+		//clo = clock();
+		//double alpha = 0.8;
+		//int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
+		//seconds = (clock() - clo) / 1000;
+		//fprintf_s(fi, "Grasp solution time: %f\n", seconds);
+		//
 
-		vector<Position*> dg;
-		for (int i = 0; i < columnsSize; i++)
-		{
-			if (sol[i] == 1)
-			{
-				dg.push_back(poles[i]);
-				
-			}
-		//	fprintf(fi, " %d ",sol[i]);
-				
-		}
-		daps = dg;
-		result = getMetricResponse();
-		fprintf(fi, result.c_str());
+		//vector<Position*> dg;
+		//for (int i = 0; i < columnsSize; i++)
+		//{
+		//	if (sol[i] == 1)
+		//	{
+		//		dg.push_back(poles[i]);
+		//		
+		//	}
+		////	fprintf(fi, " %d ",sol[i]);
+		//		
+		//}
+		//daps = dg;
+		//result = getMetricResponse();
+		//fprintf(fi, result.c_str());
 
 
 		//------------------------------------------------
 		//FAZ PELO MÉTODO GULOSO
 		
 		clo = clock();
-		alpha = 1;
-		sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
+		double alpha = 1;
+		int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
 		seconds = (clock() - clo) / 1000;
 		fprintf_s(fi, "Greedy solution time: %f\n", seconds);
 
@@ -580,6 +580,7 @@ void Requisition::getTestResponse()
 		daps = dguloso;
 		result = getMetricResponse();
 		fprintf(fi, result.c_str());
+		daps.clear();
 		free(sol);
 		fclose(fi);
 	}

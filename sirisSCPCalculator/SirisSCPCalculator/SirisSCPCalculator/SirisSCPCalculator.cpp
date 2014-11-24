@@ -306,7 +306,7 @@ int main(int argc, char* argv[])
 //			SCPfeasible.push_back(toAdd);
 //		}
 //}
-	createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
+	//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
 	//saveGLPKFile(cMatrix, rs, cs);
 	//vector<vector<int>> scp = { { 0, 1 }, { 0, 1 }, { 0, 1, 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1 }, {} };
@@ -326,7 +326,7 @@ int main(int argc, char* argv[])
 	{ //essas chaves tao aki por causa do teste do memory leak
 
 		propagationTable();
-		//createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
+		createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
 //		glp_print_mip(problem, "broken_solution.txt");
 //	glp_write_prob(problem, 0, "broken_glp.mod");
 		//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
@@ -343,7 +343,7 @@ int main(int argc, char* argv[])
 	}
 
 	FILE *pFile;
-	freopen_s(&pFile, "C:\\Sites\\first_app\\MeMLeakTest.txt", "w", stdout);
+	freopen_s(&pFile, "MeMLeakTest.txt", "w", stdout);
 	if (pFile)
 	{
 
