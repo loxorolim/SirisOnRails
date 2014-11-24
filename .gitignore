@@ -23,8 +23,6 @@
 *.tlog
 *.log
 *.pch
-*.exe
-*.exe
 *.ilk
 *.pdb
 *.ipch
