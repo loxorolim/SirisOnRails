@@ -274,6 +274,75 @@ void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 		}
 	
 }
+void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
+{
+	FILE *file;
+	{
+
+		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
+		vector<int> uncMeters = uncoverableMeters(SCP);
+		string resp;
+		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"C:\\Sites\\first_app\\Results.txt\";\n data;\n";
+		//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
+		//ret += "set Z:= ";
+		//fprintf_s(file, "set Z:= ");
+		resp += "set Z:= ";
+		for (int i = 0; i < meters.size(); i++)
+		{
+			int uncov = -1;
+			uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
+			if (!uncov)
+				resp += "Z" + to_string(i + 1) + " ";
+		}
+
+		resp += ";\n";
+		resp += "set Y:= ";
+
+		for (int i = 0; i < poles.size(); i++)
+			resp += "Y" + to_string(i + 1) + " ";
+
+		resp += ";\n";
+
+		resp += "param A := ";
+
+		//for (int i = 0; i < poles.size(); i++)
+		//	resp += "Y" + to_string(i + 1) + " ";
+
+		resp += "\n";
+		for (int i = 0; i < meters.size(); i++)
+		{
+			int uncov = -1;
+			uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
+			if (!uncov)
+			{
+				//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+				for (int j = 0; j < poles.size(); j++)
+				{
+					//bool um = false;
+					//for (int k = 0; k < SCP.size(); k++)
+					int cov = -1;
+					cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
+					if (cov)
+						resp += "[Z" + to_string(i + 1) + ",Y" + to_string(j + 1)+"] 1";
+
+				}
+			}
+
+		}
+		resp += "\n";
+		resp += ";";
+		resp += "end;";
+
+		ofstream f("C:\\Sites\\first_app\\GlpkFile.txt");
+
+		f << resp;
+		f.close();
+
+
+
+	}
+
+}
 vector<int> Requisition::uncoverableMeters(vector<vector<int>> &SCP)
 {
 	vector<int> uncoverableMeters;
@@ -376,7 +445,8 @@ string Requisition::getAutoPlanResponse()
 	//		printf("%d", SCP[i][j]);
 	//	printf("\n");
 	//}
-	saveGLPKFile(SCP);
+	//saveGLPKFile(SCP);
+	saveGLPKFileReduced(SCP);
 	double seconds;
 	double clo = clock();
 	//time_t timerini, timerend;
@@ -425,29 +495,31 @@ void Requisition::getTestResponse()
 	{
 		//FAZ PELO MÉTODO EXATO
 		vector<vector<int>> SCP = createScp();
-		saveGLPKFile(SCP);
+		//saveGLPKFile(SCP);
+		//saveGLPKFileReduced(SCP);
 		double seconds;
 		double clo = clock();
-		system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
+		//system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math C:\\Sites\\first_app\\GlpkFile.txt");
 		seconds = (clock() - clo) / 1000;
 
 
-		fprintf_s(fi, "Optimal solution time: %f\n", seconds);
+		//fprintf_s(fi, "Optimal solution time: %f\n", seconds);
 
-		ifstream f("C:\\Sites\\first_app\\Results.txt");
-		string str;
-		getline(f, str);
-		vector<string> x = split(str, ' ');
+		//ifstream f("C:\\Sites\\first_app\\Results.txt");
+		//string str;
+		//getline(f, str);
+		/*vector<string> x = split(str, ' ');
 		for (int i = 0; i < x.size(); i++)
 		{
 			string snum = x[i].substr(1);
 			daps.push_back(poles[stoi(snum) - 1]);
 		}
 		string result = getMetricResponse();
-		fprintf(fi,result.c_str());
+		fprintf(fi,result.c_str());*/
 		//------------------------------------------------
 		//FAZ PELO MÉTODO GRASP
-		
+		string result = "";
+
 		int cSatisfied, nColumns, columnsSize = SCP.size();
 		vector<vector<int>> graspscp;
 		for (int i = 0; i < meters.size(); i++)

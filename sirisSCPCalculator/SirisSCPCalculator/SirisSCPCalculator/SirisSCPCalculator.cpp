@@ -265,10 +265,11 @@ void createSCPTeste(string arqm, string arqp)
 	req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
 	req->setMeters(meters);
 	req->setPoles(poles);
+	req->getTestResponse();
 	//vector<vector<int>> SCP =  req->createScp();
-	vector<vector<int>> scp2 = createScpMatrix22(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
-	saveGLPKFile2(scp2,poles,"glpk2.txt");
-	req->getAutoPlanResponse();
+	//vector<vector<int>> scp2 = createScpMatrix22(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
+	//saveGLPKFile2(scp2,poles,"glpk2.txt");
+	//req->getAutoPlanResponse();
 	//int r = checkFeasibleTest(SCP,meters.size());
 //	printf("\n%d", r);
 	
@@ -305,7 +306,7 @@ int main(int argc, char* argv[])
 //			SCPfeasible.push_back(toAdd);
 //		}
 //}
-	
+	createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
 	//saveGLPKFile(cMatrix, rs, cs);
 	//vector<vector<int>> scp = { { 0, 1 }, { 0, 1 }, { 0, 1, 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1 }, {} };

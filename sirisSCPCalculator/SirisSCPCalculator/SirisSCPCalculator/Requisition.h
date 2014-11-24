@@ -29,7 +29,7 @@ class Requisition
 	public:
 		Requisition()
 		{
-			readConfiguration();
+			//readConfiguration();
 		}
 		~Requisition()
 		{
@@ -46,6 +46,7 @@ class Requisition
 		vector<int> uncoverableMeters(vector<vector<int>> &SCP);
 		void dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDaps);
 		void saveGLPKFile(vector<vector<int>> &scp);
+		void saveGLPKFileReduced(vector<vector<int>> &SCP);
 		vector<vector<sComponent*>> statisticalList();
 		vector<vector<int>> createScp();
 		vector<vector<int>> createScp2();

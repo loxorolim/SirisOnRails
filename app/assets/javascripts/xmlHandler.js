@@ -29,14 +29,14 @@ function showNodesXml()
 	fin += "<br>&lt\/Nodes&gt";
 	$("#xmltextnodes").html(init+meters+daps+fin);
 }
-function loadMetersFromTxt()
+function loadMetersFromTxt( file)
 {
 	$(document).ready(function()
 	{
 		$.ajax(
 		{
 			type : "GET",
-			url : "/assets/metersInstanciaMédia3666.txt",
+			url : "/assets/"+file,
 			dataType : "text",
 			success : function(text)
 			{
@@ -51,14 +51,14 @@ function loadMetersFromTxt()
 		});
 	});
 }
-function loadPolesFromTxt()
+function loadPolesFromTxt( file)
 {
 	$(document).ready(function()
 	{
 		$.ajax(
 		{
 			type : "GET",
-			url : "/assets/polesInstanciaMédia.txt",
+			url : "/assets/"+file,
 			dataType : "text",
 			success : function(text)
 			{

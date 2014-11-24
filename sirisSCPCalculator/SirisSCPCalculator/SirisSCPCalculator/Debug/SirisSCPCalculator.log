@@ -1,7 +1,65 @@
-﻿Build started 21/11/2014 15:48:13.
+﻿Build started 24/11/2014 12:46:12.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SirisSCPCalculator.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SirisSCPCalculator.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Requisition.cpp SirisSCPCalculator.cpp
+         Requisition.cpp
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.h(36): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.h(38): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.h(40): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(98): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(100): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(103): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(123): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(132): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(135): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(151): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(157): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(181): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(186): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(189): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(218): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(229): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(236): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(240): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(248): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(201): warning C4101: 'file' : unreferenced local variable
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(290): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(301): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(312): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(319): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(279): warning C4101: 'file' : unreferenced local variable
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(349): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(352): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(371): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(375): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(381): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(385): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(391): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(407): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(471): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(512): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(524): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(529): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(531): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(597): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(610): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(613): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(616): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(629): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(636): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(639): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(645): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(653): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(687): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(716): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(718): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(720): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(742): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(744): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(762): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(765): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
+         Compiling...
          SirisSCPCalculator.cpp
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
@@ -18,6 +76,7 @@
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(170): warning C4018: '<' : signed/unsigned mismatch
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(172): warning C4018: '<' : signed/unsigned mismatch
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(201): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(45): warning C4715: 'readFromPopen' : not all control paths return a value
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Guilherme\Downloads\glpk-4.54\w32\glpk_4_54.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.lib" /MACHINE:X86 Debug\AutoPlanResponse.obj
@@ -36,4 +95,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.16
+Time Elapsed 00:00:02.14

@@ -508,7 +508,7 @@ int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nCo
 		newSolution = constructPhase(scp, size, newSolution);
 		if (alpha != 1)
 		{
-			//WalkSat(scp, newSolution, size);
+			WalkSat(scp, newSolution, size);
 		}
 		
 

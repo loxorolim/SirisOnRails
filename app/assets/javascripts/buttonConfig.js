@@ -262,8 +262,9 @@ function setButtons()
         //d = new Date();
         //setTimeout('applyPlanning()', 1000);
         //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
-        //sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
         sendDataToServer(serverAddress, 'POST', TEST_COLLECTION_FILE_ID);
+        sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
+        
         var s ="";
         for(var i = 0; i < meters.length;i++)
         {

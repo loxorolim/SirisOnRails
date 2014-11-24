@@ -1,0 +1,84 @@
+Optimal solution time: 18.210000
+Number of DAPs: 64
+Average Links per DAP: 242.031250
+Maximum Links in a DAP: 730.000000
+Minimum Links in a DAP: 32.000000
+Average Number of Meters per DAP: 75.421875
+Maximum Number of Meters in a DAP: 159.000000
+Minimum Number of Meters in a DAP: 18.000000
+Average 0 mesh hops links: 14.328125
+Maximum 0 mesh hops links: 29.000000
+Minimum 0 mesh hops links: 6.000000
+Average 1 mesh hops links: 16.750000
+Maximum 1 mesh hops links: 37.000000
+Minimum 1 mesh hops links: 2.000000
+Average 2 mesh hops links: 20.437500
+Maximum 2 mesh hops links: 57.000000
+Minimum 2 mesh hops links: 2.000000
+Average 3 mesh hops links: 23.906250
+Maximum 3 mesh hops links: 57.000000
+Minimum 3 mesh hops links: 4.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 917.000000
+Average 1 mesh hops efficiency: 1.000000
+1 mesh hops links quantity: 3990.000000
+Average 2 mesh hops efficiency: 1.000000
+2 mesh hops links quantity: 4672.000000
+Average 3 mesh hops efficiency: 1.000000
+3 mesh hops links quantity: 5911.000000
+Grasp solution time: 65.770000
+Number of DAPs: 68
+Average Links per DAP: 246.352941
+Maximum Links in a DAP: 903.000000
+Minimum Links in a DAP: 40.000000
+Average Number of Meters per DAP: 76.058824
+Maximum Number of Meters in a DAP: 168.000000
+Minimum Number of Meters in a DAP: 16.000000
+Average 0 mesh hops links: 14.352941
+Maximum 0 mesh hops links: 26.000000
+Minimum 0 mesh hops links: 4.000000
+Average 1 mesh hops links: 16.852941
+Maximum 1 mesh hops links: 42.000000
+Minimum 1 mesh hops links: 4.000000
+Average 2 mesh hops links: 20.352941
+Maximum 2 mesh hops links: 52.000000
+Minimum 2 mesh hops links: 2.000000
+Average 3 mesh hops links: 24.500000
+Maximum 3 mesh hops links: 64.000000
+Minimum 3 mesh hops links: 4.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 976.000000
+Average 1 mesh hops efficiency: 1.000000
+1 mesh hops links quantity: 4213.000000
+Average 2 mesh hops efficiency: 1.000000
+2 mesh hops links quantity: 5236.000000
+Average 3 mesh hops efficiency: 1.000000
+3 mesh hops links quantity: 6327.000000
+Greedy solution time: 0.125000
+Number of DAPs: 86
+Average Links per DAP: 272.500000
+Maximum Links in a DAP: 903.000000
+Minimum Links in a DAP: 42.000000
+Average Number of Meters per DAP: 85.488372
+Maximum Number of Meters in a DAP: 168.000000
+Minimum Number of Meters in a DAP: 18.000000
+Average 0 mesh hops links: 15.767442
+Maximum 0 mesh hops links: 37.000000
+Minimum 0 mesh hops links: 4.000000
+Average 1 mesh hops links: 18.674419
+Maximum 1 mesh hops links: 41.000000
+Minimum 1 mesh hops links: 4.000000
+Average 2 mesh hops links: 22.930233
+Maximum 2 mesh hops links: 52.000000
+Minimum 2 mesh hops links: 4.000000
+Average 3 mesh hops links: 28.116279
+Maximum 3 mesh hops links: 69.000000
+Minimum 3 mesh hops links: 4.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1356.000000
+Average 1 mesh hops efficiency: 1.000000
+1 mesh hops links quantity: 6230.000000
+Average 2 mesh hops efficiency: 1.000000
+2 mesh hops links quantity: 7136.000000
+Average 3 mesh hops efficiency: 1.000000
+3 mesh hops links quantity: 8713.000000
