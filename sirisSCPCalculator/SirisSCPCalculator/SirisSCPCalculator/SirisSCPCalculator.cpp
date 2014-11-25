@@ -17,7 +17,6 @@
 #include "HataSRD.h"
 #include "Grid.h"
 #include "Requisition.h"
-#include <glpk.h>
 #include "Grasp.h"
 using namespace std;
 
@@ -326,20 +325,20 @@ int main(int argc, char* argv[])
 	{ //essas chaves tao aki por causa do teste do memory leak
 
 		propagationTable();
-		createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
+		//createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
 //		glp_print_mip(problem, "broken_solution.txt");
 //	glp_write_prob(problem, 0, "broken_glp.mod");
-		//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
+		createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
 
 		//createSCPTeste();
 		//functeste();
 //		for (int i = 0; i < 200; i++)
 //			double wow = getHataSRDSuccessRate(i, 0, 0, 0.25, 0, 3, 5, 1);
-		string answer = "";
+		/*string answer = "";
 		Requisition *req = new Requisition();
 		answer = req->getResponse();
 		printf_s("%s",answer.c_str());
-		delete req;
+		delete req;*/
 	}
 
 	FILE *pFile;

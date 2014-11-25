@@ -262,7 +262,7 @@ void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 			}
 			resp += "\n";
 			resp += ";";
-			resp += "end;";
+			resp += "end;\n";
 		
 			ofstream f("GlpkFile.txt");
 
@@ -331,7 +331,7 @@ void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 		}
 		resp += "\n";
 		resp += ";";
-		resp += "end;";
+		resp += "end;\n";
 
 		ofstream f("GlpkFile.txt");
 
