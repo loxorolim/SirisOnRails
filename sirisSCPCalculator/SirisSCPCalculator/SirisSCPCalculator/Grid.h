@@ -20,11 +20,13 @@ class Grid
 		Grid(vector<Position*> v, double size);
 		void putPosition(Position* p);
 		vector<Position*> getCell(Position* reference);
+		map<pair<int, int>, vector<Position*>> getCells();
 };
 double getMinX(vector<Position*> v);
 double getMinY(vector<Position*> v);
 double getMaxX(vector<Position*> v);
 double getMaxY(vector<Position*> v);
+
 
 
 

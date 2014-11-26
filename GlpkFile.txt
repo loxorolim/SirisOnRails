@@ -7,8 +7,8 @@ set Z;
  solve; 
  printf {m in Y:  Route[m] == 1} "%s ", m > "Results.txt";
  data;
-set Z:= Z1 Z2 Z3 Z4 ;
-set Y:= Y1 Y2 ;
+set Z:= Z17 ;
+set Y:= Y1 Y10 Y5 Y6 Y14 Y11 Y12 Y13 ;
 param A := 
-[Z1,Y1] 1[Z1,Y2] 1[Z2,Y1] 1[Z2,Y2] 1[Z3,Y1] 1[Z3,Y2] 1[Z4,Y1] 1[Z4,Y2] 1
+[Z17,Y12] 1
 ;end;

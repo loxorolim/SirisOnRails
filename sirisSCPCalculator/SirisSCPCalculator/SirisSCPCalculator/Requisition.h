@@ -29,7 +29,7 @@ class Requisition
 	public:
 		Requisition()
 		{
-			//readConfiguration();
+			readConfiguration();
 		}
 		~Requisition()
 		{
@@ -62,7 +62,16 @@ class Requisition
 		string getDrawResponse();
 		string getMetricResponse();
 		string getAutoPlanResponse();
+		string gridAutoPlanning();
+
+		//SÓ PRA TESTES
 		void getTestResponse(); //ESSA REQUISIÇÃO É PARA SALVAR EM UM ARQUIVO DADOS DO PLANEJAMENTO, NÃO DEVE ESTAR NA VERSÃO FINAL!
+		//void getGraspSol(vector<vector<int>> &SCP);
+		//void getGreedySol(vector<vector<int>> &SCP);
+		//void getExactSol(vector<vector<int>> &SCP);
+		//TESSSSSTEEEEEES!!!
+
+
 		vector<Position*> getActiveRegion(vector<Position*> &sorted,Position* ref);
 		vector<vector<int>> createMeterNeighbourhood(Grid *g);
 		void setConfig(int meshEnabled, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD)

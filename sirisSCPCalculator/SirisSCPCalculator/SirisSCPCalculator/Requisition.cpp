@@ -276,11 +276,12 @@ void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 }
 void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 {
-	FILE *file;
-	{
+
 
 		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
 		vector<int> uncMeters = uncoverableMeters(SCP);
+
+		
 		string resp;
 		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";
 		//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
@@ -290,16 +291,16 @@ void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 		for (int i = 0; i < meters.size(); i++)
 		{
 			int uncov = -1;
-			uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
+			uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
 			if (!uncov)
-				resp += "Z" + to_string(i + 1) + " ";
+				resp += "Z" + to_string(meters[i]->index + 1) + " ";
 		}
-
+		
 		resp += ";\n";
 		resp += "set Y:= ";
 
 		for (int i = 0; i < poles.size(); i++)
-			resp += "Y" + to_string(i + 1) + " ";
+			resp += "Y" + to_string(poles[i]->index + 1) + " ";
 
 		resp += ";\n";
 
@@ -312,7 +313,7 @@ void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 		for (int i = 0; i < meters.size(); i++)
 		{
 			int uncov = -1;
-			uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
+			uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
 			if (!uncov)
 			{
 				//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
@@ -321,26 +322,23 @@ void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 					//bool um = false;
 					//for (int k = 0; k < SCP.size(); k++)
 					int cov = -1;
-					cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
+					cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
 					if (cov)
-						resp += "[Z" + to_string(i + 1) + ",Y" + to_string(j + 1)+"] 1";
+						resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1)+"] 1";
 
 				}
 			}
 
 		}
+		
 		resp += "\n";
 		resp += ";";
 		resp += "end;\n";
-
+		
 		ofstream f("GlpkFile.txt");
 
 		f << resp;
 		f.close();
-
-
-
-	}
 
 }
 vector<int> Requisition::uncoverableMeters(vector<vector<int>> &SCP)
@@ -352,7 +350,7 @@ vector<int> Requisition::uncoverableMeters(vector<vector<int>> &SCP)
 		for (int j = 0; j < poles.size(); j++)
 		{
 			int cov = -1;
-			cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
+			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
 			if (cov)
 			{
 				coverable = 1;
@@ -360,7 +358,7 @@ vector<int> Requisition::uncoverableMeters(vector<vector<int>> &SCP)
 			}
 		}
 		if (!coverable)
-			uncoverableMeters.push_back(i);
+			uncoverableMeters.push_back(meters[i]->index);
 	}
 	return uncoverableMeters;
 }
@@ -414,8 +412,9 @@ void Requisition::dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDap
 				delete(aux2);
 			}
 			delete(ref);
-			fclose(f);
+			
 		}
+		fclose(f);
 
 	}
 
@@ -435,8 +434,64 @@ std::vector<std::string> split(const std::string &s, char delim) {
 	split(s, delim, elems);
 	return elems;
 }
+string Requisition::gridAutoPlanning()
+{
+	Grid* metergrid = new Grid(meters, poles, regionLimiter);
+	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	map<pair<int, int>, vector<Position*>> meterCells = metergrid->getCells();
+	vector<string> chosenDaps;
+	//string str;
+	int i = 1;
+	for (map<pair<int, int>, vector<Position*>>::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
+	{
+	
+		vector<Position*> cellsMeters;
+		vector<Position*> cellsPoles;
+		
+		cellsMeters = it->second; //Recebe todas as posições dos medidores que estão na célula
+		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posição de um desses medidores e usa como referência pra pegar os postes da mesma célula e das células vizinhas.
+		meters = cellsMeters;
+		poles = cellsPoles;
+
+		//printf("\nGrid %d : %d medidores e %d postes", i++, cellsMeters.size(), cellsPoles.size());
+		
+		vector<vector<int>> cellSCP = createScp();
+		saveGLPKFileReduced(cellSCP);
+		system("C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+		ifstream f("Results.txt");
+		string gridAnswer;
+		getline(f, gridAnswer);
+		//str += gridAnswer;
+
+		vector<string> x = split(gridAnswer, ' ');
+		for (int i = 0; i < x.size(); i++)
+		{
+			//string snum = x[i].substr(1);
+			chosenDaps.push_back(x[i]);
+		}
+
+	}
+	string str = "";
+	//Remove redundâncias
+	sort(chosenDaps.begin(), chosenDaps.end());
+	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		str += chosenDaps[i] + " ";
+	}
+
+	delete metergrid;
+	delete polegrid;
+	return str;
+
+
+
+	
+}
 string Requisition::getAutoPlanResponse()
 {
+	
+	return gridAutoPlanning();
 	vector<vector<int>> SCP = createScp();
 	//for (int i = 0; i < SCP.size(); i++)
 	//{
@@ -447,11 +502,13 @@ string Requisition::getAutoPlanResponse()
 	//}
 	//saveGLPKFile(SCP);
 	saveGLPKFileReduced(SCP);
+	
 	double seconds;
 	double clo = clock();
 	//time_t timerini, timerend;
 	//time(&timerini);
-	system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	//system("\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	system("C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
 	//time(&timerend);
 	seconds = (clock() - clo)/1000;
 	FILE *fi;
@@ -460,9 +517,9 @@ string Requisition::getAutoPlanResponse()
 	{
 		//printf("\n-----%d------", v.size());
 		fprintf_s(fi, "%f\n", seconds);
-		fclose(fi);
+		
 	}
-
+	fclose(fi);
 	ifstream f("Results.txt");
 	string str;
 	getline(f, str);
@@ -474,7 +531,7 @@ string Requisition::getAutoPlanResponse()
 		
 		chosenDaps.push_back(stoi(snum)-1);
 	}
-	dapsToNs3File(SCP, chosenDaps);
+	//dapsToNs3File(SCP, chosenDaps);
 
 
 	
@@ -486,105 +543,140 @@ string Requisition::getAutoPlanResponse()
 	//}
 	return str;
 }
+//void Requisition::getExactSol(vector<vector<int>> &SCP)
+//{
+//	FILE *fi;
+//	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
+//	if (fi)
+//	{
+//		//FAZ PELO MÉTODO EXATO
+//		//saveGLPKFile(SCP);
+//		saveGLPKFileReduced(SCP);
+//		double seconds;
+//		double clo = clock();
+//		system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+//		seconds = (clock() - clo) / 1000;
+//
+//
+//		fprintf_s(fi, "Optimal solution time: %f\n", seconds);
+//
+//		ifstream f("Results.txt");
+//		string str;
+//		getline(f, str);
+//		vector<string> x = split(str, ' ');
+//		for (int i = 0; i < x.size(); i++)
+//		{
+//			string snum = x[i].substr(1);
+//			daps.push_back(poles[stoi(snum) - 1]);
+//		}
+//		string result = getMetricResponse();
+//		fprintf(fi, result.c_str());
+//		fclose(fi);
+//	}
+//}
+//void Requisition::getGraspSol(vector<vector<int>> &SCP)
+//{
+//	FILE *fi;
+//	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
+//	if (fi)
+//	{
+//
+//		double seconds;
+//		double clo;
+//
+//		int cSatisfied, nColumns, columnsSize = SCP.size();
+//		vector<vector<int>> graspscp;
+//		for (int i = 0; i < meters.size(); i++)
+//		{
+//			vector<int> aux;
+//			graspscp.push_back(aux);
+//		}
+//		for (int i = 0; i < SCP.size(); i++)
+//		{
+//			for (int j = 0; j < SCP[i].size(); j++)
+//			{
+//				graspscp[SCP[i][j]].push_back(i);
+//			}
+//		}
+//		clo = clock();
+//		int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns);
+//		seconds = (clock() - clo) / 1000;
+//		fprintf_s(fi, "Grasp solution time: %f\n", seconds);
+//
+//
+//		vector<Position*> dg;
+//		for (int i = 0; i < columnsSize; i++)
+//		{
+//			if (sol[i] == 1)
+//			{
+//				dg.push_back(poles[i]);
+//
+//			}
+//			//	fprintf(fi, " %d ",sol[i]);
+//
+//		}
+//		daps = dg;
+//		string result = getMetricResponse();
+//		fprintf(fi, result.c_str());
+//		fclose(fi);
+//
+//	}
+//		//------------------------------------------------
+//}
+//void Requisition::getGreedySol(vector<vector<int>> &SCP)
+//{
+//	FILE *fi;
+//	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
+//	if (fi)
+//	{
+//		//FAZ PELO MÉTODO EXATO
+//
+//		double seconds;
+//		double clo = clock();
+//		
+//
+//		int cSatisfied, nColumns, columnsSize = SCP.size();
+//		vector<vector<int>> graspscp;
+//		for (int i = 0; i < meters.size(); i++)
+//		{
+//			vector<int> aux;
+//			graspscp.push_back(aux);
+//		}
+//		for (int i = 0; i < SCP.size(); i++)
+//		{
+//			for (int j = 0; j < SCP[i].size(); j++)
+//			{
+//				graspscp[SCP[i][j]].push_back(i);
+//			}
+//		}
+//
+//
+//		clo = clock();
+//		double alpha = 1;
+//		vector<int> sol = greedyheuristic(graspscp, columnsSize);
+//		seconds = (clock() - clo) / 1000;
+//		fprintf_s(fi, "Greedy solution time: %f\n", seconds);
+//
+//		vector<Position*> dguloso;
+//		for (int i = 0; i < sol.size(); i++)
+//		{
+//				dguloso.push_back(poles[i]);
+//		}
+//		//------------------------------------------------
+//		daps = dguloso;
+//		string result = getMetricResponse();
+//		fprintf(fi, result.c_str());
+//		daps.clear();
+//		//free(sol);
+//		fclose(fi);
+//	}
+//}
 void Requisition::getTestResponse()
 {
-
-	FILE *fi;
-	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
-	if (fi)
-	{
-		//FAZ PELO MÉTODO EXATO
-		vector<vector<int>> SCP = createScp();
-		//saveGLPKFile(SCP);
-		saveGLPKFileReduced(SCP);
-		double seconds;
-		double clo = clock();
-		system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
-		seconds = (clock() - clo) / 1000;
-
-
-		fprintf_s(fi, "Optimal solution time: %f\n", seconds);
-
-		ifstream f("Results.txt");
-		string str;
-		getline(f, str);
-		vector<string> x = split(str, ' ');
-		for (int i = 0; i < x.size(); i++)
-		{
-			string snum = x[i].substr(1);
-			daps.push_back(poles[stoi(snum) - 1]);
-		}
-		string result = getMetricResponse();
-		fprintf(fi,result.c_str());
-		//------------------------------------------------
-		//FAZ PELO MÉTODO GRASP
-//		string result = "";
-
-		int cSatisfied, nColumns, columnsSize = SCP.size();
-		vector<vector<int>> graspscp;
-		for (int i = 0; i < meters.size(); i++)
-		{
-			vector<int> aux;
-			graspscp.push_back(aux);
-		}
-		for (int i = 0; i < SCP.size(); i++)
-		{
-			for (int j = 0; j < SCP[i].size(); j++)
-			{
-				graspscp[SCP[i][j]].push_back(i);
-			}
-		}
-		//clo = clock();
-		//double alpha = 0.8;
-		//int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
-		//seconds = (clock() - clo) / 1000;
-		//fprintf_s(fi, "Grasp solution time: %f\n", seconds);
-		//
-
-		//vector<Position*> dg;
-		//for (int i = 0; i < columnsSize; i++)
-		//{
-		//	if (sol[i] == 1)
-		//	{
-		//		dg.push_back(poles[i]);
-		//		
-		//	}
-		////	fprintf(fi, " %d ",sol[i]);
-		//		
-		//}
-		//daps = dg;
-		//result = getMetricResponse();
-		//fprintf(fi, result.c_str());
-
-
-		//------------------------------------------------
-		//FAZ PELO MÉTODO GULOSO
-		
-		clo = clock();
-		double alpha = 1;
-		int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns,alpha);
-		seconds = (clock() - clo) / 1000;
-		fprintf_s(fi, "Greedy solution time: %f\n", seconds);
-
-		vector<Position*> dguloso;
-		for (int i = 0; i < columnsSize; i++)
-		{
-			if (sol[i] == 1)
-			{
-				dguloso.push_back(poles[i]);
-			}
-			//	fprintf(fi, " %d ",sol[i]);
-
-		}
-		//------------------------------------------------
-		daps = dguloso;
-		result = getMetricResponse();
-		fprintf(fi, result.c_str());
-		daps.clear();
-		free(sol);
-		fclose(fi);
-	}
-
+	//vector<vector<int>> SCP = createScp();
+	//getExactSol(SCP);
+	//getGraspSol(SCP);
+	//getGreedySol(SCP);
 
 	//dapsToNs3File(SCP, chosenDaps);
 

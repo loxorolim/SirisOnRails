@@ -469,8 +469,11 @@ vector<int> generateRCL(vector<vector<int>> &scp, vector<vector<int>> &cMatrix, 
 	float L = alpha*max;
 	vector<int> RCL;
 	for (int i = 0; i < numSatisfied.size(); i++)
-	if (numSatisfied[i].cSatisfied >= L)
-		RCL.push_back(numSatisfied[i].pos);
+	{
+
+		if (numSatisfied[i].cSatisfied >= L)
+			RCL.push_back(numSatisfied[i].pos);
+	}
 
 
 
@@ -493,11 +496,9 @@ int clausesSatisfied(vector<vector<int>> scp, int column)
 	}
 	return num;
 }
-int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nColumns,double a)
+int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nColumns)
 {
-	alpha = a;
-	if (alpha == 1)
-		iterations = 1;
+
 	int* solution = initialSolution(size);
 	int* newSolution;
 	double bestSolutionTime;
@@ -506,10 +507,8 @@ int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nCo
 	{
 		newSolution = initialSolution(size);
 		newSolution = constructPhase(scp, size, newSolution);
-		if (alpha != 1)
-		{
-			WalkSat(scp, newSolution, size);
-		}
+	    WalkSat(scp, newSolution, size);
+		
 		
 
 		if (isBetterSolution(scp, newSolution, solution, size) == 1) //MUDAAAAAAAR
@@ -531,6 +530,34 @@ int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nCo
 	}
 	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
 	return solution;
+}
+
+vector<int> greedyheuristic(vector<vector<int>> &scp, int size)
+{
+	vector<int> solution;
+	vector<vector<int>> cMatrix = coverageMatrix(scp, size);
+	int tam = scp.size();
+	while (tam > 0)
+	{
+		int max = 0;
+		int pos = 0;
+		for (int i = 0; i < cMatrix.size(); i++)
+		{
+			if (cMatrix[i].size() > max)
+			{
+				pos = i;
+				max = cMatrix[i].size();
+			}
+		}
+		vector<vector<int>> scpCopy = scp;
+		solution.push_back(pos);
+		removeCovered(scp, cMatrix, pos, &tam);
+		updateMatrix(scpCopy, cMatrix, pos);
+		//printf("MATRIX INTER: %d",matrixinte);
+		//	printf("%d",tam);
+	}
+	return solution;
+	
 }
 void saveGLPKFile(vector<vector<int>> &SCP,int rs, int cs)
 {

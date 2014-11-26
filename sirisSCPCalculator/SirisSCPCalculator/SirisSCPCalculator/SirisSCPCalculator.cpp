@@ -264,7 +264,8 @@ void createSCPTeste(string arqm, string arqp)
 	req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
 	req->setMeters(meters);
 	req->setPoles(poles);
-	req->getTestResponse();
+	//req->getTestResponse();
+	printf((req->getAutoPlanResponse()).c_str());
 	//vector<vector<int>> SCP =  req->createScp();
 	//vector<vector<int>> scp2 = createScpMatrix22(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
 	//saveGLPKFile2(scp2,poles,"glpk2.txt");
@@ -306,6 +307,7 @@ int main(int argc, char* argv[])
 //		}
 //}
 	//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
+	//createSCPTeste("arqsTeste//TestezinhoMeters.txt", "arqsTeste//TestezinhoPoles.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
 	//saveGLPKFile(cMatrix, rs, cs);
 	//vector<vector<int>> scp = { { 0, 1 }, { 0, 1 }, { 0, 1, 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1 }, {} };
@@ -328,17 +330,18 @@ int main(int argc, char* argv[])
 		//createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
 //		glp_print_mip(problem, "broken_solution.txt");
 //	glp_write_prob(problem, 0, "broken_glp.mod");
-		createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
+		//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
 
 		//createSCPTeste();
 		//functeste();
 //		for (int i = 0; i < 200; i++)
 //			double wow = getHataSRDSuccessRate(i, 0, 0, 0.25, 0, 3, 5, 1);
-		/*string answer = "";
+		string answer = "";
 		Requisition *req = new Requisition();
+
 		answer = req->getResponse();
 		printf_s("%s",answer.c_str());
-		delete req;*/
+		delete req;
 	}
 
 	FILE *pFile;
@@ -349,9 +352,9 @@ int main(int argc, char* argv[])
 		_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
 		_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
 		_CrtDumpMemoryLeaks();
-		fclose(pFile);
+		
 	}
-
+	fclose(pFile);
 
 
 

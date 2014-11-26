@@ -112,6 +112,10 @@ vector<Position*> Grid::getCell(Position* reference)
 	//return cells[posX][posY];
 //	return cells[make_pair(posX, posY)];
 }
+map<pair<int, int>, vector<Position*>> Grid::getCells()
+{
+	return cells;
+}
 double getMinX(vector<Position*> v)
 {
 	double dx = v[0]->latitude;

@@ -19,6 +19,7 @@ vector<vector<int>> copyScp(vector<vector<int>> &scp);
 int* constructPhase(vector<vector<int>> scp, int size, int* solution);
 void removeCovered(vector<vector<int>> &scp, vector<vector<int>> &cMatrix, int candidate, int* tam);
 vector<vector<int>> coverageMatrix(vector<vector<int>> &scp, int size);
-int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nColumns,double a);
+int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nColumns);
+vector<int> greedyheuristic(vector<vector<int>> &scp, int size);
 vector<vector<int>> createSCPFromFile(const char* name, int* rowsSize, int* columnsSize);
 void saveGLPKFile(vector<vector<int>> &SCP, int rs, int cs);

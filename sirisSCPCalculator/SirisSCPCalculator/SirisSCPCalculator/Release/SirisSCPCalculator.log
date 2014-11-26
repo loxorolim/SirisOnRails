@@ -1,25 +1,62 @@
-﻿Build started 24/11/2014 20:22:48.
-     1>Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
+﻿Build started 26/11/2014 17:25:28.
+     1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
-         SirisSCPCalculator.cpp
-     1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
-                 Add macro to precompiled header instead of defining here
-                 SirisSCPCalculator.cpp(4) : use of precompiled header
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(36): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(41): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(45): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(107): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(114): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(122): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>SirisSCPCalculator.cpp(124): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>SirisSCPCalculator.cpp(79): warning C4101: 'meterY' : unreferenced local variable
-     1>SirisSCPCalculator.cpp(79): warning C4101: 'meterX' : unreferenced local variable
-     1>SirisSCPCalculator.cpp(169): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(171): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(200): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Requisition.cpp
+         Requisition.cpp
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(36): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(45): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(98): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(100): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(103): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(123): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(132): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(135): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(151): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(157): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(181): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(186): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(189): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(218): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(229): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(236): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(240): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(248): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(201): warning C4101: 'file' : unreferenced local variable
+     1>Requisition.cpp(291): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(302): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(313): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(320): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(347): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(350): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(369): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(373): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(379): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(383): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(389): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(405): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(467): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(478): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(528): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(691): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(704): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(707): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(710): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(723): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(730): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(733): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(739): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(747): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(781): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(810): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(812): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(814): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(836): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(838): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(856): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(859): warning C4018: '<' : signed/unsigned mismatch
        Link:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Guilherme\Downloads\glpk-4.54\w32\glpk_4_54.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Guilherme\Downloads\glpk-4.54\w32\glpk_4_54.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
          Release\auxiliars.obj
          Release\ClusterMethods.obj
          Release\DrawResponse.obj
@@ -31,11 +68,10 @@
          Release\SirisSCPCalculator.obj
          Release\stdafx.obj
          Generating code
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\grasp.cpp(272): warning C4715: 'isBetterSolution' : not all control paths return a value
          Finished generating code
-         SirisSCPCalculator.vcxproj -> C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
-     1>Done Building Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
+         SirisSCPCalculator.vcxproj -> C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe
+     1>Done Building Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.89
+Time Elapsed 00:00:03.30
