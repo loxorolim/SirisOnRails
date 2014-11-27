@@ -224,9 +224,10 @@ void functeste(vector<Position*> meters)
 }
 
 
-void createSCPTeste(string arqm, string arqp)
+void createSCPTeste(string fm, string fp)
 {
-
+	string arqm = "arqsTeste//"+fm+".txt";
+	string arqp = "arqsTeste//" + fp + ".txt";
 	FILE * file;
 	fopen_s(&file, arqm.c_str(), "r");
 	FILE * file2;
@@ -264,8 +265,8 @@ void createSCPTeste(string arqm, string arqp)
 	req->setConfig(0, 1, 0, 0, 15, 3, 5, 1);
 	req->setMeters(meters);
 	req->setPoles(poles);
-	//req->getTestResponse();
-	printf((req->getAutoPlanResponse()).c_str());
+	req->getTestResponse(fm);
+	//printf((req->getAutoPlanResponse()).c_str());
 	//vector<vector<int>> SCP =  req->createScp();
 	//vector<vector<int>> scp2 = createScpMatrix22(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
 	//saveGLPKFile2(scp2,poles,"glpk2.txt");
@@ -283,7 +284,7 @@ void createSCPTeste(string arqm, string arqp)
 	//printf("\n%d", r);
 	//req->saveGLPKFile(SCP);
 	//system("C:\\Users\\Guilherme\\Downloads\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
-	delete req;
+//	delete req;
 
 
 	
@@ -306,7 +307,14 @@ int main(int argc, char* argv[])
 //			SCPfeasible.push_back(toAdd);
 //		}
 //}
-	//createSCPTeste("arqsTeste//filemeters9999999.txt", "arqsTeste//filepoles9999999.txt");
+	createSCPTeste("filemeters10000", "filepoles10000");
+	//createSCPTeste("filemeters15000", "filepoles15000");
+//	createSCPTeste("filemeters5000", "filepoles5000");
+//	createSCPTeste("filemeters4000", "filepoles4000");
+//	createSCPTeste("filemeters3000", "filepoles3000");
+//	createSCPTeste("filemeters2000", "filepoles2000");
+	//createSCPTeste("filemeters1000", "filepoles1000");
+
 	//createSCPTeste("arqsTeste//TestezinhoMeters.txt", "arqsTeste//TestezinhoPoles.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
 	//saveGLPKFile(cMatrix, rs, cs);
@@ -336,12 +344,13 @@ int main(int argc, char* argv[])
 		//functeste();
 //		for (int i = 0; i < 200; i++)
 //			double wow = getHataSRDSuccessRate(i, 0, 0, 0.25, 0, 3, 5, 1);
-		string answer = "";
-		Requisition *req = new Requisition();
 
-		answer = req->getResponse();
-		printf_s("%s",answer.c_str());
-		delete req;
+		//string answer = "";
+		//Requisition *req = new Requisition();
+
+		//answer = req->getResponse();
+		//printf_s("%s",answer.c_str());
+		//delete req;
 	}
 
 	FILE *pFile;

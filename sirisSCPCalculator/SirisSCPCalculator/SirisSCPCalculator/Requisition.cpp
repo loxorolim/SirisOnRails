@@ -4,7 +4,25 @@
 #include "Grasp.h"
 #include <time.h>
 #include <sstream>
+#include <windows.h>
 
+double memTestCount = -1;;
+
+vector<string> &split(const string &s, char delim, vector<string> &elems)
+{
+	stringstream ss(s);
+	string item;
+	while (getline(ss, item, delim))
+	{
+		elems.push_back(item);
+	}
+	return elems;
+}
+std::vector<std::string> split(const std::string &s, char delim) {
+	std::vector<std::string> elems;
+	split(s, delim, elems);
+	return elems;
+}
 
 bool compareByLongitude(Position* a, Position *b)
 {
@@ -14,7 +32,31 @@ bool compareByLatitude(Position* a, Position *b)
 {
 	return a->latitude < b->latitude;
 }
+void executeGlpk(string filename)
+{
+	string access = "C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+	system(access.c_str());
+}
+float getMemUsageFromGlpkFile(string fname)
+{
+	ifstream f(fname.c_str());
+	string str;
+	int cont = 1;
+	float mem = -1;
+	while (cont)
+	{
+		getline(f, str);
+		int c = str.find("Memory used: ");
+		if (c >= 0)
+		{
+			cont = 0;
+			vector<string> s = split(str, ' ');
+			mem = stof(s[2]);
+		}
+	}
+	return mem;
 
+}
 vector<Position*> Requisition::getActiveRegion(vector<Position*> &vSorted, Position* ref)
 {
 
@@ -274,10 +316,11 @@ void Requisition::saveGLPKFile(vector<vector<int>> &SCP)
 		}
 	
 }
+
 void Requisition::saveGLPKFileReduced(vector<vector<int>> &SCP)
 {
 
-
+	     
 		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
 		vector<int> uncMeters = uncoverableMeters(SCP);
 
@@ -419,29 +462,18 @@ void Requisition::dapsToNs3File(vector<vector<int>> &scp, vector<int> &chosenDap
 	}
 
 }
-vector<string> &split(const string &s, char delim, vector<string> &elems)
-{
-	stringstream ss(s);
-	string item;
-	while (getline(ss, item, delim)) 
-	{
-		elems.push_back(item);
-	}
-	return elems;
-}
-std::vector<std::string> split(const std::string &s, char delim) {
-	std::vector<std::string> elems;
-	split(s, delim, elems);
-	return elems;
-}
+
+
 string Requisition::gridAutoPlanning()
 {
 	Grid* metergrid = new Grid(meters, poles, regionLimiter);
 	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*>> meterCells = metergrid->getCells();
 	vector<string> chosenDaps;
 	//string str;
 	int i = 1;
+	float maximummemusage = -1;
 	for (map<pair<int, int>, vector<Position*>>::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
 	
@@ -457,7 +489,9 @@ string Requisition::gridAutoPlanning()
 		
 		vector<vector<int>> cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP);
-		system("C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+		//string access = "C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt --memlim " + to_string(memlimit);
+		//system(access.c_str());
+		executeGlpk("GlpkFile.txt");
 		ifstream f("Results.txt");
 		string gridAnswer;
 		getline(f, gridAnswer);
@@ -468,6 +502,11 @@ string Requisition::gridAutoPlanning()
 		{
 			//string snum = x[i].substr(1);
 			chosenDaps.push_back(x[i]);
+		}
+		float memusage = getMemUsageFromGlpkFile("wow.txt");
+		if (memusage > maximummemusage)
+		{
+			maximummemusage = memusage;
 		}
 
 	}
@@ -482,6 +521,9 @@ string Requisition::gridAutoPlanning()
 
 	delete metergrid;
 	delete polegrid;
+	meters = metersAux;
+	poles = polesAux;
+	memTestCount = maximummemusage;
 	return str;
 
 
@@ -491,7 +533,7 @@ string Requisition::gridAutoPlanning()
 string Requisition::getAutoPlanResponse()
 {
 	
-	return gridAutoPlanning();
+	//return gridAutoPlanning();
 	vector<vector<int>> SCP = createScp();
 	//for (int i = 0; i < SCP.size(); i++)
 	//{
@@ -508,7 +550,10 @@ string Requisition::getAutoPlanResponse()
 	//time_t timerini, timerend;
 	//time(&timerini);
 	//system("\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
-	system("C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	//system("C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+
+	executeGlpk("GlpkFile.txt");
+	getMemUsageFromGlpkFile("wow.txt");
 	//time(&timerend);
 	seconds = (clock() - clo)/1000;
 	FILE *fi;
@@ -543,136 +588,81 @@ string Requisition::getAutoPlanResponse()
 	//}
 	return str;
 }
-//void Requisition::getExactSol(vector<vector<int>> &SCP)
-//{
-//	FILE *fi;
-//	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
-//	if (fi)
-//	{
-//		//FAZ PELO MÉTODO EXATO
-//		//saveGLPKFile(SCP);
-//		saveGLPKFileReduced(SCP);
-//		double seconds;
-//		double clo = clock();
-//		system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
-//		seconds = (clock() - clo) / 1000;
-//
-//
-//		fprintf_s(fi, "Optimal solution time: %f\n", seconds);
-//
-//		ifstream f("Results.txt");
-//		string str;
-//		getline(f, str);
-//		vector<string> x = split(str, ' ');
-//		for (int i = 0; i < x.size(); i++)
-//		{
-//			string snum = x[i].substr(1);
-//			daps.push_back(poles[stoi(snum) - 1]);
-//		}
-//		string result = getMetricResponse();
-//		fprintf(fi, result.c_str());
-//		fclose(fi);
-//	}
-//}
-//void Requisition::getGraspSol(vector<vector<int>> &SCP)
-//{
-//	FILE *fi;
-//	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
-//	if (fi)
-//	{
-//
-//		double seconds;
-//		double clo;
-//
-//		int cSatisfied, nColumns, columnsSize = SCP.size();
-//		vector<vector<int>> graspscp;
-//		for (int i = 0; i < meters.size(); i++)
-//		{
-//			vector<int> aux;
-//			graspscp.push_back(aux);
-//		}
-//		for (int i = 0; i < SCP.size(); i++)
-//		{
-//			for (int j = 0; j < SCP[i].size(); j++)
-//			{
-//				graspscp[SCP[i][j]].push_back(i);
-//			}
-//		}
-//		clo = clock();
-//		int* sol = metaheuristic(graspscp, columnsSize, &cSatisfied, &nColumns);
-//		seconds = (clock() - clo) / 1000;
-//		fprintf_s(fi, "Grasp solution time: %f\n", seconds);
-//
-//
-//		vector<Position*> dg;
-//		for (int i = 0; i < columnsSize; i++)
-//		{
-//			if (sol[i] == 1)
-//			{
-//				dg.push_back(poles[i]);
-//
-//			}
-//			//	fprintf(fi, " %d ",sol[i]);
-//
-//		}
-//		daps = dg;
-//		string result = getMetricResponse();
-//		fprintf(fi, result.c_str());
-//		fclose(fi);
-//
-//	}
-//		//------------------------------------------------
-//}
-//void Requisition::getGreedySol(vector<vector<int>> &SCP)
-//{
-//	FILE *fi;
-//	fopen_s(&fi, "ns3files\\AutoPlanningResults.txt", "w");
-//	if (fi)
-//	{
-//		//FAZ PELO MÉTODO EXATO
-//
-//		double seconds;
-//		double clo = clock();
-//		
-//
-//		int cSatisfied, nColumns, columnsSize = SCP.size();
-//		vector<vector<int>> graspscp;
-//		for (int i = 0; i < meters.size(); i++)
-//		{
-//			vector<int> aux;
-//			graspscp.push_back(aux);
-//		}
-//		for (int i = 0; i < SCP.size(); i++)
-//		{
-//			for (int j = 0; j < SCP[i].size(); j++)
-//			{
-//				graspscp[SCP[i][j]].push_back(i);
-//			}
-//		}
-//
-//
-//		clo = clock();
-//		double alpha = 1;
-//		vector<int> sol = greedyheuristic(graspscp, columnsSize);
-//		seconds = (clock() - clo) / 1000;
-//		fprintf_s(fi, "Greedy solution time: %f\n", seconds);
-//
-//		vector<Position*> dguloso;
-//		for (int i = 0; i < sol.size(); i++)
-//		{
-//				dguloso.push_back(poles[i]);
-//		}
-//		//------------------------------------------------
-//		daps = dguloso;
-//		string result = getMetricResponse();
-//		fprintf(fi, result.c_str());
-//		daps.clear();
-//		//free(sol);
-//		fclose(fi);
-//	}
-//}
-void Requisition::getTestResponse()
+
+string Requisition::exactAutoPlanning()
 {
+	vector<vector<int>> SCP = createScp();
+	saveGLPKFileReduced(SCP);
+	//system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
+	executeGlpk("GlpkFile.txt");
+	float memusage =  getMemUsageFromGlpkFile("wow.txt");
+	ifstream f("Results.txt");
+	string str;
+	getline(f, str);
+	memTestCount = memusage;
+	return str;
+
+	
+}
+void Requisition::getTestResponse(string fname)
+{
+
+	FILE *fi;
+	string n = "ns3files\\AutoPlanningResults" + fname + ".txt";
+	fopen_s(&fi, n.c_str(), "w");
+	if (fi)
+	{
+		//FAZ PELO MÉTODO EXATO
+		daps.clear();
+		double seconds = -1;
+		double clo = clock();
+		memTestCount = -1;
+		string str = exactAutoPlanning();
+
+		seconds = clock() - clo;
+		fprintf_s(fi, "Optimal solution time: %f\n\n", seconds);
+		fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+		
+		vector<string> x = split(str, ' ');
+		for (int i = 0; i < x.size(); i++)
+		{
+			string snum = x[i].substr(1);
+			daps.push_back(poles[stoi(snum) - 1]);
+		}
+		string result = getMetricResponse();
+		fprintf(fi, result.c_str());
+		fprintf(fi, "------------------------------------------------------------------\n");
+
+		//FAZ PELO MÉTODO GRID PLANNING
+		double regionLimiter = 0.00001;
+		while (regionLimiter <= 1)
+		{
+			daps.clear();
+			memTestCount = -1;
+			regionLimiter *= 10;
+			setRegionLimiter(regionLimiter);
+			Position* aux = new Position(0, 0);
+			Position* aux2 = new Position(0 + regionLimiter, 0);
+			Position* aux3 = new Position(0, 0+regionLimiter);
+			double secondsgp = -1;
+			double clogp = clock();
+			string strgp = gridAutoPlanning();
+			secondsgp = clock() - clogp;
+			fprintf_s(fi, "Grid height: %f \n Grid width: %f \n\nGrid planning solution time: %f\n\n",getDistance(aux,aux2),getDistance(aux,aux3), secondsgp);
+			fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+			vector<string> xgp = split(strgp, ' ');
+			for (int i = 0; i < xgp.size(); i++)
+			{
+				string snum = xgp[i].substr(1);
+				daps.push_back(poles[stoi(snum) - 1]);
+			}
+			string resultgp = getMetricResponse();
+			fprintf(fi, resultgp.c_str());
+			fprintf(fi, "------------------------------------------------------------------\n");
+		}
+		
+	}
+	fclose(fi);
 	//vector<vector<int>> SCP = createScp();
 	//getExactSol(SCP);
 	//getGraspSol(SCP);
@@ -938,7 +928,7 @@ string Requisition::getResponse()
 	if (option == METRIC)
 		return getMetricResponse();
 	if (option == TEST)
-		getTestResponse();
+		getTestResponse("Default");
 
 	return "";
 }

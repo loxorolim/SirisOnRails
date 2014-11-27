@@ -129,6 +129,8 @@ double getDistance(Position * p1, Position * p2);
 void readConfiguration(int *scenario, int* technology, double* H_TX, double *H_RX, double *BIT_RATE, double *TRANSMITTER_POWER, int *SRD, int *meshEnabled);
 int binary_search(vector<Position*>& sorted_vec, double key, int i);
 vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, double d);
+size_t getTotalSystemMemory();
+
 //bool compareByLatitude(Position* a, Position *b);
 
 #endif

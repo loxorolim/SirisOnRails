@@ -5,6 +5,7 @@
 #include <string>
 #include "auxiliars.h"
 #include <stdlib.h>
+#include <Windows.h>
 using namespace std;
 
 
@@ -95,6 +96,13 @@ int binary_search( vector<Position*>& sorted_vec, double key,int latOrlng)
 //{
 //	return a->latitude < b->latitude;
 //}
+size_t getTotalSystemMemory()
+{
+	MEMORYSTATUSEX status;
+	status.dwLength = sizeof(status);
+	GlobalMemoryStatusEx(&status);
+	return status.ullTotalPhys;
+}
 vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, double d)
 {
 	

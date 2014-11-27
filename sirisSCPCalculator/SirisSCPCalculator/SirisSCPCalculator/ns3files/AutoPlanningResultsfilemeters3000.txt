@@ -1,0 +1,103 @@
+Optimal solution time: 3408.000000
+Number of DAPs: 74
+Average Links per DAP: 51.554054
+Maximum Links in a DAP: 295.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 51.554054
+Maximum Number of Meters in a DAP: 295.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 51.554054
+Maximum 0 mesh hops links: 295.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 3815.000000
+Grid height: 11.131949 
+ Grid width: 11.131949 
+Grid planning solution time: 15139.000000
+Number of DAPs: 198
+Average Links per DAP: 57.257576
+Maximum Links in a DAP: 301.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 57.257576
+Maximum Number of Meters in a DAP: 301.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 57.257576
+Maximum 0 mesh hops links: 301.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 11337.000000
+Grid height: 111.319491 
+ Grid width: 111.319491 
+Grid planning solution time: 1906.000000
+Number of DAPs: 97
+Average Links per DAP: 52.969072
+Maximum Links in a DAP: 301.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 52.969072
+Maximum Number of Meters in a DAP: 301.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 52.969072
+Maximum 0 mesh hops links: 301.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 5138.000000
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+Grid planning solution time: 3626.000000
+Number of DAPs: 74
+Average Links per DAP: 51.391892
+Maximum Links in a DAP: 295.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 51.391892
+Maximum Number of Meters in a DAP: 295.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 51.391892
+Maximum 0 mesh hops links: 295.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 3803.000000
+Grid height: 11131.949079 
+ Grid width: 11131.949079 
+Grid planning solution time: 3468.000000
+Number of DAPs: 74
+Average Links per DAP: 51.554054
+Maximum Links in a DAP: 295.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 51.554054
+Maximum Number of Meters in a DAP: 295.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 51.554054
+Maximum 0 mesh hops links: 295.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 3815.000000
+Grid height: 111319.490793 
+ Grid width: 111319.490793 
+Grid planning solution time: 3500.000000
+Number of DAPs: 74
+Average Links per DAP: 51.554054
+Maximum Links in a DAP: 295.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 51.554054
+Maximum Number of Meters in a DAP: 295.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 51.554054
+Maximum 0 mesh hops links: 295.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 3815.000000
+Grid height: 1113194.907933 
+ Grid width: 1113194.907933 
+Grid planning solution time: 3443.000000
+Number of DAPs: 74
+Average Links per DAP: 51.554054
+Maximum Links in a DAP: 295.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 51.554054
+Maximum Number of Meters in a DAP: 295.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 51.554054
+Maximum 0 mesh hops links: 295.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 3815.000000

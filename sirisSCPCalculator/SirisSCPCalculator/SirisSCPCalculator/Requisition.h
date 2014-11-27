@@ -15,6 +15,7 @@ using namespace std;
 #define DAP 0
 #define METER 1
 #define POLE 2
+const int memlimit = (getTotalSystemMemory() / (1000000))*0.8;
 bool compareByLongitude(Position* a, Position *b);
 bool compareByLatitude(Position* a, Position *b);
 class Requisition
@@ -29,7 +30,7 @@ class Requisition
 	public:
 		Requisition()
 		{
-			readConfiguration();
+			//readConfiguration();
 		}
 		~Requisition()
 		{
@@ -63,9 +64,10 @@ class Requisition
 		string getMetricResponse();
 		string getAutoPlanResponse();
 		string gridAutoPlanning();
+		string exactAutoPlanning();
 
 		//SÓ PRA TESTES
-		void getTestResponse(); //ESSA REQUISIÇÃO É PARA SALVAR EM UM ARQUIVO DADOS DO PLANEJAMENTO, NÃO DEVE ESTAR NA VERSÃO FINAL!
+		void getTestResponse(string fname); //ESSA REQUISIÇÃO É PARA SALVAR EM UM ARQUIVO DADOS DO PLANEJAMENTO, NÃO DEVE ESTAR NA VERSÃO FINAL!
 		//void getGraspSol(vector<vector<int>> &SCP);
 		//void getGreedySol(vector<vector<int>> &SCP);
 		//void getExactSol(vector<vector<int>> &SCP);
@@ -95,6 +97,10 @@ class Requisition
 			//sort(v.begin(), v.end(), compareByLatitude);
 			daps = v;
 
+		}
+		void setRegionLimiter(double v)
+		{
+			regionLimiter = v;
 		}
 		
 

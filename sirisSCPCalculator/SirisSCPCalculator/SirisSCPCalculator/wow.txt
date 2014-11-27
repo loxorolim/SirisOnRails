@@ -1,0 +1,55 @@
+GLPSOL: GLPK LP/MIP Solver, v4.54
+Parameter(s) specified in the command line:
+ --math GlpkFile.txt --memlim 3355
+Reading model section from GlpkFile.txt...
+Reading data section from GlpkFile.txt...
+14 lines were read
+Generating cost...
+Generating covers...
+Model has been successfully generated
+GLPK Integer Optimizer, v4.54
+9998 rows, 750 columns, 34137 non-zeros
+750 integer variables, all of which are binary
+Preprocessing...
+1674 hidden packing inequaliti(es) were detected
+7251 rows, 616 columns, 28219 non-zeros
+616 integer variables, all of which are binary
+Scaling...
+ A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
+Problem data seem to be well scaled
+Constructing initial basis...
+Size of triangular part is 7251
+Solving LP relaxation...
+GLPK Simplex Optimizer, v4.54
+7251 rows, 616 columns, 28219 non-zeros
+      0: obj =  1.250000000e+002  infeas = 7.251e+003 (0)
+    500: obj =  1.300000000e+002  infeas = 5.859e+003 (0)
+   1000: obj =  1.420000000e+002  infeas = 4.494e+003 (0)
+   1500: obj =  1.550000000e+002  infeas = 3.457e+003 (0)
+   2000: obj =  1.650000000e+002  infeas = 2.861e+003 (0)
+   2500: obj =  1.770000000e+002  infeas = 2.260e+003 (0)
+   3000: obj =  1.930000000e+002  infeas = 1.656e+003 (0)
+   3500: obj =  2.025000000e+002  infeas = 1.340e+003 (0)
+   4000: obj =  2.146666667e+002  infeas = 1.010e+003 (0)
+   4500: obj =  2.266666667e+002  infeas = 7.392e+002 (0)
+   5000: obj =  2.398333333e+002  infeas = 5.040e+002 (0)
+   5500: obj =  2.528333333e+002  infeas = 3.277e+002 (0)
+   6000: obj =  2.635000000e+002  infeas = 2.145e+002 (0)
+   6500: obj =  2.800000000e+002  infeas = 9.850e+001 (0)
+   7000: obj =  2.930000000e+002  infeas = 4.150e+001 (0)
+   7500: obj =  3.090000000e+002  infeas = 5.000e+000 (0)
+*  7565: obj =  3.140000000e+002  infeas = 0.000e+000 (0)
+*  7606: obj =  3.100000000e+002  infeas = 0.000e+000 (0)
+OPTIMAL LP SOLUTION FOUND
+Integer optimization begins...
++  7606: mip =     not found yet >=              -inf        (1; 0)
+Solution found by heuristic: 318
+Solution found by heuristic: 317
+Solution found by heuristic: 315
+Solution found by heuristic: 313
++  7669: >>>>>  3.110000000e+002 >=  3.110000000e+002   0.0% (5; 0)
++  7669: mip =  3.110000000e+002 >=     tree is empty   0.0% (0; 9)
+INTEGER OPTIMAL SOLUTION FOUND
+Time used:   1.6 secs
+Memory used: 1167.9 Mb (1224624679 bytes)
+Model has been successfully processed
