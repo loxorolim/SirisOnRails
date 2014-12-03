@@ -18,6 +18,8 @@
 #include "Grid.h"
 #include "Requisition.h"
 #include "Grasp.h"
+#include <time.h>
+#include <chrono>
 using namespace std;
 
 
@@ -266,6 +268,18 @@ void createSCPTeste(string fm, string fp)
 	req->setMeters(meters);
 	req->setPoles(poles);
 	req->getTestResponse(fm);
+
+	//const clock_t begin_time = clock();
+	//req->createScp();
+	//float dif = float(clock() - begin_time) / CLOCKS_PER_SEC;
+
+	//const clock_t begin_time2 = clock();
+	//req->createScpSemGrid();
+	//float dif2 = float(clock() - begin_time2) / CLOCKS_PER_SEC;
+	//printf("%d %d\n", meters.size(), poles.size());
+	//printf("%f\n", dif);
+	//printf("%f\n", dif2);
+
 	//printf((req->getAutoPlanResponse()).c_str());
 	//vector<vector<int>> SCP =  req->createScp();
 	//vector<vector<int>> scp2 = createScpMatrix22(meters, poles, 0, 1, 0, 0, 15, 3, 5, 1);
@@ -307,13 +321,14 @@ int main(int argc, char* argv[])
 //			SCPfeasible.push_back(toAdd);
 //		}
 //}
-	createSCPTeste("filemeters10000", "filepoles10000");
+	//createSCPTeste("filemeters10000", "filepoles10000");
 	//createSCPTeste("filemeters15000", "filepoles15000");
 //	createSCPTeste("filemeters5000", "filepoles5000");
 //	createSCPTeste("filemeters4000", "filepoles4000");
 //	createSCPTeste("filemeters3000", "filepoles3000");
 //	createSCPTeste("filemeters2000", "filepoles2000");
-	//createSCPTeste("filemeters1000", "filepoles1000");
+	createSCPTeste("filemeters1000", "filepoles1000");
+	//createSCPTeste("filemeters9999999", "filepoles9999999");
 
 	//createSCPTeste("arqsTeste//TestezinhoMeters.txt", "arqsTeste//TestezinhoPoles.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);

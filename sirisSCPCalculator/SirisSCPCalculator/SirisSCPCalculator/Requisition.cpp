@@ -6,7 +6,8 @@
 #include <sstream>
 #include <windows.h>
 
-double memTestCount = -1;;
+double memTestCount = -1;
+double timeTestCount = -1;
 
 vector<string> &split(const string &s, char delim, vector<string> &elems)
 {
@@ -55,6 +56,26 @@ float getMemUsageFromGlpkFile(string fname)
 		}
 	}
 	return mem;
+
+}
+float getTimeUsageFromGlpkFile(string fname)
+{
+	ifstream f(fname.c_str());
+	string str;
+	int cont = 1;
+	float time = -1;
+	while (cont)
+	{
+		getline(f, str);
+		int c = str.find("Time used: ");
+		if (c >= 0)
+		{
+			cont = 0;
+			vector<string> s = split(str, ' ');
+			time = stof(s[4]);
+		}
+	}
+	return time;
 
 }
 vector<Position*> Requisition::getActiveRegion(vector<Position*> &vSorted, Position* ref)
@@ -215,7 +236,66 @@ vector<vector<int>> Requisition::createScp()
 
 	return sM;
 }
+vector<vector<int>> Requisition::createScpSemGrid()
+{
+	Grid* g = new Grid(meters, poles, 10);
+	vector<int> aux;
+	vector<vector<int>> sM;
+	//sM.reserve(meters.size());
 
+	for (int i = 0; i < poles.size(); i++)
+	{
+		vector<int> metersCovered;
+		//vector<Position*> metersReduced = getActiveRegion(meters, poles[i]);
+		vector<Position*> metersReduced = g->getCell(poles[i]);
+		//printf("%d - ", i);
+		//for (int z = 0; z < metersReduced.size(); z++)
+		//	printf("%d ", metersReduced[z]->index);
+		//printf("\n");
+		for (int j = 0; j < metersReduced.size(); j++)
+		{
+			double dist = getDistance(poles[i], metersReduced[j]);
+			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+
+			if (eff >= MARGIN_VALUE)
+				metersCovered.push_back(metersReduced[j]->index);
+		}
+
+		//if (polesThatCover.length > 0)
+		//if (i % 1000 == 0)
+		//	printf("%d", i);
+
+		sM.push_back(metersCovered);
+	}
+	if (meshEnabled)
+	{
+
+		vector<vector<int>> nM = createMeterNeighbourhood(g);// ESSE MÉTODO NÃO PODERIA ESTAR NO INICIO DO MÉTODO PARA QUE NÃO FOSSE CHAMADO VÁRIAS VEZES???!?!?!?
+		for (int i = 0; i < sM.size(); i++)
+		{
+			vector<int> neighbours = sM[i];
+			for (int j = 0; j < meshEnabled; j++)
+			{
+				vector<int> newNeighbours;
+				for (int k = 0; k < neighbours.size(); k++)
+				{
+					sM[i] = concatVectors(sM[i], nM[neighbours[k]]);
+					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
+				}
+				neighbours = newNeighbours;
+
+			}
+
+			//	printf("MESH%d", i);
+		}
+
+	}
+	delete g;
+
+
+
+	return sM;
+}
 vector<vector<int>> Requisition::createMeterNeighbourhood(Grid *g)
 {
 	vector<vector<int>> M;
@@ -474,6 +554,7 @@ string Requisition::gridAutoPlanning()
 	//string str;
 	int i = 1;
 	float maximummemusage = -1;
+	float maximumtimeusage = -1;
 	for (map<pair<int, int>, vector<Position*>>::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
 	
@@ -504,9 +585,14 @@ string Requisition::gridAutoPlanning()
 			chosenDaps.push_back(x[i]);
 		}
 		float memusage = getMemUsageFromGlpkFile("wow.txt");
+		float timeusage = getTimeUsageFromGlpkFile("wow.txt");
 		if (memusage > maximummemusage)
 		{
 			maximummemusage = memusage;
+		}
+		if (timeusage > maximumtimeusage)
+		{
+			maximumtimeusage = timeusage;
 		}
 
 	}
@@ -524,6 +610,7 @@ string Requisition::gridAutoPlanning()
 	meters = metersAux;
 	poles = polesAux;
 	memTestCount = maximummemusage;
+	timeTestCount = maximumtimeusage;
 	return str;
 
 
@@ -596,10 +683,12 @@ string Requisition::exactAutoPlanning()
 	//system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
 	executeGlpk("GlpkFile.txt");
 	float memusage =  getMemUsageFromGlpkFile("wow.txt");
+	float timeusage = getTimeUsageFromGlpkFile("wow.txt");
 	ifstream f("Results.txt");
 	string str;
 	getline(f, str);
 	memTestCount = memusage;
+	timeTestCount = timeusage;
 	return str;
 
 	
@@ -612,26 +701,7 @@ void Requisition::getTestResponse(string fname)
 	fopen_s(&fi, n.c_str(), "w");
 	if (fi)
 	{
-		//FAZ PELO MÉTODO EXATO
-		daps.clear();
-		double seconds = -1;
-		double clo = clock();
-		memTestCount = -1;
-		string str = exactAutoPlanning();
 
-		seconds = clock() - clo;
-		fprintf_s(fi, "Optimal solution time: %f\n\n", seconds);
-		fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
-		
-		vector<string> x = split(str, ' ');
-		for (int i = 0; i < x.size(); i++)
-		{
-			string snum = x[i].substr(1);
-			daps.push_back(poles[stoi(snum) - 1]);
-		}
-		string result = getMetricResponse();
-		fprintf(fi, result.c_str());
-		fprintf(fi, "------------------------------------------------------------------\n");
 
 		//FAZ PELO MÉTODO GRID PLANNING
 		double regionLimiter = 0.00001;
@@ -639,17 +709,22 @@ void Requisition::getTestResponse(string fname)
 		{
 			daps.clear();
 			memTestCount = -1;
+			timeTestCount = -1;
 			regionLimiter *= 10;
 			setRegionLimiter(regionLimiter);
 			Position* aux = new Position(0, 0);
 			Position* aux2 = new Position(0 + regionLimiter, 0);
 			Position* aux3 = new Position(0, 0+regionLimiter);
 			double secondsgp = -1;
-			double clogp = clock();
+			//double clogp = clock();
+			const clock_t begin_time = clock();
 			string strgp = gridAutoPlanning();
-			secondsgp = clock() - clogp;
+			secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+			//secondsgp = clock() - clogp;
 			fprintf_s(fi, "Grid height: %f \n Grid width: %f \n\nGrid planning solution time: %f\n\n",getDistance(aux,aux2),getDistance(aux,aux3), secondsgp);
 			fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+			fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
+
 			vector<string> xgp = split(strgp, ' ');
 			for (int i = 0; i < xgp.size(); i++)
 			{
@@ -659,7 +734,34 @@ void Requisition::getTestResponse(string fname)
 			string resultgp = getMetricResponse();
 			fprintf(fi, resultgp.c_str());
 			fprintf(fi, "------------------------------------------------------------------\n");
+
+
 		}
+		//FAZ PELO MÉTODO EXATO
+		daps.clear();
+		double seconds = -1;
+		//double clo = clock();
+
+
+		memTestCount = -1;
+		const clock_t begin_time2 = clock();
+		string str = exactAutoPlanning();
+		seconds = float(clock() - begin_time2) / CLOCKS_PER_SEC;
+
+		//seconds = clock() - clo;
+		fprintf_s(fi, "Optimal solution time: %f\n\n", seconds);
+		fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+		fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
+
+		vector<string> x = split(str, ' ');
+		for (int i = 0; i < x.size(); i++)
+		{
+			string snum = x[i].substr(1);
+			daps.push_back(poles[stoi(snum) - 1]);
+		}
+		string result = getMetricResponse();
+		fprintf(fi, result.c_str());
+		fprintf(fi, "------------------------------------------------------------------\n");
 		
 	}
 	fclose(fi);

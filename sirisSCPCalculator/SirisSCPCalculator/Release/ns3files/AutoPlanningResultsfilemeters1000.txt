@@ -1,0 +1,151 @@
+Grid height: 11.131949 
+ Grid width: 11.131949 
+
+Grid planning solution time: 4.661000
+
+Maximum Memory Used: 0.100000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 69
+Average Links per DAP: 49.898551
+Maximum Links in a DAP: 151.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 49.898551
+Maximum Number of Meters in a DAP: 151.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 49.898551
+Maximum 0 mesh hops links: 151.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 3443.000000
+------------------------------------------------------------------
+Grid height: 111.319491 
+ Grid width: 111.319491 
+
+Grid planning solution time: 0.719000
+
+Maximum Memory Used: 1.000000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 37
+Average Links per DAP: 52.000000
+Maximum Links in a DAP: 151.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 52.000000
+Maximum Number of Meters in a DAP: 151.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 52.000000
+Maximum 0 mesh hops links: 151.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1924.000000
+------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 0.465000
+
+Maximum Memory Used: 12.800000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 26
+Average Links per DAP: 47.576923
+Maximum Links in a DAP: 124.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 47.576923
+Maximum Number of Meters in a DAP: 124.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 47.576923
+Maximum 0 mesh hops links: 124.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1237.000000
+------------------------------------------------------------------
+Grid height: 11131.949079 
+ Grid width: 11131.949079 
+
+Grid planning solution time: 0.397000
+
+Maximum Memory Used: 12.800000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 26
+Average Links per DAP: 47.576923
+Maximum Links in a DAP: 124.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 47.576923
+Maximum Number of Meters in a DAP: 124.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 47.576923
+Maximum 0 mesh hops links: 124.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1237.000000
+------------------------------------------------------------------
+Grid height: 111319.490793 
+ Grid width: 111319.490793 
+
+Grid planning solution time: 0.398000
+
+Maximum Memory Used: 12.800000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 26
+Average Links per DAP: 47.576923
+Maximum Links in a DAP: 124.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 47.576923
+Maximum Number of Meters in a DAP: 124.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 47.576923
+Maximum 0 mesh hops links: 124.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1237.000000
+------------------------------------------------------------------
+Grid height: 1113194.907933 
+ Grid width: 1113194.907933 
+
+Grid planning solution time: 0.445000
+
+Maximum Memory Used: 12.800000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 26
+Average Links per DAP: 47.576923
+Maximum Links in a DAP: 124.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 47.576923
+Maximum Number of Meters in a DAP: 124.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 47.576923
+Maximum 0 mesh hops links: 124.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1237.000000
+------------------------------------------------------------------
+Optimal solution time: 0.437000
+
+Maximum Memory Used: 12.800000
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 26
+Average Links per DAP: 47.576923
+Maximum Links in a DAP: 124.000000
+Minimum Links in a DAP: 2.000000
+Average Number of Meters per DAP: 47.576923
+Maximum Number of Meters in a DAP: 124.000000
+Minimum Number of Meters in a DAP: 2.000000
+Average 0 mesh hops links: 47.576923
+Maximum 0 mesh hops links: 124.000000
+Minimum 0 mesh hops links: 2.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 1237.000000
+------------------------------------------------------------------

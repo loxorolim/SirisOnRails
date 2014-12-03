@@ -1,4 +1,4 @@
-﻿Build started 27/11/2014 16:22:20.
+﻿Build started 03/12/2014 12:34:32.
      1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Requisition.cpp SirisSCPCalculator.cpp
@@ -7,57 +7,62 @@
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(37): warning C4018: '<' : signed/unsigned mismatch
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(42): warning C4018: '<' : signed/unsigned mismatch
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(46): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(140): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(142): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(145): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(165): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(174): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(177): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(193): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(199): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(223): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(228): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(231): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(260): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(271): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(278): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(282): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(290): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(243): warning C4101: 'file' : unreferenced local variable
-     1>Requisition.cpp(334): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(345): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(356): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(363): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(390): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(393): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(412): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(416): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(422): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(426): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(432): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(448): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(501): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(517): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(573): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(627): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(654): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(681): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(694): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(697): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(700): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(713): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(720): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(723): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(161): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(163): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(166): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(186): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(195): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(198): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(214): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(220): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(246): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(255): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(258): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(274): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(280): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(303): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(308): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(311): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(340): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(351): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(358): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(362): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(370): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(323): warning C4101: 'file' : unreferenced local variable
+     1>Requisition.cpp(414): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(425): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(436): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(443): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(470): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(473): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(492): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(496): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(502): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(506): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(512): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(528): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(582): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(603): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(660): warning C4018: '<' : signed/unsigned mismatch
      1>Requisition.cpp(729): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(737): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(771): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(800): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(802): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(804): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(826): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(828): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>Requisition.cpp(846): warning C4018: '<' : signed/unsigned mismatch
-     1>Requisition.cpp(849): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(757): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(783): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(796): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(799): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(802): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(815): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(822): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(825): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(831): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(839): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(873): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(902): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(904): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(906): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(928): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(930): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>Requisition.cpp(948): warning C4018: '<' : signed/unsigned mismatch
+     1>Requisition.cpp(951): warning C4018: '<' : signed/unsigned mismatch
          SirisSCPCalculator.cpp
      1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
@@ -66,15 +71,15 @@
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(37): warning C4018: '<' : signed/unsigned mismatch
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(42): warning C4018: '<' : signed/unsigned mismatch
      1>c:\sites\first_app\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\Requisition.h(46): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(107): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(114): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(122): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>SirisSCPCalculator.cpp(109): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(116): warning C4018: '<' : signed/unsigned mismatch
      1>SirisSCPCalculator.cpp(124): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>SirisSCPCalculator.cpp(79): warning C4101: 'meterY' : unreferenced local variable
-     1>SirisSCPCalculator.cpp(79): warning C4101: 'meterX' : unreferenced local variable
-     1>SirisSCPCalculator.cpp(169): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(126): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>SirisSCPCalculator.cpp(81): warning C4101: 'meterY' : unreferenced local variable
+     1>SirisSCPCalculator.cpp(81): warning C4101: 'meterX' : unreferenced local variable
      1>SirisSCPCalculator.cpp(171): warning C4018: '<' : signed/unsigned mismatch
-     1>SirisSCPCalculator.cpp(200): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(173): warning C4018: '<' : signed/unsigned mismatch
+     1>SirisSCPCalculator.cpp(202): warning C4018: '<' : signed/unsigned mismatch
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Guilherme\Downloads\glpk-4.54\w32\glpk_4_54.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.lib" /MACHINE:X86 /SAFESEH Release\AutoPlanResponse.obj
          Release\auxiliars.obj
@@ -94,4 +99,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.97
+Time Elapsed 00:00:04.61

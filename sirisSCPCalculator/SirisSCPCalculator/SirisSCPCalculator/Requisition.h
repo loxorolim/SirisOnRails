@@ -56,6 +56,7 @@ class Requisition
 		void saveGLPKFile(vector<vector<int>> &scp);
 		void saveGLPKFileReduced(vector<vector<int>> &SCP);
 		vector<vector<sComponent*>> statisticalList();
+		vector<vector<int>> createScpSemGrid();
 		vector<vector<int>> createScp();
 		vector<vector<int>> createScp2();
 		vector<DrawInfo*> calculateDrawingInfo();
