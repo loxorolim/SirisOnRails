@@ -327,8 +327,9 @@ int main(int argc, char* argv[])
 //	createSCPTeste("filemeters4000", "filepoles4000");
 //	createSCPTeste("filemeters3000", "filepoles3000");
 //	createSCPTeste("filemeters2000", "filepoles2000");
-	createSCPTeste("filemeters1000", "filepoles1000");
+	//createSCPTeste("filemeters1000", "filepoles1000");
 	//createSCPTeste("filemeters9999999", "filepoles9999999");
+	createSCPTeste("metersInstanciaMédia3666", "polesInstanciaMédia773");
 
 	//createSCPTeste("arqsTeste//TestezinhoMeters.txt", "arqsTeste//TestezinhoPoles.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
