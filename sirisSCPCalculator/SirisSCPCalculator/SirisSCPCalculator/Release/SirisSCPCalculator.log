@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿Build started 07/12/2014 11:25:51.
      1>Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
@@ -14,6 +15,12 @@
      1>HataSRD.cpp(510): warning C4101: 'b' : unreferenced local variable
      1>HataSRD.cpp(596): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
      1>HataSRD.cpp(599): warning C4018: '>' : signed/unsigned mismatch
+=======
+﻿Build started 04/12/2014 15:43:06.
+     1>Project "C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\SirisSCPCalculator.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
+>>>>>>> a742ec261776a2a7ce41532e25759c4a9b63fe23
          SirisSCPCalculator.cpp
      1>SirisSCPCalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
@@ -50,4 +57,8 @@
 
 Build succeeded.
 
+<<<<<<< HEAD
 Time Elapsed 00:00:02.25
+=======
+Time Elapsed 00:00:04.04
+>>>>>>> a742ec261776a2a7ce41532e25759c4a9b63fe23

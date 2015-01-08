@@ -512,6 +512,7 @@ int main(int argc, char* argv[])
 	//createSCPTesteDeCobertura("filemeters15000", "filepoles15000");
 	//createSCPTesteDeCobertura("filemeters9999999", "filepoles9999999");
 //	createSCPTeste("filemeters5000", "filepoles5000");
+<<<<<<< HEAD
 	/*createSCPTeste("filemeters4000", "filepoles4000");
 	createSCPTeste("filemeters3000", "filepoles3000");
 	createSCPTeste("filemeters2000", "filepoles2000");
@@ -522,6 +523,14 @@ int main(int argc, char* argv[])
 
 	//createSCPTesteDeCobertura2("metersInstanciaPequena1576", "polesInstanciaPequena340");
 	//createSCPTesteDeCobertura2("metersInstanciaMédia3666", "polesInstanciaMédia773");
+=======
+//	createSCPTeste("filemeters4000", "filepoles4000");
+//	createSCPTeste("filemeters3000", "filepoles3000");
+//	createSCPTeste("filemeters2000", "filepoles2000");
+	//createSCPTeste("filemeters1000", "filepoles1000");
+	//createSCPTeste("filemeters9999999", "filepoles9999999");
+	createSCPTeste("metersInstanciaMédia3666", "polesInstanciaMédia773");
+>>>>>>> a742ec261776a2a7ce41532e25759c4a9b63fe23
 
 	createSCPTeste2("metersInstanciaPequena1576", "polesInstanciaPequena340");
 	//createSCPTeste2("metersInstanciaMédia3666", "polesInstanciaMédia773");
