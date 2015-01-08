@@ -242,7 +242,7 @@ vector<vector<int>> createScpMatrix22(vector<Position*>& uncoveredMeters, vector
 ////	return sM;
 ////}
 //
-void saveGLPKFile2(vector<vector<int>> &SCP, vector<Position*> &poles, string filename)
+void saveGLPKFile2(vector<vector<int>> &SCP, int polessize, string filename)
 {
 	FILE *file;
 	//fopen_s(&file, filename.c_str(), "w");
@@ -253,7 +253,7 @@ void saveGLPKFile2(vector<vector<int>> &SCP, vector<Position*> &poles, string fi
 //	else
 	{
 		int Z = SCP.size();
-		int Y = poles.size();
+		int Y = polessize;
 		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
 		string resp;
 		resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n";

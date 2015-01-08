@@ -35,24 +35,35 @@ bool compareByLatitude(Position* a, Position *b)
 }
 void executeGlpk(string filename)
 {
-	string access = "C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+	//string access = "C:\\Sites\\first_app\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+	string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
 }
 float getMemUsageFromGlpkFile(string fname)
 {
 	ifstream f(fname.c_str());
 	string str;
-	int cont = 1;
+	//int cont = 1;
 	float mem = -1;
-	while (cont)
+	while (getline(f, str))
 	{
-		getline(f, str);
+		
 		int c = str.find("Memory used: ");
 		if (c >= 0)
 		{
-			cont = 0;
+			//cont = 0;
 			vector<string> s = split(str, ' ');
-			mem = stof(s[2]);
+			int pos = -1;
+			for (int i = 0; i < s.size(); i++)
+			{
+				int c2 = s[i].find("Mb");
+				if (c2 >= 0)
+				{
+					pos = i;
+					break;
+				}
+			}
+			mem = stof(s[pos-1]);
 		}
 	}
 	return mem;
@@ -62,17 +73,28 @@ float getTimeUsageFromGlpkFile(string fname)
 {
 	ifstream f(fname.c_str());
 	string str;
-	int cont = 1;
+	//int cont = 1;
 	float time = -1;
-	while (cont)
+	while (getline(f, str))
 	{
-		getline(f, str);
+		//getline(f, str);
 		int c = str.find("Time used: ");
 		if (c >= 0)
 		{
-			cont = 0;
+		//	cont = 0;
+			
 			vector<string> s = split(str, ' ');
-			time = stof(s[4]);
+			int pos = -1;
+			for (int i = 0; i < s.size(); i++)
+			{
+				int c2 = s[i].find("secs");
+				if (c2 >= 0)
+				{
+					pos = i;
+					break;
+				}
+			}
+			time = stof(s[pos-1]);
 		}
 	}
 	return time;
@@ -210,7 +232,8 @@ vector<vector<int>> Requisition::createScp()
 	if (meshEnabled)
 	{
 
-		vector<vector<int>> nM = createMeterNeighbourhood(g);// ESSE MÉTODO NÃO PODERIA ESTAR NO INICIO DO MÉTODO PARA QUE NÃO FOSSE CHAMADO VÁRIAS VEZES???!?!?!?
+		vector<vector<int>> nM = createMeterNeighbourhood(g);
+		int firstPos = meters[0]->index;
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> neighbours = sM[i];
@@ -219,8 +242,13 @@ vector<vector<int>> Requisition::createScp()
 				vector<int> newNeighbours;
 				for (int k = 0; k < neighbours.size(); k++)
 				{
-					sM[i] = concatVectors(sM[i], nM[neighbours[k]]);
-					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
+
+					int toFind = neighbours[k];
+					int pos = 0;
+					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
+					
+					sM[i] = concatVectors(sM[i], nM[pos]);
+					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
 				}
 				neighbours = newNeighbours;
 
@@ -663,7 +691,7 @@ string Requisition::getAutoPlanResponse()
 		
 		chosenDaps.push_back(stoi(snum)-1);
 	}
-	//dapsToNs3File(SCP, chosenDaps);
+	dapsToNs3File(SCP, chosenDaps);
 
 
 	
@@ -679,6 +707,7 @@ string Requisition::getAutoPlanResponse()
 string Requisition::exactAutoPlanning()
 {
 	vector<vector<int>> SCP = createScp();
+	//vector<vector<int>> SCP2 = createScpSemGrid();
 	saveGLPKFileReduced(SCP);
 	//system("glpk-4.54\\w64\\glpsol.exe --math GlpkFile.txt");
 	executeGlpk("GlpkFile.txt");
@@ -693,6 +722,41 @@ string Requisition::exactAutoPlanning()
 
 	
 }
+
+void doGridTest(Requisition *req,double gridsize, FILE *fi)
+{
+
+	memTestCount = -1;
+	timeTestCount = -1;
+	//regionLimiter *= 10;
+
+	req->setRegionLimiter(gridsize);
+	Position* aux = new Position(0, 0);
+	Position* aux2 = new Position(0 + gridsize, 0);
+	Position* aux3 = new Position(0, 0 + gridsize);
+	double secondsgp = -1;
+	//double clogp = clock();
+	const clock_t begin_time = clock();
+	string strgp = req->gridAutoPlanning();
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	//secondsgp = clock() - clogp;
+	fprintf_s(fi, "Grid height: %f \n Grid width: %f \n\nGrid planning solution time: %f\n\n", getDistance(aux, aux2), getDistance(aux, aux3), secondsgp);
+	fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+	fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
+	vector<Position*> daps;
+	vector<Position*> poles = req->getPoles();
+	vector<string> xgp = split(strgp, ' ');
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		string snum = xgp[i].substr(1);
+		daps.push_back(poles[stoi(snum) - 1]);
+	}
+	req->setDAPs(daps);
+	string resultgp = req->getMetricResponse();
+	fprintf(fi, resultgp.c_str());
+	fprintf(fi, "------------------------------------------------------------------\n");
+}
+
 void Requisition::getTestResponse(string fname)
 {
 
@@ -702,66 +766,74 @@ void Requisition::getTestResponse(string fname)
 	if (fi)
 	{
 
+		fprintf_s(fi, "Meters Number: %d\n", meters.size());
+		fprintf_s(fi, "Poles Number: %d\n",poles.size());
+//
+		doGridTest(this, 0.001, fi);
+		doGridTest(this, 0.005, fi);
+		doGridTest(this, 0.01, fi);
+		doGridTest(this, 0.1, fi);
+//		//FAZ PELO MÉTODO GRID PLANNING
+//		double regionLimiter = 0.005;
+////		while (regionLimiter <= 0.01)
+////		{
+//			daps.clear();
+//			memTestCount = -1;
+//			timeTestCount = -1;
+//			//regionLimiter *= 10;
+//			setRegionLimiter(regionLimiter);
+//			Position* aux = new Position(0, 0);
+//			Position* aux2 = new Position(0 + regionLimiter, 0);
+//			Position* aux3 = new Position(0, 0+regionLimiter);
+//			double secondsgp = -1;
+//			//double clogp = clock();
+//			const clock_t begin_time = clock();
+//			string strgp = gridAutoPlanning();
+//			secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+//			//secondsgp = clock() - clogp;
+//			fprintf_s(fi, "Grid height: %f \n Grid width: %f \n\nGrid planning solution time: %f\n\n",getDistance(aux,aux2),getDistance(aux,aux3), secondsgp);
+//			fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+//			fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
+//
+//			vector<string> xgp = split(strgp, ' ');
+//			for (int i = 0; i < xgp.size(); i++)
+//			{
+//				string snum = xgp[i].substr(1);
+//				daps.push_back(poles[stoi(snum) - 1]);
+//			}
+//			string resultgp = getMetricResponse();
+//			fprintf(fi, resultgp.c_str());
+//			fprintf(fi, "------------------------------------------------------------------\n");
 
-		//FAZ PELO MÉTODO GRID PLANNING
-		double regionLimiter = 0.00001;
-		while (regionLimiter <= 1)
-		{
-			daps.clear();
-			memTestCount = -1;
-			timeTestCount = -1;
-			regionLimiter *= 10;
-			setRegionLimiter(regionLimiter);
-			Position* aux = new Position(0, 0);
-			Position* aux2 = new Position(0 + regionLimiter, 0);
-			Position* aux3 = new Position(0, 0+regionLimiter);
-			double secondsgp = -1;
-			//double clogp = clock();
-			const clock_t begin_time = clock();
-			string strgp = gridAutoPlanning();
-			secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
-			//secondsgp = clock() - clogp;
-			fprintf_s(fi, "Grid height: %f \n Grid width: %f \n\nGrid planning solution time: %f\n\n",getDistance(aux,aux2),getDistance(aux,aux3), secondsgp);
-			fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
-			fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
 
-			vector<string> xgp = split(strgp, ' ');
-			for (int i = 0; i < xgp.size(); i++)
-			{
-				string snum = xgp[i].substr(1);
-				daps.push_back(poles[stoi(snum) - 1]);
-			}
-			string resultgp = getMetricResponse();
-			fprintf(fi, resultgp.c_str());
-			fprintf(fi, "------------------------------------------------------------------\n");
+//		}
+		////FAZ PELO MÉTODO EXATO
+		//daps.clear();
+		//double seconds = -1;
+		////double clo = clock();
 
 
-		}
-		//FAZ PELO MÉTODO EXATO
-		daps.clear();
-		double seconds = -1;
-		//double clo = clock();
+		//memTestCount = -1;
+		//timeTestCount = -1;
+		//setRegionLimiter(0.001);
+		//const clock_t begin_time2 = clock();
+		//string str = exactAutoPlanning();
+		//seconds = float(clock() - begin_time2) / CLOCKS_PER_SEC;
 
+		////seconds = clock() - clo;
+		//fprintf_s(fi, "Optimal solution time: %f\n\n", seconds);
+		//fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
+		//fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
 
-		memTestCount = -1;
-		const clock_t begin_time2 = clock();
-		string str = exactAutoPlanning();
-		seconds = float(clock() - begin_time2) / CLOCKS_PER_SEC;
-
-		//seconds = clock() - clo;
-		fprintf_s(fi, "Optimal solution time: %f\n\n", seconds);
-		fprintf_s(fi, "Maximum Memory Used: %f\n\n", memTestCount);
-		fprintf_s(fi, "Maximum Time Used: %f\n\n", timeTestCount);
-
-		vector<string> x = split(str, ' ');
-		for (int i = 0; i < x.size(); i++)
-		{
-			string snum = x[i].substr(1);
-			daps.push_back(poles[stoi(snum) - 1]);
-		}
-		string result = getMetricResponse();
-		fprintf(fi, result.c_str());
-		fprintf(fi, "------------------------------------------------------------------\n");
+		//vector<string> x = split(str, ' ');
+		//for (int i = 0; i < x.size(); i++)
+		//{
+		//	string snum = x[i].substr(1);
+		//	daps.push_back(poles[stoi(snum) - 1]);
+		//}
+		//string result = getMetricResponse();
+		//fprintf(fi, result.c_str());
+		//fprintf(fi, "------------------------------------------------------------------\n");
 		
 	}
 	fclose(fi);
@@ -792,11 +864,13 @@ vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position
 }
 vector<vector<sComponent*>> Requisition::statisticalList()
 {
+	Grid* g = new Grid(meters, poles, regionLimiter);
 	vector<vector<sComponent*>> sL;
 	for (int i = 0; i < daps.size(); i++)
 	{
 		vector<sComponent*> toAdd;
-		for (int j = 0; j < meters.size(); j++)
+		vector<Position*> toCompare = g->getCell(daps[i]);
+		for (int j = 0; j < toCompare.size(); j++)
 		{
 			double dist = getDistance(daps[i], meters[j]);
 			double efficiency = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
@@ -808,7 +882,7 @@ vector<vector<sComponent*>> Requisition::statisticalList()
 		}
 		if (meshEnabled)
 		{
-			Grid* g = new Grid(meters,daps, regionLimiter);
+			//Grid* g = new Grid(meters,daps, regionLimiter);
 			vector<vector<int>> nM = createMeterNeighbourhood(g);
 			//vector<sComponent*> neighbours = toAdd;
 			vector<int> neighbours;
@@ -816,10 +890,12 @@ vector<vector<sComponent*>> Requisition::statisticalList()
 				neighbours.push_back(toAdd[h]->index);
 
 
-			for (int k = 0; k < meshEnabled; k++){
+			for (int k = 0; k < meshEnabled; k++)
+			{
 				vector<int> newNeighbourhood;
 				vector<sComponent*> meshToAdd;
-				for (int j = 0; j < neighbours.size(); j++){
+				for (int j = 0; j < neighbours.size(); j++)
+				{
 
 					vector<int> aux = nM[neighbours[j]];
 					for (int l = 0; l < aux.size(); l++)
@@ -956,18 +1032,46 @@ string Requisition::getDrawResponse()
 }
 string Requisition::getMetricResponse()
 {
+
+
+	double mpdSum = 0, max = -1, min = -1;
+	vector<vector<int>> SCP = createScp();
+	for (int i = 0; i < SCP.size(); i++)
+	{
+		
+		int toFind = i;
+		int pos = -1;
+		for (int i = 0; i < daps.size(); i++){ if (daps[i]->index == toFind){ pos = i; break; } }
+		if (pos != -1)
+		{
+			//vector<sComponent*> uniqueArray = noRepeat(statisticalList[i]);
+			int nMeters = SCP[i].size();
+			mpdSum += nMeters;
+			if (max == -1 || nMeters > max)
+				max = nMeters;
+			if (min == -1 || nMeters < min)
+				min = nMeters;
+		}
+	}
+	string answer = "Number of DAPs: "+ to_string(daps.size()) +"\n";
+	answer += "Average Number of Meters per DAP: " + to_string(mpdSum/daps.size()) + "\n";
+	answer += "Maximum Number of Meters in a DAP: " + to_string(max) + "\n";
+	answer += "Minimum Number of Meters in a DAP: " + to_string(min) + "\n";
+	return  answer;
+
+	
 	
 	vector<vector<sComponent*>> sL = statisticalList();
 	//COLOCAR A FUNÇÃO DE ROBUSTEZ!
 	//ARMAZENAR ESSA STATISTICAL LIST
 
-	string answer = "";
+	//string answer = "";
 	if (sL.size() > 0)
 	{
 		
 		int numOfDaps = sL.size();
 		
-		answer += "Number of DAPs: " + to_string(numOfDaps) + "\n";
+	/*	answer += "Number of DAPs: " + to_string(numOfDaps) + "\n";
 	
 		vector<double> alpd = averageLinksPerDap(sL);
 
@@ -977,7 +1081,7 @@ string Requisition::getMetricResponse()
 
 		answer += "Average Links per DAP: " + to_string(alpdmedia) + "\n";
 		answer += "Maximum Links in a DAP: " + to_string(alpdmax) + "\n";
-		answer += "Minimum Links in a DAP: " + to_string(alpdmin) + "\n";
+		answer += "Minimum Links in a DAP: " + to_string(alpdmin) + "\n";*/
 
 		vector<double> ampd = averageMetersPerDap(sL);
 		double ampdmedia = ampd[0];
@@ -988,7 +1092,7 @@ string Requisition::getMetricResponse()
 		answer += "Maximum Number of Meters in a DAP: " + to_string(ampdmax) + "\n";
 		answer += "Minimum Number of Meters in a DAP: " + to_string(ampdmin) + "\n";
 
-		vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL, meshEnabled);
+		/*vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL, meshEnabled);
 		for (int i = 0; i < meshEnabled + 1; i++)
 		{
 			double ammpdmedia = ammpd[i][0];
@@ -1013,7 +1117,7 @@ string Requisition::getMetricResponse()
 				answer += to_string(i) + " mesh hops links quantity: " + to_string(avgHopsQnt) + "\n";
 			}
 
-		}
+		}*/
 	}
 	else
 	{

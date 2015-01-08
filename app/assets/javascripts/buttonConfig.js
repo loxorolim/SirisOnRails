@@ -360,12 +360,14 @@ function setButtons()
 	    sendDrawRequest();
 	});
 	$("#urbanRadio").click(function () {
-	    $("#scenario").text("Urbano");
+	   // $("#scenario").text("Urbano");
+		$("#scenario").text("Urban");
 	    scenario = Urbano;
 	    sendDrawRequest();
 	});
 	$("#suburbanRadio").click(function () {
-	    $("#scenario").text("Suburbano");
+	   // $("#scenario").text("Suburbano");
+		$("#scenario").text("Suburban");
 	    scenario = Suburbano;
 	    sendDrawRequest();
 	});

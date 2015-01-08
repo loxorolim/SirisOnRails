@@ -15,5 +15,5 @@ vector<vector<int>> createMeterNeighbourhoodMatrix(vector<Position*> &uncoveredM
 //vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 vector<vector<int>> createScpMatrix22(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD);
 vector<vector<int>> createScpMatrixFromSorted(vector<Position*>& uncoveredMeters, vector<Position*>& poles, int meshEnabled, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD);
-void saveGLPKFile2(vector<vector<int>> &SCP, vector<Position*> &poles, string filename);
+void saveGLPKFile2(vector<vector<int>> &SCP, int polessize, string filename);
 string executeAutoPlanOption();

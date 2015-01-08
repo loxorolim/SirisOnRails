@@ -15,7 +15,7 @@ using namespace std;
 #define DAP 0
 #define METER 1
 #define POLE 2
-const int memlimit = (getTotalSystemMemory() / (1000000))*0.8;
+const int memlimit = 7000;
 bool compareByLongitude(Position* a, Position *b);
 bool compareByLatitude(Position* a, Position *b);
 class Requisition
@@ -43,10 +43,10 @@ class Requisition
 			{
 				delete poles[i];
 			}
-			for (int i = 0; i < daps.size(); i++)
-			{
-				delete daps[i];
-			}
+			//for (int i = 0; i < daps.size(); i++)
+			//{
+			//	delete daps[i];
+			//}
 		}
 
 		void readConfiguration();
@@ -92,6 +92,11 @@ class Requisition
 		{
 			//sort(v.begin(), v.end(), compareByLatitude);
 			poles = v;
+		}
+		vector<Position*>  getPoles()
+		{
+			//sort(v.begin(), v.end(), compareByLatitude);
+			return poles;
 		}
 		void setDAPs(vector<Position*> v)
 		{

@@ -46,6 +46,11 @@ class Position
 			longitude = lng;
 			index = i;
 		}
+		bool operator==(const int& i) const
+		{
+			return index == i;
+		}
+
 };
 class DrawInfo
 {

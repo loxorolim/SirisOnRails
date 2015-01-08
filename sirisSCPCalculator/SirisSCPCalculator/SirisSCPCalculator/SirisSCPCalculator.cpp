@@ -303,11 +303,192 @@ void createSCPTeste(string fm, string fp)
 
 	
 }
+void createSCPTeste2(string fm, string fp)
+{
+	string arqm = "arqsTeste//" + fm + ".txt";
+	string arqp = "arqsTeste//" + fp + ".txt";
+	FILE * file;
+	fopen_s(&file, arqm.c_str(), "r");
+	FILE * file2;
+	fopen_s(&file2, arqp.c_str(), "r");
 
+
+	vector<Position*> meters;
+	vector<Position*> poles;
+	while (true)
+	{
+		double lat = -1;
+		double lng = -1;
+		fscanf_s(file, "%lf %lf", &lat, &lng);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, meters.size());
+		meters.push_back(toAdd);
+
+	}
+
+	while (true)
+	{
+		double lat = -1,a,b;
+		double lng = -1;
+		fscanf_s(file2, "%lf %lf", &lat, &lng);
+		fscanf_s(file2, "%lf %lf",&a,&b);
+		fscanf_s(file2, "%lf %lf", &a, &b);
+
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, poles.size());
+		poles.push_back(toAdd);
+	}
+	//	Grid* g = new Grid(meters, 0.005);
+	//	vector<Position*> vp = g->getCell(meters[100]);
+	Requisition* req = new Requisition();
+	req->setConfig(3, 0, 0, 0, 15, 3, 5, 1);
+	req->setMeters(meters);
+	req->setPoles(poles);
+	//req->getTestResponse(fm);
+	req->getAutoPlanResponse();
+	//delete req;
+
+
+
+}
+void createSCPTesteDeCobertura(string fm, string fp)
+{
+	string arqm = "arqsTeste//" + fm + ".txt";
+	string arqp = "arqsTeste//" + fp + ".txt";
+	FILE * file;
+	fopen_s(&file, arqm.c_str(), "r");
+	FILE * file2;
+	fopen_s(&file2, arqp.c_str(), "r");
+
+
+	vector<Position*> meters;
+	vector<Position*> poles;
+	while (true)
+	{
+		double lat = -1;
+		double lng = -1;
+		fscanf_s(file, "%lf %lf", &lat, &lng);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, meters.size());
+		meters.push_back(toAdd);
+
+	}
+
+	while (true)
+	{
+		double lat = -1, a, b;
+		double lng = -1;
+		fscanf_s(file2, "%lf %lf", &lat, &lng);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, poles.size());
+		poles.push_back(toAdd);
+	}
+	//	Grid* g = new Grid(meters, 0.005);
+	//	vector<Position*> vp = g->getCell(meters[100]);
+	Requisition* req = new Requisition();
+	req->setConfig(0, 0, 0, 0, 15, 3, 5, 1);
+	req->setMeters(meters);
+	req->setPoles(poles);
+
+	FILE *fi;
+	string n = "ns3files\\AutoPlanningResults" + fm + "MultiHopTest.txt";
+	fopen_s(&fi, n.c_str(), "w");
+	if (fi)
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			req->setConfig(i, 0, 0, 0, 15, 3, 5, 1);
+			vector<vector<int>> scp = req->createScp();
+			vector<int> unc = req->uncoverableMeters(scp);
+			fprintf_s(fi, "Meters sem cobertura: %d\n", unc.size());
+		}
+		
+	}
+	fclose(fi);
+
+	//delete req;
+
+
+
+}
+void createSCPTesteDeCobertura2(string fm, string fp)
+{
+	string arqm = "arqsTeste//" + fm + ".txt";
+	string arqp = "arqsTeste//" + fp + ".txt";
+	FILE * file;
+	fopen_s(&file, arqm.c_str(), "r");
+	FILE * file2;
+	fopen_s(&file2, arqp.c_str(), "r");
+
+
+	vector<Position*> meters;
+	vector<Position*> poles;
+	while (true)
+	{
+		double lat = -1;
+		double lng = -1;
+		fscanf_s(file, "%lf %lf", &lat, &lng);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, meters.size());
+		meters.push_back(toAdd);
+
+	}
+
+	while (true)
+	{
+		double lat = -1, a, b;
+		double lng = -1;
+		fscanf_s(file2, "%lf %lf", &lat, &lng);
+		fscanf_s(file2, "%lf %lf", &a, &b);
+		fscanf_s(file2, "%lf %lf", &a, &b);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, poles.size());
+		poles.push_back(toAdd);
+	}
+	//	Grid* g = new Grid(meters, 0.005);
+	//	vector<Position*> vp = g->getCell(meters[100]);
+	Requisition* req = new Requisition();
+	req->setConfig(0, 0, 0, 0, 15, 3, 5, 1);
+	req->setMeters(meters);
+	req->setPoles(poles);
+
+	FILE *fi;
+	string n = "ns3files\\AutoPlanningResults" + fm + "MultiHopTest.txt";
+	fopen_s(&fi, n.c_str(), "w");
+	if (fi)
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			req->setConfig(i, 0, 0, 0, 15, 3, 5, 1);
+			vector<vector<int>> scp = req->createScp();
+			vector<int> unc = req->uncoverableMeters(scp);
+			fprintf_s(fi, "Meters sem cobertura: %d\n", unc.size());
+		}
+
+	}
+	fclose(fi);
+
+	//delete req;
+
+
+
+}
 int main(int argc, char* argv[])
 {
-	//int rs=0, cs=0;
-	//vector<vector<int>> SCP = createSCPFromFile("scp410.txt", &rs, &cs);
+
+	int rs=0, cs=0;
+	vector<vector<int>> SCP = createSCPFromFile("scp410.txt", &rs, &cs);
+	saveGLPKFile2(SCP, cs, "SCP41.txt");
+	string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math SCP41.txt";
+	const clock_t begin_time = clock();
+	system(access.c_str());
+	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 //	vector<vector<int>> SCPfeasible;
 //	for (int i = 0; i < SCP.size(); i++)
 //	{
@@ -321,15 +502,29 @@ int main(int argc, char* argv[])
 //			SCPfeasible.push_back(toAdd);
 //		}
 //}
-	//createSCPTeste("filemeters10000", "filepoles10000");
-	//createSCPTeste("filemeters15000", "filepoles15000");
-//	createSCPTeste("filemeters5000", "filepoles5000");
-//	createSCPTeste("filemeters4000", "filepoles4000");
-//	createSCPTeste("filemeters3000", "filepoles3000");
-//	createSCPTeste("filemeters2000", "filepoles2000");
-	createSCPTeste("filemeters1000", "filepoles1000");
-	//createSCPTeste("filemeters9999999", "filepoles9999999");
 
+	//createSCPTesteDeCobertura("filemeters1000", "filepoles1000");
+	//createSCPTesteDeCobertura("filemeters2000", "filepoles2000");
+	//createSCPTesteDeCobertura("filemeters3000", "filepoles3000");
+	//createSCPTesteDeCobertura("filemeters4000", "filepoles4000");
+	//createSCPTesteDeCobertura("filemeters5000", "filepoles5000");
+	//createSCPTesteDeCobertura("filemeters10000", "filepoles10000");
+	//createSCPTesteDeCobertura("filemeters15000", "filepoles15000");
+	//createSCPTesteDeCobertura("filemeters9999999", "filepoles9999999");
+//	createSCPTeste("filemeters5000", "filepoles5000");
+	/*createSCPTeste("filemeters4000", "filepoles4000");
+	createSCPTeste("filemeters3000", "filepoles3000");
+	createSCPTeste("filemeters2000", "filepoles2000");
+	createSCPTeste("filemeters1000", "filepoles1000");
+	createSCPTeste("filemeters10000", "filepoles10000");
+	createSCPTeste("filemeters15000", "filepoles15000");
+	createSCPTeste("filemeters9999999", "filepoles9999999");*/
+
+	//createSCPTesteDeCobertura2("metersInstanciaPequena1576", "polesInstanciaPequena340");
+	//createSCPTesteDeCobertura2("metersInstanciaMédia3666", "polesInstanciaMédia773");
+
+	createSCPTeste2("metersInstanciaPequena1576", "polesInstanciaPequena340");
+	//createSCPTeste2("metersInstanciaMédia3666", "polesInstanciaMédia773");
 	//createSCPTeste("arqsTeste//TestezinhoMeters.txt", "arqsTeste//TestezinhoPoles.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
 	//saveGLPKFile(cMatrix, rs, cs);

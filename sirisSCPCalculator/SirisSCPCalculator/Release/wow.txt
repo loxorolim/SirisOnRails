@@ -1,6 +1,6 @@
 GLPSOL: GLPK LP/MIP Solver, v4.54
 Parameter(s) specified in the command line:
- --math GlpkFile.txt --memlim 3355
+ --math GlpkFile.txt --memlim 7000
 Reading model section from GlpkFile.txt...
 Reading data section from GlpkFile.txt...
 14 lines were read
@@ -8,30 +8,71 @@ Generating cost...
 Generating covers...
 Model has been successfully generated
 GLPK Integer Optimizer, v4.54
-999 rows, 72 columns, 3692 non-zeros
-72 integer variables, all of which are binary
+3667 rows, 1030 columns, 112532 non-zeros
+1030 integer variables, all of which are binary
 Preprocessing...
-121 hidden packing inequaliti(es) were detected
-833 rows, 66 columns, 3255 non-zeros
-66 integer variables, all of which are binary
+3666 rows, 1030 columns, 111502 non-zeros
+1030 integer variables, all of which are binary
 Scaling...
  A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
 Problem data seem to be well scaled
 Constructing initial basis...
-Size of triangular part is 833
+Size of triangular part is 3666
 Solving LP relaxation...
 GLPK Simplex Optimizer, v4.54
-833 rows, 66 columns, 3255 non-zeros
-      0: obj =  6.000000000e+000  infeas = 8.330e+002 (0)
-    500: obj =  1.900000000e+001  infeas = 9.300e+001 (0)
-*   825: obj =  2.700000000e+001  infeas = 0.000e+000 (0)
-*   835: obj =  2.600000000e+001  infeas = 0.000e+000 (0)
+3666 rows, 1030 columns, 111502 non-zeros
+      0: obj =  0.000000000e+000  infeas = 3.666e+003 (0)
+    500: obj =  8.666666667e+000  infeas = 2.234e+003 (0)
+   1000: obj =  1.766666667e+001  infeas = 1.313e+003 (0)
+   1500: obj =  2.016430595e+001  infeas = 1.130e+003 (0)
+   2000: obj =  2.771929825e+001  infeas = 7.053e+002 (0)
+   2500: obj =  4.012437970e+001  infeas = 2.839e+002 (0)
+   3000: obj =  4.618076923e+001  infeas = 1.231e+002 (0)
+   3500: obj =  5.212402529e+001  infeas = 4.075e+001 (0)
+   4000: obj =  5.606839286e+001  infeas = 8.303e+000 (0)
+*  4247: obj =  5.874917007e+001  infeas = 1.097e-014 (0)
+*  4500: obj =  5.131567762e+001  infeas = 1.779e-014 (0)
+*  4767: obj =  5.030000000e+001  infeas = 2.131e-014 (0)
 OPTIMAL LP SOLUTION FOUND
 Integer optimization begins...
-+   835: mip =     not found yet >=              -inf        (1; 0)
-+   838: >>>>>  2.600000000e+001 >=  2.600000000e+001   0.0% (1; 0)
-+   838: mip =  2.600000000e+001 >=     tree is empty   0.0% (0; 1)
++  4767: mip =     not found yet >=              -inf        (1; 0)
++  5529: >>>>>  5.300000000e+001 >=  5.100000000e+001   3.8% (23; 0)
++  8321: mip =  5.300000000e+001 >=  5.100000000e+001   3.8% (58; 19)
++ 10260: >>>>>  5.200000000e+001 >=  5.100000000e+001   1.9% (100; 23)
++ 14021: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (14; 254)
++ 19295: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (13; 338)
++ 23888: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (12; 413)
++ 27682: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (19; 482)
++ 31477: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (23; 555)
++ 35122: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (17; 626)
++ 38582: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (25; 663)
++ 43067: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (22; 739)
++ 47555: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (13; 835)
+Time used: 60.0 secs.  Memory used: 601.4 Mb.
++ 51177: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (12; 906)
++ 55089: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (6; 983)
++ 58380: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (6; 1025)
++ 61252: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (11; 1098)
++ 65337: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (11; 1176)
++ 69491: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (13; 1250)
++ 73314: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (16; 1329)
++ 76740: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (15; 1413)
++ 80723: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (13; 1501)
++ 84281: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (17; 1586)
++ 87809: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (14; 1675)
++ 91195: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (14; 1763)
+Time used: 120.1 secs.  Memory used: 601.4 Mb.
++ 94493: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (11; 1845)
++ 97924: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (11; 1929)
++101277: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (13; 2018)
++105211: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (15; 2098)
++108686: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (15; 2178)
++113307: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (10; 2268)
++118146: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (10; 2345)
++122145: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (3; 2451)
++127747: mip =  5.200000000e+001 >=  5.100000000e+001   1.9% (2; 2498)
++128936: mip =  5.200000000e+001 >=     tree is empty   0.0% (0; 2527)
 INTEGER OPTIMAL SOLUTION FOUND
-Time used:   0.0 secs
-Memory used: 12.8 Mb (13408657 bytes)
+Time used:   165.2 secs
+Memory used: 604.9 Mb (634309045 bytes)
 Model has been successfully processed

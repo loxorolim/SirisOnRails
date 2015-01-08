@@ -1,13 +1,1 @@
-Grid planning solution time: 11929.000000
-Number of DAPs: 399
-Average Links per DAP: 43.416040
-Maximum Links in a DAP: 543.000000
-Minimum Links in a DAP: 1.000000
-Average Number of Meters per DAP: 43.416040
-Maximum Number of Meters in a DAP: 543.000000
-Minimum Number of Meters in a DAP: 1.000000
-Average 0 mesh hops links: 43.416040
-Maximum 0 mesh hops links: 543.000000
-Minimum 0 mesh hops links: 1.000000
-Average 0 mesh hops efficiency: 1.000000
-0 mesh hops links quantity: 17323.000000
+2.541000

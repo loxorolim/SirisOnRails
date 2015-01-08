@@ -1,0 +1,24 @@
+Meters Number: 14991
+Poles Number: 1872
+Grid height: 556.597454 
+ Grid width: 556.597454 
+
+Grid planning solution time: 21.613001
+
+Maximum Memory Used: 91.699997
+
+Maximum Time Used: 0.000000
+
+Number of DAPs: 714
+Average Links per DAP: 28.602241
+Maximum Links in a DAP: 471.000000
+Minimum Links in a DAP: 1.000000
+Average Number of Meters per DAP: 28.602241
+Maximum Number of Meters in a DAP: 471.000000
+Minimum Number of Meters in a DAP: 1.000000
+Average 0 mesh hops links: 28.602241
+Maximum 0 mesh hops links: 471.000000
+Minimum 0 mesh hops links: 1.000000
+Average 0 mesh hops efficiency: 1.000000
+0 mesh hops links quantity: 20422.000000
+------------------------------------------------------------------
