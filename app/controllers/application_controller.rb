@@ -1,9 +1,13 @@
+require './SirisDevC++/Siris'
 class ApplicationController < ActionController::Base
 
 
   def autoplan
 	toPass = params['data']
 
+	
+	teste = RiceTest.new.teste();
+	print teste
   	answer = ""
   	answer2 = ""
 	IO.popen('C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe', 'r+') do |pipe|
@@ -15,6 +19,7 @@ class ApplicationController < ActionController::Base
 	end
 	print answer
 	print answer2
+
 	#print shell_output
 	File.open('teste.txt', 'w') {|f| f.write(toPass)}
 
