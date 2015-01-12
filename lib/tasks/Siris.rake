@@ -5,7 +5,7 @@ CLEAN.include('SirisDevC++/**/Makefile')
 
 
 desc 'Build the C++ extension'  
-task :build_ext do  
+task :build_siris do  
   Dir.chdir("SirisDevC++/") do     
     ruby "extconf.rb"
     sh "make"
