@@ -133,7 +133,7 @@ string getResponse(string req, string rubyPath)
 
 		LinkCalculation* res = new LinkCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
 		string ret = res->executeLinkCalculation();
-		std::cout << ret;
+		//std::cout << ret;
 		//res->~AutoPlanning();
 		delete res;
 		return ret;

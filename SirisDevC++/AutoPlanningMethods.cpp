@@ -342,14 +342,74 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 void AutoPlanning::executeGlpk(string filename)
 {
 
-	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename +  " > wow.txt";
+	string access = rubyPath + "/glpk-4.54/w32/glpsol.exe  --math " + filename +  " > wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
 }
+string AutoPlanning::gridAutoPlanning()
+{
+	Grid* metergrid = new Grid(meters, poles, regionLimiter);
+	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	vector<Position*> metersAux = meters, polesAux = poles;
+	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
+	vector<string> chosenDaps;
+	//string str;
+	int i = 1;
+	float maximummemusage = -1;
+	float maximumtimeusage = -1;
+	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
+	{
+
+		vector<Position*> cellsMeters;
+		vector<Position*> cellsPoles;
+
+		cellsMeters = it->second; //Recebe todas as posições dos medidores que estão na célula
+		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posição de um desses medidores e usa como referência pra pegar os postes da mesma célula e das células vizinhas.
+		meters = cellsMeters;
+		poles = cellsPoles;
+		vector<vector<int> > cellSCP = createScp();
+		saveGLPKFileReduced(cellSCP);
+		executeGlpk("GlpkFile.txt");
+		ifstream f("Results.txt");
+		string gridAnswer;
+		getline(f, gridAnswer);
+
+		vector<string> x = split(gridAnswer, ' ');
+		for (int i = 0; i < x.size(); i++)
+		{
+			//string snum = x[i].substr(1);
+			chosenDaps.push_back(x[i]);
+		}
+
+	}
+	string str = "";
+	//Remove redundâncias
+	sort(chosenDaps.begin(), chosenDaps.end());
+	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		str += chosenDaps[i] + " ";
+	}
+
+	delete metergrid;
+	delete polegrid;
+	meters = metersAux;
+	poles = polesAux;
+	return str;
+
+
+
+
+}
+
 string AutoPlanning::executeAutoPlan()
 {
 	vector<vector<int> > SCP = createScp();
 	saveGLPKFileReduced(SCP);
-	executeGlpk("GlpkFile.txt");
-	return "FUNCIONANDO!";
+	return gridAutoPlanning();
+	//executeGlpk("GlpkFile.txt");
+	//ifstream f("Results.txt");
+	//string str;
+	//getline(f, str);
+	//return str;
 }

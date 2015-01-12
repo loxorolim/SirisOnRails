@@ -1,6 +1,7 @@
 #ifndef _AUTO_PLANNING_METHODS_H
 #define _AUTO_PLANNING_METHODS_H
 
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <fstream>
@@ -52,6 +53,7 @@ class AutoPlanning
 		 string executeAutoPlan();
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP);
 		 void executeGlpk(string filename);
+		 string gridAutoPlanning();
 
 };
 
