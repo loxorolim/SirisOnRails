@@ -339,7 +339,17 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 		f << resp;
 		f.close();
 }
+void AutoPlanning::executeGlpk(string filename)
+{
+
+	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename +  " > wow.txt";
+	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+	system(access.c_str());
+}
 string AutoPlanning::executeAutoPlan()
 {
-	return "u mad m8?";
+	vector<vector<int> > SCP = createScp();
+	saveGLPKFileReduced(SCP);
+	executeGlpk("GlpkFile.txt");
+	return "FUNCIONANDO!";
 }

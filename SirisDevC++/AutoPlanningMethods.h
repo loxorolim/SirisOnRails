@@ -17,9 +17,10 @@ class AutoPlanning
 			vector<Position*> poles;
 			int scenario, technology, SRD, meshEnabled;
 			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
-			double regionLimiter;
+			double regionLimiter ;
+			string rubyPath;
 	public:
-		AutoPlanning(vector<Position*> m, vector<Position*> p, int s, int t, double B, double T,double h1, double h2, int srd, int me)
+		AutoPlanning(vector<Position*> &m, vector<Position*> &p, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
 		{
 			meters = m;
 			poles = p;
@@ -31,8 +32,17 @@ class AutoPlanning
 			H_RX = h2;
 			SRD = srd;
 			meshEnabled = me;
+			rubyPath = rp;
+			regionLimiter = 0.001;
 		};
-		~AutoPlanning();
+		~AutoPlanning()
+		{
+			for(int i = 0; i < meters.size();i++)
+				delete meters[i];
+
+			for(int i = 0; i < poles.size();i++)
+				delete poles[i];
+		};
 		
 		 vector<vector<int> > createScpSemGrid();
 		 vector<vector<int> > createScp();
@@ -41,6 +51,7 @@ class AutoPlanning
 		 vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		 string executeAutoPlan();
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP);
+		 void executeGlpk(string filename);
 
 };
 

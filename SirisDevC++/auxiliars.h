@@ -1,3 +1,5 @@
+#include <iostream>
+
 #ifndef _AUXILIARS_H
 #define _AUXILIARS_H
 
@@ -35,10 +37,12 @@ template <typename T>
    std::string to_string(T value)
    {
      //create an output string stream
+
      std::ostringstream os ;
 
      //throw the value into the string stream
-     os << value ;
+     os.precision(20);
+     os  << value ;
 
      //convert the string stream into a string and return
      return os.str() ;
@@ -150,6 +154,9 @@ void readConfiguration(int *scenario, int* technology, double* H_TX, double *H_R
 int binary_search(vector<Position*>& sorted_vec, double key, int i);
 vector<Position*> getRegionFromVector(vector<Position*> v, Position* reference, double d);
 size_t getTotalSystemMemory();
+vector<string> &split(const string &s, char delim, vector<string> &elems);
+std::vector<std::string> split(const std::string &s, char delim);
+vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2);
 
 //bool compareByLatitude(Position* a, Position *b);
 

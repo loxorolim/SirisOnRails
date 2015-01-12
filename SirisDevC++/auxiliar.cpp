@@ -5,6 +5,7 @@
 #include <string>
 #include "auxiliars.h"
 #include <stdlib.h>
+#include <algorithm>
 //#include <Windows.h>
 using namespace std;
 
@@ -33,6 +34,36 @@ void readConfiguration(int *scenario,int* technology, double* H_TX, double *H_RX
 	//fscanf(file, "%d", SRD);
 	//fscanf(file, "%d", meshEnabled);
 	//fclose(file);
+}
+vector<string> &split(const string &s, char delim, vector<string> &elems)
+{
+	stringstream ss(s);
+	string item;
+	while (getline(ss, item, delim))
+	{
+		elems.push_back(item);
+	}
+	return elems;
+}
+std::vector<std::string> split(const std::string &s, char delim) {
+	std::vector<std::string> elems;
+	split(s, delim, elems);
+	return elems;
+}
+vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2)
+{
+	//remove v2 do v1
+	vector<Position*> ret;
+	for (int i = 0; i < v1.size(); i++)
+	{
+		std::vector<Position*>::iterator it;
+		it = find(v2.begin(), v2.end(), v1[i]);
+		if (it == v2.end())
+		{
+			ret.push_back(v1[i]);
+		}
+	}
+	return ret;
 }
 double rad(double x)
 {
