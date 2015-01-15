@@ -58,7 +58,7 @@ vector<int> MetricCalculation::minMedMaxRedundancyPerMeter()
 vector<int> MetricCalculation::meterPerHop(vector<sComponent*> sL)
 {
 	vector<int> ret;
-	for(int i = 0; i < meshEnabled; i++)
+	for(int i = 0; i < meshEnabled+1; i++)
 	{
 		ret.push_back(0);
 	}
@@ -72,7 +72,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 {
 	vector<double> ret;
 	vector<int> hopQnt;
-	for(int i = 0; i < meshEnabled; i++)
+	for(int i = 0; i < meshEnabled+1; i++)
 	{
 		ret.push_back(0);
 	}
@@ -179,7 +179,7 @@ vector<sComponent*> MetricCalculation::statisticalList()
 		vector<Position*> markersReduced = g->getCell(daps[d]);
 		for (int i = 0; i < markersReduced.size(); i++)
 		{
-			if(markersReduced[i]->index != daps[i]->index)
+			if(markersReduced[i]->index != daps[d]->index)
 			{
 				double dist = getDistance(daps[d], markersReduced[i]);
 				double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
@@ -271,7 +271,8 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 	{
 		double dist = getDistance(meter, meterToConnect);
 		double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-		if (eff >= MARGIN_VALUE) {
+		if (eff >= MARGIN_VALUE)
+		{
 			sComponent* father;
 			for(int i = 0; i < sC.size();i++){ if(sC[i]->index == meterToConnect->index) father = sC[i]; break; }
 			sComponent* ret = new sComponent(meter->index, dist, eff, meshHop, father);
@@ -286,6 +287,16 @@ string MetricCalculation::executeMetricCalculation()
 	for(int i = 0; i < sL.size();i++)
 	{
 		cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
+	}
+	vector<double > v = linkQualityPerHop(sL);
+	for(int i = 0; i < meshEnabled+1; i++)
+	{
+		cout << "Mesh hop quality " + to_string(i) + ": " << v[i] << "\n";
+	}
+	vector<int > v2 = meterPerHop(sL);
+	for(int i = 0; i < meshEnabled+1; i++)
+	{
+		cout << "Meter per hop " + to_string(i) + ": " << v2[i] << "\n";
 	}
 	for(int i = 0; i < sL.size();i++)
 	{
