@@ -29,6 +29,8 @@
 #include <algorithm>
 using namespace std;
 
+
+
 class Position
 {
 	public: 

@@ -752,8 +752,13 @@ void doGridTest(Requisition *req,double gridsize, FILE *fi)
 		daps.push_back(poles[stoi(snum) - 1]);
 	}
 	req->setDAPs(daps);
-	string resultgp = req->getMetricResponse();
-	fprintf(fi, resultgp.c_str());
+	string result = "Número de daps: " + to_string(daps.size());
+	fprintf(fi, result.c_str());
+	//string resultgp = req->getMetricResponse();
+	//fprintf(fi, resultgp.c_str());
+
+	
+
 	fprintf(fi, "------------------------------------------------------------------\n");
 }
 
@@ -769,10 +774,24 @@ void Requisition::getTestResponse(string fname)
 		fprintf_s(fi, "Meters Number: %d\n", meters.size());
 		fprintf_s(fi, "Poles Number: %d\n",poles.size());
 //
-		doGridTest(this, 0.001, fi);
-		doGridTest(this, 0.005, fi);
+//		doGridTest(this, 0.001, fi);
+//		doGridTest(this, 0.005, fi);
+		meshEnabled = 0;
+		scenario = 0;
 		doGridTest(this, 0.01, fi);
-		doGridTest(this, 0.1, fi);
+		scenario = 1;
+		doGridTest(this, 0.01, fi);
+		scenario = 2;
+		doGridTest(this, 0.01, fi);
+		meshEnabled = 3;
+		scenario = 0;
+		doGridTest(this, 0.01, fi);
+		scenario = 1;
+		doGridTest(this, 0.01, fi);
+		scenario = 2;
+		doGridTest(this, 0.01, fi);
+
+//		doGridTest(this, 0.1, fi);
 //		//FAZ PELO MÉTODO GRID PLANNING
 //		double regionLimiter = 0.005;
 ////		while (regionLimiter <= 0.01)

@@ -1,24 +1,44 @@
 Meters Number: 3980
 Poles Number: 274
-Grid height: 556.597454 
- Grid width: 556.597454 
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
 
-Grid planning solution time: 3.314000
+Grid planning solution time: 5.749000
 
-Maximum Memory Used: 44.500000
+Maximum Memory Used: 90.599998
 
 Maximum Time Used: 0.000000
 
-Number of DAPs: 114
-Average Links per DAP: 46.105263
-Maximum Links in a DAP: 301.000000
-Minimum Links in a DAP: 1.000000
-Average Number of Meters per DAP: 46.105263
-Maximum Number of Meters in a DAP: 301.000000
+Number of DAPs: 245
+Average Number of Meters per DAP: 18.551020
+Maximum Number of Meters in a DAP: 175.000000
 Minimum Number of Meters in a DAP: 1.000000
-Average 0 mesh hops links: 46.105263
-Maximum 0 mesh hops links: 301.000000
-Minimum 0 mesh hops links: 1.000000
-Average 0 mesh hops efficiency: 1.000000
-0 mesh hops links quantity: 5256.000000
+------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 6.565000
+
+Maximum Memory Used: 92.300003
+
+Maximum Time Used: 0.100000
+
+Number of DAPs: 150
+Average Number of Meters per DAP: 30.273333
+Maximum Number of Meters in a DAP: 297.000000
+Minimum Number of Meters in a DAP: 1.000000
+------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 25.724001
+
+Maximum Memory Used: 125.800003
+
+Maximum Time Used: 0.300000
+
+Number of DAPs: 9
+Average Number of Meters per DAP: 973.444444
+Maximum Number of Meters in a DAP: 1800.000000
+Minimum Number of Meters in a DAP: 1.000000
 ------------------------------------------------------------------

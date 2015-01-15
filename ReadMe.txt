@@ -9,3 +9,5 @@ pelo executável.
 A versão utilizada é 4.5.2
 Obs: Provavelmente as versões mais atuais vão compilar normalmente, mas é bom
 utilizar essa versão que já veio no próprio ruby!
+
+Rode no terminal: rake build_siris

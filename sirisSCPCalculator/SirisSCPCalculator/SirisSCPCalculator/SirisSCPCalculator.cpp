@@ -164,26 +164,7 @@ void funcConversaoDadosHomma(string arq, int mSize)
 	
 
 }
-int checkFeasibleTest(vector<vector<int>> &scp, int mSize)
-{
-	int ret=0;
-	int* v = (int*)malloc(sizeof(int)*mSize);
-	for (int i = 0; i < scp.size(); i++)
-	{
-		for (int j = 0; j < scp[i].size();j++)
-		{
-			v[scp[i][j]] = 1;
-		}
-	}
-	int notCovered = 0;
-	for (int i = 0; i < mSize; i++)
-	{
-		if (v[i] != 1)
-			notCovered++;
-	}
-	free(v);
-	return notCovered;
-}
+
 
 void functeste(vector<Position*> meters)
 {
@@ -225,7 +206,26 @@ void functeste(vector<Position*> meters)
 	}
 }
 
-
+int checkFeasibleTest(vector<vector<int>> &scp, int mSize)
+{
+	int ret = 0;
+	int* v = (int*)malloc(sizeof(int)*mSize);
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			v[scp[i][j]] = 1;
+		}
+	}
+	int notCovered = 0;
+	for (int i = 0; i < mSize; i++)
+	{
+		if (v[i] != 1)
+			notCovered++;
+	}
+	free(v);
+	return notCovered;
+}
 void createSCPTeste(string fm, string fp)
 {
 	string arqm = "arqsTeste//"+fm+".txt";
@@ -268,6 +268,8 @@ void createSCPTeste(string fm, string fp)
 	req->setMeters(meters);
 	req->setPoles(poles);
 	req->getTestResponse(fm);
+	//vector<vector<int>> scp = req->createScp();
+	//cout << checkFeasibleTest(scp,meters.size());
 
 	//const clock_t begin_time = clock();
 	//req->createScp();
@@ -482,13 +484,13 @@ void createSCPTesteDeCobertura2(string fm, string fp)
 int main(int argc, char* argv[])
 {
 
-	int rs=0, cs=0;
-	vector<vector<int>> SCP = createSCPFromFile("scp410.txt", &rs, &cs);
-	saveGLPKFile2(SCP, cs, "SCP41.txt");
-	string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math SCP41.txt";
-	const clock_t begin_time = clock();
-	system(access.c_str());
-	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	//int rs=0, cs=0;
+	//vector<vector<int>> SCP = createSCPFromFile("scp410.txt", &rs, &cs);
+	//saveGLPKFile2(SCP, cs, "SCP41.txt");
+	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math SCP41.txt";
+	//const clock_t begin_time = clock();
+	//system(access.c_str());
+	//double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 //	vector<vector<int>> SCPfeasible;
 //	for (int i = 0; i < SCP.size(); i++)
 //	{
@@ -502,7 +504,7 @@ int main(int argc, char* argv[])
 //			SCPfeasible.push_back(toAdd);
 //		}
 //}
-
+	propagationTable();
 	//createSCPTesteDeCobertura("filemeters1000", "filepoles1000");
 	//createSCPTesteDeCobertura("filemeters2000", "filepoles2000");
 	//createSCPTesteDeCobertura("filemeters3000", "filepoles3000");
@@ -513,14 +515,16 @@ int main(int argc, char* argv[])
 	//createSCPTesteDeCobertura("filemeters9999999", "filepoles9999999");
 //	createSCPTeste("filemeters5000", "filepoles5000");
 
-	/*createSCPTeste("filemeters4000", "filepoles4000");
-	createSCPTeste("filemeters3000", "filepoles3000");
+	//createSCPTeste("filemeters4000", "filepoles4000");
+
+	/*createSCPTeste("filemeters3000", "filepoles3000");
 	createSCPTeste("filemeters2000", "filepoles2000");
 	createSCPTeste("filemeters1000", "filepoles1000");
-	createSCPTeste("filemeters10000", "filepoles10000");
-	createSCPTeste("filemeters15000", "filepoles15000");
-	createSCPTeste("filemeters9999999", "filepoles9999999");*/
-
+	createSCPTeste("filemeters10000", "filepoles10000");*/
+	//createSCPTeste("filemeters15000", "filepoles15000");
+	createSCPTeste("filemeters9999999", "filepoles9999999");
+	//scanf_s("%d");
+	return 0;
 	//createSCPTesteDeCobertura2("metersInstanciaPequena1576", "polesInstanciaPequena340");
 	//createSCPTesteDeCobertura2("metersInstanciaMédia3666", "polesInstanciaMédia773");
 
@@ -529,10 +533,10 @@ int main(int argc, char* argv[])
 //	createSCPTeste("filemeters2000", "filepoles2000");
 	//createSCPTeste("filemeters1000", "filepoles1000");
 	//createSCPTeste("filemeters9999999", "filepoles9999999");
-	createSCPTeste("metersInstanciaMédia3666", "polesInstanciaMédia773");
+	//createSCPTeste("metersInstanciaMédia3666", "polesInstanciaMédia773");
 
 
-	createSCPTeste2("metersInstanciaPequena1576", "polesInstanciaPequena340");
+	//createSCPTeste2("metersInstanciaPequena1576", "polesInstanciaPequena340");
 	//createSCPTeste2("metersInstanciaMédia3666", "polesInstanciaMédia773");
 	//createSCPTeste("arqsTeste//TestezinhoMeters.txt", "arqsTeste//TestezinhoPoles.txt");
 	//vector<vector<int>> cMatrix = coverageMatrix(SCP, cs);
@@ -553,7 +557,7 @@ int main(int argc, char* argv[])
 //	double wow2 = 1 - wow;
 	{ //essas chaves tao aki por causa do teste do memory leak
 
-		propagationTable();
+		
 		//createSCPTeste("arqsTeste//filemeters1000.txt", "arqsTeste//filepoles1000.txt");
 //		glp_print_mip(problem, "broken_solution.txt");
 //	glp_write_prob(problem, 0, "broken_glp.mod");

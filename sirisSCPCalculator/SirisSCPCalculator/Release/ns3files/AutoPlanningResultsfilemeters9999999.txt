@@ -1,50 +1,62 @@
 Meters Number: 29002
 Poles Number: 12140
-Grid height: 111.319491 
- Grid width: 111.319491 
-
-Grid planning solution time: 104.730003
-
-Maximum Memory Used: 28.000000
-
-Maximum Time Used: 0.000000
-
-Number of DAPs: 803Average Number of Meters per DAP: 245.221669
-Maximum Number of Meters in a DAP: 1841.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
-Grid height: 556.597454 
- Grid width: 556.597454 
-
-Grid planning solution time: 492.875000
-
-Maximum Memory Used: 1566.900024
-
-Maximum Time Used: 7.200000
-
-Number of DAPs: 342Average Number of Meters per DAP: 168.116959
-Maximum Number of Meters in a DAP: 1524.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
 Grid height: 1113.194908 
  Grid width: 1113.194908 
 
-Grid planning solution time: 985.893982
+Grid planning solution time: 614.448975
 
-Maximum Memory Used: 5726.600098
+Maximum Memory Used: 5279.899902
 
-Maximum Time Used: 15.000000
+Maximum Time Used: 0.900000
 
-Number of DAPs: 299Average Number of Meters per DAP: 154.120401
-Maximum Number of Meters in a DAP: 1348.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
-Grid height: 11131.949079 
- Grid width: 11131.949079 
+Número de daps: 3206------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
 
-Grid planning solution time: 938.481018
+Grid planning solution time: 595.393005
 
-Maximum Memory Used: -1.000000
+Maximum Memory Used: 5287.700195
 
-Maximum Time Used: -1.000000
+Maximum Time Used: 1.000000
 
+Número de daps: 2308------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 634.015015
+
+Maximum Memory Used: 5320.299805
+
+Maximum Time Used: 8.400000
+
+Número de daps: 979------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 632.086975
+
+Maximum Memory Used: 5320.500000
+
+Maximum Time Used: 1.200000
+
+Número de daps: 1782------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 657.312988
+
+Maximum Memory Used: 5365.600098
+
+Maximum Time Used: 2.400000
+
+Número de daps: 1074------------------------------------------------------------------
+Grid height: 1113.194908 
+ Grid width: 1113.194908 
+
+Grid planning solution time: 868.283997
+
+Maximum Memory Used: 5708.500000
+
+Maximum Time Used: 11.500000
+
+Número de daps: 308------------------------------------------------------------------

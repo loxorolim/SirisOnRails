@@ -1,4 +1,4 @@
-#include "HataSRD.h"
+#include "HataSrd.h"
 
 vector<vector<double> > table;
 
@@ -570,17 +570,26 @@ double uncoded_modulation(int modulation_type, double gamma_b)
 //}
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
-	if (env == Suburbano)
+	if (env == Urbano)
 	{
-		if (distance <= 49)
+		if (distance <= 18)
 			return 1;
 		else
 			return 0;
 
 	}
-	if (env == Urbano)
+	if (env == Suburbano)
 	{
-		if (distance <= 23)
+		if (distance <= 25)
+			return 1;
+		else
+			return 0;
+
+	}
+
+	if (env == Rural)
+	{
+		if (distance <= 48)
 			return 1;
 		else
 			return 0;

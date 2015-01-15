@@ -14,19 +14,23 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 		allMarkers.push_back(meters[i]);
 	}
 
-
+	Grid* g = new Grid(allMarkers,daps, regionLimiter);
+	g->putPositions(allMarkers);
+	g->putPositions(daps);
 
 	for (int d = 0; d < daps.size(); d++)
 	{
-		for (int i = 0; i < allMarkers.size(); i++) {
-			double dist = getDistance(daps[d], allMarkers[i]);
+		vector<Position*> markersReduced = g->getCell(daps[d]);
+		for (int i = 0; i < markersReduced.size(); i++)
+		{
+			double dist = getDistance(daps[d], markersReduced[i]);
 			double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
 			if (effs >= MARGIN_VALUE)
 			{ //SE CONSIDERAR DAPS TEM Q ALTERA AKI PRA NAO CRIAR UMA LINHA COM ELE MESMO
 
-				DrawInfo* toAdd = new DrawInfo(daps[d], allMarkers[i], effs, dist, 0);
+				DrawInfo* toAdd = new DrawInfo(daps[d], markersReduced[i], effs, dist, 0);
 				toCover.push_back(toAdd);
-				coveredMeters.push_back(allMarkers[i]);
+				coveredMeters.push_back(markersReduced[i]);
 			}
 		}
 		//toCover = toCover.sort(function(a, b) { return a.value.distance - b.value.distance });
@@ -39,23 +43,30 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 		coveredMeters.erase(unique(coveredMeters.begin(), coveredMeters.end()), coveredMeters.end());
 		vector<Position*> uncoveredMeters = removeVectorFromAnother(allMarkers, coveredMeters);
 		vector<Position*> aux = coveredMeters;
+
+		Grid* g2 = new Grid(aux,uncoveredMeters, regionLimiter);
+		g2->putPositions(aux);
 		for (int i = 0; i < meshEnabled; i++)
 		{
 			vector<Position*> newCovered;
 			for (int j = 0; j < uncoveredMeters.size(); j++)
 			{
+				vector<Position*> toCheck = g2->getCell(uncoveredMeters[j]);
 				DrawInfo* toAdd = chooseMeterToConnect(uncoveredMeters[j], aux);
 				if (toAdd)
 				{
 					toCover.push_back(toAdd);
 					newCovered.push_back(uncoveredMeters[j]);
+					g2->putPosition(uncoveredMeters[j]);
 				}
 			}
 			aux = newCovered;
 			uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
 		}
+		delete g2;
 
 	}
+	delete g;
 	return toCover;
 }
 string LinkCalculation::executeLinkCalculation()

@@ -18,6 +18,7 @@ class Grid
 		Grid(vector<Position*> v,vector<Position*> v2, double size);
 		Grid(vector<Position*> v, double size);
 		void putPosition(Position* p);
+		void putPositions(vector<Position*> ps);
 		vector<Position*> getCell(Position* reference);
 		map<pair<int, int>, vector<Position*> > getCells();
 };

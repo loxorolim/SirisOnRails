@@ -576,7 +576,7 @@ double getHataSRDSuccessRate(double distance, int env, int technology, double bi
 {
 	if (env == Suburbano)
 	{
-		if (distance <= 49)
+		if (distance <= 25)
 			return 1;
 		else
 			return 0;
@@ -584,7 +584,15 @@ double getHataSRDSuccessRate(double distance, int env, int technology, double bi
 	}
 	if (env == Urbano)
 	{
-		if (distance <= 23)
+		if (distance <= 18)
+			return 1;
+		else
+			return 0;
+
+	}
+	if (env == Rural)
+	{
+		if (distance <= 48)
 			return 1;
 		else
 			return 0;

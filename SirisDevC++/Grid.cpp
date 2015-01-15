@@ -3,6 +3,13 @@
 
 Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 {
+	//ESSES VETORES QUE SE PASSA NA CRIAÇÃO DO GRID SERVEM PARA A DIVISÃO DAS CÉLULAS, NÃO NECESSARIAMENTE OS VETORES VÃO SER INSERIDOS NO GRID
+	//AS POSIÇÕES QUE SERÃO ADICIONADAS NO GRID DEVEM SER ADICIONADAS PELO MÉTODO putPositions();
+	//POR QUE? PORQUE DURANTE O AUTO PLANEJAMENTO, POR EXEMPLO, EU TINHA UM GRID SÓ DE MEDIDORES E EU PRECISAVA PASSAR A POSIÇÃO DUM DAP
+	//PARA PEGAR A CÉLULA, SÓ QUE ESSE DAP PODERIA ESTAR FORA DO GRID, PORTANTO, NESSE CASO AS CÉLULAS DEVIAM CONSIDERAR AS POSIÇÕES DOS
+	//DAPS TAMBÉM, MAS SÓ HAVERÁ MEDIDORES NO GRID!
+
+
 	if (cS <= 0)
 		return;
 	vector<Position*> vUnion;
@@ -26,8 +33,9 @@ Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 	//for (int i = 0; i < nx; i++)
 	//	cells[i] = vector<vector<Position*>>(ny);
 	cellSize = cS;
-	for (int i = 0; i < v.size(); i++)
-		putPosition(v[i]);
+	//putPositions(v);
+	//for (int i = 0; i < v.size(); i++)
+	//	putPosition(v[i]);
 
 	//FILE* f;
 	//fopen_s(&f, "gridTeste.txt", "w");
@@ -75,6 +83,11 @@ void Grid::putPosition(Position* p)
 	//cells[posX][posY].push_back(p);
 
 	cells[make_pair(posX, posY)].push_back(p);
+}
+void Grid::putPositions(vector<Position*> p)
+{
+	for(int i = 0; i < p.size();i++)
+		putPosition(p[i]);
 }
 vector<Position*> Grid::getCell(Position* reference)
 {

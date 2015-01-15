@@ -71,6 +71,7 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 vector<vector<int> > AutoPlanning::createScp()
 {
 	Grid* g = new Grid(meters,poles, regionLimiter);
+	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;
 	//sM.reserve(meters.size());
@@ -137,6 +138,7 @@ vector<vector<int> > AutoPlanning::createScp()
 vector<vector<int> > AutoPlanning::createScpSemGrid()
 {
 	Grid* g = new Grid(meters, poles, 10);
+	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;
 	//sM.reserve(meters.size());
@@ -349,7 +351,9 @@ void AutoPlanning::executeGlpk(string filename)
 string AutoPlanning::gridAutoPlanning()
 {
 	Grid* metergrid = new Grid(meters, poles, regionLimiter);
+	metergrid->putPositions(meters);
 	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
 	vector<string> chosenDaps;

@@ -1,64 +1,32 @@
 Meters Number: 14991
 Poles Number: 1872
-Grid height: 111.319491 
- Grid width: 111.319491 
+Grid height: 111319.490793 
+ Grid width: 111319.490793 
 
-Grid planning solution time: 15.355000
+Grid planning solution time: 164.529999
 
-Maximum Memory Used: 4.500000
+Maximum Memory Used: 4335.799805
 
-Maximum Time Used: 0.000000
+Maximum Time Used: 1.600000
 
-Number of DAPs: 602Average Number of Meters per DAP: 108.760797
-Maximum Number of Meters in a DAP: 967.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
-Grid height: 556.597454 
- Grid width: 556.597454 
+Número de daps: 1072------------------------------------------------------------------
+Grid height: 111319.490793 
+ Grid width: 111319.490793 
 
-Grid planning solution time: 31.194000
+Grid planning solution time: 162.863998
 
-Maximum Memory Used: 98.300003
+Maximum Memory Used: 4341.399902
 
-Maximum Time Used: 0.100000
+Maximum Time Used: 2.400000
 
-Number of DAPs: 383Average Number of Meters per DAP: 69.963446
-Maximum Number of Meters in a DAP: 927.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
-Grid height: 1113.194908 
- Grid width: 1113.194908 
+Número de daps: 832------------------------------------------------------------------
+Grid height: 111319.490793 
+ Grid width: 111319.490793 
 
-Grid planning solution time: 60.507999
+Grid planning solution time: 170.360001
 
-Maximum Memory Used: 423.700012
-
-Maximum Time Used: 0.400000
-
-Number of DAPs: 347Average Number of Meters per DAP: 64.806916
-Maximum Number of Meters in a DAP: 986.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
-Grid height: 11131.949079 
- Grid width: 11131.949079 
-
-Grid planning solution time: 272.773987
-
-Maximum Memory Used: 4384.500000
+Maximum Memory Used: 4381.399902
 
 Maximum Time Used: 5.600000
 
-Number of DAPs: 313Average Number of Meters per DAP: 57.725240
-Maximum Number of Meters in a DAP: 822.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
-Optimal solution time: 176.033005
-
-Maximum Memory Used: 4384.500000
-
-Maximum Time Used: 5.700000
-
-Number of DAPs: 313Average Number of Meters per DAP: 57.725240
-Maximum Number of Meters in a DAP: 822.000000
-Minimum Number of Meters in a DAP: 1.000000
-------------------------------------------------------------------
+Número de daps: 323------------------------------------------------------------------

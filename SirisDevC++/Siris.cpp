@@ -4,6 +4,7 @@
 #include "auxiliars.h"
 #include "AutoPlanningMethods.h"
 #include "LinkCalculationMethods.h"
+#include "MetricCalculationMethods.h"
 #include "rice/Class.hpp"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -139,7 +140,46 @@ string getResponse(string req, string rubyPath)
 		return ret;
 	}
 	if(option == METRIC)
-		int x = 0;
+	{
+		int pLength;
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		vector<Position*> meters;
+		vector<Position*> daps;
+		for (int i = 0; i < pLength; i++)
+		{
+			double lat;
+			double lng;
+			std::getline(f, line);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			Position *toAdd = new Position(lat, lng,i);
+
+			meters.push_back(toAdd);
+		}
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		for (int i = 0; i < pLength; i++)
+		{
+			double lat;
+			double lng;
+			std::getline(f, line);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			Position *toAdd = new Position(lat, lng,i);
+			daps.push_back(toAdd);
+		}
+
+		MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+		string ret = res->executeMetricCalculation();
+		//std::cout << ret;
+		//res->~AutoPlanning();
+		delete res;
+		return ret;
+
+	}
 
 	//while (std::getline(f, line))
 	//{
