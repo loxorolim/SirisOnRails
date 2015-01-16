@@ -62,13 +62,16 @@ class MetricCalculation
 				delete daps[i];
 		};
 		vector<sComponent*> statisticalList();
-		vector<double> minMedMaxMetersPerDap();
-		vector<int> minMedMaxRedundancyPerMeter();
+		vector<double> minMedMaxMetersPerDap(vector<vector<int> > cL);
+		vector<double> minMedMaxRedundancyPerMeter(vector<vector<int> > cL);
 		vector<int> meterPerHop(vector<sComponent*> sL);
 		vector<double> linkQualityPerHop(vector<sComponent*> sL);
-		vector<vector<sComponent*> > createMeterNeighbourhood(Grid *g);
+		//vector<vector<sComponent*> > createStatisticalMeterNeighbourhood(Grid *g);
+		vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		sComponent* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop);
 		string executeMetricCalculation();
+		vector<vector<int> > coverageList();
+		vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 
 
 };

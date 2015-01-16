@@ -54,6 +54,7 @@ class AutoPlanning
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP);
 		 void executeGlpk(string filename);
 		 string gridAutoPlanning();
+		 vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 
 };
 

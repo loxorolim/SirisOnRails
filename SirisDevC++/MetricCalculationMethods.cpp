@@ -1,59 +1,75 @@
 #include "MetricCalculationMethods.h"
 
-vector<double> MetricCalculation::minMedMaxMetersPerDap()
+vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
 {
-//	Grid* g = new Grid(meters,daps, regionLimiter);
-//	g->putPositions(meters);
-//	vector<int> aux;
-//	vector<vector<int> > sM;
-//	double min,med,max;
-//	//sM.reserve(meters.size());
-//
-//	for (int i = 0; i < daps.size(); i++)
-//	{
-//		vector<int> metersCovered;
-//		vector<Position*> metersReduced = g->getCell(daps[i]);
-//		for (int j = 0; j < metersReduced.size(); j++)
-//		{
-//			double dist = getDistance(daps[i], metersReduced[j]);
-//			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-//			if (eff >= MARGIN_VALUE)
-//				metersCovered.push_back(metersReduced[j]->index);
-//		}
-//
-//		sM.push_back(metersCovered);
-//	}
-//	if (meshEnabled)
-//	{
-//
-//		vector<vector<int> > nM = createMeterNeighbourhood(g);
-//		int firstPos = meters[0]->index;
-//		for (int i = 0; i < sM.size(); i++)
-//		{
-//			vector<int> neighbours = sM[i];
-//			for (int j = 0; j < meshEnabled; j++)
-//			{
-//				vector<int> newNeighbours;
-//				for (int k = 0; k < neighbours.size(); k++)
-//				{
-//
-//					int toFind = neighbours[k];
-//					int pos = 0;
-//					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
-//
-//					sM[i] = concatVectors(sM[i], nM[pos]);
-//					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
-//				}
-//				neighbours = newNeighbours;
-//			}
-//		}
-//
-//	}
-//	delete g;
-}
-vector<int> MetricCalculation::minMedMaxRedundancyPerMeter()
-{
+	vector<int> ret;
+	for (int i = 0; i < v1.size(); i++)
+		ret.push_back(v1[i]);
+	for (int i = 0; i < v2.size(); i++)
+	{
+		bool add = true;
+		for (int j = 0; j < v1.size(); j++)
+		if (v1[j] == v2[i])
+		{
+			add = false;
+			break;
+		}
+		if (add)
+			ret.push_back(v2[i]);
 
+	}
+	return ret;
+
+}
+
+vector<double> MetricCalculation::minMedMaxMetersPerDap(vector<vector<int> > cL)
+{
+	vector<double> ret;
+	ret.push_back(-1);ret.push_back(-1);ret.push_back(-1);
+	double med = 0;
+	for(int i = 0; i < cL.size();i++)
+	{
+		if(cL[i].size() < ret[0] || ret[0] == -1)
+			ret[0] = cL[i].size();
+		if(cL[i].size() > ret[2])
+				ret[2] = cL[i].size();
+
+		med += cL[i].size();
+	}
+	ret[1] = med/cL.size();
+
+	return ret;
+
+}
+vector<double> MetricCalculation::minMedMaxRedundancyPerMeter(vector<vector<int> > cL)
+{
+	vector<double> ret;
+	ret.push_back(-1);ret.push_back(-1);ret.push_back(-1);
+	double med = 0;
+	vector<double> m;
+	for(int i = 0; i < meters.size(); i++)
+	{
+		m.push_back(0);
+	}
+	for(int i = 0; i < cL.size(); i++)
+	{
+		for(int j = 0; j < cL[i].size();j++)
+		{
+			m[cL[i][j]]++;
+		}
+
+	}
+
+	for(int i = 0; i < m.size(); i++)
+	{
+		if(m[i] < ret[0] || ret[0] == -1)
+			ret[0] = m[i];
+		if(m[i] > ret[2])
+			ret[2] = m[i];
+		med += m[i];
+	}
+	ret[1] = med/m.size();
+	return ret;
 }
 vector<int> MetricCalculation::meterPerHop(vector<sComponent*> sL)
 {
@@ -91,71 +107,6 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 	return ret;
 }
 
-//bool contains(vector<sComponent*> v, int elem)
-//{
-//	for (int i = 0; i < v.size(); i++)
-//	{
-//		if (v[i]->index == elem)
-//			return true;
-//	}
-//	return false;
-//}
-//
-//vector<vector<sComponent*>> MetricCalculation::statisticalList()
-//{
-//	Grid* g = new Grid(meters,daps, regionLimiter);
-//	g->putPositions(meters);
-//	vector<int> aux;
-//	vector<vector<sComponent*> > sM;
-//
-//
-//	for (int i = 0; i < daps.size(); i++)
-//	{
-//		vector<sComponent*> metersCovered;
-//		vector<Position*> metersReduced = g->getCell(daps[i]);
-//		for (int j = 0; j < metersReduced.size(); j++)
-//		{
-//			double dist = getDistance(daps[i], metersReduced[j]);
-//			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-//			if (eff >= MARGIN_VALUE)
-//			{
-//				sComponent* component = new sComponent(metersReduced[j]->index, dist, eff, 0, NULL);
-//				metersCovered.push_back(component);
-//			}
-//		}
-//		sM.push_back(metersCovered);
-//	}
-//	if (meshEnabled)
-//	{
-//
-//		vector<vector<sComponent*> > nM = createMeterNeighbourhood(g);
-//		for (int i = 0; i < sM.size(); i++)
-//		{
-//			vector<sComponent*> neighbours = sM[i];
-//			for (int j = 0; j < meshEnabled; j++)
-//			{
-//				vector<sComponent*> newNeighbours;
-//				for (int k = 0; k < neighbours.size(); k++)
-//				{
-//					int toFind = neighbours[k]->index;
-//					int pos = 0;
-//					for (int l = 0; l < meters.size(); l++){ if (meters[l]->index == toFind){ pos = i; break; } }
-//
-//					for(int l = 0; l < nM[pos]; l++)
-//					{
-//						sComponent* component = new sComponent(nM[pos][l]->index, sM[i][k]->distance + nM[pos][l]->distance, sM[i][k]->efficiency*nM[pos][l]->efficiency, meshEnabled+1, sM[i][k]);
-//						sM[i].push_back(component);
-//					}
-//					//sM[i] = concatVectors(sM[i], nM[pos]);
-//					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
-//				}
-//				neighbours = newNeighbours;
-//			}
-//		}
-//
-//	}
-//	delete g;
-//}
 vector<sComponent*> MetricCalculation::statisticalList()
 {
 
@@ -229,13 +180,89 @@ vector<sComponent*> MetricCalculation::statisticalList()
 	delete g;
 	return statisticalComponents;
 }
-vector<vector<sComponent*> > MetricCalculation::createMeterNeighbourhood(Grid *g)
+vector<vector<int> > MetricCalculation::coverageList()
 {
-	vector<vector<sComponent*> > M;
+	Grid* g = new Grid(meters,daps, regionLimiter);
+	g->putPositions(meters);
+	vector<int> aux;
+	vector<vector<int> > sM;
+	//sM.reserve(meters.size());
+
+	for (int i = 0; i < daps.size(); i++)
+	{
+		vector<int> metersCovered;
+		vector<Position*> metersReduced = g->getCell(daps[i]);
+		for (int j = 0; j < metersReduced.size(); j++)
+		{
+			double dist = getDistance(daps[i], metersReduced[j]);
+			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+
+			if (eff >= MARGIN_VALUE)
+				metersCovered.push_back(metersReduced[j]->index);
+		}
+		sM.push_back(metersCovered);
+	}
+	if (meshEnabled)
+	{
+
+		vector<vector<int> > nM = createMeterNeighbourhood(g);
+		int firstPos = meters[0]->index;
+		for (int i = 0; i < sM.size(); i++)
+		{
+			vector<int> neighbours = sM[i];
+			for (int j = 0; j < meshEnabled; j++)
+			{
+				vector<int> newNeighbours;
+				for (int k = 0; k < neighbours.size(); k++)
+				{
+
+					int toFind = neighbours[k];
+					int pos = 0;
+					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
+
+					sM[i] = concatVectors(sM[i], nM[pos]);
+					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+				}
+				neighbours = newNeighbours;
+			}
+		}
+
+	}
+	delete g;
+	return sM;
+}
+//vector<vector<sComponent*> > MetricCalculation::createStatisticalMeterNeighbourhood(Grid *g)
+//{
+//	vector<vector<sComponent*> > M;
+//
+//	for (int i = 0; i < meters.size(); i++)
+//	{
+//		vector<sComponent*> pointsCovered;
+//		//vector<Position*> meterRegion = getActiveRegion(meters, meters[i]);
+//		vector<Position*> meterRegion = g->getCell(meters[i]);
+//		for (int j = 0; j < meterRegion.size(); j++)
+//		{
+//			double dist = getDistance(meters[i], meterRegion[j]);
+//			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD);
+//			if (i != j && eff >= MARGIN_VALUE)
+//			{
+//				sComponent* component = new sComponent(meterRegion[j]->index, dist, eff, 0, NULL);
+//				pointsCovered.push_back(component);
+//			}
+//
+//		}
+//		M.push_back(pointsCovered);
+//	}
+//
+//	return M;
+//}
+vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
+{
+	vector<vector<int> > M;
 
 	for (int i = 0; i < meters.size(); i++)
 	{
-		vector<sComponent*> pointsCovered;
+		vector<int> pointsCovered;
 		//vector<Position*> meterRegion = getActiveRegion(meters, meters[i]);
 		vector<Position*> meterRegion = g->getCell(meters[i]);
 		for (int j = 0; j < meterRegion.size(); j++)
@@ -243,10 +270,7 @@ vector<vector<sComponent*> > MetricCalculation::createMeterNeighbourhood(Grid *g
 			double dist = getDistance(meters[i], meterRegion[j]);
 			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD);
 			if (i != j && eff >= MARGIN_VALUE)
-			{
-				sComponent* component = new sComponent(meterRegion[j]->index, dist, eff, 0, NULL);
-				pointsCovered.push_back(component);
-			}
+				pointsCovered.push_back(meterRegion[j]->index);
 
 		}
 		M.push_back(pointsCovered);
@@ -284,10 +308,11 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 string MetricCalculation::executeMetricCalculation()
 {
 	vector<sComponent*> sL = statisticalList();
-	for(int i = 0; i < sL.size();i++)
-	{
-		cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
-	}
+	vector<vector<int> > cL = coverageList();
+	//for(int i = 0; i < sL.size();i++)
+	//{
+	//	cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
+	//}
 	vector<double > v = linkQualityPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
@@ -298,10 +323,19 @@ string MetricCalculation::executeMetricCalculation()
 	{
 		cout << "Meter per hop " + to_string(i) + ": " << v2[i] << "\n";
 	}
+	vector<double> v3 = minMedMaxMetersPerDap(cL);
+	cout << "Min Meters per DAP: " << v3[0] << "\n";
+	cout << "Med Meters per DAP: " << v3[1] << "\n";
+	cout << "Max Meters per DAP: " << v3[2] << "\n";
+	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
+	cout << "Min redundancy per meter: " << v4[0] << "\n";
+	cout << "Med redundancy per meter: " << v4[1] << "\n";
+	cout << "Max redundancy per meter: " << v4[2] << "\n";
 	for(int i = 0; i < sL.size();i++)
 	{
 		delete sL[i];
 	}
+
 	return "fim";
 }
 //string MetricCalculation::executeMetricCalculation()

@@ -1,6 +1,6 @@
 #include "AutoPlanningMethods.h"
 
-vector<int> concatVectors(vector<int> &v1, vector<int> &v2)
+vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
 {
 	vector<int> ret;
 	for (int i = 0; i < v1.size(); i++)
