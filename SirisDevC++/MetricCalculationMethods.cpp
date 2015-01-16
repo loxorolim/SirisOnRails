@@ -27,16 +27,25 @@ vector<double> MetricCalculation::minMedMaxMetersPerDap(vector<vector<int> > cL)
 	vector<double> ret;
 	ret.push_back(-1);ret.push_back(-1);ret.push_back(-1);
 	double med = 0;
-	for(int i = 0; i < cL.size();i++)
+	if(cL.size() != 0)
 	{
-		if(cL[i].size() < ret[0] || ret[0] == -1)
-			ret[0] = cL[i].size();
-		if(cL[i].size() > ret[2])
-				ret[2] = cL[i].size();
+		for(int i = 0; i < cL.size();i++)
+		{
+			if(cL[i].size() < ret[0] || ret[0] == -1)
+				ret[0] = cL[i].size();
+			if(cL[i].size() > ret[2])
+					ret[2] = cL[i].size();
 
-		med += cL[i].size();
+			med += cL[i].size();
+		}
+		ret[1] = med/cL.size();
 	}
-	ret[1] = med/cL.size();
+	else
+	{
+		ret[0] = 0;
+		ret[1] = 0;
+		ret[2] = 0;
+	}
 
 	return ret;
 
