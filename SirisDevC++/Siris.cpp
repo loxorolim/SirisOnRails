@@ -61,12 +61,13 @@ string getResponse(string req, string rubyPath)
 
 	if(option == AUTOPLAN)
 	{
-		int pLength;
+		int mLength;
 		std::getline(f, line);
-		pLength = std::atoi(line.c_str());
+		mLength = std::atoi(line.c_str());
+		if(mLength == 0) return "";
 		vector<Position*> meters;
 		vector<Position*> poles;
-		for (int i = 0; i < pLength; i++)
+		for (int i = 0; i < mLength; i++)
 		{
 			double lat;
 			double lng;
@@ -80,7 +81,9 @@ string getResponse(string req, string rubyPath)
 			meters.push_back(toAdd);
 		}
 		std::getline(f, line);
+		int pLength;
 		pLength = std::atoi(line.c_str());
+		if(pLength == 0) return "";
 		for (int i = 0; i < pLength; i++)
 		{
 			double lat;
@@ -96,14 +99,17 @@ string getResponse(string req, string rubyPath)
 		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
 		string ret = res->executeAutoPlan();
 		//res->~AutoPlanning();
+		cout << ret;
 		delete res;
 		return ret;
+
 	}
 	if(option == DRAW)
 	{
 		int pLength;
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
+		if(pLength == 0) return "";
 		vector<Position*> meters;
 		vector<Position*> daps;
 		for (int i = 0; i < pLength; i++)
@@ -120,6 +126,7 @@ string getResponse(string req, string rubyPath)
 		}
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
+		if(pLength == 0) return "";
 		for (int i = 0; i < pLength; i++)
 		{
 			double lat;
@@ -144,6 +151,7 @@ string getResponse(string req, string rubyPath)
 		int pLength;
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
+		if(pLength == 0) return "Não há medidores!";
 		vector<Position*> meters;
 		vector<Position*> daps;
 		for (int i = 0; i < pLength; i++)
@@ -160,6 +168,7 @@ string getResponse(string req, string rubyPath)
 		}
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
+		if(pLength == 0) return "Não há agregadores!";
 		for (int i = 0; i < pLength; i++)
 		{
 			double lat;
@@ -192,7 +201,7 @@ string getResponse(string req, string rubyPath)
 
 
 //	string x = AutoPlanning::executeAutoPlan();
-	return "XIBU";
+	return "";
 }
 string RubyPathTest(string t)
 {

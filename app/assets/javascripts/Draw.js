@@ -7,23 +7,34 @@ function resetDraw(){
     lines = [];
 
 }
+function colorInterpolation(efficiency)
+{
 
+	var yellowvalR = 0x00;	var yellowvalG = 0xff;	var yellowvalB = 0x00;
+	var bluevalR = 0xff; var bluevalG = 0xff; var bluevalB = 0x00;
+
+	var val = (yellowvalR - bluevalR)/0.1;
+	var cDec =  Math.floor(bluevalR + (efficiency - 0.90)*val);
+	var cR = cDec.toString(16);	
+	if(cR == "0") cR = "00";
+
+	var val = (yellowvalG - bluevalG)/0.1;
+	var cDec =  Math.floor(bluevalG + (efficiency - 0.90)*val);
+	var cG = cDec.toString(16);	
+	if(cG == "0") cG = "00";
+
+	var val = (yellowvalB - bluevalB)/0.1;
+	var cDec =  Math.floor(bluevalB + (efficiency - 0.90)*val);
+	var cB = cDec.toString(16);	
+	if(cB =="0") cB = "00";		
+	return "#"+cR+cG+cB;
+	
+}
 function drawLine(latlng1,latlng2,color,efficiency,distance,dashed){
     var markerPositions = [latlng1, latlng2];
-    var c;
-    switch(color){
-        case GREEN_ID:
-            c = GREEN;
-            break;
-        case YELLOW_ID:
-            c = YELLOW;
-            break;
-        case BLUE_ID:
-            c = BLUE;
-            break;
-        default:
-            break;
-    }
+    var c = colorInterpolation(efficiency);
+
+
     var routerPath ;
     if(dashed){
         var lineSymbol =

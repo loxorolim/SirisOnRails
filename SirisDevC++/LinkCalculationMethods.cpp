@@ -1,9 +1,7 @@
 #include "LinkCalculationMethods.h"
 
-vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
+vector<DrawInfo*> LinkCalculation::calculateDrawingInfoOld()
 {
-
-
 	vector<DrawInfo*> toCover;
 	vector<Position*> coveredMeters;
 	vector<Position*> allMarkers;
@@ -69,6 +67,39 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 	delete g;
 	return toCover;
 }
+vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
+{
+
+
+	vector<DrawInfo*> toCover;
+	vector<Position*> connectedDevices;
+
+	connectedDevices = daps;
+	vector<Position*> uncoveredMeters = meters;
+	vector<Position*> aux = connectedDevices;
+
+	Grid* g = new Grid(aux,uncoveredMeters, regionLimiter);
+	g->putPositions(aux);
+	for (int i = 0; i < meshEnabled+1; i++)
+	{
+		vector<Position*> newCovered;
+		for (int j = 0; j < uncoveredMeters.size(); j++)
+		{
+			vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
+			DrawInfo* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);
+			if (toAdd)
+			{
+				toCover.push_back(toAdd);
+				newCovered.push_back(uncoveredMeters[j]);
+				g->putPosition(uncoveredMeters[j]);
+			}
+		}
+		aux = newCovered;
+		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+	}
+	delete g;
+	return toCover;
+}
 string LinkCalculation::executeLinkCalculation()
 {
 	vector<DrawInfo*> drawInfos = calculateDrawingInfo();
@@ -101,6 +132,39 @@ DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position
 		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
 		if (effs >= MARGIN_VALUE) {
 			DrawInfo* ret = new DrawInfo(meter, meterToConnect, effs, dist, 1);
+			return ret;
+		}
+	}
+	return NULL;
+}
+DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, int hopNumber)
+{
+	double minDist = -1;
+	Position* deviceToConnect = NULL;
+	for (int i = 0; i < devices.size(); i++)
+	{
+		double dist = getDistance(meter,devices[i]);
+		if (dist < minDist || minDist == -1)
+		{
+			minDist = dist;
+			deviceToConnect =devices[i];
+		}
+	}
+	if (minDist != -1)
+	{
+		double dist = getDistance(meter, deviceToConnect);
+		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		if (effs >= MARGIN_VALUE)
+		{
+			DrawInfo* ret;
+			if(hopNumber == 0)
+			{
+				ret = new DrawInfo(meter, deviceToConnect, effs, dist, 0);
+			}
+			else
+			{
+				ret = new DrawInfo(meter, deviceToConnect, effs, dist, 1);
+			}
 			return ret;
 		}
 	}

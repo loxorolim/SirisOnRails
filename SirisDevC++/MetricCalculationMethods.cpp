@@ -100,18 +100,30 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
 		ret.push_back(0);
+		hopQnt.push_back(0);
 	}
 	for(int i = 0; i < sL.size();i++)
 	{
 		int hop = sL[i]->hop;
 		double eff = 1;
 		sComponent* s = sL[i];
-		while(hop  >= 0)
+		while(hop >= 0)
 		{
+			cout << s->efficiency << "\n";
 			eff *= s->efficiency;
+
 			hop--;
 			s = s->meshFather;
+
 		}
+		ret[sL[i]->hop] += eff;
+		hopQnt[sL[i]->hop]++;
+
+	}
+	for(int i = 0; i < meshEnabled+1; i++)
+	{
+		if(hopQnt[i] != 0)
+			ret[i] = ret[i]/hopQnt[i];
 	}
 	return ret;
 }
@@ -121,70 +133,28 @@ vector<sComponent*> MetricCalculation::statisticalList()
 
 
 	vector<sComponent*> statisticalComponents;
-	vector<Position*> coveredMeters;
-	vector<Position*> allMarkers;
-
-	//allMarkers.insert(allMarkers.end(), meters.begin(), meters.end());
-	for(int i = 0; i < meters.size();i++)
+	vector<Position*> connectedDevices;
+	connectedDevices = daps;
+	vector<Position*> uncoveredMeters = meters;
+	vector<Position*> aux = connectedDevices;
+	Grid* g = new Grid(aux,uncoveredMeters, regionLimiter);
+	g->putPositions(aux);
+	for (int i = 0; i < meshEnabled+1; i++)
 	{
-		allMarkers.push_back(meters[i]);
-	}
-
-	Grid* g = new Grid(allMarkers,daps, regionLimiter);
-	g->putPositions(allMarkers);
-	g->putPositions(daps);
-
-	for (int d = 0; d < daps.size(); d++)
-	{
-		vector<Position*> markersReduced = g->getCell(daps[d]);
-		for (int i = 0; i < markersReduced.size(); i++)
+		vector<Position*> newCovered;
+		for (int j = 0; j < uncoveredMeters.size(); j++)
 		{
-			if(markersReduced[i]->index != daps[d]->index)
+			vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
+			sComponent* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, statisticalComponents, i);
+			if (toAdd)
 			{
-				double dist = getDistance(daps[d], markersReduced[i]);
-				double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-				if (eff >= MARGIN_VALUE)
-				{ //SE CONSIDERAR DAPS TEM Q ALTERA AKI PRA NAO CRIAR UMA LINHA COM ELE MESMO
-
-					//sComponent* toAdd = new DrawInfo(daps[d], markersReduced[i], eff, dist, 0);
-					sComponent* toAdd = new sComponent(markersReduced[i]->index, dist, eff, 0, NULL);
-					statisticalComponents.push_back(toAdd);
-					coveredMeters.push_back(markersReduced[i]);
-				}
+				statisticalComponents.push_back(toAdd);
+				newCovered.push_back(uncoveredMeters[j]);
+				g->putPosition(uncoveredMeters[j]);
 			}
 		}
-		//toCover = toCover.sort(function(a, b) { return a.value.distance - b.value.distance });
-		//for (int i = 0; i < toCover.size(); i++)
-		//	this.connect(toCover[i].marker, toCover[i].value);
-	}
-	if (meshEnabled)
-	{
-		sort(coveredMeters.begin(), coveredMeters.end());
-		coveredMeters.erase(unique(coveredMeters.begin(), coveredMeters.end()), coveredMeters.end());
-		vector<Position*> uncoveredMeters = removeVectorFromAnother(allMarkers, coveredMeters);
-		vector<Position*> aux = coveredMeters;
-
-		Grid* g2 = new Grid(aux,uncoveredMeters, regionLimiter);
-		g2->putPositions(aux);
-		for (int i = 0; i < meshEnabled; i++)
-		{
-			vector<Position*> newCovered;
-			for (int j = 0; j < uncoveredMeters.size(); j++)
-			{
-				vector<Position*> toCheck = g2->getCell(uncoveredMeters[j]);
-				sComponent* toAdd = chooseMeterToConnect(uncoveredMeters[j], aux, statisticalComponents, i+1);
-				if (toAdd)
-				{
-					statisticalComponents.push_back(toAdd);
-					newCovered.push_back(uncoveredMeters[j]);
-					g2->putPosition(uncoveredMeters[j]);
-				}
-			}
-			aux = newCovered;
-			uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
-		}
-		delete g2;
-
+		aux = newCovered;
+		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
 	}
 	delete g;
 	return statisticalComponents;
@@ -314,6 +284,48 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 	}
 	return NULL;
 }
+sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int hop)
+{
+	double minDist = -1;
+	Position* deviceToConnect = NULL;
+	for (int i = 0; i < devices.size(); i++)
+	{
+		double dist = getDistance(meter, devices[i]);
+		if (dist < minDist || minDist == -1)
+		{
+			minDist = dist;
+			deviceToConnect = devices[i];
+		}
+	}
+	if (minDist != -1)
+	{
+		double dist = getDistance(meter, deviceToConnect);
+		double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		if (eff >= MARGIN_VALUE)
+		{
+			sComponent* ret;
+			if(hop == 0)
+			{
+				ret = new sComponent(meter->index, dist, eff, hop, NULL);
+			}
+			else
+			{
+				sComponent* father;
+				for(int i = 0; i < sC.size();i++)
+				{
+					if(sC[i]->index == deviceToConnect->index)
+					{
+						father = sC[i];
+						break;
+					}
+				}
+				ret = new sComponent(meter->index, dist, eff, hop, father);
+			}
+			return ret;
+		}
+	}
+	return NULL;
+}
 string MetricCalculation::executeMetricCalculation()
 {
 	vector<sComponent*> sL = statisticalList();
@@ -322,30 +334,31 @@ string MetricCalculation::executeMetricCalculation()
 	//{
 	//	cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
 	//}
+	string ret =  "";
 	vector<double > v = linkQualityPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
-		cout << "Mesh hop quality " + to_string(i) + ": " << v[i] << "\n";
+		ret+=  "Mesh hop quality " + to_string(i) + ": " + to_string(v[i]) + "\n";
 	}
 	vector<int > v2 = meterPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
-		cout << "Meter per hop " + to_string(i) + ": " << v2[i] << "\n";
+		ret += "Meter per hop " + to_string(i+1) + ": " + to_string(v2[i]) + "\n";
 	}
 	vector<double> v3 = minMedMaxMetersPerDap(cL);
-	cout << "Min Meters per DAP: " << v3[0] << "\n";
-	cout << "Med Meters per DAP: " << v3[1] << "\n";
-	cout << "Max Meters per DAP: " << v3[2] << "\n";
+	ret+= "Min Meters per DAP: " + to_string(v3[0]) + "\n";
+	ret+=  "Med Meters per DAP: " + to_string(v3[1]) + "\n";
+	ret+=  "Max Meters per DAP: " + to_string(v3[2]) + "\n";
 	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
-	cout << "Min redundancy per meter: " << v4[0] << "\n";
-	cout << "Med redundancy per meter: " << v4[1] << "\n";
-	cout << "Max redundancy per meter: " << v4[2] << "\n";
+	ret+=  "Min redundancy per meter: " + to_string(v4[0]) + "\n";
+	ret+=  "Med redundancy per meter: " + to_string(v4[1]) + "\n";
+	ret+=  "Max redundancy per meter: " + to_string(v4[2]) + "\n";
 	for(int i = 0; i < sL.size();i++)
 	{
 		delete sL[i];
 	}
 
-	return "fim";
+	return ret;
 }
 //string MetricCalculation::executeMetricCalculation()
 //{

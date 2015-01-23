@@ -39,10 +39,14 @@ class AutoPlanning
 		~AutoPlanning()
 		{
 			for(int i = 0; i < meters.size();i++)
+			{
 				delete meters[i];
+			}
 
 			for(int i = 0; i < poles.size();i++)
+			{
 				delete poles[i];
+			}
 		};
 		
 		 vector<vector<int> > createScpSemGrid();

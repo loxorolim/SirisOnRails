@@ -45,8 +45,10 @@ class LinkCalculation
 				delete daps[i];
 		};
 		vector<DrawInfo*> calculateDrawingInfo();
+		vector<DrawInfo*> calculateDrawingInfoOld();
 		string executeLinkCalculation();
 		DrawInfo* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters);
+		DrawInfo* chooseDeviceToConnect(Position* meter, vector<Position*> &devices,int isFirstHop);
 
 };
 

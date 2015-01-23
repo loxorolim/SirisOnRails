@@ -30,11 +30,11 @@
                 return (item.ID != meter.ID);
             });
             this.setMap(null);
-            for (var i = 0; i < this.neighbours.length; i++) {
-                this.neighbours[i].disconnectTarget(this);
-            }
+           // for (var i = 0; i < this.neighbours.length; i++) {
+           //     this.neighbours[i].disconnectTarget(this);
+           // }
             markerCluster.removeMarker(this, true);
-        //    sendDrawRequest()
+            sendDrawRequest()
         },
         createGhost: function () {
             var pos = this.getPosition();
