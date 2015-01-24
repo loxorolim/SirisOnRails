@@ -81,11 +81,7 @@ double getDistance(Position* p1, Position* p2)
 	double d = R * c;
 	return d; // returns the distance in meter
 }
-void deleteVector(vector<sComponent*> &v)
-{
-	for (int i = 0; i < v.size(); i++)
-		delete v[i];
-}
+
 int binary_search( vector<Position*>& sorted_vec, double key,int latOrlng) 
 {
 	size_t mid = 0, left = 0;

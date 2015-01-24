@@ -361,9 +361,11 @@ string AutoPlanning::gridAutoPlanning()
 	int i = 1;
 	float maximummemusage = -1;
 	float maximumtimeusage = -1;
+
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
-
+		cout << "\n NÚMERO DE CÉLULAS + 1 \n";
+		cout << regionLimiter;
 		vector<Position*> cellsMeters;
 		vector<Position*> cellsPoles;
 

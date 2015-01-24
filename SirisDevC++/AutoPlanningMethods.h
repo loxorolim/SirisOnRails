@@ -34,7 +34,9 @@ class AutoPlanning
 			SRD = srd;
 			meshEnabled = me;
 			rubyPath = rp;
-			regionLimiter = 0.001;
+			cout << "\nALTERANDO TAMANHO DA CÉLULA\n";
+			regionLimiter = 0.1;
+			cout << "\n" << regionLimiter << "\n";
 		};
 		~AutoPlanning()
 		{

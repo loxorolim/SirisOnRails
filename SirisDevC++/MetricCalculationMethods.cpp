@@ -338,7 +338,7 @@ string MetricCalculation::executeMetricCalculation()
 	vector<double > v = linkQualityPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
-		ret+=  "Mesh hop quality " + to_string(i) + ": " + to_string(v[i]) + "\n";
+		ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i]) + "\n";
 	}
 	vector<int > v2 = meterPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)

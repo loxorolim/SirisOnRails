@@ -138,7 +138,13 @@ function readPropagationResponse(data){
 }
 function readMetricResponse(data){
    // alert(data);
-   
+	var split = data.split("\n");
+	var text = "";
+	for(var i = 0; i < split.length;i++){
+		text += split[i]+"<br>";
+			
+	}
+	
     $(function() {
         $( "#statisticDialog" ).dialog({
             show: {
@@ -150,7 +156,7 @@ function readMetricResponse(data){
         duration: 1000
       }
     });
-    $( "#statisticDialog" ).text(data);
+    $( "#statisticDialog" ).html(text);
 
 
     });
