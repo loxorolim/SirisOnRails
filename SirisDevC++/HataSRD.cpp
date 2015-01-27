@@ -9,13 +9,13 @@ double bit_error_probability(int env, int technology, int  bit_rate, int  transm
 	switch (env)
 	{
 	case Urbano:
-		N = -82;
+		N = -79;
 		break;
 	case Suburbano:
-		N = -88.5280;
+		N = -81;
 		break;
 	case Rural:
-		N = -100.8168;
+		N = -85;
 		break;
 	default:
 		break;
@@ -151,8 +151,8 @@ double bit_error_probability(int env, int technology, int  bit_rate, int  transm
 		else if (bit_rate == 2)
 			gross_bit_rate = 2;
 
-		else if (bit_rate == 5.5)
-			gross_bit_rate = 5.5;
+		else if (bit_rate == 6)
+			gross_bit_rate = 6;
 
 		else if (bit_rate == 11)
 			gross_bit_rate = 11;
@@ -181,7 +181,7 @@ double bit_error_probability(int env, int technology, int  bit_rate, int  transm
 			bit_error = uncoded_modulation(dqpsk, gamma_b);
 
 		//CCK
-		else if (bit_rate == 5.5)
+		else if (bit_rate == 6)
 			bit_error = uncoded_modulation(cck, gamma_b);
 
 		//CCK
@@ -202,7 +202,7 @@ double bit_error_probability(int env, int technology, int  bit_rate, int  transm
 		double spectral_efficiency = link_bit_rate / bandwidth;
 
 		double propagation_attenuation = loss(frequency, h_tx, h_rx, d, env, SRD);
-		double received_power = transmitter_power - propagation_attenuation;
+		double received_power = transmitter_power + 8 - propagation_attenuation;
 
 
 		SNR_dB = received_power - N;
@@ -262,16 +262,22 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 		{
 			d_free = 10;
 			//alpha_d = { 36, 0, 211, 0, 1404, 0, 11633, 0, 77433, 0 };
+			alpha_d.push_back(36);alpha_d.push_back(0);alpha_d.push_back(211);alpha_d.push_back(0);alpha_d.push_back(1404);
+			alpha_d.push_back(0);alpha_d.push_back(11633);alpha_d.push_back(0);alpha_d.push_back(77433);alpha_d.push_back(0);
 		}
 		else if (code_rate == 2.0 / 3.0)
 		{
 			d_free = 6;
 			//alpha_d = { 3, 70, 285, 1276, 6160, 27128, 117019, 498860, 2103891, 8984123 };
+			alpha_d.push_back(3);alpha_d.push_back(70);alpha_d.push_back(285);alpha_d.push_back(1276);alpha_d.push_back(6160);
+			alpha_d.push_back(27128);alpha_d.push_back(117019);alpha_d.push_back(498860);alpha_d.push_back(2103891);alpha_d.push_back(8984123);
 		}
 		else if (code_rate == 3.0 / 4.0)
 		{
 			d_free = 5;
 			//alpha_d = { 42, 201, 1492, 10469, 62935, 379644, 2253373, 13073811, 75152755, 428005675 };
+			alpha_d.push_back(42);alpha_d.push_back(201);alpha_d.push_back(1492);alpha_d.push_back(10469);alpha_d.push_back(62935);
+			alpha_d.push_back(379644);alpha_d.push_back(2253373);alpha_d.push_back(13073811);alpha_d.push_back(75152755);alpha_d.push_back(428005675);
 		}
 
 		switch (decode_type)
@@ -281,11 +287,11 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 		case hard:
 		{
 			double P_e_HDD = 0;
-			for (int d = 0; d < d_free + constraint; d++)
+			for (int d = d_free; d < d_free + constraint; d++)
 			{
 				double P_b = uncoded_modulation(modulation_type, code_rate*gamma_b);
 				double p_2 = 0;
-				for (int k_ = 0; k_ < ceil((d + 1) / 2) / d; k_++)
+				for (int k_ = ceil((d + 1) / 2); k_ < d; k_++)
 					p_2 = p_2 + nchoosek(d, k_) * pow(P_b, k_) * pow((1 - P_b), (d - k_));
 				if (ceil(d / 2) == d / 2)
 					p_2 = p_2 + nchoosek(d, d / 2) * pow((P_b*(1 - P_b)), (d / 2)) / 2;
@@ -319,7 +325,7 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 				{
 							double P_e_SDD_max = 0;
 							double P_e_SDD_min = 0;
-							for (int d = 0; d < d_free + constraint; d++)
+							for (int d = d_free; d < d_free + constraint; d++)
 							{
 								double p_2_max = 0.5 * erfc(sqrt((2.0 / 5.0)*code_rate*d*gamma_b));
 								double p_2_min = 0.5 * erfc(sqrt((18.0 / 5.0)*code_rate*d*gamma_b));
@@ -336,7 +342,7 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 				{
 							double P_e_SDD_max = 0;
 							double P_e_SDD_min = 0;
-							for (int d = 0; d < d_free + constraint; d++)
+							for (int d = d_free; d < d_free + constraint; d++)
 							{
 								double p_2_max = 0.5 * erfc(sqrt((1.0 / 7.0)*code_rate*d*gamma_b));
 								double p_2_min = 0.5 * erfc(sqrt((7.0) * code_rate*d*gamma_b));
@@ -435,51 +441,41 @@ double loss(double f, double h_tx, double h_rx, double d, int environment, int S
 		//b = Math.min(0.20*log10(H_b / 30));
 	if (SRD)
 		b = (((1.1*log10(f)) - 0.7)*fmin(10, H_b)) - (((1.56*log10(f)) - 0.8)) + fmax(0, (20 * log10(H_b / 10)));
-	if (d <= 0.04)
-		path_loss = 32.4 + 20 * log10(f) + 10 * log10((pow(d, 2)) + ((((pow((H_b - H_m), 2))) / pow(10, 6))));
+	else
+		b = 0.20*log10(H_b/30);
 
-	if (d >= 0.1)
+
+	switch (environment)
 	{
-
-
-		switch (environment)
-		{
-
 		case Urbano:
 
-			if ((30 <= f) && (f <= 150))
-				path_loss = 69.9 + 26.2*log10(150) - 20 * log10(150 / f) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b)))*(pow(log10(d), alpha)) - a - b;
-			if ((150 <  f) && (f <= 1500))
-				path_loss = 69.6 + 26.2*log10(f) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b)))*(pow(log10(d), alpha)) - a - b;
-
-			if ((1500 < f) && (f <= 2000))
-				path_loss = 46.3 + 33.9*log10(f) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b)))*(pow(log10(d), alpha)) - a - b;
+	//		if ((30 <= f) && (f <= 150))
+	//			path_loss = 8 + 69.9 + 26.2*log10(150) - 20 * log10(150 / f) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b)))*(pow(log10(d), alpha)) - a - b;
+	//		if ((150 <  f) && (f <= 1500))
+	//			path_loss = 77.6 + 26.2*log10(f) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b)))*(pow(log10(d), alpha)) - a - b;
+	//
+	//		if ((1500 < f) && (f <= 2000))
+	//			path_loss = 54.3 + 33.9*log10(f) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b)))*(pow(log10(d), alpha)) - a - b;
 
 			if ((2000 < f) && (f <= 3000))
-				path_loss = 46.3 + 33.9*log10(2000) + 10 * log10(f / 2000) - 13.82*log10(fmax(30, H_b)) + (44.9 - 6.55*log10(fmax(30, H_b))) * (pow(log10(d), alpha)) - a - b;
-
+			{
+				double r2 = pow(d,2);
+				double r3 = pow(H_b - H_m,2)/1000000.0f;
+				double r1 = log10(r2 + r3);
+				path_loss = 34.2 + 20*log10(f) + 10*r1 + 20;
+			}
 			break;
 
 		case Suburbano:
-			path_loss = loss(f, h_tx, h_rx, d, Urbano, SRD) - 2 * (pow(log10(fmin(fmax(150, f), 2000)) / 28, 2)) - 5.4;
+			path_loss =  0.98*loss( f , h_tx , h_rx , d, Urbano, SRD);
 			break;
 
 		case Rural:
-			path_loss = loss(f, h_tx, h_rx, d, Urbano, SRD) - 4.78*(pow(log10(fmin(fmax(150, f), 2000)), 2)) + 18.33*log10(fmin(fmax(150, 2400), 2000)) - 20.94;
+			path_loss =  0.96*loss( f , h_tx , h_rx , d, Urbano, SRD);
 			break;
 
 		default:
 			break;
-
-		}
-
-	}
-
-
-	if ((0.04 < d) && (d < 0.1)){
-		double l_01 = loss(f, h_tx, h_rx, 0.1, environment, SRD);
-		double l_004 = loss(f, h_tx, h_rx, 0.04, environment, SRD);
-		path_loss = l_004 + (((log10(d)) - log10(0.04)) / (log10(0.1) - log10(0.04))) * (l_01 - l_004);
 	}
 	return path_loss;
 }
@@ -570,62 +566,70 @@ double uncoded_modulation(int modulation_type, double gamma_b)
 //}
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
-	if (env == Urbano)
-	{
-		double val = 0.1/18;
-		if (distance <= 18)
-		{
-			return (1-(distance*val));
-		}
-		else
-			return 0;
 
-	}
-	if (env == Suburbano)
-	{
-		double val = 0.1/25;
-		if (distance <= 25)
-			return (1-(distance*val));
-		else
-			return 0;
+	double ber = bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);
+	double packet_size = 1500;
+	//double loss = loss(f,h_tx,h_rx,distance, SRD);
+	double csr = pow(1 - ber, packet_size);
+	double per = 1 - csr;
+	return 1 - csr;
 
-	}
-
-	if (env == Rural)
-	{
-		double val = 0.1/48;
-		if (distance <= 48)
-			return (1-(distance*val));
-		else
-			return 0;
-
-	}
+	//	if (env == Urbano)
+//	{
+//		double val = 0.1/18;
+//		if (distance <= 18)
+//		{
+//			return (1-(distance*val));
+//		}
+//		else
+//			return 0;
+//
+//	}
+//	if (env == Suburbano)
+//	{
+//		double val = 0.1/25;
+//		if (distance <= 25)
+//			return (1-(distance*val));
+//		else
+//			return 0;
+//
+//	}
+//
+//	if (env == Rural)
+//	{
+//		double val = 0.1/48;
+//		if (distance <= 48)
+//			return (1-(distance*val));
+//		else
+//			return 0;
+//
+//	}
 		
 
 
-	int distAprox = ceil(distance);
-	if (distAprox == 0)
-		return 1;
-	else if (distAprox > table.size())
-		return 0;
-	else
-	{
-		switch (env)
-		{
-			case Urbano:
-				return table[distAprox-1][2];
-				break;
-			case Suburbano:
-				return table[distAprox - 1][1];
-				break;
-			case Rural:
-				return table[distAprox - 1][0];
-				break;
-			default:
-				return 0;
-				break;
-		}
-	}
+//	int distAprox = ceil(distance);
+//	if (distAprox == 0)
+//		return 1;
+//	else if (distAprox > table.size())
+//		return 0;
+//	else
+//	{
+//		switch (env)
+//		{
+//			case Urbano:
+//				return table[distAprox-1][2];
+//				break;
+//			case Suburbano:
+//				return table[distAprox - 1][1];
+//				break;
+//			case Rural:
+//				return table[distAprox - 1][0];
+//				break;
+//			default:
+//				return 0;
+//				break;
+//		}
+//	}
 
 
 
