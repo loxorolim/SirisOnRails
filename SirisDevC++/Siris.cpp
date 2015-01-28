@@ -6,10 +6,10 @@
 #include "LinkCalculationMethods.h"
 #include "MetricCalculationMethods.h"
 #include "HataSRD.h"
-//#include "rice/Class.hpp"
+#include "rice/Class.hpp"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-//using namespace Rice;
+using namespace Rice;
 
 
 int main(int argc, char** argv)
@@ -18,10 +18,10 @@ int main(int argc, char** argv)
 //	vector<Position*> teste;
 //	Grid *g = new Grid(teste,10);
 
-	double val = getHataSRDSuccessRate(9, Urbano, t802_11_g, 6, 20, 3, 5, 1);
+//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
 
 //	string x = AutoPlanning::executeAutoPlan();
-	std::cout << val;
+//	std::cout << val;
 	return 0;
 }
 string getResponse(string req, string rubyPath)
@@ -210,12 +210,12 @@ string RubyPathTest(string t)
 	return t;
 }
 
-//extern "C"
+extern "C"
 
-//void Init_Siris()
-//{
-//  Class rb_c = define_class("Siris")
-//   .define_method("getResponse", &getResponse);
-//
-//}
+void Init_Siris()
+{
+  Class rb_c = define_class("Siris")
+   .define_method("getResponse", &getResponse);
+
+}
 

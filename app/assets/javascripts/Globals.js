@@ -18,7 +18,7 @@ var scenario = Urbano;
 var technology = t802_15_4;
 var H_TX = 3;
 var H_RX = 5;
-var BIT_RATE = 1;
+var BIT_RATE = 6;
 var TRANSMITTER_POWER = -20;
 var SRD = true;
 

@@ -16,17 +16,19 @@ function colorInterpolation(efficiency)
 	var val = (yellowvalR - bluevalR)/0.1;
 	var cDec =  Math.floor(bluevalR + (efficiency - 0.90)*val);
 	var cR = cDec.toString(16);	
-	if(cR == "0") cR = "00";
+	if(cDec < 16)
+		cR = "0" + cR;;
 
 	var val = (yellowvalG - bluevalG)/0.1;
 	var cDec =  Math.floor(bluevalG + (efficiency - 0.90)*val);
 	var cG = cDec.toString(16);	
-	if(cG == "0") cG = "00";
-
+	if(cDec < 16)
+		cG = "0" + cG;;
 	var val = (yellowvalB - bluevalB)/0.1;
 	var cDec =  Math.floor(bluevalB + (efficiency - 0.90)*val);
 	var cB = cDec.toString(16);	
-	if(cB =="0") cB = "00";		
+	if(cDec < 16)
+		cB = "0" + cB;;	
 	return "#"+cR+cG+cB;
 	
 }

@@ -314,7 +314,7 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 					for (int d = d_free; d < d_free + constraint; d++)
 					{
 						double p_2 = uncoded_modulation(modulation_type, code_rate*d*gamma_b);
-						P_e_SDD = P_e_SDD + alpha_d[d - d_free + 1] * p_2;
+						P_e_SDD = P_e_SDD + alpha_d[d - d_free] * p_2;
 					}
 
 					ber = P_e_SDD;
@@ -329,8 +329,8 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 							{
 								double p_2_max = 0.5 * erfc(sqrt((2.0 / 5.0)*code_rate*d*gamma_b));
 								double p_2_min = 0.5 * erfc(sqrt((18.0 / 5.0)*code_rate*d*gamma_b));
-								P_e_SDD_max = alpha_d[d - d_free + 1] * p_2_min;
-								P_e_SDD_min = alpha_d[d - d_free + 1] * p_2_max;
+								P_e_SDD_max = alpha_d[d - d_free ] * p_2_min;
+								P_e_SDD_min = alpha_d[d - d_free ] * p_2_max;
 
 							}
 							double P_e_SDD = 0.5 *(P_e_SDD_max + P_e_SDD_min);
@@ -346,8 +346,8 @@ double coded_modulation(int modulation_type, double code_rate, int decode_type, 
 							{
 								double p_2_max = 0.5 * erfc(sqrt((1.0 / 7.0)*code_rate*d*gamma_b));
 								double p_2_min = 0.5 * erfc(sqrt((7.0) * code_rate*d*gamma_b));
-								P_e_SDD_max = alpha_d[d - d_free + 1] * p_2_min;
-								P_e_SDD_min = alpha_d[d - d_free + 1] * p_2_max;
+								P_e_SDD_max = alpha_d[d - d_free ] * p_2_min;
+								P_e_SDD_min = alpha_d[d - d_free ] * p_2_max;
 
 							}
 							double P_e_SDD = 0.5 *(P_e_SDD_max + P_e_SDD_min);
@@ -460,9 +460,9 @@ double loss(double f, double h_tx, double h_rx, double d, int environment, int S
 			if ((2000 < f) && (f <= 3000))
 			{
 				double r2 = pow(d,2);
-				double r3 = pow(H_b - H_m,2)/1000000.0f;
+				double r3 = pow(H_b - H_m,2)/1000000;
 				double r1 = log10(r2 + r3);
-				path_loss = 34.2 + 20*log10(f) + 10*r1 + 20;
+				path_loss = 34.2 + 20*log10(f) + 10*r1 + 30;
 			}
 			break;
 
@@ -572,7 +572,10 @@ double getHataSRDSuccessRate(double distance, int env, int technology, double bi
 	//double loss = loss(f,h_tx,h_rx,distance, SRD);
 	double csr = pow(1 - ber, packet_size);
 	double per = 1 - csr;
-	return 1 - csr;
+
+	//cout << "/n"<< "Distancia: " << distance << "Env: " << env << " Tech: " << technology << 1-per << "/n";
+
+	return 1-per;
 
 	//	if (env == Urbano)
 //	{

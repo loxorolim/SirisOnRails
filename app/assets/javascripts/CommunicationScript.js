@@ -173,6 +173,10 @@ function propagationValuesToSend(){
     else
         srdv = 0;
 
+	if(technology == t802_11_g)
+		BIT_RATE = 6;
+	if(technology == t802_15_4)
+		BIT_RATE = 0.25;
     var ret = "";
     ret+= s + "\n";
     ret+= t + "\n";
