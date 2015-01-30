@@ -335,6 +335,8 @@ string MetricCalculation::executeMetricCalculation()
 	//	cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
 	//}
 	string ret =  "";
+	ret+= "DAPs quantity: " + to_string(daps.size());
+	ret+= "Meters quantity: " + to_string(meters.size());
 	vector<double > v = linkQualityPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)
 	{

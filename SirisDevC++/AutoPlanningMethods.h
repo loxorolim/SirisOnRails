@@ -9,6 +9,8 @@
 #include "auxiliars.h"
 #include "HataSRD.h"
 #include "Grid.h"
+#include <time.h>
+#include <stdio.h>
 
 
 class AutoPlanning
@@ -57,9 +59,11 @@ class AutoPlanning
 		 void saveGLPKFileReduced(vector<vector<int> > &SCP);
 		 vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		 string executeAutoPlan();
+		 string executeAutoPlanTestMode(string * res, double gridsize);
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP);
 		 void executeGlpk(string filename);
 		 string gridAutoPlanning();
+		 string gridAutoPlanningTestMode(float *mtu, float* mmu);
 		 vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 
 };

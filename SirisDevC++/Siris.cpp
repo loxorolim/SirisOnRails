@@ -6,24 +6,15 @@
 #include "LinkCalculationMethods.h"
 #include "MetricCalculationMethods.h"
 #include "HataSRD.h"
-#include "rice/Class.hpp"
+#include <stdio.h>
+
+//#include "rice/Class.hpp"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-using namespace Rice;
+//using namespace Rice;
 
 
-int main(int argc, char** argv)
-{
 
-//	vector<Position*> teste;
-//	Grid *g = new Grid(teste,10);
-
-//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
-
-//	string x = AutoPlanning::executeAutoPlan();
-//	std::cout << val;
-	return 0;
-}
 string getResponse(string req, string rubyPath)
 {
 	std::cout.precision(20);
@@ -205,17 +196,76 @@ string getResponse(string req, string rubyPath)
 //	string x = AutoPlanning::executeAutoPlan();
 	return "";
 }
+void testFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE,  double TRANSMITTER_POWER, double H_TX,  double H_RX, int SRD, int meshEnabled, string rubyPath)
+{
+
+		metersFile = rubyPath + "/arqsTeste/"+ metersFile;
+		polesFile = rubyPath + "/arqsTeste/"+ polesFile;
+		FILE * file;
+		file = fopen(metersFile.c_str(), "r");
+		FILE * file2;
+		file2 = fopen(polesFile.c_str(), "r");
+
+
+		vector<Position*> meters;
+		vector<Position*> poles;
+
+		while (true)
+		{
+			double lat = -1;
+			double lng = -1;
+			fscanf(file, "%lf %lf", &lat, &lng);
+			if (lat == -1)
+				break;
+			Position *toAdd = new Position(lat, lng, meters.size());
+			meters.push_back(toAdd);
+		}
+		while (true)
+		{
+			double lat = -1;
+			double lng = -1;
+			fscanf(file2, "%lf %lf", &lat, &lng);
+			if (lat == -1)
+				break;
+			Position *toAdd = new Position(lat, lng, poles.size());
+			poles.push_back(toAdd);
+		}
+		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+		string gresult = "";
+		string ret = res->executeAutoPlanTestMode(&gresult, 0.001);
+
+		//MetricCalculation* res2 = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+		//string ret2 = res->executeMetricCalculation();
+
+		delete res;
+
+
+
+}
 string RubyPathTest(string t)
 {
 	return t;
 }
-
-extern "C"
-
-void Init_Siris()
+int main(int argc, char** argv)
 {
-  Class rb_c = define_class("Siris")
-   .define_method("getResponse", &getResponse);
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	testFromFile("filemeters1000.txt", "filepoles1000.txt", Suburbano, t802_11_g, 6,  30, 3,  5, 1, 0, rubyPath);
+//	vector<Position*> teste;
+//	Grid *g = new Grid(teste,10);
 
+//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
+
+//	string x = AutoPlanning::executeAutoPlan();
+//	std::cout << val;
+	return 0;
 }
+
+//extern "C"
+//
+//void Init_Siris()
+//{
+//  Class rb_c = define_class("Siris")
+//   .define_method("getResponse", &getResponse);
+//
+//}
 

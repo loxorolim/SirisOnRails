@@ -336,7 +336,8 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 		resp += ";";
 		resp += "end;\n";
 		
-		ofstream f("GlpkFile.txt");
+		string filename = rubyPath + "/GlpkFile.txt";
+		ofstream f(filename.c_str());
 
 		f << resp;
 		f.close();
@@ -347,6 +348,67 @@ void AutoPlanning::executeGlpk(string filename)
 	string access = rubyPath + "/glpk-4.54/w32/glpsol.exe  --math " + filename +  " > wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
+}
+float getMemUsageFromGlpkFile(string fname)
+{
+	ifstream f(fname.c_str());
+	string str;
+	//int cont = 1;
+	float mem = -1;
+	while (getline(f, str))
+	{
+
+		int c = str.find("Memory used: ");
+		if (c >= 0)
+		{
+			//cont = 0;
+			vector<string> s = split(str, ' ');
+			int pos = -1;
+			for (int i = 0; i < s.size(); i++)
+			{
+				int c2 = s[i].find("Mb");
+				if (c2 >= 0)
+				{
+					pos = i;
+					break;
+				}
+			}
+			mem = atof(s[pos-1].c_str());
+		}
+	}
+	return mem;
+
+}
+float getTimeUsageFromGlpkFile(string fname)
+{
+	ifstream f(fname.c_str());
+	string str;
+	//int cont = 1;
+	float time = -1;
+	while (getline(f, str))
+	{
+		//getline(f, str);
+		int c = str.find("Time used: ");
+		if (c >= 0)
+		{
+		//	cont = 0;
+
+			vector<string> s = split(str, ' ');
+			int pos = -1;
+			for (int i = 0; i < s.size(); i++)
+			{
+				int c2 = s[i].find("secs");
+				if (c2 >= 0)
+				{
+					pos = i;
+					break;
+				}
+			}
+			time = atof(s[pos-1].c_str());
+		}
+	}
+	return time;
+
 }
 string AutoPlanning::gridAutoPlanning()
 {
@@ -359,13 +421,10 @@ string AutoPlanning::gridAutoPlanning()
 	vector<string> chosenDaps;
 	//string str;
 	int i = 1;
-	float maximummemusage = -1;
-	float maximumtimeusage = -1;
 
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
-		cout << "\n NÚMERO DE CÉLULAS + 1 \n";
-		cout << regionLimiter;
+
 		vector<Position*> cellsMeters;
 		vector<Position*> cellsPoles;
 
@@ -375,7 +434,7 @@ string AutoPlanning::gridAutoPlanning()
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP);
-		executeGlpk("GlpkFile.txt");
+		executeGlpk(rubyPath + "/GlpkFile.txt");
 		ifstream f("Results.txt");
 		string gridAnswer;
 		getline(f, gridAnswer);
@@ -386,7 +445,6 @@ string AutoPlanning::gridAutoPlanning()
 			//string snum = x[i].substr(1);
 			chosenDaps.push_back(x[i]);
 		}
-
 	}
 	string str = "";
 	//Remove redundâncias
@@ -407,6 +465,75 @@ string AutoPlanning::gridAutoPlanning()
 
 
 }
+string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
+{
+	Grid* metergrid = new Grid(meters, poles, regionLimiter);
+	metergrid->putPositions(meters);
+	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	polegrid->putPositions(poles);
+	vector<Position*> metersAux = meters, polesAux = poles;
+	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
+	vector<string> chosenDaps;
+	//string str;
+	int i = 1;
+	float maximummemusage = -1;
+	float maximumtimeusage = -1;
+
+	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
+	{
+
+		vector<Position*> cellsMeters;
+		vector<Position*> cellsPoles;
+
+		cellsMeters = it->second; //Recebe todas as posições dos medidores que estão na célula
+		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posição de um desses medidores e usa como referência pra pegar os postes da mesma célula e das células vizinhas.
+		meters = cellsMeters;
+		poles = cellsPoles;
+		vector<vector<int> > cellSCP = createScp();
+		saveGLPKFileReduced(cellSCP);
+		executeGlpk(rubyPath+"/GlpkFile.txt");
+		ifstream f("Results.txt");
+		string gridAnswer;
+		getline(f, gridAnswer);
+
+		vector<string> x = split(gridAnswer, ' ');
+		for (int i = 0; i < x.size(); i++)
+		{
+			//string snum = x[i].substr(1);
+			chosenDaps.push_back(x[i]);
+		}
+		float memusage = getMemUsageFromGlpkFile("wow.txt");
+		float timeusage = getTimeUsageFromGlpkFile("wow.txt");
+		if (memusage > maximummemusage)
+		{
+			maximummemusage = memusage;
+		}
+		if (timeusage > maximumtimeusage)
+		{
+			maximumtimeusage = timeusage;
+		}
+
+	}
+	string str = "";
+	//Remove redundâncias
+	sort(chosenDaps.begin(), chosenDaps.end());
+	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		str += chosenDaps[i] + " ";
+	}
+	delete metergrid;
+	delete polegrid;
+	meters = metersAux;
+	poles = polesAux;
+	*mtu = maximumtimeusage;
+	*mmu = maximummemusage;
+	return str;
+
+
+
+
+}
 
 string AutoPlanning::executeAutoPlan()
 {
@@ -418,4 +545,31 @@ string AutoPlanning::executeAutoPlan()
 	//string str;
 	//getline(f, str);
 	//return str;
+}
+
+string AutoPlanning::executeAutoPlanTestMode( string * res, double gridsize)
+{
+
+
+	//vector<vector<int> > SCP = createScp();
+	//saveGLPKFileReduced(SCP);
+	float mtu, mme;
+	double secondsgp = -1;
+	const clock_t begin_time = clock();
+	string result = gridAutoPlanningTestMode(&mtu,&mme);
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+
+
+	Position* aux = new Position(0, 0);
+	Position* aux2 = new Position(0 + gridsize, 0);
+	Position* aux3 = new Position(0, 0 + gridsize);
+	double gheight = getDistance(aux,aux2);
+	double gwidth = getDistance(aux,aux3);
+
+	string ret =  "Grid height: " + to_string(gheight) + "\n Grid width: " + to_string(gwidth) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
+	ret += "Maximum Memory Used: " + to_string(mme) +"\n\n";
+	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
+
+	*res = ret;
+	return result;
 }
