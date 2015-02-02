@@ -109,7 +109,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 		sComponent* s = sL[i];
 		while(hop >= 0)
 		{
-			cout << s->efficiency << "\n";
+			//cout << s->efficiency << "\n";
 			eff *= s->efficiency;
 
 			hop--;
@@ -335,8 +335,8 @@ string MetricCalculation::executeMetricCalculation()
 	//	cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
 	//}
 	string ret =  "";
-	ret+= "DAPs quantity: " + to_string(daps.size());
-	ret+= "Meters quantity: " + to_string(meters.size());
+	ret+= "DAPs quantity: " + to_string(daps.size()) + "\n";
+	ret+= "Meters quantity: " + to_string(meters.size()) + "\n";
 	vector<double > v = linkQualityPerHop(sL);
 	for(int i = 0; i < meshEnabled+1; i++)
 	{

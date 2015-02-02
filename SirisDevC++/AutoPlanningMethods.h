@@ -20,7 +20,7 @@ class AutoPlanning
 			vector<Position*> poles;
 			int scenario, technology, SRD, meshEnabled;
 			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
-			double regionLimiter ;
+			double regionLimiter, gridLimiter ;
 			string rubyPath;
 	public:
 		AutoPlanning(vector<Position*> &m, vector<Position*> &p, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
@@ -36,9 +36,9 @@ class AutoPlanning
 			SRD = srd;
 			meshEnabled = me;
 			rubyPath = rp;
-			cout << "\nALTERANDO TAMANHO DA CÉLULA\n";
-			regionLimiter = 0.1;
-			cout << "\n" << regionLimiter << "\n";
+			regionLimiter = 0.001;
+
+
 		};
 		~AutoPlanning()
 		{

@@ -196,15 +196,39 @@ string getResponse(string req, string rubyPath)
 //	string x = AutoPlanning::executeAutoPlan();
 	return "";
 }
+string gridTest(vector<Position*> &meters, vector<Position*> &poles, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp, double gridSize)
+{
+	AutoPlanning* ap = new AutoPlanning(meters, poles, s, t, B, T,h1, h2, srd, me,rp);
+	string gresult = "";
+	string ret = ap->executeAutoPlanTestMode(&gresult, gridSize);
+	vector<string> xgp = split(ret, ' ');
+	vector<Position*> daps;
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		string snum = xgp[i].substr(1);
+		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude,poles[atoi(snum.c_str()) - 1]->longitude,poles[atoi(snum.c_str()) - 1]->index);;
+		daps.push_back(dapToInsert);
+	}
+	MetricCalculation* mc = new MetricCalculation(meters, daps, s, t, B, T,h1, h2, srd, me,rp);
+	string metricResult = mc->executeMetricCalculation();
+	//delete mc;
+	//delete ap;
+	for(int i = 0; i < daps.size();i++)
+	{
+		delete daps[i];
+	}
+	//cout << gresult + metricResult;
+	return "\n" + gresult + metricResult + "\n";
+}
 void testFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE,  double TRANSMITTER_POWER, double H_TX,  double H_RX, int SRD, int meshEnabled, string rubyPath)
 {
 
-		metersFile = rubyPath + "/arqsTeste/"+ metersFile;
-		polesFile = rubyPath + "/arqsTeste/"+ polesFile;
+		string completeMetersFile = rubyPath + "/arqsTeste/"+ metersFile;
+		string completePolesFile = rubyPath + "/arqsTeste/"+ polesFile;
 		FILE * file;
-		file = fopen(metersFile.c_str(), "r");
+		file = fopen(completeMetersFile.c_str(), "r");
 		FILE * file2;
-		file2 = fopen(polesFile.c_str(), "r");
+		file2 = fopen(completePolesFile.c_str(), "r");
 
 
 		vector<Position*> meters;
@@ -230,15 +254,52 @@ void testFromFile(string metersFile, string polesFile, int scenario, int technol
 			Position *toAdd = new Position(lat, lng, poles.size());
 			poles.push_back(toAdd);
 		}
-		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
-		string gresult = "";
-		string ret = res->executeAutoPlanTestMode(&gresult, 0.001);
 
-		//MetricCalculation* res2 = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
-		//string ret2 = res->executeMetricCalculation();
+		fclose(file);
+		fclose(file2);
 
-		delete res;
+		//AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
 
+		string finalResult = "";
+
+		cout << "Iniciando 0.001 \n";
+		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.001);
+		cout << "Finalizando 0.001 \n";
+		cout << "Iniciando 0.01 \n";
+		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.01);
+		cout << "Finalizando 0.01 \n";
+		cout << "Iniciando 0.1 \n";
+		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.1);
+		cout << "Finalizando 0.1 \n";
+
+		for(int i =0; i < meters.size(); i++)
+		{
+			delete meters[i];
+		}
+		for(int i =0; i < poles.size(); i++)
+		{
+			delete poles[i];
+		}
+//		string gresult = "";
+//		string ret = res->executeAutoPlanTestMode(&gresult, 0.001);
+//		vector<string> xgp = split(ret, ' ');
+//		vector<Position*> daps;
+//		for (int i = 0; i < xgp.size(); i++)
+//		{
+//			string snum = xgp[i].substr(1);
+//			Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude,poles[atoi(snum.c_str()) - 1]->longitude,poles[atoi(snum.c_str()) - 1]->index);;
+//			daps.push_back(dapToInsert);
+//		}
+//		MetricCalculation* res2 = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+//		string ret2 = res2->executeMetricCalculation();
+
+//		delete res;
+//		delete res2;
+
+		string resultsFilePath = rubyPath + "/testResults/Result" + metersFile ;
+		ofstream f(resultsFilePath.c_str());
+		f << finalResult;
+		f.close();
 
 
 }
@@ -249,7 +310,7 @@ string RubyPathTest(string t)
 int main(int argc, char** argv)
 {
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	testFromFile("filemeters1000.txt", "filepoles1000.txt", Suburbano, t802_11_g, 6,  30, 3,  5, 1, 0, rubyPath);
+	testFromFile("filemeters10000.txt", "filepoles10000.txt", Rural, t802_11_g, 6,  30, 3,  5, 1, 0, rubyPath);
 //	vector<Position*> teste;
 //	Grid *g = new Grid(teste,10);
 

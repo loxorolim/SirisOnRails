@@ -264,7 +264,8 @@ void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP)
 			resp += ";";
 			resp += "end;\n";
 		
-			ofstream f("GlpkFile.txt");
+			string filename = rubyPath + "/GlpkFile.txt";
+			ofstream f(filename.c_str());
 
 			f << resp;
 			f.close();
@@ -345,7 +346,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 void AutoPlanning::executeGlpk(string filename)
 {
 
-	string access = rubyPath + "/glpk-4.54/w32/glpsol.exe  --math " + filename +  " > wow.txt";
+	string access = rubyPath + "/glpk-4.54/w32/glpsol.exe  --math " + filename +  " > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
 }
@@ -435,7 +436,7 @@ string AutoPlanning::gridAutoPlanning()
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP);
 		executeGlpk(rubyPath + "/GlpkFile.txt");
-		ifstream f("Results.txt");
+		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
 		getline(f, gridAnswer);
 
@@ -467,9 +468,9 @@ string AutoPlanning::gridAutoPlanning()
 }
 string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 {
-	Grid* metergrid = new Grid(meters, poles, regionLimiter);
+	Grid* metergrid = new Grid(meters, poles, gridLimiter);
 	metergrid->putPositions(meters);
-	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	Grid* polegrid = new Grid(poles, meters, gridLimiter);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
@@ -492,7 +493,7 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP);
 		executeGlpk(rubyPath+"/GlpkFile.txt");
-		ifstream f("Results.txt");
+		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
 		getline(f, gridAnswer);
 
@@ -502,8 +503,8 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 			//string snum = x[i].substr(1);
 			chosenDaps.push_back(x[i]);
 		}
-		float memusage = getMemUsageFromGlpkFile("wow.txt");
-		float timeusage = getTimeUsageFromGlpkFile("wow.txt");
+		float memusage = getMemUsageFromGlpkFile(rubyPath+"/wow.txt");
+		float timeusage = getTimeUsageFromGlpkFile(rubyPath+"/wow.txt");
 		if (memusage > maximummemusage)
 		{
 			maximummemusage = memusage;
@@ -550,7 +551,7 @@ string AutoPlanning::executeAutoPlan()
 string AutoPlanning::executeAutoPlanTestMode( string * res, double gridsize)
 {
 
-
+	gridLimiter = gridsize;
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
 	float mtu, mme;
