@@ -262,12 +262,12 @@ void testFromFile(string metersFile, string polesFile, int scenario, int technol
 
 		string finalResult = "";
 
-		cout << "Iniciando 0.001 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.001);
-		cout << "Finalizando 0.001 \n";
-		cout << "Iniciando 0.01 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.01);
-		cout << "Finalizando 0.01 \n";
+		//cout << "Iniciando 0.001 \n";
+		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.001);
+		//cout << "Finalizando 0.001 \n";
+//		cout << "Iniciando 0.01 \n";
+//		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.01);
+//		cout << "Finalizando 0.01 \n";
 		cout << "Iniciando 0.1 \n";
 		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.1);
 		cout << "Finalizando 0.1 \n";
@@ -309,8 +309,9 @@ string RubyPathTest(string t)
 }
 int main(int argc, char** argv)
 {
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	testFromFile("filemeters10000.txt", "filepoles10000.txt", Rural, t802_11_g, 6,  30, 3,  5, 1, 0, rubyPath);
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Sites/first_app";
+	testFromFile("filemeters10000.txt", "filepoles10000.txt", Rural, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
 //	vector<Position*> teste;
 //	Grid *g = new Grid(teste,10);
 
