@@ -23,11 +23,6 @@ class ApplicationController < ActionController::Base
 
 	#print shell_output
 	#File.open('teste.txt', 'w') {|f| f.write(toPass)}
-
-
-
-	
-
 	#print toPass
 
 	#system('C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe C:\Sites\first_app\teste.txt C:\Sites\first_app\teste2.txt');
@@ -40,6 +35,11 @@ class ApplicationController < ActionController::Base
 	format.text  { render :text => msg } # don't do msg.to_json
 	end
   end
+  def uploadFile
+	post = DataFile.save(params[:upload])
+	render :text => "File has been uploaded successfully"
+  end
+ 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery :except => :autoplan
