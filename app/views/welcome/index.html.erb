@@ -1,10 +1,5 @@
 ﻿
-<h1>File Upload</h1>
 
-<%= form_tag({action: :uploadFile}, multipart: true) do %>
-  <%= file_field 'upload', 'datafile' %>
-  <%= submit_tag("Upload") %>
-<% end %>
 
 
  <script id="pointVertexShader" type="x-shader/x-vertex">
@@ -26,6 +21,26 @@
         void main() {
             gl_FragColor = vec4(1.0, 0.0, 0.0, 0.5);
         }
+</script>
+<script>
+function sendFile(){
+    var formData = new FormData($("form#data")[0]);
+
+    $.ajax({
+        url: "uploadFile",
+        type: 'POST',
+        data: formData,
+        async: false,
+        success: function (data) {
+            alert(data)
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+
+    return false;
+	}
 </script>
 
 
@@ -84,13 +99,18 @@
                     <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
                     <input type="checkbox" id="checkRFMesh"><label for="checkRFMesh">RF-Mesh</label>
                     <button id="statistic">Coletar Estatísticas</button>
+					<button id="upload">Upload de arquivo</button>
                     <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
                     
                 </div>
             </div>
         </div>
         <div id="statisticDialog" class = "hidden" title="Estatísticas">
-          <p>wow</p>
+        </div>
+		<div id="uploadDialog" class = "hidden" title="Upload">
+		<form accept-charset="UTF-8" action="/uploadFile" id="data" method="post" enctype="multipart/form-data" onsubmit="return sendFile();">
+			<input id = "upload_datafile" name="upload[datafile]" type="file" />
+		<button>Submit</button>
         </div>
   </div>
 

@@ -323,17 +323,38 @@ function setButtons()
 
 
     });
-        $('#statistic').button({
-        icons: {
-            primary: "statistic"
-        },
- 
-        text: false
+	$('#statistic').button({
+	icons: {
+		primary: "statistic"
+	},
 
+	text: false
     }).click(function () {
         $(this).blur();
         sendDataToServer(serverAddress, 'POST', METRIC_FILE_ID);
     });
+	$('#upload').button({
+	icons: {
+		primary: "upload"
+	},
+
+	text: false
+    }).click(function () {
+			$(this).blur();
+				$(function() {
+					$( "#uploadDialog" ).dialog({
+						show: {
+						effect: "blind",
+						duration: 1000
+						},
+						hide: {
+						effect: "explode",
+						duration: 1000
+						}
+					});
+				});     
+		});
+	
     $('#generator').button({
 
         text: false

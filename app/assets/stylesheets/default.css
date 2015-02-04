@@ -26,6 +26,9 @@
 .ui-button .ui-icon.statistic {
      background-image: url(statistic.png); 
 }
+.ui-button .ui-icon.upload {
+     background-image: url(upload.png); 
+}
 .selections{
 
     font-weight:bold;
