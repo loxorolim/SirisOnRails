@@ -12,8 +12,9 @@ Rails.application.routes.draw do
   
   post 'autoplan' => 'application#autoplan'
   get 'autoplan' => 'application#autoplan'
+  post 'welcome/uploadFile' => 'application#uploadFile'
 
-  post 'uploadFile', :action => :uploadFile, :controller => 'welcome'
+  #post 'uploadFile', :action => :uploadFile, :controller => 'welcome'
   #'welcome/uploadFile' => 'application#uploadFile'
   #'welcome/uploadFile' => 'application#uploadFile'
   
