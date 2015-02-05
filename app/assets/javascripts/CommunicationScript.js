@@ -98,17 +98,17 @@ function readAutoPlanResponse(data){
     data = data.substring(data.lastIndexOf("\n")+1, data.length );
     var split = data.split(" ");
 	
-		for(var i = 0; i < daps.length; i++){ //REMOVER DEPOIS! ESTÁ AQUI PARA NÃO BUGAR O PLANEJAMENTO!
-			daps[i].remove();
-			i--;
-		}
-		for(var i = 0 ; i < split.length-1; i ++){
-			var toAdd = parseInt(split[i].slice(1));
-			var latLng = poles[toAdd-1].position;
-			var newDap = createDAP();
-			newDap.placeOnMap(latLng.lat(),latLng.lng());
-			
-		}
+	for(var i = 0; i < daps.length; i++){ //REMOVER DEPOIS! ESTÁ AQUI PARA NÃO BUGAR O PLANEJAMENTO!
+		daps[i].remove();
+		i--;
+	}
+	for(var i = 0 ; i < split.length-1; i ++){
+		var toAdd = parseInt(split[i].slice(1));
+		var latLng = poles[toAdd-1].position;
+		var newDap = createDAP();
+		newDap.placeOnMap(latLng.lat(),latLng.lng());
+		
+	}
 	
     sendDrawRequest();
 	

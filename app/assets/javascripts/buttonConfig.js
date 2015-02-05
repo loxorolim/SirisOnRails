@@ -354,6 +354,18 @@ function setButtons()
 					});
 				});     
 		});
+	$('#download').button({
+	icons: {
+		primary: "download"
+	},
+
+	text: false
+    }).click(function () {
+			$(this).blur();
+				$(function() {
+					download();
+				});     
+		});
 	
     $('#generator').button({
 

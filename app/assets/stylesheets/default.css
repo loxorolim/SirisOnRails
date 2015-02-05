@@ -29,6 +29,9 @@
 .ui-button .ui-icon.upload {
      background-image: url(upload.png); 
 }
+.ui-button .ui-icon.download {
+     background-image: url(download.png); 
+}
 .selections{
 
     font-weight:bold;
