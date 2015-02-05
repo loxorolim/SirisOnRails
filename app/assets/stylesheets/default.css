@@ -2,6 +2,9 @@
 #slider{
     width:80px;
 }
+.input {
+	opacity: 0;
+}
 .ui-button .ui-icon.dap {
      background-image: url(dapicon.png); 
 }

@@ -1,49 +1,36 @@
 GLPSOL: GLPK LP/MIP Solver, v4.54
 Parameter(s) specified in the command line:
- --math C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt
-Reading model section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
-Reading data section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
+ --math GlpkFile.txt
+Reading model section from GlpkFile.txt...
+Reading data section from GlpkFile.txt...
 14 lines were read
 Generating cost...
 Generating covers...
 Model has been successfully generated
 GLPK Integer Optimizer, v4.54
-9998 rows, 750 columns, 26390 non-zeros
-750 integer variables, all of which are binary
+17 rows, 7 columns, 68 non-zeros
+7 integer variables, all of which are binary
 Preprocessing...
-3045 hidden packing inequaliti(es) were detected
-6369 rows, 480 columns, 21738 non-zeros
-480 integer variables, all of which are binary
+3 hidden packing inequaliti(es) were detected
+16 rows, 7 columns, 61 non-zeros
+7 integer variables, all of which are binary
 Scaling...
  A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
 Problem data seem to be well scaled
 Constructing initial basis...
-Size of triangular part is 6369
+Size of triangular part is 16
 Solving LP relaxation...
 GLPK Simplex Optimizer, v4.54
-6369 rows, 480 columns, 21738 non-zeros
-      0: obj =  2.610000000e+002  infeas = 6.369e+003 (0)
-    500: obj =  2.630000000e+002  infeas = 5.442e+003 (0)
-   1000: obj =  2.720000000e+002  infeas = 4.272e+003 (0)
-   1500: obj =  2.850000000e+002  infeas = 3.199e+003 (0)
-   2000: obj =  2.950000000e+002  infeas = 2.606e+003 (0)
-   2500: obj =  3.100000000e+002  infeas = 1.903e+003 (0)
-   3000: obj =  3.260000000e+002  infeas = 1.341e+003 (0)
-   3500: obj =  3.400000000e+002  infeas = 9.340e+002 (0)
-   4000: obj =  3.560000000e+002  infeas = 5.650e+002 (0)
-   4500: obj =  3.660000000e+002  infeas = 3.830e+002 (0)
-   5000: obj =  3.770000000e+002  infeas = 2.370e+002 (0)
-   5500: obj =  3.910000000e+002  infeas = 1.170e+002 (0)
-   6000: obj =  4.070000000e+002  infeas = 3.500e+001 (0)
-   6500: obj =  4.210000000e+002  infeas = 1.000e+000 (0)
-*  6508: obj =  4.220000000e+002  infeas = 0.000e+000 (0)
-*  6510: obj =  4.220000000e+002  infeas = 0.000e+000 (0)
+16 rows, 7 columns, 61 non-zeros
+      0: obj =  0.000000000e+000  infeas = 1.600e+001 (0)
+*    13: obj =  2.000000000e+000  infeas = 0.000e+000 (0)
+*    14: obj =  2.000000000e+000  infeas = 0.000e+000 (0)
 OPTIMAL LP SOLUTION FOUND
 Integer optimization begins...
-+  6510: mip =     not found yet >=              -inf        (1; 0)
-+  6518: >>>>>  4.220000000e+002 >=  4.220000000e+002   0.0% (1; 0)
-+  6518: mip =  4.220000000e+002 >=     tree is empty   0.0% (0; 1)
++    14: mip =     not found yet >=              -inf        (1; 0)
++    14: >>>>>  2.000000000e+000 >=  2.000000000e+000   0.0% (1; 0)
++    14: mip =  2.000000000e+000 >=     tree is empty   0.0% (0; 1)
 INTEGER OPTIMAL SOLUTION FOUND
-Time used:   1.1 secs
-Memory used: 814.9 Mb (854524736 bytes)
+Time used:   0.0 secs
+Memory used: 0.1 Mb (143342 bytes)
 Model has been successfully processed

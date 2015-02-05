@@ -23,98 +23,7 @@
         }
 </script>
 <script>
-function download() {
-  var toSave ="";
-  toSave+= meters.length + "\n" ;
-  for(var i = 0; i < meters.length; i++){
-	toSave += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng() + "\n";
-  }
-  toSave+= poles.length+ "\n" ;
-  for(var i = 0; i < poles.length; i++){
-	toSave += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng() + "\n";
-  }
-  toSave+= daps.length + "\n" ;
-  for(var i = 0; i < daps.length; i++){
-	toSave += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng() + "\n";
-  }
-  
 
-  var pom = document.createElement('a');
-  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(toSave));
-  pom.setAttribute('download', "viz"+meters.length+"-"+poles.length+"-"+daps.length+".txt");
-  pom.click();
-}
-function upload(fileInput) {
-
-	if (window.File && window.FileReader && window.FileList && window.Blob) {
-		
-
-		var file = fileInput.files[0];
-		var textType = /text.*/;
-
-		if (file.type.match(textType)) {
-			var reader = new FileReader();
-
-			reader.onload = function(e) {
-				var fileText = reader.result;
-				loadElements(fileText);
-				
-			}
-
-			reader.readAsText(file);	
-		} else {
-			alert("File not supported!");
-		}
-	} else {
-	  alert('The File APIs are not fully supported by your browser.');
-	}
-}
-
-function loadElements(text)
-{
-	var split = text.split("\n");
-	for(var i = 0; i < meters.length; i++){ 
-		meters[i].remove();
-		i--;
-	}
-	for(var i = 0; i < poles.length; i++){ 
-	poles[i].remove();
-	i--;
-	}
-	for(var i = 0; i < daps.length; i++){ 
-	daps[i].remove();
-	i--;
-	}
-	var metersLength = parseInt(split[0]);
-	for(var i = 0 ; i < metersLength; i ++){
-		var coords = split[i].split(" ");
-		var lat = parseFloat(coords[0]);
-		var lng = parseFloat(coords[1]);
-		//var latlng = new google.maps.LatLng(lat,lng);
-		var newMeter = createMeter();
-		newMeter.placeOnMap(lat,lng);	
-	}
-	var polesLength = parseInt(split[metersLength+1]);
-	var startPoint = metersLength+2;
-	for(var i = startPoint ; i < startPoint+polesLength; i ++){
-		var coords = split[i].split(" ");
-		var lat = parseFloat(coords[0]);
-		var lng = parseFloat(coords[1]);
-		//var latlng = new google.maps.LatLng(lat,lng);
-		var newPole = createPole();
-		newPole.placeOnMap(lat,lng);	
-	}
-	var dapsLength = parseInt(split[startPoint+polesLength]);
-	startPoint = startPoint + polesLength+1;
-	for(var i = startPoint ; i < startPoint+dapsLength; i ++){
-		var coords = split[i].split(" ");
-		var lat = parseFloat(coords[0]);
-		var lng = parseFloat(coords[1]);
-		//var latlng = new google.maps.LatLng(lat,lng);
-		var newDap = createDAP();
-		newDap.placeOnMap(lat,lng);	
-	}
-}
 
 function sendFile(){
 	
@@ -207,7 +116,8 @@ function sendFile(){
 			<input id = "upload_datafile" name="upload[datafile]" type="file" />
 		<button>Submit</button> -->
 		
-		<input type="file"  onchange="upload(this)" />
+		<input id= "uploadFile" type="file"/>
+		<button id = "submitButton">Submit</button>
 		
         </div>
   </div>
