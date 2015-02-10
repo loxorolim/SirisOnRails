@@ -347,7 +347,7 @@ void AutoPlanning::executeGlpk(string filename)
 {
 
 
-	string access = rubyPath + "/glpk-4.54/w32/glpsol.exe  --math " + filename +  " > " + rubyPath +"/wow.txt";
+	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 6000  > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
 }

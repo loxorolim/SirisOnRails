@@ -1,0 +1,100 @@
+
+Grid height: 111.31949079327358731
+ Grid width: 111.31949079327358731
+
+Grid planning solution time: 4.5620000000000002771
+Maximum Memory Used: 0.60000002384185791016
+
+Maximum Time Used in a Cell: 0
+
+DAPs quantity: 875
+Meters quantity: 3666
+Mesh hop quality 1: 0.99879625552857775883
+Meter per hop 1: 3547
+Min Meters per DAP: 2
+Med Meters per DAP: 4.8788571428571430033
+Max Meters per DAP: 14
+Min redundancy per meter: 0
+Med redundancy per meter: 1.1644844517184942401
+Max redundancy per meter: 4
+
+
+Grid height: 556.59745396636787973
+ Grid width: 556.59745396636787973
+
+Grid planning solution time: 5.5970000000000004192
+Maximum Memory Used: 28
+
+Maximum Time Used in a Cell: 0
+
+DAPs quantity: 855
+Meters quantity: 3666
+Mesh hop quality 1: 0.99865764953684810212
+Meter per hop 1: 3547
+Min Meters per DAP: 2
+Med Meters per DAP: 4.8748538011695909944
+Max Meters per DAP: 14
+Min redundancy per meter: 0
+Med redundancy per meter: 1.1369339879978177521
+Max redundancy per meter: 4
+
+
+Grid height: 1113.1949079327355321
+ Grid width: 1113.1949079327355321
+
+Grid planning solution time: 8.625
+Maximum Memory Used: 139
+
+Maximum Time Used in a Cell: 0
+
+DAPs quantity: 852
+Meters quantity: 3666
+Mesh hop quality 1: 0.99859263705376422049
+Meter per hop 1: 3547
+Min Meters per DAP: 2
+Med Meters per DAP: 4.8626760563380280189
+Max Meters per DAP: 14
+Min redundancy per meter: 0
+Med redundancy per meter: 1.1301145662847791318
+Max redundancy per meter: 4
+
+
+Grid height: 5565.9745396636790247
+ Grid width: 5565.9745396636790247
+
+Grid planning solution time: 13.240999999999999659
+Maximum Memory Used: 565.79998779296875
+
+Maximum Time Used in a Cell: 0
+
+DAPs quantity: 850
+Meters quantity: 3666
+Mesh hop quality 1: 0.99855535557664054647
+Meter per hop 1: 3547
+Min Meters per DAP: 2
+Med Meters per DAP: 4.8529411764705878696
+Max Meters per DAP: 14
+Min redundancy per meter: 0
+Med redundancy per meter: 1.1252045826513912274
+Max redundancy per meter: 4
+
+
+Grid height: 11131.949079327358049
+ Grid width: 11131.949079327358049
+
+Grid planning solution time: 13.159000000000000696
+Maximum Memory Used: 565.79998779296875
+
+Maximum Time Used in a Cell: 0
+
+DAPs quantity: 850
+Meters quantity: 3666
+Mesh hop quality 1: 0.99855535557664054647
+Meter per hop 1: 3547
+Min Meters per DAP: 2
+Med Meters per DAP: 4.8529411764705878696
+Max Meters per DAP: 14
+Min redundancy per meter: 0
+Med redundancy per meter: 1.1252045826513912274
+Max redundancy per meter: 4
+

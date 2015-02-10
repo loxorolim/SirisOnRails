@@ -1,7 +1,7 @@
-﻿Build started 13/01/2015 10:40:04.
+﻿Build started 09/02/2015 15:52:10.
      1>Project "C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator\SirisSCPCalculator.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SirisSCPCalculator.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt HataSRD.cpp Requisition.cpp SirisSCPCalculator.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Guilherme\Downloads\glpk-4.54\src" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SirisSCPCalculator.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SirisSCPCalculator.cpp
          SirisSCPCalculator.cpp
      1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(3): warning C4603: '_CRTDBG_MAP_ALLOC' : macro is not defined or definition is different after precompiled header use
                  Add macro to precompiled header instead of defining here
@@ -19,89 +19,7 @@
      1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(215): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(384): warning C4101: 'a' : unreferenced local variable
      1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(384): warning C4101: 'b' : unreferenced local variable
-         Requisition.cpp
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.h(37): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.h(42): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(57): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(88): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(183): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(185): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(188): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(208): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(217): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(220): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(237): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(243): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(248): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(250): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(248) : definition of 'i' ignored
-                 c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(237) : definition of 'i' used
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(274): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(283): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(286): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(302): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(308): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(331): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(336): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(339): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(368): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(379): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(386): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(390): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(398): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(351): warning C4101: 'file' : unreferenced local variable
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(442): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(453): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(464): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(471): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(498): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(501): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(520): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(524): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(530): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(534): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(540): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(556): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(610): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(631): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(688): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(749): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(864): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(878): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(882): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(885): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(898): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(906): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(910): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(916): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(924): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(958): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(987): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(989): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(991): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1013): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1015): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1033): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1036): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1048): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1053): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1057): warning C4258: 'i' : definition from the for loop is ignored; the definition from the enclosing scope is used
-                 c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1053) : definition of 'i' ignored
-                 c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\requisition.cpp(1048) : definition of 'i' used
-         HataSRD.cpp
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(296): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(312): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(315): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(330): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(331): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(347): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(348): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(510): warning C4101: 'a' : unreferenced local variable
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(510): warning C4101: 'b' : unreferenced local variable
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(604): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(607): warning C4018: '>' : signed/unsigned mismatch
-         Generating Code...
-     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\hatasrd.cpp(505): warning C4715: 'fac' : not all control paths return a value
+     1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(457): warning C4018: '<' : signed/unsigned mismatch
      1>c:\users\guilherme\documents\github\sirisonrails\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator\sirisscpcalculator.cpp(46): warning C4715: 'readFromPopen' : not all control paths return a value
        Link:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Guilherme\Downloads\glpk-4.54\w32\glpk_4_54.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Guilherme\Documents\GitHub\SirisOnRails\sirisSCPCalculator\SirisSCPCalculator\Debug\SirisSCPCalculator.lib" /MACHINE:X86 Debug\AutoPlanResponse.obj
@@ -120,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.37
+Time Elapsed 00:00:00.80
