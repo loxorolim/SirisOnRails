@@ -1,4 +1,4 @@
-#include "HataSrd.h"
+#include "HataSRD.h"
 
 vector<vector<double> > table;
 
