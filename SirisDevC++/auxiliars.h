@@ -47,6 +47,20 @@ template <typename T>
      //convert the string stream into a string and return
      return os.str() ;
    }
+template <typename T>
+   std::string to_string(T value, int precision)
+   {
+     //create an output string stream
+
+     std::ostringstream os ;
+
+     //throw the value into the string stream
+     os.precision(precision);
+     os  << value ;
+
+     //convert the string stream into a string and return
+     return os.str() ;
+   }
 
 class Position
 {

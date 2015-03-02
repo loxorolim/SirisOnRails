@@ -9,7 +9,7 @@ function generateUUID() {
 };
 
 function createDAP() {
-    var marker = new MarkerWithLabel({
+    var marker = new google.maps.Marker({
         ID: null,
         type: "DAP",
         position: null,

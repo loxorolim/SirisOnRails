@@ -326,6 +326,7 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 	}
 	return NULL;
 }
+
 string MetricCalculation::executeMetricCalculation()
 {
 	vector<sComponent*> sL = statisticalList();
@@ -334,27 +335,50 @@ string MetricCalculation::executeMetricCalculation()
 	//{
 	//	cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
 	//}
-	string ret =  "";
-	ret+= "DAPs quantity: " + to_string(daps.size()) + "\n";
-	ret+= "Meters quantity: " + to_string(meters.size()) + "\n";
+
+
 	vector<double > v = linkQualityPerHop(sL);
-	for(int i = 0; i < meshEnabled+1; i++)
-	{
-		ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i]) + "\n";
-	}
 	vector<int > v2 = meterPerHop(sL);
+	vector<double> v3 = minMedMaxMetersPerDap(cL);
+	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
+	int coveredMeters = 0;
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
-		ret += "Meter per hop " + to_string(i+1) + ": " + to_string(v2[i]) + "\n";
+		coveredMeters += v2[i];
 	}
-	vector<double> v3 = minMedMaxMetersPerDap(cL);
-	ret+= "Min Meters per DAP: " + to_string(v3[0]) + "\n";
-	ret+=  "Med Meters per DAP: " + to_string(v3[1]) + "\n";
-	ret+=  "Max Meters per DAP: " + to_string(v3[2]) + "\n";
-	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
-	ret+=  "Min redundancy per meter: " + to_string(v4[0]) + "\n";
-	ret+=  "Med redundancy per meter: " + to_string(v4[1]) + "\n";
-	ret+=  "Max redundancy per meter: " + to_string(v4[2]) + "\n";
+	string ret =  "";
+	//ret+= "DAPs quantity: " + to_string(daps.size()) + "\n";
+	ret+= "Quantidade de agregadores: " + to_string(daps.size()) + "\n";
+	//ret+= "Meters quantity: " + to_string(meters.size()) + "\n";
+	ret+= "Quantidade de medidores: " + to_string(meters.size()) + "\n";
+	//ret+= "Uncovered meters quantity: " + to_string(meters.size() - coveredMeters) + "\n";
+	ret+= "Medidores descobertos: " + to_string(meters.size() - coveredMeters) + "\n";
+
+	for(int i = 0; i < meshEnabled+1; i++)
+	{
+		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
+		ret+=  "Qualidade media do salto  " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
+	}
+
+	for(int i = 0; i < meshEnabled+1; i++)
+	{
+		//ret += "Meter per hop " + to_string(i+1) + ": " + to_string(v2[i]) + "\n";
+		ret += "Medidores a " + to_string(i+1) + " salto : " + to_string(v2[i]) + "\n";
+	}
+
+	//ret+= "Min Meters per DAP: " + to_string(v3[0]) + "\n";
+	//ret+=  "Med Meters per DAP: " + to_string(v3[1],3) + "\n";
+	//ret+=  "Max Meters per DAP: " + to_string(v3[2]) + "\n";
+	ret+= "Min Medidores por agregador: " + to_string(v3[0]) + "\n";
+	ret+=  "Med Medidores por agregador: " + to_string(v3[1],3) + "\n";
+	ret+=  "Max Medidores por agregador: " + to_string(v3[2]) + "\n";
+
+	//ret+=  "Min redundancy per meter: " + to_string(v4[0]) + "\n";
+	//ret+=  "Med redundancy per meter: " + to_string(v4[1],3) + "\n";
+	//ret+=  "Max redundancy per meter: " + to_string(v4[2]) + "\n";
+	ret+=  "Min redundancia por medidor: " + to_string(v4[0]) + "\n";
+	ret+=  "Med redundancia por medidor: " + to_string(v4[1],3) + "\n";
+	ret+=  "Max redundancia por medidor: " + to_string(v4[2]) + "\n";
 	for(int i = 0; i < sL.size();i++)
 	{
 		delete sL[i];

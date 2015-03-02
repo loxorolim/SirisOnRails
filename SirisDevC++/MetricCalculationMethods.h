@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <fstream>
 #include <string>
+#include <math.h>
 #include "auxiliars.h"
 #include "HataSRD.h"
 #include "Grid.h"

@@ -181,8 +181,8 @@ function setButtons()
                   .hide()
                   .menu();
 	   $("#slider").slider({
-	       value: -20,
-	       min: -20,
+	       value: -0,
+	       min: -0,
 	       max: 30,
 	       step: 1,
 	       slide: function (event, ui) {
@@ -415,12 +415,12 @@ function setButtons()
 function setScenario(value){
   switch(value){
     case Urbano:
-       $("#scenario").text("Urban");
+       $("#scenario").text("Urbano");
        scenario = Urbano;
     break;
     case Suburbano:
-     $("#scenario").text("Suburban");
-       scenario = Suburban;
+     $("#scenario").text("Suburbano");
+       scenario = Suburbano;
     break;
     case Rural:
       $("#scenario").text("Rural");
@@ -434,15 +434,15 @@ function setTechnology(value){
   switch(value){
     case  t802_15_4:
        $("#technology").text("ZigBee");
-       technology = Urbano;
+       technology = t802_15_4;
     break;
     case  t802_11_a:
      $("#technology").text("802.11a");
-       technology = Suburban;
+       technology = t802_11_a;
     break;
     case  t802_11_g:
       $("#technology").text("802.11g");
-      technology = Rural;
+      technology = t802_11_g;
     break;
     default:
   }

@@ -77,13 +77,13 @@ function sendFile(){
                         </div>
                         <ul style =" z-index: 1000">
                             <li id="ZigBee">ZigBee</></li>
-                            <li id="80211a">802.11.a</></li>
+                           <!--  <li id="80211a">802.11.a</></li> -->
                             <li id="80211g">802.11.g</></li>
                         </ul>
                     </div>
                     <div id="choosePower" class="insideOptions">
                         <div style=" display: table; margin: 0 auto;">
-                            <span id="power" class="selections">-20 dBm</span>
+                            <span id="power" class="selections">0 dBm</span>
                         </div>
 
                         <div id="slider" style=" display: table; margin: 0 auto;"></div>
@@ -98,10 +98,10 @@ function sendFile(){
                     <input type="radio" id="eraserRadio" name="radio"><label for="eraserRadio">Remoção</label>
 
                     <button id="autoPlanning" style="margin-left: 50px">Auto Planning</button>
-                    <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label>
+                    <!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
                     <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
                     <input type="checkbox" id="checkRFMesh"><label for="checkRFMesh">RF-Mesh</label>
-                    <button id="statistic">Coletar Estatísticas</button>
+                    <button id="statistic">Coletar Métricas</button>
 					<button id="upload">Upload de arquivo</button>
 					<button id="download">Download de planejamento</button>
                     <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
@@ -109,7 +109,7 @@ function sendFile(){
                 </div>
             </div>
         </div>
-        <div id="statisticDialog" class = "hidden" title="Estatísticas">
+        <div id="statisticDialog" class = "hidden" title="Métricas">
         </div>
 		<div id="uploadDialog" class = "hidden" title="Upload">
 <!-- 		<form accept-charset="UTF-8" action="/uploadFile" id="data" method="post" enctype="multipart/form-data" onsubmit="return sendFile();">
