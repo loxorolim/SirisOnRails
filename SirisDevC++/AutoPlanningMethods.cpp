@@ -414,9 +414,9 @@ float getTimeUsageFromGlpkFile(string fname)
 }
 string AutoPlanning::gridAutoPlanning()
 {
-	Grid* metergrid = new Grid(meters, poles, regionLimiter);
+	Grid* metergrid = new Grid(meters, poles, gridLimiter);
 	metergrid->putPositions(meters);
-	Grid* polegrid = new Grid(poles, meters, regionLimiter);
+	Grid* polegrid = new Grid(poles, meters, gridLimiter);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
