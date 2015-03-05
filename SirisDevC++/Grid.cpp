@@ -92,7 +92,8 @@ void Grid::putPositions(vector<Position*> p)
 vector<Position*> Grid::getCell(Position* reference)
 {
 	vector<Position*> ret;
-	int posX = 0, posY = 0;
+	int posX = -1, posY = -1;
+	//int posX = 0, posY = 0;
 	if (reference->latitude != minX)
 		posX = ceil((reference->latitude - minX) / cellSize) - 1;
 	if (reference->longitude != minY)

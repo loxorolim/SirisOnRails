@@ -21,7 +21,7 @@ function initialize() {
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
     // google.maps.event.addListener(map, 'idle', showMarkers);
-    google.maps.event.addListener(map,'bounds_changed', removeMarkers);
+    //google.maps.event.addListener(map,'bounds_changed', removeMarkers);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
 
@@ -45,6 +45,28 @@ function initialize() {
     //loadPolesFromTxt("filepoles9999999.txt");
     //var trapezoid = $('#trapezoid');
     //trapezoid.index = 1;
+
+    var grid = createGrid();
+    var positions = []
+    for(var i = 0; i < 10; i++){
+        var latLng = new google.maps.LatLng(i, i);
+        var marker = new google.maps.Marker();
+        marker.position = latLng;
+        positions.push(marker);
+
+        var latLng2 = new google.maps.LatLng(i+1, i-1);
+        var marker2 = new google.maps.Marker();
+        marker2.position = latLng2;
+        positions.push(marker2)
+
+    }
+    grid.startGrid(positions,2);
+    grid.putPositions(positions);
+    var latLng = new google.maps.LatLng(33, 33);
+    var retorno = grid.getCell(latLng);
+
+
+
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(
   document.getElementById('trapezoid'));
     markerCluster = new MarkerClusterer(map,[], {
@@ -68,7 +90,7 @@ function initialize() {
 
    // applyPlanning();
 }
-function removeMarkers() {
+/* function removeMarkers() {
 
    var bounds = map.getBounds();
 
@@ -102,7 +124,7 @@ function removeMarkers() {
        
 
 }
-function clusterMap() {
+ */function clusterMap() {
     for (var i = 0; i < allMarkers.length; i++) {
         allMarkers[i].setOptions({ map: map, visible: true });
     }
