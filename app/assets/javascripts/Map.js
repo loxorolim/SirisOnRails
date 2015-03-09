@@ -4,8 +4,8 @@ function initialize() {
     var MY_MAPTYPE_ID = 'custom_style';
     var mapOptions =
 	{
-	    zoom: 3,
-	    center: new google.maps.LatLng(-28.643387, 0.612224),
+	    zoom: 17,
+	    center: new google.maps.LatLng(-20.30273, -40.28118),
 
 	    mapTypeControl: true,
 	    panControl: false,
@@ -24,6 +24,7 @@ function initialize() {
     //google.maps.event.addListener(map,'bounds_changed', removeMarkers);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
+
 
     //var overlay = new google.maps.OverlayView();
     //overlay.setMap(map);
@@ -85,6 +86,9 @@ function initialize() {
     });
     
     setButtons();
+    setScenario(Suburbano);
+    setPower(20);
+    setTechnology(t802_11_g);
     //init();
 
 

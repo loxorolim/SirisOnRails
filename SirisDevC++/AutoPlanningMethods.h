@@ -36,7 +36,7 @@ class AutoPlanning
 			SRD = srd;
 			meshEnabled = me;
 			rubyPath = rp;
-			regionLimiter = 0.001;
+			regionLimiter = 0.01;
 			gridLimiter = 0.1;
 
 
