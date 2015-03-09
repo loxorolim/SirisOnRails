@@ -34,7 +34,7 @@
            //     this.neighbours[i].disconnectTarget(this);
            // }
             markerCluster.removeMarker(this, true);
-            sendDrawRequest()
+           
         },
         createGhost: function () {
             var pos = this.getPosition();
