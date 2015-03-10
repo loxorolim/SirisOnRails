@@ -21,7 +21,7 @@ function initialize() {
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
     // google.maps.event.addListener(map, 'idle', showMarkers);
-    //google.maps.event.addListener(map,'bounds_changed', removeMarkers);
+    google.maps.event.addListener(map,'bounds_changed', removeMarkers);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
 
@@ -47,7 +47,7 @@ function initialize() {
     //var trapezoid = $('#trapezoid');
     //trapezoid.index = 1;
 
-    var grid = createGrid();
+/*    var grid = createGrid();
     var positions = []
     for(var i = 0; i < 10; i++){
         var latLng = new google.maps.LatLng(i, i);
@@ -63,8 +63,14 @@ function initialize() {
     }
     grid.startGrid(positions,2);
     grid.putPositions(positions);
-    var latLng = new google.maps.LatLng(33, 33);
-    var retorno = grid.getCell(latLng);
+    var teste = grid.getAllElements();
+    var latLng = new google.maps.LatLng(-33, -33);
+    var marker3 = new google.maps.Marker();
+    marker3.position = latLng;
+    //var retorno = grid.getCell(latLng);
+    grid.putPosition(marker3);
+    grid.getCellsInWindow(map);
+    */
 
 
 
@@ -94,41 +100,24 @@ function initialize() {
 
    // applyPlanning();
 }
-/* function removeMarkers() {
+ function removeMarkers() {
 
-   var bounds = map.getBounds();
 
-  // var sw = bounds.getSouthWest();
-  // var ne = bounds.getNorthEast();
-  // var bounds = new google.maps.LatLngBounds(sw, ne);
-    for (var i = 0 ; i < meters.length; i++){
-        if (!bounds.contains(new google.maps.LatLng(meters[i].getPosition().lat(), meters[i].getPosition().lng()))) {
-            meters[i].setVisible(false);     
-        }
-        else{
-            meters[i].setVisible(true);
-        }   
+    var grid = createGrid();
+    var positions = [];
+    for(var i = 0; i < meters.length; i++){
+         positions.push(meters[i]);
     }
-    for (var i = 0 ; i < poles.length; i++){
-        if (!bounds.contains(new google.maps.LatLng(poles[i].getPosition().lat(), poles[i].getPosition().lng()))) {
-            poles[i].setVisible(false);     
-        }
-        else{
-            poles[i].setVisible(true);
-        }   
-    }
-    for (var i = 0 ; i < daps.length; i++){
-        if (!bounds.contains(new google.maps.LatLng(daps[i].getPosition().lat(),daps[i].getPosition().lng()))) {
-            daps[i].setVisible(false);     
-        }
-        else{
-            daps[i].setVisible(true);
-        }   
-    }
+    grid.startGrid(positions,0.01);
+    grid.putPositions(positions);
+    var inBounds = grid.getCellsInWindow(map);
+    for(var i = 0; i < inBounds.length; i++)
+        for(var j = 0; j < inBounds[i].length;j++)
+            inBounds[i][j].setVisible(false);
        
 
 }
- */function clusterMap() {
+ function clusterMap() {
     for (var i = 0; i < allMarkers.length; i++) {
         allMarkers[i].setOptions({ map: map, visible: true });
     }

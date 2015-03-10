@@ -50,23 +50,33 @@ function createGrid(){
 
 		},
 		putPosition: function(p) {
-			var posX = 0;
-			var posY = 0;
-			if (p.position.lat() != this.minX)
-				posX = Math.ceil((p.position.lat() - this.minX)/this.cellSize)-1;
-			if (p.position.lng() !=	this.minY)
-				posY = Math.ceil((p.position.lng() -this.minY)/this.cellSize)-1;
-			
-			var posXY = {X: posX, Y: posY};
-			var cellPos = this.cells[posXY];
-			if (cellPos in this.cells) {
-			   this.cells[posXY].push(p);
-			} else {
-			   this.cells[posXY] = [];
-			   this.cells[posXY].push(p);
+			if(p.position.lat() < this.minX || p.position.lng() < this.minY){ //Significa que entrou um novo cara que não vai ter célula
+			//Tem que refazer o grid usando essa nova posição como o mínimo
+			//Isso só vai acontecer na hora que o usuário inserir manualmente algum objeto.
+				var allElements = this.getAllElements();
+				allElements.push(p);
+				this.startGrid(allElements,this.cellSize);
+				this.putPositions(allElements);
+			}
+			else{
+				var posX = 0;
+				var posY = 0;
+				if (p.position.lat() != this.minX)
+					posX = Math.ceil((p.position.lat() - this.minX)/this.cellSize)-1;
+				if (p.position.lng() !=	this.minY)
+					posY = Math.ceil((p.position.lng() -this.minY)/this.cellSize)-1;
+				
+				//var posXY = {X: posX, Y: posY};
+				var posXY = posX + ";" + posY;
+				//var cellPos = this.cells[posXY];
+				if (posXY in this.cells) {
+				   this.cells[posXY].push(p);
+				} else {
+				   this.cells[posXY] = [];
+				   this.cells[posXY].push(p);
+				}
 			}
 			
-
 		},
 		putPositions: function(v) {
 			for(var i = 0; i < v.length; i++){
@@ -84,10 +94,45 @@ function createGrid(){
 			if (posX == -1 || posY == -1)
 				 return ret;
 			
-			var pair = {X: posX, Y: posY};
+			//var pair = {X: posX, Y: posY};
+			var pair = posX + ";" + posY;
 			ret = this.cells[pair];
 
 
+			return ret;
+		},
+		getCellsInWindow: function(map) { //Pega todas as células que estão na janela que o usuário está visualizando
+			 var bounds = map.getBounds();
+			// var sw = bounds.getSouthWest();
+			// var ne = bounds.getNorthEast();
+			var cellsInWindow = [];
+			for (key in this.cells) { //Verificar pra toda as células quais pertencem a essa janela. Se tiver alguma coordenada de seus vértices dentro da janela, então ela pertence.
+	        	if (this.cells.hasOwnProperty(key)) {
+	        		var res = key.split(";");
+	        		var posX = this.minX + (parseFloat(res[0]))*this.cellSize;
+	        		var posY = this.minY + (parseFloat(res[1]))*this.cellSize;
+	        		var latLng1 = new google.maps.LatLng(posX, posY);
+	        		var latLng2 = new google.maps.LatLng(posX+this.cellSize, posY);
+	        		var latLng3 = new google.maps.LatLng(posX, posY+this.cellSize);
+	        		var latLng4 = new google.maps.LatLng(posX+this.cellSize, posY+this.cellSize);
+	        		if (bounds.contains(latLng1) || bounds.contains(latLng2) || bounds.contains(latLng3) || bounds.contains(latLng4)) {
+			            cellsInWindow.push(this.cells[key]);    
+			        }
+	        	}
+    		}
+			
+
+		},
+		getAllElements: function() {
+			var ret = [];
+			for (key in this.cells) {
+	        	if (this.cells.hasOwnProperty(key)) {
+	        		var aux = this.cells[key];
+	        		for(var i = 0; i < aux.length; i++){
+	        			ret.push(aux[i]);
+	        		}
+	        	}
+    		}
 			return ret;
 		},
 		getMinX: function (v){
