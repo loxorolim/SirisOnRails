@@ -1,13 +1,21 @@
 ﻿function createMeter() {
-    var marker = new google.maps.Marker({
+    var marker = new google.maps.Circle({
         ID: null,
         type: "Meter",
         position: null,
+		visible: false,
         map: map,
         zIndex: 2,
         draggable: true,
         ghost: null,
         ID: null,
+		strokeColor: '#FF0000',
+	  strokeOpacity: 0.8,
+	  strokeWeight: 2,
+	  fillColor: '#FF0000',
+	  fillOpacity: 0.35,
+	  center: null,
+	  radius: 5,
 
         //        meshConnectionLines: [],
         icon: meterOffIconImage,
@@ -17,13 +25,18 @@
 
             var latLng = new google.maps.LatLng(latitude, longitude);
             this.position = latLng;
+			this.center = latLng;
             meters.push(this);
             markerCluster.addMarker(this, true);
+			elementsGrid.putPosition(this);
             this.ID = generateUUID();
             //this.map = map;
         //    sendDrawRequest();
 
         },
+		getPosition: function () {
+			return this.center;
+		},
         remove: function () {
             var meter = this;
             meters = meters.filter(function (item) {

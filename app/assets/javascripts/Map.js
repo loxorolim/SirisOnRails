@@ -21,7 +21,7 @@ function initialize() {
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
     // google.maps.event.addListener(map, 'idle', showMarkers);
-    google.maps.event.addListener(map,'bounds_changed', removeMarkers);
+    google.maps.event.addListener(map,'dragend', drawGridElements);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
 
@@ -41,7 +41,7 @@ function initialize() {
     //loadCarDriveFromXml();
     //loadNodesFromXml();
     //loadDapPositionsFromXml();
-    //loadMetersFromTxt("gridTeste3.txt");
+    loadMetersFromTxt("gridTeste3.txt");
     //loadMetersFromTxt("filemeters9999999.txt");
     //loadPolesFromTxt("filepoles9999999.txt");
     //var trapezoid = $('#trapezoid');
@@ -95,25 +95,29 @@ function initialize() {
     setScenario(Suburbano);
     setPower(20);
     setTechnology(t802_11_g);
+	elementsGrid = createGrid();
+	elementsGrid.startGrid(0.005);
+	
     //init();
 
 
    // applyPlanning();
 }
- function removeMarkers() {
+ function drawGridElements() {
 
-
-    var grid = createGrid();
-    var positions = [];
-    for(var i = 0; i < meters.length; i++){
-         positions.push(meters[i]);
-    }
-    grid.startGrid(positions,0.01);
-    grid.putPositions(positions);
-    var inBounds = grid.getCellsInWindow(map);
+	var x  = ("Num cells: " + elementsGrid.getNumberOfCells());
+	elementsGrid.drawCells();
+	for(var i = 0; i < visibleCells.length; i++)
+        for(var j = 0; j < visibleCells[i].length;j++)
+            visibleCells[i][j].setVisible(false); 
+    var inBounds = elementsGrid.getCellsInWindow(map);
+	visibleCells = inBounds;
     for(var i = 0; i < inBounds.length; i++)
         for(var j = 0; j < inBounds[i].length;j++)
-            inBounds[i][j].setVisible(false);
+            inBounds[i][j].setVisible(true); 
+			
+	var y = (inBounds.length);
+	
        
 
 }

@@ -12,6 +12,7 @@
             this.position = latLng;
             poles.push(this);
             markerCluster.addMarker(this, true);
+			elementsGrid.putPosition(this);
             //this.ID = generateUUID();
         },
         remove: function () {

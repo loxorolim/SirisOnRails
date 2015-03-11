@@ -5,8 +5,9 @@ function createGrid(){
 		minX: null,
 		minY: null,
 		cellSize: null,
+		drawnCells: [],
 
-		startGrid: function (v,v2,cS) {
+/*  		startGrid: function (v,v2,cS) {
 			//Mesma coisa que implementado em C++.
 			if (cS <= 0)
 				return;
@@ -27,8 +28,8 @@ function createGrid(){
 			this.minY = mindy;
 			this.cellSize = cS;
 			this.cells = {};
-		},
-		startGrid: function (v, cS) {
+		}, */
+		startGridWithPositions: function (v, cS) {
 			//Mesma coisa que implementado em C++.
 			if (cS <= 0)
 				return;
@@ -48,14 +49,21 @@ function createGrid(){
 
 
 
+		}, 
+		startGrid: function (cS) {
+			//Mesma coisa que implementado em C++.
+			if (cS <= 0)
+				return;
+			this.cellSize = cS;
+			this.cells = {};
 		},
 		putPosition: function(p) {
-			if(p.position.lat() < this.minX || p.position.lng() < this.minY){ //Significa que entrou um novo cara que não vai ter célula
+			if((p.position.lat() < this.minX || p.position.lng() < this.minY) || (this.minX == null || this.minY == null)){ //Significa que entrou um novo cara que não vai ter célula
 			//Tem que refazer o grid usando essa nova posição como o mínimo
 			//Isso só vai acontecer na hora que o usuário inserir manualmente algum objeto.
 				var allElements = this.getAllElements();
 				allElements.push(p);
-				this.startGrid(allElements,this.cellSize);
+				this.startGridWithPositions(allElements,this.cellSize);
 				this.putPositions(allElements);
 			}
 			else{
@@ -120,6 +128,7 @@ function createGrid(){
 			        }
 	        	}
     		}
+			return cellsInWindow;
 			
 
 		},
@@ -176,8 +185,36 @@ function createGrid(){
 					dy = v[i].position.lng();
 			}
 			return dy;
+		},
+		getNumberOfCells: function () {
+			var size = 0;
+			for (key in this.cells) {
+				size++;
+			}
+			return size;
+		},
+		drawCells: function () {
+			for(var i = 0; i < this.drawnCells.length; i++){
+				this.drawnCells[i].setVisible(false);
+			}
+			for (key in this.cells) {
+					var res = key.split(";");
+	        		var posX = this.minX + (parseFloat(res[0]))*this.cellSize;
+	        		var posY = this.minY + (parseFloat(res[1]))*this.cellSize;
+				var rectangle = new google.maps.Rectangle({
+					strokeColor: '#FF0000',
+					strokeOpacity: 0.8,
+					strokeWeight: 2,
+					fillColor: '#FF0000',
+					fillOpacity: 0.35,
+					map: map,
+					bounds: new google.maps.LatLngBounds(
+					  new google.maps.LatLng(posX, posY),
+					  new google.maps.LatLng(posX+this.cellSize, posY+this.cellSize))
+				  });
+				  this.drawnCells.push(rectangle);
+			}
 		}
-
 	}
 	return grid;
 }

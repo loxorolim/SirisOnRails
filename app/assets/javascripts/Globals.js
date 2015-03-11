@@ -40,6 +40,10 @@ var map;
 var elevator;
 var insertListener;
 
+var elementsGrid;
+var visibleCells = [];
+
+
 var poles = [];
 var allMarkers = [];
 var disconnectedMeters = [];
