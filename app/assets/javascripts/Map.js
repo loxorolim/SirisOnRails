@@ -41,7 +41,7 @@ function initialize() {
     //loadCarDriveFromXml();
     //loadNodesFromXml();
     //loadDapPositionsFromXml();
-    loadMetersFromTxt("gridTeste3.txt");
+   // loadMetersFromTxt("gridTeste3.txt");
     //loadMetersFromTxt("filemeters9999999.txt");
     //loadPolesFromTxt("filepoles9999999.txt");
     //var trapezoid = $('#trapezoid');
@@ -106,17 +106,37 @@ function initialize() {
  function drawGridElements() {
 
 	var x  = ("Num cells: " + elementsGrid.getNumberOfCells());
-	elementsGrid.drawCells();
-	for(var i = 0; i < visibleCells.length; i++)
+	//elementsGrid.drawCells();
+    var inBounds = elementsGrid.getCellsInWindow(map);//CELULAS QUE ESTÃO VISIVEIS QUANDO O USUARIO TERMINA DE ARRASTAR
+
+    for (key in inBounds) { 
+        if (!visibleCells.hasOwnProperty(key)) {
+            for(var j = 0; j < inBounds[key].length;j++){
+                inBounds[key][j].setVisible(true);
+            }
+        }
+        else{
+            delete visibleCells[key];
+        }
+    }
+    for (key in visibleCells) {        
+        for(var j = 0; j < visibleCells[key].length;j++){
+            visibleCells[key][j].setVisible(false);
+        }
+    
+    }    
+    visibleCells = inBounds;
+	/*for(var i = 0; i < visibleCells.length; i++)
         for(var j = 0; j < visibleCells[i].length;j++)
             visibleCells[i][j].setVisible(false); 
-    var inBounds = elementsGrid.getCellsInWindow(map);
+
 	visibleCells = inBounds;
     for(var i = 0; i < inBounds.length; i++)
         for(var j = 0; j < inBounds[i].length;j++)
             inBounds[i][j].setVisible(true); 
 			
-	var y = (inBounds.length);
+	*/
+    var y = (inBounds.length);
 	
        
 

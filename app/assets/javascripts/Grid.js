@@ -113,7 +113,7 @@ function createGrid(){
 			 var bounds = map.getBounds();
 			// var sw = bounds.getSouthWest();
 			// var ne = bounds.getNorthEast();
-			var cellsInWindow = [];
+			var cellsInWindow = {};
 			for (key in this.cells) { //Verificar pra toda as células quais pertencem a essa janela. Se tiver alguma coordenada de seus vértices dentro da janela, então ela pertence.
 	        	if (this.cells.hasOwnProperty(key)) {
 	        		var res = key.split(";");
@@ -124,7 +124,11 @@ function createGrid(){
 	        		var latLng3 = new google.maps.LatLng(posX, posY+this.cellSize);
 	        		var latLng4 = new google.maps.LatLng(posX+this.cellSize, posY+this.cellSize);
 	        		if (bounds.contains(latLng1) || bounds.contains(latLng2) || bounds.contains(latLng3) || bounds.contains(latLng4)) {
-			            cellsInWindow.push(this.cells[key]);    
+			            //cellsInWindow.push(this.cells[key]);    
+			            //cellsInWindows[key].push(p);
+				
+						cellsInWindow[key] = this.cells[key];
+			        	
 			        }
 	        	}
     		}
