@@ -26,6 +26,8 @@ Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 	int ny = ceil((maxdy - mindy) / cS);
 	minX = mindx;
 	minY = mindy;
+	minX = -90;
+	minY = -180;
 
 
 
@@ -65,6 +67,8 @@ Grid::Grid(vector<Position*> v, double cS)
 	int ny = ceil((maxdy - mindy) / cS);
 	minX = mindx;
 	minY = mindy;
+	minX = -90;
+	minY = -180;
 
 	cellSize = cS;
 	for (int i = 0; i < v.size(); i++)

@@ -24,18 +24,12 @@ function initialize() {
     google.maps.event.addListener(map,'dragend', drawGridElements);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
-
+    loadFromKML();
 
     //var overlay = new google.maps.OverlayView();
     //overlay.setMap(map);
     
-//             var ctaLayer = new google.maps.KmlLayer({
-//    url: 'http://www.midiacom.uff.br/~grolim/DadosSiris.kml',
-//    
-//  });
 
-
-  //          ctaLayer.setMap(map);
 
 
     //loadCarDriveFromXml();
@@ -96,7 +90,7 @@ function initialize() {
     setPower(20);
     setTechnology(t802_11_g);
 	elementsGrid = createGrid();
-	elementsGrid.startGrid(0.005);
+	elementsGrid.startGrid(0.001);
 	
     //init();
 

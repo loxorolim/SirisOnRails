@@ -1,5 +1,5 @@
 ﻿function createMeter() {
-    var marker = new google.maps.Circle({
+    var marker = new google.maps.Marker({
         ID: null,
         type: "Meter",
         position: null,
@@ -9,13 +9,7 @@
         draggable: true,
         ghost: null,
         ID: null,
-		strokeColor: '#FF0000',
-	  strokeOpacity: 0.8,
-	  strokeWeight: 2,
-	  fillColor: '#FF0000',
-	  fillOpacity: 0.35,
-	  center: null,
-	  radius: 5,
+
 
         //        meshConnectionLines: [],
         icon: meterOffIconImage,
@@ -30,6 +24,7 @@
             markerCluster.addMarker(this, true);
 			elementsGrid.putPosition(this);
             this.ID = generateUUID();
+            this.setVisible(true);
             //this.map = map;
         //    sendDrawRequest();
 

@@ -321,80 +321,51 @@ function loadInfoFromTable(tech,scenario,power,dst)
 	return ret;
 
 }
-function loadTable()
-{
-	var ret = [];
-	var table =[]
+function loadFromKML(){
 	
-	
-	$(document).ready(function()
-	{
-		$.ajax(
-		{
-			async: false,
+	$(document).ready(function(){
+		$.ajax({
 			type : "GET",
-			url : "modeloTabela.xml",
+			url : "/assets/ExemploDeKml.kml",
 			dataType : "xml",
-			success : function(xml)
-			{
-				
-				var tech = [];
-				$(xml).find("Technology").each(function()
-				{   				
-					//var sce = [];
-					//sce.push($(this).attr("type"));
-					//tech.push(sce);
-					var x = {
-						name: $(this).attr("type"),
-						children: []
-					}
-					
-					
-					$(this).find("Scenario").each(function()
-					{
-					
-						var y = {
-							name: $(this).attr("type"),
-							children: []
-						}
-						x.children.push(y);
-						
-						$(this).find("Power").each(function()
-						{
-							var z = {
-								name: $(this).attr("dbm"),
-								children: []
-							}
-							y.children.push(z);
-								
-							$(this).find("Distance").each(function()
-							{
-								var a = {
-								name: $(this).attr("range"),
-								children: []
-								}
-								var split = $(this).attr("range").split("-");
-								var val1 = parseFloat($(this).find('TS').text(),10);
-								var val2 = $(this).find('Color').text();
-								a.children.push(val1);
-								a.children.push(val2);							
-								z.children.push(a);
-								
-								
+			success : function(kml){
+				//$("node[name='x']");
+				var sce = $(kml).find('Scenario').text();
+				setScenario(parseInt(sce));
+				var pow = $(kml).find('Power').text();	
+				setPower(parseInt(pow));
+				var tech = $(kml).find('Technology').text();
+				setTechnology(parseInt(tech));	
 
-							
-							})
-							
-						})
-						
-					})
-					table.push(x);
+				$(kml).find('Placemark').each(function(){
+					var type = $(this).find('name').text();
+					$(this).find('Point').each(function(){
+						var coord =	$(this).find('coordinates').text();
+						var coords = coord.split(",");
+						var longitude = coords[0];
+						var latitude = coords[1];
+						switch(type){
+							case "Medidor":
+								var meter = createMeter();
+								meter.placeOnMap(latitude, longitude);
+							break;
+							case "Poste":
+								var pole = createPole();
+								pole.placeOnMap(latitude, longitude);
+							break;
+							case "Agregador":
+								var dap = createDAP();
+								dap.placeOnMap(latitude, longitude);
+							break;
+							default:
+							break;
+						}
+					});
+					
 				})
 				
+				sendDrawRequest();
 			}
 		});
 	});
-	return table;
-
 }
-

@@ -78,26 +78,26 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 	vector<Position*> uncoveredMeters = meters;
 	vector<Position*> aux = connectedDevices;
 
-	Grid* g = new Grid(aux,uncoveredMeters, regionLimiter);
-	g->putPositions(aux);
+	//Grid* g = new Grid(aux,uncoveredMeters, regionLimiter);
+	//g->putPositions(aux);
 	for (int i = 0; i < meshEnabled+1; i++)
 	{
 		vector<Position*> newCovered;
 		for (int j = 0; j < uncoveredMeters.size(); j++)
 		{
-			vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
+			//vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
 			DrawInfo* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);
 			if (toAdd)
 			{
 				toCover.push_back(toAdd);
 				newCovered.push_back(uncoveredMeters[j]);
-				g->putPosition(uncoveredMeters[j]);
+				//g->putPosition(uncoveredMeters[j]);
 			}
 		}
 		aux = newCovered;
 		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
 	}
-	delete g;
+	//delete g;
 	return toCover;
 }
 string LinkCalculation::executeLinkCalculation()

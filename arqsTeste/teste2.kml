@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document><Folder><name>teste2</name>
+  <Placemark>
+	<name></name>
+	<description></description>
+	<Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
+      <LineString><altitudeMode>relativeToGround</altitudeMode><coordinates>-72.393035888671875,-2.77725887405972,0 -72.393035888671875,-3.77725887405972,0</coordinates></LineString>
+  </Placemark>
+</Folder>
+</Document></kml>

@@ -55,6 +55,8 @@ function createGrid(){
 			if (cS <= 0)
 				return;
 			this.cellSize = cS;
+			this.minX = -90;
+			this.minY = -180;
 			this.cells = {};
 		},
 		putPosition: function(p) {
@@ -212,6 +214,7 @@ function createGrid(){
 					fillColor: '#FF0000',
 					fillOpacity: 0.35,
 					map: map,
+					geodesic: false,
 					bounds: new google.maps.LatLngBounds(
 					  new google.maps.LatLng(posX, posY),
 					  new google.maps.LatLng(posX+this.cellSize, posY+this.cellSize))
