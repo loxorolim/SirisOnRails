@@ -144,7 +144,7 @@ function readMetricResponse(data){
 		text += split[i]+"<br>";
 			
 	}
-	
+
     $(function() {
         $( "#statisticDialog" ).dialog({
             show: {
@@ -156,9 +156,14 @@ function readMetricResponse(data){
         duration: 1000
       }
     });
-    $( "#statisticDialog" ).html(text);
 
-
+$("#metricsTable tr").remove();
+    $( "#metricsTable tbody" ).append( "<tr>" +
+      "<td>" + "name.val()" + "</td>" +
+      "<td>" + "email.val()" + "</td>" +
+      "<td>" + "password.val()" + "</td>" +
+    "</tr>" );
+    //$( "#statisticDialog" ).html(text);
     });
 
 
@@ -270,110 +275,23 @@ function createTestFileModel(){
     return ret;
 }
 function download() {
-/* 	saveKMLText() ;
-  var toSave ="";
-
-  toSave+= propagationValuesToSend();
-  toSave+= meters.length + "\n" ;
-  for(var i = 0; i < meters.length; i++){
-    toSave += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng() + "\n";
-  }
-  toSave+= poles.length+ "\n" ;
-  for(var i = 0; i < poles.length; i++){
-    toSave += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng() + "\n";
-  }
-  toSave+= daps.length + "\n" ;
-  for(var i = 0; i < daps.length; i++){
-    toSave += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng() + "\n";
-  } */
-  
-  var toSave = saveKMLText();
-  var pom = document.createElement('a');
-  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(toSave));
-  pom.setAttribute('download', "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
-  pom.click();
+    var toSave = formatKMLText();
+    var blob = new Blob([toSave], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
 }
 
 function upload(fileInput) {
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
-        
-
         var file = fileInput.files[0];
-        //var textType = /text.*/;
-        //if (file.type.match(textType)) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                var fileText = reader.result;
-                loadFromKMLText(fileText);
-                
-            }
-            reader.readAsText(file);    
-        //} else {
-        //    alert("File not supported!");
-        //}
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var fileText = reader.result;
+            loadFromKMLText(fileText);
+            
+        }
+        reader.readAsText(file);    
     } else {
       alert('The File APIs are not fully supported by your browser.');
     }
-}
-
-function loadElements(text){
-	
-    var split = text.split("\n");
-    for(var i = 0; i < meters.length; i++){ 
-        meters[i].remove();
-        i--;
-    }
-    for(var i = 0; i < poles.length; i++){ 
-    poles[i].remove();
-    i--;
-    }
-    for(var i = 0; i < daps.length; i++){ 
-    daps[i].remove();
-    i--;
-    }
-
-    setScenario(parseInt(split[0]));
-    setTechnology(parseInt(split[1]));
-    H_TX = parseFloat(split[2]);
-    H_RX = parseFloat(split[3]);
-    BIT_RATE = parseFloat(split[4]);
-    setPower(parseFloat(split[5]));
-    SRD = parseInt(split[6]);
-    meshEnabled = parseInt(split[7]);
-
-
-
-    var metersLength = parseInt(split[8]);
-    var startPoint = 9;
-    for(var i = startPoint ; i < startPoint+metersLength; i ++){
-        var coords = split[i].split(" ");
-        var lat = parseFloat(coords[0]);
-        var lng = parseFloat(coords[1]);
-        //var latlng = new google.maps.LatLng(lat,lng);
-        var newMeter = createMeter();
-        newMeter.placeOnMap(lat,lng);   
-    }
-    var polesLength = parseInt(split[startPoint+metersLength]);
-    startPoint = startPoint+ metersLength +1;
-    for(var i = startPoint ; i < startPoint+polesLength; i ++){
-        var coords = split[i].split(" ");
-        var lat = parseFloat(coords[0]);
-        var lng = parseFloat(coords[1]);
-        //var latlng = new google.maps.LatLng(lat,lng);
-        var newPole = createPole();
-        newPole.placeOnMap(lat,lng);    
-    }
-    var dapsLength = parseInt(split[startPoint+polesLength]);
-    startPoint = startPoint + polesLength+1;
-    for(var i = startPoint ; i < startPoint+dapsLength; i ++){
-        var coords = split[i].split(" ");
-        var lat = parseFloat(coords[0]);
-        var lng = parseFloat(coords[1]);
-        //var latlng = new google.maps.LatLng(lat,lng);
-        var newDap = createDAP();
-        newDap.placeOnMap(lat,lng); 
-    }
-    sendDrawRequest();
 }

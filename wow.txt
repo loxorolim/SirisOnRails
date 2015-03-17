@@ -7,10 +7,29 @@ Reading data section from C:/Sites/first_app/GlpkFile.txt...
 Generating cost...
 Generating covers...
 Model has been successfully generated
+GLPK Integer Optimizer, v4.54
+6 rows, 5 columns, 25 non-zeros
+5 integer variables, all of which are binary
+Preprocessing...
+5 rows, 4 columns, 20 non-zeros
+4 integer variables, all of which are binary
+Scaling...
+ A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
+Problem data seem to be well scaled
+Constructing initial basis...
+Size of triangular part is 5
+Solving LP relaxation...
 GLPK Simplex Optimizer, v4.54
-1 row, 0 columns, 0 non-zeros
-~     0: obj =  0.000000000e+000  infeas = 0.000e+000
-OPTIMAL SOLUTION FOUND
+5 rows, 4 columns, 20 non-zeros
+      0: obj =  0.000000000e+000  infeas = 5.000e+000 (0)
+*     1: obj =  1.000000000e+000  infeas = 0.000e+000 (0)
+*     2: obj =  1.000000000e+000  infeas = 0.000e+000 (0)
+OPTIMAL LP SOLUTION FOUND
+Integer optimization begins...
++     2: mip =     not found yet >=              -inf        (1; 0)
++     2: >>>>>  1.000000000e+000 >=  1.000000000e+000   0.0% (1; 0)
++     2: mip =  1.000000000e+000 >=     tree is empty   0.0% (0; 1)
+INTEGER OPTIMAL SOLUTION FOUND
 Time used:   0.0 secs
-Memory used: 0.1 Mb (65784 bytes)
+Memory used: 0.1 Mb (136594 bytes)
 Model has been successfully processed

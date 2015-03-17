@@ -253,6 +253,16 @@ function setButtons()
 	       
     });
 
+    $('#settings').button({
+        icons: {
+            primary: "settings"
+        },
+        text: false
+
+    }).click(function () {       
+        $(this).blur();         
+    });
+
     $('#autoPlanning').button().click(function () {
         
         //createMeshCoverageMatrix(poles);
@@ -281,29 +291,6 @@ function setButtons()
         }
 
         var x = "wow";
-
-
-
-            
-            
-
-       // teste();
-        //collectInfo();
-        //statisticalMatrix();
-        //applyPlanning();
-        //if (meshEnabled) {
-        //   connectViaMesh();
-           // meshEnabled = true;
-            //markerCluster.clearMarkers();
-            //$('#checkRFMesh').button({
-            //    icons: {
-            //        primary: "ui-icon-check"
-            //    }
-            //})
-        //}
-
-
-
     });
     
     $('#checkRFMesh').button({

@@ -1,34 +1,3 @@
-function showNodesXml()
-{
-	var init = "&lt?xml version=\"1.0\" encoding=\"utf-8\"?&gt" + "<br>&ltNodes&gt";
-	var meters = "";
-	var daps = "";
-	var fin = "";
-	var markers = getAllMarkers();
-	for ( i = 0; i < markers.length; i++)
-	{	
-		if(markers[i].type == "Meter")
-		{
-			meters += "<br>&nbsp&ltmeter&gt" 
-			+ "<br>&nbsp&nbsp&ltLatitude&gt" + markers[i].position.lat() + "&lt\/Latitude&gt"
-			+ "<br>&nbsp&nbsp&ltLongitude&gt" + markers[i].position.lng() + "&lt\/Longitude&gt" 
-			+ "<br>&nbsp&lt\/meter&gt";
-		}
-
-		else 
-		if(markers[i].type == "DAP")
-		{
-			daps += "<br>&nbsp&ltDAP&gt" 
-			+ "<br>&nbsp&nbsp&ltLatitude&gt" + markers[i].position.lat() + "&lt\/Latitude&gt" 
-			+ "<br>&nbsp&nbsp&ltLongitude&gt" + markers[i].position.lng() + "&lt\/Longitude&gt" 
-			+ "<br>&nbsp&nbsp&ltTechnology&gt" + markers[i].teleTech + "&lt\/Technology&gt" 
-			+ "<br>&nbsp&nbsp&ltsetInsertionOptions&gt" + markers[i].setInsertionOptions + "&lt\/setInsertionOptions&gt" 
-			+ "<br>&nbsp&lt\/DAP&gt";
-		}
-	}
-	fin += "<br>&lt\/Nodes&gt";
-	$("#xmltextnodes").html(init+meters+daps+fin);
-}
 function loadMetersFromTxt( file)
 {
 	$(document).ready(function()
@@ -73,74 +42,6 @@ function loadPolesFromTxt( file)
 		});
 	});
 }
-function showNodesKml() {
-    var init = "&lt?xml version=\"1.0\" encoding=\"UTF-8\"?&gt" + "<br>&ltkml xmlns=\"http://earth.google.com/kml/2.2\"&gt<br>&ltDocument&gt";
-    var style = "<br>&ltStyle id=\"greenLine\"&gt<br>&ltLineStyle&gt<br>&ltcolor&gtFF00D214&lt\/color&gt<br>&ltwidth&gt5&lt\/width&gt<br>&lt\/LineStyle&gt<br>&lt\/Style&gt<br>&ltStyle id=\"blueLine\"&gt<br>&ltLineStyle&gt<br>&ltcolor&gtFFB40014&lt\/color&gt<br>&ltwidth&gt5&lt\/width&gt<br>&lt\/LineStyle&gt<br>&lt\/Style&gt<br>&ltStyle id=\"yellowLine\"&gt<br>&ltLineStyle&gt<br>&ltcolor&gtFF14F0FF&lt\/color&gt<br>&ltwidth&gt5&lt\/width&gt<br>&lt\/LineStyle&gt<br>&lt\/Style&gt";
-    var meters = "";
-    var daps = "";
-    var linestext = "";
-    var fin = "";
-    var markers = getAllMarkers();
-    for (i = 0; i < markers.length; i++) {
-        if (markers[i].type == "Meter") {
-            meters += "<br>&ltPlacemark&gt"
-			+ "<br>&ltname&gt" + "Medidor" + "&lt\/name&gt"
-			+ "<br>&ltdescription&gt" + "Um medidor inteligente" + "&lt\/description&gt"
-            + "<br>&ltPoint&gt"
-            + "<br>&ltcoordinates&gt" + markers[i].position.lng() + "," + markers[i].position.lat() + "&lt\/coordinates&gt"
-            + "<br>&lt\/Point&gt"
-			+ "<br>&lt\/Placemark&gt";
-        }
-
-        else
-            if (markers[i].type == "DAP") {
-                daps += "<br>&ltPlacemark&gt"
-			    + "<br>&ltname&gt" + "DAP" + "&lt\/name&gt"
-			    + "<br>&ltdescription&gt" + "Um DAP com tecnologia " + markers[i].teleTech + "&lt\/description&gt"
-                + "<br>&ltPoint&gt"
-                + "<br>&ltcoordinates&gt" + markers[i].position.lng() + "," + markers[i].position.lat() + "&lt\/coordinates&gt"
-                + "<br>&lt\/Point&gt"
-                + "<br>&lt\/Placemark&gt";
-            }
-    }
-    for (i = 0; i < lines.length; i++) {
-        var path = lines[i].getPath();
-        var color = lines[i].strokeColor;
-        linestext += "<br>&ltPlacemark&gt"
-			    + "<br>&ltname&gt" + "Linha reta" + "&lt\/name&gt";
-        if (color == "#00FF00")
-            linestext += "<br>&ltstyleUrl&gt" + "#greenLine" + "&lt\/styleUrl&gt";
-        if (color == "#FFFF00")
-            linestext += "<br>&ltstyleUrl&gt" + "#yellowLine" + "&lt\/styleUrl&gt";
-        if (color == "#0000FF")
-            linestext += "<br>&ltstyleUrl&gt" + "#blueLine" + "&lt\/styleUrl&gt";
-        linestext +=
-			     "<br>&ltdescription&gt" + "A linha reta de uma conexao "  + "&lt\/description&gt"
-                + "<br>&ltLineString&gt"
-                + "<br>&ltcoordinates&gt" + path.j[0].lng() + "," + path.j[0].lat() + "," + "0 " + path.j[1].lng() + ","  + path.j[1].lat() + "," + "0 " + "&lt\/coordinates&gt"
-                + "<br>&lt\/LineString&gt"
-                + "<br>&lt\/Placemark&gt";
-
-    }
-    fin += "<br>&lt\/Document&gt<br>&lt\/kml&gt";
-    $("#xmltextnodes").html(init + style + meters + daps + linestext+ fin);
-}
-function showPolesXml() {
-    var init = "&lt?xml version=\"1.0\" encoding=\"utf-8\"?&gt" + "<br>&ltPositions&gt";
-    var meters = "";
-    var fin = "";
-    var markers = poles;
-    for (i = 0; i < markers.length; i++) {
-
-            meters += "<br>&nbsp&ltpoint&gt"
-			+ "<br>&nbsp&nbsp&ltLatitude&gt" + markers[i].position.lat() + "&lt\/Latitude&gt"
-			+ "<br>&nbsp&nbsp&ltLongitude&gt" + markers[i].position.lng() + "&lt\/Longitude&gt"
-			+ "<br>&nbsp&lt\/point&gt";
-        
-    }
-    fin += "<br>&lt\/Positions&gt";
-    $("#xmltextpoles").html(init + meters + fin);
-}
 function loadNodesFromXml()
 {
 	
@@ -174,196 +75,6 @@ function loadNodesFromXml()
 					var dap = createDap();
 					//dap.placeOnMap(latitude, longitude);
 				});
-				sendDrawRequest();
-			}
-		});
-	});
-}
-function loadCarDriveFromXml() {
-    heatmapPoints = [];
-    $(document).ready(function () {
-        $.ajax(
-		{
-		    type: "GET",
-		    url: "/assets/cardrive.xml",
-		    dataType: "xml",
-		    success: function (xml) {
-		        //$("node[name='x']");
-		        $(xml).find('point').each(function () {
-		            var latitude = parseFloat($(this).find('Latitude').text());
-		            var longitude = parseFloat($(this).find('Longitude').text());
-		            var efficiency = parseFloat($(this).find('Efficiency').text());
-		            var point = { location: new google.maps.LatLng(latitude + 0.0000001, longitude + 0.0000001), weight: Math.pow(efficiency,4), efficiency: efficiency/10 }
-		            //for (var i = 0; i < efficiency * 10 ; i++) {
-		            //    var point = { location: new google.maps.LatLng(latitude + 0.0000001, longitude + 0.0000001) }
-		            //    
-		            //}
-		            heatmapPoints.push(point);
-		              
-		        })		
-		    }
-		});
-    });
-}
-function loadDapPositionsFromXml() {
-    dapPositions = [];
-    $(document).ready(function () {
-        $.ajax(
-		{
-		    type: "GET",
-		    url: "/assets/dappositions.xml",
-		    dataType: "xml",
-		    success: function (xml) {
-		        //$("node[name='x']");
-		        $(xml).find('point').each(function () {
-		            var latitude = parseFloat($(this).find('Latitude').text());
-		            var longitude = parseFloat($(this).find('Longitude').text());
-		            //placePole(latitude, longitude);
-		            var pole = createPole();
-		            pole.placeOnMap(latitude, longitude);
-		            //var point = new google.maps.LatLng(latitude, longitude);
-		            //dapPositions.push(point);
-		            //var marker = new google.maps.Marker(
-                    //{
-                    //    position: point,
-                    //    map: map,
-                    //    draggable: false,
-                    //    icon: poleIcon,
-
-                    //});
-
-		        })
-		        sendDrawRequest();
-		    }
-		});
-    });
-}
-function loadReachFromTable(tech,scenario, dbm)
-{
-	var ret;
-	$(document).ready(function()
-	{
-		$.ajax(
-		{
-			async: false,
-			type : "GET",
-			url : "table.xml",
-			dataType : "xml",
-			success : function(xml)
-			{
-				$(xml).find(tech).each(function()
-				{   				
-					$(this).find(scenario).each(function()
-					{
-						$(this).find(dbm).each(function()
-						{
-							ret = parseInt($(this).find('Reach').text(),10);
-							
-						})
-						
-					})
-				})
-			}
-		});
-	});
-	return ret;
-
-}
-function loadInfoFromTable(tech,scenario,power,dst)
-{
-	var ret = [];
-	$(document).ready(function()
-	{
-		$.ajax(
-		{
-			async: false,
-			type : "GET",
-			url : "modeloTabela.xml",
-			dataType : "xml",
-			success : function(xml)
-			{
-				
-			
-				$(xml).find("Technology[type = " +tech+ "]").each(function()
-				{   				
-
-					$(this).find("Scenario[type = "+scenario+"]").each(function()
-					{
-						$(this).find("Power[dbm = "+power+"]").each(function()
-						{
-							$(this).find("Distance").each(function()
-							{
-								var split = $(this).attr("range").split("-");
-								var val1 = parseFloat(split[0],10);
-								var val2 = parseFloat(split[1],10);
-								if(val1 <= dst && dst < val2)
-								{
-									//alert(parseFloat($(this).find('TS').text(),10));
-									//alert($(this).find('Color').text());
-
-									ret.push(parseFloat($(this).find('TS').text(),10));
-									ret.push($(this).find('Color').text());
-									return ret;
-									
-								}
-								//alert(parseFloat($(this).find('TS').text(),10));
-								//alert($(this).find('Color').text());
-							
-							})
-							
-						})
-						
-					})
-				})
-			}
-		});
-	});
-	return ret;
-
-}
-function loadFromKML(){
-	
-	$(document).ready(function(){
-		$.ajax({
-			type : "GET",
-			url : "/assets/ExemploDeKml.kml",
-			dataType : "xml",
-			success : function(kml){
-				//$("node[name='x']");
-				var sce = $(kml).find('Scenario').text();
-				setScenario(parseInt(sce));
-				var pow = $(kml).find('Power').text();	
-				setPower(parseInt(pow));
-				var tech = $(kml).find('Technology').text();
-				setTechnology(parseInt(tech));	
-
-				$(kml).find('Placemark').each(function(){
-					var type = $(this).find('name').text();
-					$(this).find('Point').each(function(){
-						var coord =	$(this).find('coordinates').text();
-						var coords = coord.split(",");
-						var longitude = coords[0];
-						var latitude = coords[1];
-						switch(type){
-							case "Medidor":
-								var meter = createMeter();
-								meter.placeOnMap(latitude, longitude);
-							break;
-							case "Poste":
-								var pole = createPole();
-								pole.placeOnMap(latitude, longitude);
-							break;
-							case "Agregador":
-								var dap = createDAP();
-								dap.placeOnMap(latitude, longitude);
-							break;
-							default:
-							break;
-						}
-					});
-					
-				})
-				
 				sendDrawRequest();
 			}
 		});
@@ -411,27 +122,37 @@ function loadFromKMLText(kml){
 	sendDrawRequest();
 
 }
-function saveKMLText() {
+function formatKMLText() {
 	var init = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://earth.google.com/kml/2.2\">\n";
+	init += "<Document>\n";
 	init += "<Scenario>"+scenario+"</Scenario>\n";
 	init += "<Technology>"+technology+"</Technology>\n";
 	init += "<Power>"+TRANSMITTER_POWER+"</Power>\n";
+	init += "<Folder><name>Medidores</name>\n"
 	for(var i = 0;i<meters.length;i++){
 		init+="<Placemark>\n<name>Medidor</name>\n<Point>\n<coordinates>"+
 		meters[i].getPosition().lng()
 		+","+meters[i].getPosition().lat()
 		+",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
+	init+="</Folder>\n";
+	init+="<Folder><name>Postes</name>\n";
 	for(var i = 0;i<poles.length;i++){
 		init+="<Placemark>\n<name>Poste</name>\n<Point>\n<coordinates>"+poles[i].getPosition().lng()+","+poles[i].getPosition().lat()+",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
+	init+="</Folder>\n";
+	init+="<Folder><name>Agregadores</name>\n";
 	for(var i = 0;i<daps.length;i++){
 		init+="<Placemark>\n<name>Agregador</name>\n<Point>\n<coordinates>"+daps[i].getPosition().lng()+","+daps[i].getPosition().lat()+",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
+	init+="</Folder>\n";
+	init+="<Folder><name>Enlaces</name>\n";
 	for(var i = 0;i<lines.length;i++){
 		var path = lines[i].getPath();
-		init+="<Placemark>\n<name>Enlace</name>\n<description>"+lines[i].efficiency+"<\description>\n<LineString>\n<coordinates>\n"+path.getAt(0).lng()+","+path.getAt(0).lat()+",0\n"+path.getAt(1).lng()+","+path.getAt(1).lat()+",0\n</coordinates>\n</LineString>\n</Placemark>\n";
+		init+="<Placemark>\n<name>Enlace</name>\n<description>"+lines[i].efficiency+"</description>\n<LineString>\n<coordinates>\n"+path.getAt(0).lng()+","+path.getAt(0).lat()+",0\n"+path.getAt(1).lng()+","+path.getAt(1).lat()+",0\n</coordinates>\n</LineString>\n</Placemark>\n";
 	}
+	init+="</Folder>\n";
+	init+="</Document>\n";
 	init+="</kml>";
 	return init;
 }

@@ -35,6 +35,10 @@
 .ui-button .ui-icon.download {
      background-image: url(download.png); 
 }
+.ui-button .ui-icon.settings {
+     background-image: url(settings.png); 
+}
+
 .selections{
 
     font-weight:bold;
@@ -50,6 +54,10 @@
     margin-top: 15px;
     float: left;
 }
+div#metricsTableDiv { width: 350px; margin: 20px 0; }
+div#metricsTableDiv table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+div#metricsTableDivtable td, div#metricsTableDiv table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+ 
 #power {
      
     font-weight:bold;
