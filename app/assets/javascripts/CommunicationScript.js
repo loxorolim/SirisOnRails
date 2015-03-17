@@ -270,6 +270,7 @@ function createTestFileModel(){
     return ret;
 }
 function download() {
+/* 	saveKMLText() ;
   var toSave ="";
 
   toSave+= propagationValuesToSend();
@@ -284,42 +285,41 @@ function download() {
   toSave+= daps.length + "\n" ;
   for(var i = 0; i < daps.length; i++){
     toSave += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng() + "\n";
-  }
+  } */
   
-
+  var toSave = saveKMLText();
   var pom = document.createElement('a');
   pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(toSave));
-  pom.setAttribute('download', "viz"+meters.length+"-"+poles.length+"-"+daps.length+".txt");
+  pom.setAttribute('download', "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
   pom.click();
 }
+
 function upload(fileInput) {
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         
 
         var file = fileInput.files[0];
-        var textType = /text.*/;
-
-        if (file.type.match(textType)) {
+        //var textType = /text.*/;
+        //if (file.type.match(textType)) {
             var reader = new FileReader();
 
             reader.onload = function(e) {
                 var fileText = reader.result;
-                loadElements(fileText);
+                loadFromKMLText(fileText);
                 
             }
-
             reader.readAsText(file);    
-        } else {
-            alert("File not supported!");
-        }
+        //} else {
+        //    alert("File not supported!");
+        //}
     } else {
       alert('The File APIs are not fully supported by your browser.');
     }
 }
 
-function loadElements(text)
-{
+function loadElements(text){
+	
     var split = text.split("\n");
     for(var i = 0; i < meters.length; i++){ 
         meters[i].remove();

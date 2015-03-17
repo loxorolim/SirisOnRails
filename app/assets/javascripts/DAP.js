@@ -30,7 +30,7 @@ function createDAP() {
             daps.push(this);
           //  this.map = map;
             markerCluster.addMarker(this, true);
-			elementsGrid.putPosition(this);
+			//elementsGrid.putPosition(this);
             this.ID = generateUUID();
 
 

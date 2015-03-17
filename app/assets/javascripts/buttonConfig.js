@@ -413,43 +413,47 @@ function setButtons()
 	});
 }
 function setScenario(value){
-  switch(value){
-    case Urbano:
-       $("#scenario").text("Urbano");
-       scenario = Urbano;
-    break;
-    case Suburbano:
-     $("#scenario").text("Suburbano");
-       scenario = Suburbano;
-    break;
-    case Rural:
-      $("#scenario").text("Rural");
-      scenario = Rural;
-    break;
-    default:
-  }
-
+	if(!isNaN(value)){
+	  switch(value){
+		case Urbano:
+		   $("#scenario").text("Urbano");
+		   scenario = Urbano;
+		break;
+		case Suburbano:
+		 $("#scenario").text("Suburbano");
+		   scenario = Suburbano;
+		break;
+		case Rural:
+		  $("#scenario").text("Rural");
+		  scenario = Rural;
+		break;
+		default:
+	  }
+	}
 }
 function setTechnology(value){
-  switch(value){
-    case  t802_15_4:
-       $("#technology").text("ZigBee");
-       technology = t802_15_4;
-    break;
-    case  t802_11_a:
-     $("#technology").text("802.11a");
-       technology = t802_11_a;
-    break;
-    case  t802_11_g:
-      $("#technology").text("802.11g");
-      technology = t802_11_g;
-    break;
-    default:
+	if(!isNaN(value)){
+	  switch(value){
+		case  t802_15_4:
+		   $("#technology").text("ZigBee");
+		   technology = t802_15_4;
+		break;
+		case  t802_11_a:
+		 $("#technology").text("802.11a");
+		   technology = t802_11_a;
+		break;
+		case  t802_11_g:
+		  $("#technology").text("802.11g");
+		  technology = t802_11_g;
+		break;
+		default:
+	  }
   }
 }
 function setPower(value){
-  TRANSMITTER_POWER = value;
-  $("#power").text(value + "dBm");
-  $("#slider").slider('value', value);
-
+	if(!isNaN(value) && value >= 0 && value <= 30){
+	  TRANSMITTER_POWER = value;
+	  $("#power").text(value + "dBm");
+	  $("#slider").slider('value', value);
+	}
 }   

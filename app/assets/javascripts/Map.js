@@ -21,10 +21,10 @@ function initialize() {
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
     // google.maps.event.addListener(map, 'idle', showMarkers);
-    google.maps.event.addListener(map,'dragend', drawGridElements);
+    //google.maps.event.addListener(map,'dragend', drawGridElements);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
-    loadFromKML();
+    //loadFromKML();
 
     //var overlay = new google.maps.OverlayView();
     //overlay.setMap(map);
@@ -89,8 +89,8 @@ function initialize() {
     setScenario(Suburbano);
     setPower(20);
     setTechnology(t802_11_g);
-	elementsGrid = createGrid();
-	elementsGrid.startGrid(0.001);
+	//elementsGrid = createGrid();
+	//elementsGrid.startGrid(0.001);
 	
     //init();
 
