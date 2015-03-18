@@ -337,7 +337,10 @@ function setButtons()
 						hide: {
 						effect: "explode",
 						duration: 1000
-						}
+						},
+						resizable: false,
+						width: 454,
+						height: 90
 					});
 				});     
 		});

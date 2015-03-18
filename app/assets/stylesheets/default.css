@@ -54,9 +54,9 @@
     margin-top: 15px;
     float: left;
 }
-div#metricsTableDiv { width: 350px; margin: 20px 0; }
-div#metricsTableDiv table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-div#metricsTableDivtable td, div#metricsTableDiv table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+div#metricsTableDiv table { border-collapse: collapse; width: 100%; }
+div#metricsTableDiv table td, div#metricsTableDiv table th {text-align: center; padding: .3em; }
+div#metricsTableDiv tr{border: solid; border-width: 1px ;}
  
 #power {
      

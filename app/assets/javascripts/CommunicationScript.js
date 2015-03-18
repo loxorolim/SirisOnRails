@@ -140,31 +140,29 @@ function readMetricResponse(data){
    // alert(data);
 	var split = data.split("\n");
 	var text = "";
+	$("#metricsTable tr").remove();
 	for(var i = 0; i < split.length;i++){
-		text += split[i]+"<br>";
-			
-	}
-
+		var aux = split[i].split("<>");
+		$( "#metricsTable tbody" ).append( 
+		"<tr>" +
+		  "<th class=\"ui-widget-header \">" + aux[0] + "</th>" +
+		  "<td>" + aux[1] + "</td>" +
+		   +		"</tr>" );	
+	}	
     $(function() {
         $( "#statisticDialog" ).dialog({
             show: {
-        effect: "blind",
-        duration: 1000
-      },
-      hide: {
-        effect: "explode",
-        duration: 1000
-      }
-    });
+				effect: "blind",
+				duration: 1000
+			},
+			hide: {
+				effect: "explode",
+				duration: 1000
+			},
+			resizable: false,
+		});
+	});
 
-$("#metricsTable tr").remove();
-    $( "#metricsTable tbody" ).append( "<tr>" +
-      "<td>" + "name.val()" + "</td>" +
-      "<td>" + "email.val()" + "</td>" +
-      "<td>" + "password.val()" + "</td>" +
-    "</tr>" );
-    //$( "#statisticDialog" ).html(text);
-    });
 
 
 }
