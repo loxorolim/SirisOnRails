@@ -60,20 +60,44 @@
         </div>
         <div id="statisticDialog" class = "hidden"  title="Métricas"> 
 		<div id="metricsTableDiv">
-		  <table id="metricsTable" class="ui-widget ui-widget-content">	
+		  <table id="metricsTable" class="ui-widget ui-widget-content">
+			<tr>
+		  </tr>
+		  <tr>
+		  </tr>			  
 		  </table>
 		</div>
 		</div>
 		</table>
 		<div id="uploadDialog" class = "hidden" title="Upload">
-<!-- 		<form accept-charset="UTF-8" action="/uploadFile" id="data" method="post" enctype="multipart/form-data" onsubmit="return sendFile();">
-			<input id = "upload_datafile" name="upload[datafile]" type="file" />
-		<button>Submit</button> -->
-		
-		<input id= "uploadFile" type="file"/>
-		<button id = "submitButton">Submit</button>
-		
+			<input id= "uploadFile" type="file"/>
+			<button id = "submitButton">Submit</button>	
         </div>
+		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
+			<div style=" height: 60px;">
+				<span style="width:426px; text-align: center;"class="selections">Taxa de transmissão do 802.11g</span>
+				<div style="width=250px;" >
+					<div>
+						<div id="rateSlider"></div>
+					</div>
+					<span id="rate" class="selections">0 Mbps</span>
+				</div>
+			</div>
+			
+			<div style=" display: table; margin: 0 auto;">
+				<span id="htx" class="selections">3</span>
+			</div>
+			<div id="htxSlider" style=" display: table; margin: 0 auto;"></div>
+			<div style=" display: table; margin: 0 auto;">
+				<span id="hrx" class="selections">5 O Mesh devia usar 3 m pra receptor nao?</span>
+			</div>
+			<div id="hrxSlider" style=" display: table; margin: 0 auto;"></div>
+			<div style=" display: table; margin: 0 auto;">
+				<span id="mesh" class="selections">0 Mbps</span>
+			</div>
+			<div id="meshSlider" style=" display: table; margin: 0 auto;"></div>
+		</div>
+		   
   </div>
 
 

@@ -147,7 +147,7 @@ function readMetricResponse(data){
 		"<tr>" +
 		  "<th class=\"ui-widget-header \">" + aux[0] + "</th>" +
 		  "<td>" + aux[1] + "</td>" +
-		   +		"</tr>" );	
+		   +"</tr>" );	
 	}	
     $(function() {
         $( "#statisticDialog" ).dialog({
@@ -176,16 +176,17 @@ function propagationValuesToSend(){
     else
         srdv = 0;
 
+    var rate;
 	if(technology == t802_11_g)
-		BIT_RATE = 6;
+		rate = BIT_RATE;
 	if(technology == t802_15_4)
-		BIT_RATE = 0.25;
+		rate = 0.25;
     var ret = "";
     ret+= s + "\n";
     ret+= t + "\n";
     ret+= H_TX + "\n";
     ret+= H_RX + "\n";
-    ret+= BIT_RATE + "\n";
+    ret+= rate + "\n";
     ret+= TRANSMITTER_POWER + "\n";
     ret+= srdv + "\n";
     if(meshEnabled)
@@ -286,9 +287,11 @@ function upload(fileInput) {
         reader.onload = function(e) {
             var fileText = reader.result;
             loadFromKMLText(fileText);
+            $("#uploadDialog").dialog("close");
             
         }
-        reader.readAsText(file);    
+        if(file)
+            reader.readAsText(file);    
     } else {
       alert('The File APIs are not fully supported by your browser.');
     }

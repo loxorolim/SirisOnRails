@@ -89,6 +89,7 @@ function initialize() {
     setScenario(Suburbano);
     setPower(20);
     setTechnology(t802_11_g);
+    setBitRate(6);
 	//elementsGrid = createGrid();
 	//elementsGrid.startGrid(0.001);
 	

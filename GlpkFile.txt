@@ -7,8 +7,8 @@ set Z;
  solve; 
  printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Sites/first_app/Results.txt";
  data;
-set Z:= Z1 Z2 Z3 Z4 Z5 ;
-set Y:= Y1 Y2 Y3 Y4 Y5 ;
+set Z:= Z2 Z4 Z5 Z6 Z7 Z8 Z9 Z11 Z13 Z14 Z16 Z17 Z18 Z19 Z20 Z21 Z22 Z23 ;
+set Y:= Y1 Y2 Y3 Y4 Y5 Y6 Y7 Y8 Y9 Y10 ;
 param A := 
-[Z1,Y1] 1[Z1,Y2] 1[Z1,Y3] 1[Z1,Y4] 1[Z2,Y1] 1[Z2,Y2] 1[Z2,Y3] 1[Z2,Y4] 1[Z3,Y1] 1[Z3,Y2] 1[Z3,Y3] 1[Z3,Y4] 1[Z4,Y1] 1[Z4,Y2] 1[Z4,Y3] 1[Z4,Y4] 1[Z5,Y1] 1[Z5,Y2] 1[Z5,Y3] 1[Z5,Y4] 1
+[Z2,Y7] 1[Z2,Y10] 1[Z4,Y7] 1[Z4,Y10] 1[Z5,Y5] 1[Z5,Y6] 1[Z6,Y5] 1[Z6,Y6] 1[Z7,Y2] 1[Z7,Y4] 1[Z8,Y1] 1[Z8,Y2] 1[Z8,Y3] 1[Z9,Y3] 1[Z11,Y1] 1[Z11,Y2] 1[Z11,Y3] 1[Z13,Y4] 1[Z13,Y5] 1[Z14,Y4] 1[Z14,Y8] 1[Z16,Y4] 1[Z16,Y8] 1[Z17,Y4] 1[Z17,Y8] 1[Z18,Y4] 1[Z18,Y8] 1[Z19,Y4] 1[Z19,Y8] 1[Z20,Y8] 1[Z20,Y9] 1[Z20,Y10] 1[Z21,Y7] 1[Z22,Y8] 1[Z22,Y9] 1[Z22,Y10] 1[Z23,Y8] 1[Z23,Y9] 1[Z23,Y10] 1
 ;end;

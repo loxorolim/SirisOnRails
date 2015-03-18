@@ -189,8 +189,6 @@ function setButtons()
 	           $("#power").text(ui.value + "dBm");
 	       }
 	   });
-	  // $("#amount").val("$" + $("#slider").slider("value"));
-	  
 	   $("#slider").css({ opacity: 0.5 });
 	   $("#slider").slider({
 	       stop: function (event, ui) {
@@ -198,6 +196,26 @@ function setButtons()
 	           sendDrawRequest();
 	       }
 	   });
+     $("#rateSlider").slider({
+         value: 0,
+         min: 0,
+         max: bitRates.length-1,
+         step: 1,
+         slide: function (event, ui) {
+              $("#rate").text(bitRates[ui.value] + "Mbps");
+         }
+     });
+     
+     $("#rateSlider").slider({
+         stop: function (event, ui) {
+            BIT_RATE = bitRates[ui.value];
+            if(technology == t802_11_g)
+              sendDrawRequest();
+         }
+     });
+
+
+
 	   $("#choosePower").hover(function () {
 	       $("#slider").css({ opacity: 1.0 });
 	   }, function () {
@@ -260,7 +278,22 @@ function setButtons()
         text: false
 
     }).click(function () {       
-        $(this).blur();         
+        $("this").blur(); 
+        $(function() {
+          $( "#settingsDialog" ).dialog({
+            show: {
+            effect: "blind",
+            duration: 1000
+            },
+            hide: {
+            effect: "explode",
+            duration: 1000
+            },
+            resizable: false,
+            width: 454,
+            height: 454
+          });
+        });           
     });
 
     $('#autoPlanning').button().click(function () {
@@ -346,7 +379,6 @@ function setButtons()
 		});
   $('#submitButton').button({
     text: "Submit"
-    
   }).click(function () {
       upload($("#uploadFile").get(0));
     });
@@ -427,6 +459,7 @@ function setTechnology(value){
 		case  t802_15_4:
 		   $("#technology").text("ZigBee");
 		   technology = t802_15_4;
+
 		break;
 		case  t802_11_a:
 		 $("#technology").text("802.11a");
@@ -447,3 +480,18 @@ function setPower(value){
 	  $("#slider").slider('value', value);
 	}
 }   
+var bitRates = [1,2,5.5,6,9,11,12,18,24,36,54 ];
+function setBitRate(value){
+  if(!isNaN(value)){
+    BIT_RATE = value;
+    var pos;
+    for(var i = 0;i<bitRates.length;i++){
+      if(bitRates[i]==value){
+        pos = i;
+        break;
+      }
+    }
+    $("#rate").text(bitRates[pos] + "Mbps");
+    $("#rateSlider").slider('value', pos);
+  }
+} 
