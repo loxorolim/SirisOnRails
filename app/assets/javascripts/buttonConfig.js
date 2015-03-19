@@ -282,12 +282,12 @@ function setButtons()
         $(function() {
           $( "#settingsDialog" ).dialog({
             show: {
-            effect: "blind",
-            duration: 1000
+            effect: "drop",
+            duration: 500
             },
             hide: {
-            effect: "explode",
-            duration: 1000
+            effect: "drop",
+            duration: 500
             },
             resizable: false,
             width: 454,
@@ -357,30 +357,30 @@ function setButtons()
 	icons: {
 		primary: "upload"
 	},
-
 	text: false
     }).click(function () {
 			$(this).blur();
-				$(function() {
-					$( "#uploadDialog" ).dialog({
-						show: {
-						effect: "blind",
-						duration: 1000
-						},
-						hide: {
-						effect: "explode",
-						duration: 1000
-						},
-						resizable: false,
-						width: 454,
-						height: 90
-					});
-				});     
+			$(function() {
+				$( "#uploadDialog" ).dialog({
+					show: {
+					effect: "drop",
+					duration: 500
+					},
+					hide: {
+					effect: "drop",
+					duration: 500
+					},
+					resizable: false,
+					width: 454,
+					height: 150
+				});
+			});     
 		});
   $('#submitButton').button({
     text: "Submit"
   }).click(function () {
       upload($("#uploadFile").get(0));
+	  
     });
     $('#uploadFile').button();
 

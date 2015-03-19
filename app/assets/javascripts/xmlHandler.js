@@ -94,6 +94,12 @@ function loadFromKMLText(kml){
 
 	$(kml).find('Placemark').each(function(){
 		var type = $(this).find('name').text();
+		if($("#dapFormatRadio").is(':checked'))
+			type="Agregador";
+		if($("#meterFormatRadio").is(':checked'))
+			type="Medidor";
+		if($("#poleFormatRadio").is(':checked'))
+			type="Poste";
 		$(this).find('Point').each(function(){
 			var coord =	$(this).find('coordinates').text();
 			var coords = coord.split(",");

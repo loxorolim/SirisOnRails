@@ -152,12 +152,12 @@ function readMetricResponse(data){
     $(function() {
         $( "#statisticDialog" ).dialog({
             show: {
-				effect: "blind",
-				duration: 1000
+				effect: "drop",
+				duration: 500
 			},
 			hide: {
-				effect: "explode",
-				duration: 1000
+				effect: "drop",
+				duration: 500
 			},
 			resizable: false,
 		});
