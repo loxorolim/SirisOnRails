@@ -57,7 +57,7 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 		for (int j = 0; j < meterRegion.size(); j++)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD);
+			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_TX, SRD);
 			if (i != j && eff >= MARGIN_VALUE)
 				pointsCovered.push_back(meterRegion[j]->index);
 

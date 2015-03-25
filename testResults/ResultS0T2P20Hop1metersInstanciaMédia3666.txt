@@ -1,100 +1,100 @@
 
-Grid height: 111.31949079327358731
- Grid width: 111.31949079327358731
+Grid height: 111.31949079327360153
+ Grid width: 111.31949079327360153
 
-Grid planning solution time: 4.5620000000000002771
-Maximum Memory Used: 0.60000002384185791016
+Grid planning solution time: 5.7190000000000003055
+Maximum Memory Used: 94.6999969482421875
 
 Maximum Time Used in a Cell: 0
 
-DAPs quantity: 875
-Meters quantity: 3666
-Mesh hop quality 1: 0.99879625552857775883
-Meter per hop 1: 3547
-Min Meters per DAP: 2
-Med Meters per DAP: 4.8788571428571430033
-Max Meters per DAP: 14
-Min redundancy per meter: 0
-Med redundancy per meter: 1.1644844517184942401
-Max redundancy per meter: 4
-
+Quantidade de agregadores<>570
+Quantidade de medidores<>3666
+Medidores descobertos<>1492
+Qualidade media do salto 1<>0.999
+Medidores a 1 salto<>2174
+Min Medidores por agregador<>2
+Med Medidores por agregador<>4.96
+Max Medidores por agregador<>14
+Min redundancia por medidor<>0
+Med redundancia por medidor<>0.771
+Max redundancia por medidor<>4
 
 Grid height: 556.59745396636787973
  Grid width: 556.59745396636787973
 
-Grid planning solution time: 5.5970000000000004192
-Maximum Memory Used: 28
+Grid planning solution time: 10.076000000000000512
+Maximum Memory Used: 30.899999618530273438
 
 Maximum Time Used in a Cell: 0
 
-DAPs quantity: 855
-Meters quantity: 3666
-Mesh hop quality 1: 0.99865764953684810212
-Meter per hop 1: 3547
-Min Meters per DAP: 2
-Med Meters per DAP: 4.8748538011695909944
-Max Meters per DAP: 14
-Min redundancy per meter: 0
-Med redundancy per meter: 1.1369339879978177521
-Max redundancy per meter: 4
-
+Quantidade de agregadores<>319
+Quantidade de medidores<>3666
+Medidores descobertos<>2308
+Qualidade media do salto 1<>0.999
+Medidores a 1 salto<>1358
+Min Medidores por agregador<>2
+Med Medidores por agregador<>4.95
+Max Medidores por agregador<>12
+Min redundancia por medidor<>0
+Med redundancia por medidor<>0.43
+Max redundancia por medidor<>3
 
 Grid height: 1113.1949079327355321
  Grid width: 1113.1949079327355321
 
-Grid planning solution time: 8.625
-Maximum Memory Used: 139
+Grid planning solution time: 16.583999999999999631
+Maximum Memory Used: 293.5
 
 Maximum Time Used in a Cell: 0
 
-DAPs quantity: 852
-Meters quantity: 3666
-Mesh hop quality 1: 0.99859263705376422049
-Meter per hop 1: 3547
-Min Meters per DAP: 2
-Med Meters per DAP: 4.8626760563380280189
-Max Meters per DAP: 14
-Min redundancy per meter: 0
-Med redundancy per meter: 1.1301145662847791318
-Max redundancy per meter: 4
-
+Quantidade de agregadores<>332
+Quantidade de medidores<>3666
+Medidores descobertos<>2327
+Qualidade media do salto 1<>0.999
+Medidores a 1 salto<>1339
+Min Medidores por agregador<>2
+Med Medidores por agregador<>4.56
+Max Medidores por agregador<>12
+Min redundancia por medidor<>0
+Med redundancia por medidor<>0.413
+Max redundancia por medidor<>3
 
 Grid height: 5565.9745396636790247
  Grid width: 5565.9745396636790247
 
-Grid planning solution time: 13.240999999999999659
-Maximum Memory Used: 565.79998779296875
+Grid planning solution time: 13.401999999999999247
+Maximum Memory Used: -1
 
-Maximum Time Used in a Cell: 0
+Maximum Time Used in a Cell: -1
 
-DAPs quantity: 850
-Meters quantity: 3666
-Mesh hop quality 1: 0.99855535557664054647
-Meter per hop 1: 3547
-Min Meters per DAP: 2
-Med Meters per DAP: 4.8529411764705878696
-Max Meters per DAP: 14
-Min redundancy per meter: 0
-Med redundancy per meter: 1.1252045826513912274
-Max redundancy per meter: 4
-
+Quantidade de agregadores<>183
+Quantidade de medidores<>3666
+Medidores descobertos<>2917
+Qualidade media do salto 1<>0.998
+Medidores a 1 salto<>749
+Min Medidores por agregador<>2
+Med Medidores por agregador<>4.66
+Max Medidores por agregador<>10
+Min redundancia por medidor<>0
+Med redundancia por medidor<>0.232
+Max redundancia por medidor<>3
 
 Grid height: 11131.949079327358049
  Grid width: 11131.949079327358049
 
-Grid planning solution time: 13.159000000000000696
-Maximum Memory Used: 565.79998779296875
+Grid planning solution time: 19.689000000000000057
+Maximum Memory Used: 270.399993896484375
 
 Maximum Time Used in a Cell: 0
 
-DAPs quantity: 850
-Meters quantity: 3666
-Mesh hop quality 1: 0.99855535557664054647
-Meter per hop 1: 3547
-Min Meters per DAP: 2
-Med Meters per DAP: 4.8529411764705878696
-Max Meters per DAP: 14
-Min redundancy per meter: 0
-Med redundancy per meter: 1.1252045826513912274
-Max redundancy per meter: 4
-
+Quantidade de agregadores<>409
+Quantidade de medidores<>3666
+Medidores descobertos<>1948
+Qualidade media do salto 1<>0.998
+Medidores a 1 salto<>1718
+Min Medidores por agregador<>2
+Med Medidores por agregador<>4.93
+Max Medidores por agregador<>14
+Min redundancia por medidor<>0
+Med redundancia por medidor<>0.55
+Max redundancia por medidor<>4

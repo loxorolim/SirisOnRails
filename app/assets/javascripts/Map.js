@@ -90,6 +90,9 @@ function initialize() {
     setPower(20);
     setTechnology(t802_11_g);
     setBitRate(6);
+	setHTX(3);
+	setHRX(5);
+	setMeshHops(3);
 	//elementsGrid = createGrid();
 	//elementsGrid.startGrid(0.001);
 	

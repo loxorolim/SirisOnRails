@@ -129,7 +129,7 @@ DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position
 	if (minDist != -1)
 	{
 		double dist = getDistance(meter, meterToConnect);
-		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
 		if (effs >= MARGIN_VALUE) {
 			DrawInfo* ret = new DrawInfo(meter, meterToConnect, effs, dist, 1);
 			return ret;
@@ -153,7 +153,11 @@ DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Positio
 	if (minDist != -1)
 	{
 		double dist = getDistance(meter, deviceToConnect);
-		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		double effs = 0;
+		if(hopNumber==0)
+			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		else
+			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
 		if (effs >= MARGIN_VALUE)
 		{
 			DrawInfo* ret;

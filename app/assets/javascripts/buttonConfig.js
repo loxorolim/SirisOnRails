@@ -204,13 +204,57 @@ function setButtons()
          slide: function (event, ui) {
               $("#rate").text(bitRates[ui.value] + "Mbps");
          }
-     });
-     
+     }); 
      $("#rateSlider").slider({
          stop: function (event, ui) {
             BIT_RATE = bitRates[ui.value];
             if(technology == t802_11_g)
               sendDrawRequest();
+         }
+     });
+	  $("#htxSlider").slider({
+         value: 0,
+         min: 0,
+         max: 10,
+         step: 0.1,
+         slide: function (event, ui) {
+              $("#htx").text(ui.value + " Metros");
+         }
+     }); 
+     $("#htxSlider").slider({
+         stop: function (event, ui) {
+            setHTX(ui.value);
+            sendDrawRequest();
+         }
+     });
+	  $("#hrxSlider").slider({
+         value: 0,
+         min: 0,
+         max: 10,
+         step: 0.1,
+         slide: function (event, ui) {
+              $("#hrx").text(ui.value + " Metros");
+         }
+     }); 
+     $("#hrxSlider").slider({
+         stop: function (event, ui) {
+            setHRX(ui.value);
+            sendDrawRequest();
+         }
+     });
+	$("#meshSlider").slider({
+         value: 0,
+         min: 1,
+         max: 5,
+         step: 1,
+         slide: function (event, ui) {
+              $("#mesh").text(ui.value + " Saltos");
+         }
+     }); 
+     $("#meshSlider").slider({
+         stop: function (event, ui) {
+            setMeshHops(ui.value);
+            sendDrawRequest();
          }
      });
 
@@ -290,8 +334,8 @@ function setButtons()
             duration: 500
             },
             resizable: false,
-            width: 454,
-            height: 454
+            width: 454
+            
           });
         });           
     });
@@ -371,7 +415,7 @@ function setButtons()
 					duration: 500
 					},
 					resizable: false,
-					width: 454,
+					width: 471,
 					height: 150
 				});
 			});     
@@ -478,6 +522,27 @@ function setPower(value){
 	  TRANSMITTER_POWER = value;
 	  $("#power").text(value + "dBm");
 	  $("#slider").slider('value', value);
+	}
+}  
+function setHRX(value){
+	if(!isNaN(value) && value >= 0 && value <= 10){
+	  H_RX = value;
+	  $("#hrx").text(value + " Metros");
+	  $("#hrxSlider").slider('value', value);
+	}
+}  
+function setHTX(value){
+	if(!isNaN(value) && value >= 0 && value <= 30){
+	  H_TX = value;
+	  $("#htx").text(value + " Metros");
+	  $("#htxSlider").slider('value', value);
+	}
+}  
+function setMeshHops(value){
+	if(!isNaN(value) && value >= 1 && value <= 5){
+	  meshMaxJumps = value;
+	  $("#mesh").text(value + " Saltos");
+	  $("#meshSlider").slider('value', value);
 	}
 }   
 var bitRates = [1,2,5.5,6,9,11,12,18,24,36,54 ];

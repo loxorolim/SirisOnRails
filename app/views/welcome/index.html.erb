@@ -77,28 +77,33 @@
 			</div>
         </div>
 		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
-			<div style=" height: 60px;">
-				<span style="width:426px; text-align: center;"class="selections">Taxa de transmissão do 802.11g</span>
-				<div style="width=250px;" >
-					<div>
-						<div id="rateSlider"></div>
+			<div style="width: 426px;">	
+				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;"class="selections">Altura da antena do agregador</span></div>
+				<div style="height: 30px;" >
+					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
+						<div id="htxSlider"></div>
 					</div>
-					<span id="rate" class="selections">0 Mbps</span>
+						<span id="htx" class="selections">0 Metros</span>
 				</div>
 			</div>
-			
-			<div style=" display: table; margin: 0 auto;">
-				<span id="htx" class="selections">3</span>
+			<div style="width: 426px;">	
+				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;"class="selections">Altura da antena do medidor</span></div>
+				<div style="height: 30px;" >
+					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
+						<div id="hrxSlider"></div>
+					</div>
+						<span id="hrx" class="selections">0 Metros</span>
+				</div>
 			</div>
-			<div id="htxSlider" style=" display: table; margin: 0 auto;"></div>
-			<div style=" display: table; margin: 0 auto;">
-				<span id="hrx" class="selections">5 O Mesh devia usar 3 m pra receptor nao?</span>
+			<div style="width: 426px;">	
+				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;"class="selections">Altura da antena do medidor</span></div>
+				<div style="height: 30px;" >
+					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
+						<div id="meshSlider"></div>
+					</div>
+						<span id="mesh" class="selections">0 Saltos</span>
+				</div>
 			</div>
-			<div id="hrxSlider" style=" display: table; margin: 0 auto;"></div>
-			<div style=" display: table; margin: 0 auto;">
-				<span id="mesh" class="selections">0 Mbps</span>
-			</div>
-			<div id="meshSlider" style=" display: table; margin: 0 auto;"></div>
 		</div>
 		   
   </div>
