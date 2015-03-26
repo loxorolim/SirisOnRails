@@ -1,5 +1,9 @@
 #include "MetricCalculationMethods.h"
+//Método para se calcular as métricas!
+//Antes de começar leia os comentários do método statisticalList
 
+
+//Junta dois vetores igual ao do AutoPlanning, mas não lembor bem porque tenoh outro método igual aqui.
 vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
 {
 	vector<int> ret;
@@ -128,9 +132,15 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 	return ret;
 }
 
+//Essa statisticalList é um vetor de sComponent que é utilizado no cálculo de várias métricas.
+//Ele funciona igual ao cálculo de enlace. Só que ao invés de objetos DrawInfo são objetos sComponent.
+//Veja o MetricCalculationMethods.h pra ver o que o sComponent tem.
+// A statisticalList contém, então, qualidade de todos os enlaces desenhados.
+// OBS: Obviamente, não se desenha nem considera na métricas TODOS os enlaces possíveis! Antigamente eu considerava
+// nas métricas, mas o processamento é absurdo porque são MUITOS enlaces "invisíveis". Portanto, as métricas são
+// apenas dos enlaces que são vistos na interface.
 vector<sComponent*> MetricCalculation::statisticalList()
 {
-
 
 	vector<sComponent*> statisticalComponents;
 	vector<Position*> connectedDevices;

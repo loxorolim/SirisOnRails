@@ -1,5 +1,7 @@
 #include "AutoPlanningMethods.h"
 
+
+//Une dois vetores de inteiros sem repetição, nada demais.
 vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
 {
 	vector<int> ret;
@@ -16,16 +18,32 @@ vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
 		}
 		if (add)
 			ret.push_back(v2[i]);
-
 	}
 	return ret;
-
 }
+//Retorna um vetor com os índices dos medidores que não estão cobertos de acordo com a matriz de cobertura (SCP).
+//A matriz de cobertura relaciona os medidores e postes e quem cobre quem.
+//Por exemplo:
+//     0 1 2
+//  0| 0 1 1
+//  1| 1 0 0
+//  2| 0 0 0
+//  3| 1 1 0
+// As linhas são postes e as colunas são medidores. Isso significa que, o poste com índice 0 é capaz de cobrir
+// os medidores 1 e 2, mas não o medidor 0. 0 = Não cobre e 1 = Cobre
+// Esse método verifica essa matriz para verificar quais medidores tem a coluna toda zerada, o que significa que
+// ninguém o cobre!
+// PS: A matriz de cobertura não é uma matriz! É um vetor de vetores. Para o caso acima a real face da matriz de
+// cobertura é:
+// 0 - 1, 2
+// 1 - 0,
+// 2 -
+// 3 - 0, 1
 vector<int> AutoPlanning::uncoverableMeters(vector<vector<int> > &SCP)
 {
 	
 	vector<int> uncoverableMeters;
-	for (int i = 0; i < AutoPlanning::meters.size(); i++)
+	for (int i = 0; i < meters.size(); i++)
 	{
 		int coverable = 0;
 		for (int j = 0; j < poles.size(); j++)
@@ -44,114 +62,103 @@ vector<int> AutoPlanning::uncoverableMeters(vector<vector<int> > &SCP)
 	return uncoverableMeters;
 }
 
-
+//Esse método cria uma matriz que relaciona quais medidores alcançam outors medidores.
+//A matriz é bem parecida à matriz de cobertura do SCP.
+//A informação dessa matriz será utilizada nos cálculos Mesh para que já tenha pré-calculado quem alcança quem.
+//Por exemplo:
+//
+// 0 - 1, 2
+// 1 - 0
+// 2 - 0
+// No caso, o medidor de índice 0 alcança os medidores 1 e 2 e os medidores 1 e 2 alcançam 0. Obviamente, se um
+// medidor "a" alcança "b", "b" deve alcançar "a".
 vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 {
 	vector<vector<int> > M;
-
 	for (int i = 0; i < meters.size(); i++) 
 	{
 		vector<int> pointsCovered;
-		//vector<Position*> meterRegion = getActiveRegion(meters, meters[i]);
-		vector<Position*> meterRegion = g->getCell(meters[i]);
+		vector<Position*> meterRegion = g->getCell(meters[i]); //IMPORTANTE: Obviamente um medidor não precisa verificar
+		//TODOS os outros. Por isso que se utiliza o GRID! Esse meterRegion são células adjacentes a celula do
+		//medidor que está sendo analisado. Assim ele só analisa uma quantidade limitada de medidores e o processamento
+		//fica mais rápido
 		for (int j = 0; j < meterRegion.size(); j++)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
 			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_TX, SRD);
-			if (i != j && eff >= MARGIN_VALUE)
+			if (i != j && eff >= MARGIN_VALUE) //Se a eficiencia for superior a 90%(MARGIN_VALUE) então é vizinho!
 				pointsCovered.push_back(meterRegion[j]->index);
-
 		}
 		M.push_back(pointsCovered);
 	}
-
 	return M;
 }
-
+//Esse método cria a matriz de cobertura que será utilizada no solver e assim obter o resultado do planejamento
+//automático.
 vector<vector<int> > AutoPlanning::createScp()
 {
-	Grid* g = new Grid(meters,poles, regionLimiter);
-	g->putPositions(meters);
+	Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
+	g->putPositions(meters);//Adiciona-se ao grid os medidores.
 	vector<int> aux;
 	vector<vector<int> > sM;
-	//sM.reserve(meters.size());
-
 	for (int i = 0; i < poles.size(); i++)
 	{
 		vector<int> metersCovered;
-		//vector<Position*> metersReduced = getActiveRegion(meters, poles[i]);
-		vector<Position*> metersReduced = g->getCell(poles[i]);
-		//printf("%d - ", i);
-		//for (int z = 0; z < metersReduced.size(); z++)
-		//	printf("%d ", metersReduced[z]->index);
-		//printf("\n");
+		vector<Position*> metersReduced = g->getCell(poles[i]);//Pega os medidores das células vizinhas e da sua
+		// própria célula para fazer a análise.
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
 			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-
-			if (eff >= MARGIN_VALUE)
+			if (eff >= MARGIN_VALUE)//Se a eficiencia for superior a 90%(MARGIN_VALUE) então o poste cobre esse medidor.
 				metersCovered.push_back(metersReduced[j]->index);
 		}
-
-		//if (polesThatCover.length > 0)
-		//if (i % 1000 == 0)
-		//	printf("%d", i);
-
 		sM.push_back(metersCovered);
 	}
 	if (meshEnabled)
 	{
-
-		vector<vector<int> > nM = createMeterNeighbourhood(g);
-		int firstPos = meters[0]->index;
-		for (int i = 0; i < sM.size(); i++)
+		vector<vector<int> > nM = createMeterNeighbourhood(g); //Cria a matriz de vizinhança para se analisar o mesh
+		for (int i = 0; i < sM.size(); i++)//Essa etapa incrementa a matriz de cobertura para considerar o mesh.
 		{
-			vector<int> neighbours = sM[i];
-			for (int j = 0; j < meshEnabled; j++)
+			vector<int> neighbours = sM[i];//Conjunto de medidores que o poste "i" cobre.
+			for (int j = 0; j < meshEnabled; j++)//Para cada salto
 			{
 				vector<int> newNeighbours;
-				for (int k = 0; k < neighbours.size(); k++)
+				for (int k = 0; k < neighbours.size(); k++)//Os vizinhos dos medidores que o poste cobre também serão
+				//considerados como cobertos! Isso se repete X vezes, onde X é o número de saltos mesh.
 				{
-
 					int toFind = neighbours[k];
 					int pos = 0;
-					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
-					
-					sM[i] = concatVectors(sM[i], nM[pos]);
-					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; }}
+					//Esse for aí em cima serve para localizar a posição do medidor com o respectivo index, pois
+					// a matriz de vizinhança dos medidores não é organizada por index, mas sim 0,1,2...n.
+					sM[i] = concatVectors(sM[i], nM[pos]);//Os vizinhos agora fazem parte da cobertura do poste!
+					newNeighbours = concatVectors(newNeighbours, nM[pos]);//Novos vizinhos a serem analisados no
+					//próximo salto. Esse newNeighbours vai ser a união de todos os vizinhos de todos os medidores
+					//do salto em questão. Por exemplo, para o primeiro salto newNeighbours começa vazio, pois será
+					//analisado os vizinhos dos medidores que o poste cobre. Para o segundo salto, o método tem que
+					//analisar o vizinho desses vizinhos. Por isso que o neighbours recebe newNeighbours. newNeighbours
+					// é a junção de todos os vizinhos sem repetição.
 				}
 				neighbours = newNeighbours;
-
 			}
-			
-			//	printf("MESH%d", i);
 		}
-
 	}
 	delete g;
-
-
-
 	return sM;
 }
+
+//Calcula sem usar o Grid, é obsoleto.
 vector<vector<int> > AutoPlanning::createScpSemGrid()
 {
 	Grid* g = new Grid(meters, poles, 10);
 	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;
-	//sM.reserve(meters.size());
-
 	for (int i = 0; i < poles.size(); i++)
 	{
 		vector<int> metersCovered;
-		//vector<Position*> metersReduced = getActiveRegion(meters, poles[i]);
 		vector<Position*> metersReduced = g->getCell(poles[i]);
-		//printf("%d - ", i);
-		//for (int z = 0; z < metersReduced.size(); z++)
-		//	printf("%d ", metersReduced[z]->index);
-		//printf("\n");
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
@@ -160,17 +167,11 @@ vector<vector<int> > AutoPlanning::createScpSemGrid()
 			if (eff >= MARGIN_VALUE)
 				metersCovered.push_back(metersReduced[j]->index);
 		}
-
-		//if (polesThatCover.length > 0)
-		//if (i % 1000 == 0)
-		//	printf("%d", i);
-
 		sM.push_back(metersCovered);
 	}
 	if (meshEnabled)
 	{
-
-		vector<vector<int> > nM = createMeterNeighbourhood(g);// ESSE MÉTODO NÃO PODERIA ESTAR NO INICIO DO MÉTODO PARA QUE NÃO FOSSE CHAMADO VÁRIAS VEZES???!?!?!?
+		vector<vector<int> > nM = createMeterNeighbourhood(g);
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> neighbours = sM[i];
@@ -183,28 +184,16 @@ vector<vector<int> > AutoPlanning::createScpSemGrid()
 					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
 				}
 				neighbours = newNeighbours;
-
 			}
-
-			//	printf("MESH%d", i);
 		}
-
 	}
 	delete g;
-
-
-
 	return sM;
 }
+//Ignora esse método, passa pro saveGLPKFileReduced, que usa o Grid.
 void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP)
 {
 	FILE *file;
-		//fopen_s(&file, filename.c_str(), "w");
-	//	if (file == 0)
-	//	{
-	//		printf("Could not open file\n");
-	//	}
-	//	else
 		{
 
 			//TEM Q MUDAR ESSE NEGÓCIO AQUI!
@@ -275,20 +264,15 @@ void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP)
 		}
 	
 }
-
+//Esse método monta o arquivo de entrada pro GLPK.
 void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 {
-
-	     
-		//TEM Q MUDAR ESSE NEGÓCIO AQUI!
-		vector<int> uncMeters = uncoverableMeters(SCP);
-
 		
+		vector<int> uncMeters = uncoverableMeters(SCP);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+		//Pois se não, o método retornaria que a solução é impossível!
+		//A formatação você ve no arquivo GlpkFile.txt
 		string resp;
 		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath +"/Results.txt\";\n data;\n";
-		//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
-		//ret += "set Z:= ";
-		//fprintf_s(file, "set Z:= ");
 		resp += "set Z:= ";
 		for (int i = 0; i < meters.size(); i++)
 		{
@@ -303,14 +287,8 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 
 		for (int i = 0; i < poles.size(); i++)
 			resp += "Y" + to_string(poles[i]->index + 1) + " ";
-
 		resp += ";\n";
-
 		resp += "param A := ";
-
-		//for (int i = 0; i < poles.size(); i++)
-		//	resp += "Y" + to_string(i + 1) + " ";
-
 		resp += "\n";
 		for (int i = 0; i < meters.size(); i++)
 		{
@@ -332,7 +310,6 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 			}
 
 		}
-		
 		resp += "\n";
 		resp += ";";
 		resp += "end;\n";
@@ -343,14 +320,14 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 		f << resp;
 		f.close();
 }
+//Esse método faz um system call ao GLPK
 void AutoPlanning::executeGlpk(string filename)
 {
-
-
 	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 6000  > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
 }
+//Pode ignorar esse método
 float getMemUsageFromGlpkFile(string fname)
 {
 	ifstream f(fname.c_str());
@@ -359,11 +336,9 @@ float getMemUsageFromGlpkFile(string fname)
 	float mem = -1;
 	while (getline(f, str))
 	{
-
 		int c = str.find("Memory used: ");
 		if (c >= 0)
 		{
-			//cont = 0;
 			vector<string> s = split(str, ' ');
 			int pos = -1;
 			for (int i = 0; i < s.size(); i++)
@@ -381,6 +356,7 @@ float getMemUsageFromGlpkFile(string fname)
 	return mem;
 
 }
+//Ignora também.
 float getTimeUsageFromGlpkFile(string fname)
 {
 	ifstream f(fname.c_str());
@@ -412,18 +388,18 @@ float getTimeUsageFromGlpkFile(string fname)
 	return time;
 
 }
+//Essa aqui é minha heurística que faz o método exato pra cada célula.
 string AutoPlanning::gridAutoPlanning()
 {
-	Grid* metergrid = new Grid(meters, poles, gridLimiter);
+	Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
 	metergrid->putPositions(meters);
-	Grid* polegrid = new Grid(poles, meters, gridLimiter);
+	Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
 	vector<string> chosenDaps;
-	//string str;
 	int i = 1;
-
+	//Mais informação, ler meu artigo da SBRC ;)
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
 
@@ -467,6 +443,8 @@ string AutoPlanning::gridAutoPlanning()
 
 
 }
+
+//Pode ignorar, usei pra testes.
 string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 {
 	Grid* metergrid = new Grid(meters, poles, gridLimiter);
@@ -531,16 +509,12 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 	*mtu = maximumtimeusage;
 	*mmu = maximummemusage;
 	return str;
-
-
-
-
 }
-
+//Executa o planejamento automático
 string AutoPlanning::executeAutoPlan()
 {
-	vector<vector<int> > SCP = createScp();
-	saveGLPKFileReduced(SCP);
+	//vector<vector<int> > SCP = createScp();
+	//saveGLPKFileReduced(SCP);
 	return gridAutoPlanning();
 	//executeGlpk("GlpkFile.txt");
 	//ifstream f("Results.txt");
@@ -548,7 +522,7 @@ string AutoPlanning::executeAutoPlan()
 	//getline(f, str);
 	//return str;
 }
-
+//Coisa de teste
 string AutoPlanning::executeAutoPlanTestMode( string * res, double gridsize)
 {
 

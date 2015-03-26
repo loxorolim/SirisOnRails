@@ -1,5 +1,7 @@
 #include "LinkCalculationMethods.h"
+//Esses métodos aqui servem pra retornar ao cliente dados de onde criar o enlace, suas qualiades etc.
 
+//Ignore esse método, ele é o antigo.
 vector<DrawInfo*> LinkCalculation::calculateDrawingInfoOld()
 {
 	vector<DrawInfo*> toCover;
@@ -67,26 +69,31 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfoOld()
 	delete g;
 	return toCover;
 }
+
 vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 {
-
-
 	vector<DrawInfo*> toCover;
 	vector<Position*> connectedDevices;
-
 	connectedDevices = daps;
 	vector<Position*> uncoveredMeters = meters;
 	vector<Position*> aux = connectedDevices;
 
-	//Grid* g = new Grid(aux,uncoveredMeters, regionLimiter);
-	//g->putPositions(aux);
-	for (int i = 0; i < meshEnabled+1; i++)
+	//Isso é feito para cada salto, considerando os saltos mesh.
+	for (int i = 0; i < meshEnabled+1; i++)//esse +1 aqui é porque o meshEnabled diz a quantidade de saltos MESH, logo
+	//se são 3 saltos mehs, temos 4 saltos ao todo!
 	{
+		//A ideia aqui é a seguinte:
+		//Cada medidor vai tentar se conectar a um dispositivo já conectado. Os dispositivos já conectados inicialmente
+		// são os DAPs. Para a próxima rodada, isto é, o segundo salto, considera-se que dispositivos conectados são
+		//os que foram cobertos pelos DAP na primeira rodada(1 salto). Isso repete X vezes onde X é o número max de saltos.
 		vector<Position*> newCovered;
 		for (int j = 0; j < uncoveredMeters.size(); j++)
 		{
 			//vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
-			DrawInfo* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);
+			DrawInfo* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);//Esse método que escolhe quem o medidor vai
+			//se conectar. Ele sempre escolhe o cara mais próximo (isso é, com melhor qualidade). Então, no primeiro salto
+			//ele só vai considerar os agregadores, a partir do segundo ele vai considerar também os medidores cobertos a
+			//1 salto, depois a 2 e assim sucessivamente.
 			if (toAdd)
 			{
 				toCover.push_back(toAdd);
@@ -98,21 +105,22 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
 	}
 	//delete g;
-	return toCover;
+	return toCover;//retorna uma lista com dados DrawInfo (ve lá no auxiliars.h o que tem no DrawInfo)
+	//PS: Seila pq o nome é toCover, devo ter copiado de alguma outra parte do código. hehe
 }
+//Calcula os enlaces depois os organiza num texto que é o cliente terá como resposta. Mais detalhes, ver o
+//o toString do DrawInfo
 string LinkCalculation::executeLinkCalculation()
 {
 	vector<DrawInfo*> drawInfos = calculateDrawingInfo();
 	string ret = "";
 	for (int i = 0; i < drawInfos.size(); i++)
 		ret += drawInfos[i]->toString() + " ";
-
 	for (int i = 0; i < drawInfos.size(); i++)
 		delete drawInfos[i];
-
-
 	return ret;
 }
+//Ignora, isso era usado no método antigo.
 DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters)
 {
 	double minDist = -1;
@@ -137,6 +145,10 @@ DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position
 	}
 	return NULL;
 }
+//Aqui é o método que determina a quem o medidor vai se conectar e retorna um DrawInfo com as informações dessa
+//conexão. Lembrando que ele se conecta sempre a um dispositivo já conectado com menor distância. De inicio, apenas
+//os DAPs são considerados como dispositivos conectados, depois os medidores ligados a esse DAP também são considerados
+//como conectados, depois os medidores que ligaram a outros medidores e assim por diante.
 DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, int hopNumber)
 {
 	double minDist = -1;
