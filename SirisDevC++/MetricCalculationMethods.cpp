@@ -3,7 +3,7 @@
 //Antes de começar leia os comentários do método statisticalList
 
 
-//Junta dois vetores igual ao do AutoPlanning, mas não lembor bem porque tenoh outro método igual aqui.
+//Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
 vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
 {
 	vector<int> ret;
@@ -25,10 +25,12 @@ vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
 	return ret;
 
 }
-
+//A partir da lista de cobertura (Coverage List - cL) determina-se quantos medidores cada DAP cobre.
+// A lista de cobertura é simplesmente um vetor de vetores, que relaciona cada DAP com os medidores que ele alcança.
+// O método simplesmente percorre a lista e calcula a média e descobre o mínimo e o máximo.
 vector<double> MetricCalculation::minMedMaxMetersPerDap(vector<vector<int> > cL)
 {
-	vector<double> ret;
+	vector<double> ret; //Como tem min, mid e max, o formato aqui é um vetor com 3 posições, 0-min 1-mid 2-max
 	ret.push_back(-1);ret.push_back(-1);ret.push_back(-1);
 	double med = 0;
 	if(cL.size() != 0)
@@ -54,12 +56,15 @@ vector<double> MetricCalculation::minMedMaxMetersPerDap(vector<vector<int> > cL)
 	return ret;
 
 }
+//A partir da Coverage List esse método calcula a redundancia mínima, média e máxima.
+//A redundância é por quantos agregadores um medidor é coberto.
+//O método percorre a Coverage List e vai incrementando em 1 unidade os medidores que o DAP cobre.
 vector<double> MetricCalculation::minMedMaxRedundancyPerMeter(vector<vector<int> > cL)
 {
 	vector<double> ret;
 	ret.push_back(-1);ret.push_back(-1);ret.push_back(-1);
 	double med = 0;
-	vector<double> m;
+	vector<double> m;//Vetor que começa com tudo 0 e vai sendo incrementado de acordo com os DAPs que cobrem cada medidor.
 	for(int i = 0; i < meters.size(); i++)
 	{
 		m.push_back(0);
@@ -84,6 +89,9 @@ vector<double> MetricCalculation::minMedMaxRedundancyPerMeter(vector<vector<int>
 	ret[1] = med/m.size();
 	return ret;
 }
+//A partir da Statistical List esse método calcula a quantidade de medidores por salto.
+//Cada sComponent tem informação de um enlace, inclusive a que salto pertence.
+//Esse método simplesmente lê esses valores para cada salto.
 vector<int> MetricCalculation::meterPerHop(vector<sComponent*> sL)
 {
 	vector<int> ret;
@@ -97,6 +105,10 @@ vector<int> MetricCalculation::meterPerHop(vector<sComponent*> sL)
 	}
 	return ret;
 }
+//A partir da Statistical List esse método calcula a qualidade dos enlaces por salto.
+//Um dos atributos do sComponent é um outro sComponent pai que é daonde o enlace surgiu. Por exemplo, se o enlace é de um único salto o pai dele é null, se o enlace
+// é de dois saltos, o pai dele vai ser algum outro sComponent.
+//Assim, calcula-se a qualidade dos enlaces de multiplo saltos multiplicando todo o caminho até que o pai seja null (ou seja, 1 salto).
 vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 {
 	vector<double> ret;
@@ -135,7 +147,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 //Essa statisticalList é um vetor de sComponent que é utilizado no cálculo de várias métricas.
 //Ele funciona igual ao cálculo de enlace. Só que ao invés de objetos DrawInfo são objetos sComponent.
 //Veja o MetricCalculationMethods.h pra ver o que o sComponent tem.
-// A statisticalList contém, então, qualidade de todos os enlaces desenhados.
+// A statisticalList contém, então, informações de todos os enlaces desenhados.
 // OBS: Obviamente, não se desenha nem considera na métricas TODOS os enlaces possíveis! Antigamente eu considerava
 // nas métricas, mas o processamento é absurdo porque são MUITOS enlaces "invisíveis". Portanto, as métricas são
 // apenas dos enlaces que são vistos na interface.
@@ -169,6 +181,8 @@ vector<sComponent*> MetricCalculation::statisticalList()
 	delete g;
 	return statisticalComponents;
 }
+//A lista de cobertura é bem simples. É igual a matriz de cobertura do SCP. Só que relaciona os DAPs e os medidores que ele cobre.
+// Esse método é igual ao createSCP() do AutoPlanning só que considera DAPs ao invés de postes!
 vector<vector<int> > MetricCalculation::coverageList()
 {
 	Grid* g = new Grid(meters,daps, regionLimiter);
@@ -245,6 +259,7 @@ vector<vector<int> > MetricCalculation::coverageList()
 //
 //	return M;
 //}
+//Mesmo coisa que no AutoPlanning
 vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 {
 	vector<vector<int> > M;
@@ -267,6 +282,7 @@ vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 
 	return M;
 }
+//Mesmo coisa que no LinkCalculation. Não está sendo usado! O chooseDeviceToConnect que é usado!
 sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop)
 {
 	double minDist = -1;
@@ -294,6 +310,7 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 	}
 	return NULL;
 }
+//Mesmo coisa que no LinkCalculation
 sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int hop)
 {
 	double minDist = -1;
@@ -336,7 +353,8 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 	}
 	return NULL;
 }
-
+//Esse é o método principal.Ele cria a Statistical List, a Coverage List, chama os métodos e cria uma String com todas essas informações que será lida pelo cliente
+// e exibida. Os caracteres "<>" são apenas da formatação para separar os valores dos textos que esses valores representam.
 string MetricCalculation::executeMetricCalculation()
 {
 	vector<sComponent*> sL = statisticalList();

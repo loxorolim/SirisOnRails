@@ -2,6 +2,8 @@
 
 vector<vector<double> > table;
 
+//Funções EXTENDED HATA SRD! Bruxaria da galera de Tele, não faço ideia do que são essas contas aí!
+
 double bit_error_probability(int env, int technology, int  bit_rate, int  transmitter_power, int  h_tx, int  h_rx, double  d, int SRD)
 {
 
