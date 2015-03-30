@@ -20,6 +20,11 @@ function initialize() {
 	}
 
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+    var input = (document.getElementById('pac-input'));
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    var searchBox = new google.maps.places.SearchBox((input));
+
+
     // google.maps.event.addListener(map, 'idle', showMarkers);
     //google.maps.event.addListener(map,'dragend', drawGridElements);
     elevator = new google.maps.ElevationService();  
@@ -84,6 +89,17 @@ function initialize() {
 
         //}
     });
+    google.maps.event.addListener(searchBox, 'places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+        var bounds = new google.maps.LatLngBounds();
+        bounds.extend(places[0].geometry.location);
+        map.fitBounds(bounds);
+        map.setZoom(13);
+  });
     
     setButtons();
     setScenario(Suburbano);

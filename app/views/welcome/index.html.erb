@@ -1,8 +1,9 @@
-﻿<div id=" wrapper">
-    <div id="map_canvas">       
+<div id="wrapper" style="min-width:	1125px; overflow:true;">
+    <div id="map_canvas" >       
     </div>
     <div id="over_map">
-        <div id="controller">
+		<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+		<div id="controller">
             <div id="trapezoid">
 
                 <div id="insideTrapezoid">
@@ -24,9 +25,9 @@
                             <button id="selectTechnology" style="float:left; height: 30px"></button>
                         </div>
                         <ul style =" z-index: 1000">
-                            <li id="ZigBee">ZigBee</></li>
+                            <li id="ZigBee">ZigBee</li>
                            <!--  <li id="80211a">802.11.a</></li> -->
-                            <li id="80211g">802.11.g</></li>
+                            <li id="80211g">802.11.g</li>
                         </ul>
                     </div>
                     <div id="choosePower" class="insideOptions">
@@ -78,7 +79,7 @@
         </div>
 		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
 			<div style="width: 426px;">	
-				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;"class="selections">Altura da antena do agregador</span></div>
+				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;" class="selections">Altura da antena do agregador</span></div>
 				<div style="height: 30px;" >
 					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
 						<div id="htxSlider"></div>
@@ -87,7 +88,7 @@
 				</div>
 			</div>
 			<div style="width: 426px;">	
-				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;"class="selections">Altura da antena do medidor</span></div>
+				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;" class="selections">Altura da antena do medidor</span></div>
 				<div style="height: 30px;" >
 					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
 						<div id="hrxSlider"></div>
@@ -96,7 +97,7 @@
 				</div>
 			</div>
 			<div style="width: 426px;">	
-				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;"class="selections">Altura da antena do medidor</span></div>
+				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;" class="selections">Altura da antena do medidor</span></div>
 				<div style="height: 30px;" >
 					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
 						<div id="meshSlider"></div>
@@ -107,5 +108,6 @@
 		</div>
 		   
   </div>
+</div>
 
 
