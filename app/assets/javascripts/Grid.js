@@ -217,7 +217,7 @@ function createGrid(){
 					geodesic: false,
 					bounds: new google.maps.LatLngBounds(
 					  new google.maps.LatLng(posX, posY),
-					  new google.maps.LatLng(posX+this.cellSize, posY+this.cellSize))
+					  new google.maps.LatLng(posX+this.cellSize, posY+(this.cellSize/Math.cos(posX+this.cellSize))))
 				  });
 				  this.drawnCells.push(rectangle);
 			}

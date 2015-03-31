@@ -26,7 +26,7 @@ function initialize() {
 
 
     // google.maps.event.addListener(map, 'idle', showMarkers);
-    //google.maps.event.addListener(map,'dragend', drawGridElements);
+    google.maps.event.addListener(map,'dragend', drawGridElements);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
     //loadFromKML();
@@ -109,8 +109,8 @@ function initialize() {
 	setHTX(3);
 	setHRX(5);
 	setMeshHops(3);
-	//elementsGrid = createGrid();
-	//elementsGrid.startGrid(0.001);
+	elementsGrid = createGrid();
+	elementsGrid.startGrid(0.001);
 	
     //init();
 
@@ -120,7 +120,7 @@ function initialize() {
  function drawGridElements() {
 
 	var x  = ("Num cells: " + elementsGrid.getNumberOfCells());
-	//elementsGrid.drawCells();
+	elementsGrid.drawCells();
     var inBounds = elementsGrid.getCellsInWindow(map);//CELULAS QUE ESTÃO VISIVEIS QUANDO O USUARIO TERMINA DE ARRASTAR
 
     for (key in inBounds) { 
