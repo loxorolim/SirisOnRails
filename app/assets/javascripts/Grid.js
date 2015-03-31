@@ -203,6 +203,8 @@ function createGrid(){
 			for(var i = 0; i < this.drawnCells.length; i++){
 				this.drawnCells[i].setVisible(false);
 			}
+			posIni = -90;
+
 			for (key in this.cells) {
 					var res = key.split(";");
 	        		var posX = this.minX + (parseFloat(res[0]))*this.cellSize;
@@ -217,7 +219,7 @@ function createGrid(){
 					geodesic: false,
 					bounds: new google.maps.LatLngBounds(
 					  new google.maps.LatLng(posX, posY),
-					  new google.maps.LatLng(posX+this.cellSize, posY+(this.cellSize/Math.cos(posX+this.cellSize))))
+					  new google.maps.LatLng(posX+this.cellSize, posY+(this.cellSize/Math.cos((posX+this.cellSize)*(Math.PI/180)))))
 				  });
 				  this.drawnCells.push(rectangle);
 			}
