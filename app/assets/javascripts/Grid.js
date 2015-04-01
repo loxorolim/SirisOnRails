@@ -6,6 +6,8 @@ function createGrid(){
 		minY: null,
 		cellSize: null,
 		drawnCells: [],
+		cellSizeMeters: null,
+		
 
 /*  		startGrid: function (v,v2,cS) {
 			//Mesma coisa que implementado em C++.
@@ -55,6 +57,7 @@ function createGrid(){
 			if (cS <= 0)
 				return;
 			this.cellSize = cS;
+			this.cellSizeMeters = 1000;
 			this.minX = -90;
 			this.minY = -180;
 			this.cells = {};
@@ -91,6 +94,31 @@ function createGrid(){
 		putPositions: function(v) {
 			for(var i = 0; i < v.length; i++){
 				this.putPosition(v[i]);
+			}
+		},
+		putPosition2: function(p) {
+			var posX = 0;
+			var posY = 0;
+			if (p.position.lat() != this.minX)
+				posX = Math.ceil((p.position.lat() - this.minX)/((180*this.cellSizeMeters)/(Math.PI*6378137)))-1;
+			if (p.position.lng() !=	this.minY)
+				posY = Math.ceil((p.position.lng() -this.minY)/((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos((p.position.lat())*(Math.PI/180)))))-1;
+			
+			//var posXY = {X: posX, Y: posY};
+			var posXY = posX + ";" + posY;
+			//var cellPos = this.cells[posXY];
+			if (posXY in this.cells) {
+			   this.cells[posXY].push(p);
+			} else {
+			   this.cells[posXY] = [];
+			   this.cells[posXY].push(p);
+			}
+			
+			
+		},
+		putPositions2: function(v) {
+			for(var i = 0; i < v.length; i++){
+				this.putPosition2(v[i]);
 			}
 		},
 		getCell: function(reference) {
@@ -203,8 +231,34 @@ function createGrid(){
 			for(var i = 0; i < this.drawnCells.length; i++){
 				this.drawnCells[i].setVisible(false);
 			}
+			
+			
+			for (key in this.cells) {
+					var res = key.split(";");
+	        		var posX = this.minX + (parseFloat(res[0]))*((180*this.cellSizeMeters)/(Math.PI*6378137));
+	        		var posY = this.minY + (parseFloat(res[1]))*((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos(posX*(Math.PI/180))));
+				var rectangle = new google.maps.Rectangle({
+					strokeColor: '#FF0000',
+					strokeOpacity: 0.8,
+					strokeWeight: 2,
+					fillColor: '#FF0000',
+					fillOpacity: 0.35,
+					clickable:false,
+					map: map,
+					geodesic: false,
+					bounds: new google.maps.LatLngBounds(
+					  new google.maps.LatLng(posX, posY),
+					  new google.maps.LatLng(posX+((180*this.cellSizeMeters)/(Math.PI*6378137)), posY+((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos(posX*(Math.PI/180))))))
+				  });
+				  this.drawnCells.push(rectangle);
+			}
+		},
+		drawCells2: function () {
+			for(var i = 0; i < this.drawnCells.length; i++){
+				this.drawnCells[i].setVisible(false);
+			}
 			posIni = -90;
-
+			newPosX = posX+((180*this.cellSize)/(Math.PI*6378137));
 			for (key in this.cells) {
 					var res = key.split(";");
 	        		var posX = this.minX + (parseFloat(res[0]))*this.cellSize;

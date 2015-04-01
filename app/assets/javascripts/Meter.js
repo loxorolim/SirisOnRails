@@ -22,7 +22,7 @@
 			this.center = latLng;
             meters.push(this);
             markerCluster.addMarker(this, true);
-			elementsGrid.putPosition(this);
+			elementsGrid.putPosition2(this);
             this.ID = generateUUID();
             this.setVisible(true);
             //this.map = map;
