@@ -57,7 +57,7 @@ function createGrid(){
 			if (cS <= 0)
 				return;
 			this.cellSize = cS;
-			this.cellSizeMeters = 1000;
+			this.cellSizeMeters = 10;
 			this.minX = -90;
 			this.minY = -180;
 			this.cells = {};
@@ -102,7 +102,7 @@ function createGrid(){
 			if (p.position.lat() != this.minX)
 				posX = Math.ceil((p.position.lat() - this.minX)/((180*this.cellSizeMeters)/(Math.PI*6378137)))-1;
 			if (p.position.lng() !=	this.minY)
-				posY = Math.ceil((p.position.lng() -this.minY)/((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos((p.position.lat())*(Math.PI/180)))))-1;
+				posY = Math.ceil((p.position.lng() -this.minY)/((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos((this.minX + (posX)*((180*this.cellSizeMeters)/(Math.PI*6378137)))*(Math.PI/180)))))-1;
 			
 			//var posXY = {X: posX, Y: posY};
 			var posXY = posX + ";" + posY;
@@ -237,6 +237,7 @@ function createGrid(){
 					var res = key.split(";");
 	        		var posX = this.minX + (parseFloat(res[0]))*((180*this.cellSizeMeters)/(Math.PI*6378137));
 	        		var posY = this.minY + (parseFloat(res[1]))*((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos(posX*(Math.PI/180))));
+					
 				var rectangle = new google.maps.Rectangle({
 					strokeColor: '#FF0000',
 					strokeOpacity: 0.8,
@@ -248,7 +249,7 @@ function createGrid(){
 					geodesic: false,
 					bounds: new google.maps.LatLngBounds(
 					  new google.maps.LatLng(posX, posY),
-					  new google.maps.LatLng(posX+((180*this.cellSizeMeters)/(Math.PI*6378137)), posY+((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos(posX*(Math.PI/180))))))
+					  new google.maps.LatLng(posX+((180*this.cellSizeMeters)/(Math.PI*6378137)), posY+((180*this.cellSizeMeters)/(Math.PI*6378137*Math.cos((posX+((180*this.cellSizeMeters)/(Math.PI*6378137)))*(Math.PI/180))))))
 				  });
 				  this.drawnCells.push(rectangle);
 			}
@@ -263,6 +264,8 @@ function createGrid(){
 					var res = key.split(";");
 	        		var posX = this.minX + (parseFloat(res[0]))*this.cellSize;
 	        		var posY = this.minY + (parseFloat(res[1]))*this.cellSize;
+	        		
+	        		pole4.placeOnMap();
 				var rectangle = new google.maps.Rectangle({
 					strokeColor: '#FF0000',
 					strokeOpacity: 0.8,
@@ -280,5 +283,13 @@ function createGrid(){
 		}
 	}
 	return grid;
+}
+function getLongOfDistance( lat, distance)
+{
+	return ((180*distance)/(Math.PI*6378137*Math.cos(lat*(Math.PI/180))));
+}
+function getLatOfDistance(distance)
+{
+	return ((180*distance)/(Math.PI*6378137));
 }
 

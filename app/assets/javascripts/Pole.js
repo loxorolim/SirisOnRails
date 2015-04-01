@@ -13,7 +13,7 @@
             poles.push(this);
             markerCluster.addMarker(this, true);
 			//elementsGrid.putPosition(this);
-            //this.ID = generateUUID();
+            this.ID = generateUUID();
         },
         remove: function () {
             var pole = this;

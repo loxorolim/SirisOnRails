@@ -1,4 +1,4 @@
-﻿const GREEN_ID = 0;
+const GREEN_ID = 0;
 const YELLOW_ID = 1;
 const BLUE_ID = 2;
 const GREEN = "#00FF00";
@@ -19,7 +19,6 @@ var technology = t802_15_4;
 var H_TX = 3;
 var H_RX = 5;
 var BIT_RATE;
-var t80211gRate;
 var TRANSMITTER_POWER = -20;
 var SRD = true;
 

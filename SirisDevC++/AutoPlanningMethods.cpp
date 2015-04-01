@@ -97,7 +97,8 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 //automático.
 vector<vector<int> > AutoPlanning::createScp()
 {
-	Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
+	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
+	Grid* g = new Grid(10);
 	g->putPositions(meters);//Adiciona-se ao grid os medidores.
 	vector<int> aux;
 	vector<vector<int> > sM;
@@ -151,7 +152,7 @@ vector<vector<int> > AutoPlanning::createScp()
 //Calcula sem usar o Grid, é obsoleto.
 vector<vector<int> > AutoPlanning::createScpSemGrid()
 {
-	Grid* g = new Grid(meters, poles, 10);
+	Grid* g = new Grid(1000000);
 	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;
@@ -391,9 +392,11 @@ float getTimeUsageFromGlpkFile(string fname)
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
 string AutoPlanning::gridAutoPlanning()
 {
-	Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
+	//Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
+	Grid* metergrid = new Grid(1000);
 	metergrid->putPositions(meters);
-	Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
+	//Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
+	Grid* polegrid = new Grid(1000);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();

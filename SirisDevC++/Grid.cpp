@@ -77,15 +77,26 @@ Grid::Grid(vector<Position*> v, double cS)
 		putPosition(v[i]);
 
 }
+Grid::Grid(double cS)
+{
+	if (cS <= 0)
+		return;
+
+	minX = -90;
+	minY = -180;
+
+	cellSizeMeters = cS;
+
+}
 void Grid::putPosition(Position* p)
 {
 	//se for igual ao min fazer algo...
 
 	int posX = 0, posY = 0;
 	if (p->latitude != minX)
-		posX = ceil((p->latitude - minX)/cellSize)-1;
+		posX = ceil((p->latitude - minX)/((180*cellSizeMeters)/(M_PI*EARTH_RADIUS)))-1;
 	if (p->longitude != minY)
-		posY = ceil((p->longitude -minY)/cellSize)-1;
+		posY = ceil((p->longitude -minY)/((180*cellSizeMeters)/(M_PI*EARTH_RADIUS*cos((minX + (posX)*((180*cellSizeMeters)/(M_PI*EARTH_RADIUS)))*(M_PI/180)))))-1;
 	//cells[posX][posY].push_back(p);
 
 	cells[make_pair(posX, posY)].push_back(p);
@@ -97,39 +108,82 @@ void Grid::putPositions(vector<Position*> p)
 }
 vector<Position*> Grid::getCell(Position* reference)
 {
+	cout<< "Pegando celulas da referencia: " << reference->latitude << " ; " << reference->longitude;
 	vector<Position*> ret;
-	int posX = -1, posY = -1;
-	//int posX = 0, posY = 0;
-	if (reference->latitude != minX)
-		posX = ceil((reference->latitude - minX) / cellSize) - 1;
-	if (reference->longitude != minY)
-		posY = ceil((reference->longitude - minY) / cellSize) - 1;
-	if (posX == -1 || posY == -1)
-		 return ret;
-	
+
 	vector<Position*> aux;
-	aux = cells[make_pair(posX - 1, posY-1)];
+	//PARTE CENTRAL
+	Position* auxRef = new Position(reference->latitude,reference->longitude);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX - 1, posY)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX - 1, posY + 1)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX, posY - 1)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	//PARTE DO TOPO
+	auxRef->latitude = reference->latitude + getLatOfDistance(cellSizeMeters);
+	auxRef->longitude = reference->longitude;
+
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX, posY)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX, posY + 1)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX + 1, posY - 1)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//PARTE DE BAIXO
+
+	auxRef->latitude = reference->latitude - getLatOfDistance(cellSizeMeters);
+	auxRef->longitude = reference->longitude;
+
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX + 1, posY)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	aux = cells[make_pair(posX + 1, posY + 1)];
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
+	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
+	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+
+	delete auxRef;
 
 	return ret;
 	//return cells[posX][posY];
 //	return cells[make_pair(posX, posY)];
+}
+vector<Position*> Grid::getUniqueCell(Position* reference)
+{
+	vector<Position*> ret;
+	int posX = -1, posY = -1;
+	//int posX = 0, posY = 0;
+	if (reference->latitude != minX)
+		posX = ceil((reference->latitude - minX) /((180*cellSizeMeters)/(M_PI*EARTH_RADIUS)))-1;
+	if (reference->longitude != minY)
+		posY = ceil((reference->longitude - minY) / ((180*cellSizeMeters)/(M_PI*EARTH_RADIUS*cos((minX + (posX)*((180*cellSizeMeters)/(M_PI*EARTH_RADIUS)))*(M_PI/180)))))-1;
+	if (posX == -1 || posY == -1)
+		 return ret;
+
+	return cells[make_pair(posX, posY)];
+
 }
 map< pair < int, int >, vector < Position* > > Grid::getCells()
 {
@@ -176,5 +230,13 @@ double getMaxY(vector<Position*> v)
 			dy = v[i]->longitude;
 	}
 	return dy;
+}
+double getLongOfDistance(double lat, double distance)
+{
+	return ((180*distance)/(M_PI*EARTH_RADIUS*cos(lat*(M_PI/180))));
+}
+double getLatOfDistance(double distance)
+{
+	return ((180*distance)/(M_PI*EARTH_RADIUS));
 }
 

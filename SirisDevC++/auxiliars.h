@@ -26,6 +26,9 @@
 #define t802_11_a  1
 #define t802_11_g  2
 #define t802_11_b  3
+
+#define EARTH_RADIUS 6378137
+
 #include<string>
 #include <vector>
 #include <algorithm>
