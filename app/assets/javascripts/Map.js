@@ -120,7 +120,7 @@ function initialize() {
  function drawGridElements() {
 
 	var x  = ("Num cells: " + elementsGrid.getNumberOfCells());
-	elementsGrid.drawCells();
+	//elementsGrid.drawCells();
     var inBounds = elementsGrid.getCellsInWindow(map);//CELULAS QUE ESTÃO VISIVEIS QUANDO O USUARIO TERMINA DE ARRASTAR
 
     for (key in inBounds) { 

@@ -8,11 +8,11 @@ Generating cost...
 Generating covers...
 Model has been successfully generated
 GLPK Integer Optimizer, v4.54
-2 rows, 2 columns, 3 non-zeros
-2 integer variables, all of which are binary
+2 rows, 9 columns, 10 non-zeros
+9 integer variables, all of which are binary
 Preprocessing...
 Objective value =  1.000000000e+000
 INTEGER OPTIMAL SOLUTION FOUND BY MIP PREPROCESSOR
 Time used:   0.0 secs
-Memory used: 0.1 Mb (118376 bytes)
+Memory used: 0.1 Mb (118432 bytes)
 Model has been successfully processed

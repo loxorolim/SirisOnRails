@@ -182,6 +182,34 @@ string getResponse(string req, string rubyPath)
 		return ret;
 
 	}
+	if(option == 4) //SÓ PRA TESTAR UM LANCE DO GRID
+		{
+			int pLength;
+			std::getline(f, line);
+			pLength = std::atoi(line.c_str());
+			if(pLength == 0) return "";
+			vector<Position*> meters;
+			vector<Position*> daps;
+			for (int i = 0; i < pLength; i++)
+			{
+				double lat;
+				double lng;
+				std::getline(f, line);
+				vector<string> s = split(line, ' ');
+				lat = std::atof(s[0].c_str());
+				lng = std::atof(s[1].c_str());
+				Position *toAdd = new Position(lat, lng,i);
+
+				meters.push_back(toAdd);
+			}
+
+			Grid* g = new Grid(10);
+			g->putPositions(meters);
+			return g->getCellsTeste();
+
+
+		}
+
 
 	//while (std::getline(f, line))
 	//{

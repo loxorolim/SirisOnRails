@@ -23,6 +23,7 @@ class Grid
 		vector<Position*> getCell(Position* reference);
 		vector<Position*> getUniqueCell(Position* reference);
 		map<pair<int, int>, vector<Position*> > getCells();
+		string getCellsTeste();
 
 };
 double getMinX(vector<Position*> v);

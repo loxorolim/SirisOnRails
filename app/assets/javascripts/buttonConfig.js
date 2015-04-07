@@ -351,6 +351,7 @@ function setButtons()
         //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
         //sendDataToServer(serverAddress, 'POST', TEST_COLLECTION_FILE_ID);
         sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
+        sendDataToServer(serverAddress, 'POST', 4);
         
         var s ="";
         for(var i = 0; i < meters.length;i++)

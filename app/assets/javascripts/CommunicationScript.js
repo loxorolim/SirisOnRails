@@ -47,6 +47,9 @@ function sendDataToServer(url,method,type) {
         case TEST_COLLECTION_FILE_ID:
             data = createTestFileModel();
             break;
+        case 4: //SÓ PRO TESTE DO GRID, PODE IGNORAR
+            data = createGridTestFileModel();
+            break;
         default:
             data = -1;
             break;
@@ -72,6 +75,9 @@ function sendDataToServer(url,method,type) {
                         break;
                     case METRIC_FILE_ID:
                         readMetricResponse(data);
+                        break;
+                    case 4: //SÓ UM TESTE DO GRID, PODE IGNORAR
+                        readGridTestResponse(data);
                         break;
                     default:
                         break;
@@ -134,6 +140,37 @@ function readPropagationResponse(data){
 
     }
    
+
+}
+function readGridTestResponse(data){
+    
+   var geoms = data.split("/n");
+   for(var i = 0; i < geoms.length-1; i++){
+        var poss = geoms[i].split("<>");
+
+        var pos1 = poss[0].split(";");
+        var pos1lat = pos1[0];
+        var pos1lng = pos1[1];
+
+        var pos2 = poss[1].split(";");
+        var pos2lat = pos2[0];
+        var pos2lng = pos2[1];
+
+        var rectangle = new google.maps.Rectangle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 0.1,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            clickable:false,
+            map: map,
+            geodesic: true,
+            bounds: new google.maps.LatLngBounds(
+              new google.maps.LatLng(pos1lat, pos1lng),
+              new google.maps.LatLng(pos2lat,pos2lng))
+      });
+
+   }
 
 }
 function readMetricResponse(data){
@@ -234,6 +271,20 @@ function createDrawFileModel(){
         ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
         ret += "\n";
     }
+    return ret;
+}
+function createGridTestFileModel(){
+    
+    
+    var ret = 4 + '\n';
+    ret += propagationValuesToSend();
+    
+    ret+= meters.length+"\n";
+    for(var i = 0; i <meters.length; i++){
+        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
+        ret += "\n";
+    }
+
     return ret;
 }
 function createMetricsFileModel(){

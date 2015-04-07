@@ -239,4 +239,25 @@ double getLatOfDistance(double distance)
 {
 	return ((180*distance)/(M_PI*EARTH_RADIUS));
 }
+string Grid::getCellsTeste()
+{
+	string ret = "";
+	for (map<pair<int, int>, vector<Position*> >::iterator it = cells.begin(); it != cells.end(); ++it)
+	{
+		pair<int,int> cellNum = it->first;
+		int numLat = cellNum.first;
+		int numLng = cellNum.second;
+		double posX = minX + (numLat)*getLatOfDistance(cellSizeMeters);
+		double posY = minY + (numLng)*getLongOfDistance(posX,cellSizeMeters);
 
+		double posX2 = posX+getLatOfDistance(cellSizeMeters);
+		double posY2 = posY + getLongOfDistance(posX2,cellSizeMeters);
+
+
+
+		ret += to_string(posX)+";"+to_string(posY) + "<>" + to_string(posX2)+";"+to_string(posY2) + "/n";
+	}
+	return ret;
+
+
+}
