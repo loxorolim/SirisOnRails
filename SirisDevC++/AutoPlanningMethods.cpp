@@ -98,7 +98,7 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 vector<vector<int> > AutoPlanning::createScp()
 {
 	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
-	Grid* g = new Grid(10);
+	Grid* g = new Grid(1000);
 	g->putPositions(meters);//Adiciona-se ao grid os medidores.
 	vector<int> aux;
 	vector<vector<int> > sM;
@@ -393,10 +393,10 @@ float getTimeUsageFromGlpkFile(string fname)
 string AutoPlanning::gridAutoPlanning()
 {
 	//Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
-	Grid* metergrid = new Grid(1000);
+	Grid* metergrid = new Grid(100000000);
 	metergrid->putPositions(meters);
 	//Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
-	Grid* polegrid = new Grid(1000);
+	Grid* polegrid = new Grid(100000000);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
@@ -421,6 +421,7 @@ string AutoPlanning::gridAutoPlanning()
 		getline(f, gridAnswer);
 
 		vector<string> x = split(gridAnswer, ' ');
+		int wow = x.size();
 		for (int i = 0; i < x.size(); i++)
 		{
 			//string snum = x[i].substr(1);
@@ -450,9 +451,9 @@ string AutoPlanning::gridAutoPlanning()
 //Pode ignorar, usei pra testes.
 string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 {
-	Grid* metergrid = new Grid(meters, poles, gridLimiter);
+	Grid* metergrid = new Grid(gridLimiter);
 	metergrid->putPositions(meters);
-	Grid* polegrid = new Grid(poles, meters, gridLimiter);
+	Grid* polegrid = new Grid(gridLimiter);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
@@ -473,13 +474,14 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 		meters = cellsMeters;
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
-		saveGLPKFileReduced(cellSCP);
+		saveGLPKFile(cellSCP);
 		executeGlpk(rubyPath+"/GlpkFile.txt");
 		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
 		getline(f, gridAnswer);
 
 		vector<string> x = split(gridAnswer, ' ');
+			int wow = x.size();
 		for (int i = 0; i < x.size(); i++)
 		{
 			//string snum = x[i].substr(1);
@@ -551,4 +553,131 @@ string AutoPlanning::executeAutoPlanTestMode( string * res, double gridsize)
 
 	*res = ret;
 	return result;
+}
+//////////////////////////////////////////MÉTODOS PRO GRASP////////////////////////////////////////////////
+int iterations = 500;
+double alpha = 0.9;
+vector<int> generateRCL(vector<vector<int> > &scp, int* solution)
+{
+	vector<pair<int,int> > numSatisfied;
+	int max = 0;
+	for (int i = 0; i < scp.size(); i++)
+	{
+		if (solution[i] != 1)
+		{
+			int s = scp[i].size();
+			if (s > alpha*max && s != 0)
+			{
+				pair<int,int> pair;
+				pair.first = i;
+				pair.second = s;
+				numSatisfied.push_back(pair);
+				if (s > max)
+					max = s;
+			}
+		}
+	}
+	float L = alpha*max;
+	vector<int> RCL;
+	for (int i = 0; i < numSatisfied.size(); i++)
+	{
+		if (numSatisfied[i].second >= L)
+			RCL.push_back(numSatisfied[i].first);
+	}
+	return RCL;
+}
+
+int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, int* solution)
+{
+	//vector<vector<int>> scpCopy = copyScp(scp);
+	//vector<vector<int>> cMatrix = coverageMatrix(scp, size);
+	int tam = invertedSCP.size();
+	while (tam > 0)
+	{
+		vector<int> RCL = generateRCL(scp, solution);
+		if (RCL.size() == 0)
+			break;
+		int cand = RCL[rand() % RCL.size()];
+		solution[cand] = 1;
+		tam -= scp[cand].size();
+//		vector<vector<int>> scpCopy = scp;
+
+		for(int i = 0; i < scp[cand].size();i++)
+		{
+			for(int j = 0; j < invertedSCP[scp[cand][i]].size(); j++)
+			{
+
+//				vector<int> vec = scp[invertedSCP[scp[cand][i]][j]];
+//				for(int z = 0; z < vec.size();z++)
+//					printf("%d ",vec[z]);
+				std::vector<int>::iterator position = std::find(scp[invertedSCP[scp[cand][i]][j]].begin(), scp[invertedSCP[scp[cand][i]][j]].end(), scp[cand][i]);
+				if (position != scp[invertedSCP[scp[cand][i]][j]].end())
+					scp[invertedSCP[scp[cand][i]][j]].erase(position);
+//				printf("\n Removendo %d \n",scp[cand][i]);
+//				for(int z = 0; z < scp[invertedSCP[scp[cand][i]][j]].size();z++)
+//					printf("%d ",scp[invertedSCP[scp[cand][i]][j]][z]);
+			}
+		}
+
+//		removeCovered(scp, cMatrix, cand, &tam);
+//		updateMatrix(scpCopy, cMatrix, cand);
+	}
+
+	return solution;
+}
+
+
+string AutoPlanning::graspAutoPlanning()
+{
+
+	vector<vector<int> > SCP = createScp();
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for(int i = 0; i < SCP.size(); i++)
+	{
+		for(int j = 0; j < SCP[i].size(); j++)
+		{
+			invertedSCP[SCP[i][j]].push_back(i);
+		}
+	}
+	int* solution = new int[poles.size()];
+	int* newSolution;
+	//double bestSolutionTime;
+	//double totalTime;
+	for (int i = 0; i < iterations; i++)
+	{
+		newSolution =  new int[poles.size()];
+		newSolution = constructPhase(SCP,invertedSCP, newSolution);
+		int count = 0;
+		for(int z = 0; z < poles.size(); z++)
+		{
+			if(newSolution[z] == 1) count++;
+		}
+		//WalkSat(scp, newSolution, size);
+
+
+//
+//		if (isBetterSolution(scp, newSolution, solution, size) == 1) //MUDAAAAAAAR
+//		{
+//
+//			delete[] solution;
+//			solution = newSolution;
+//			int cS = 0, nC = 0;
+//			evaluateSolution(scp, solution, size, &cS, &nC);
+//			//printf("%f \n", bestSolutionTime);
+//			//printf("%d \n", cS);
+//			//printf("%d \n", nC);
+//		}
+//		else
+//		{
+//			delete[] newSolution;
+//		}
+
+
+	}
+//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
+	//return solution;
+	return "wow";
+
+
 }
