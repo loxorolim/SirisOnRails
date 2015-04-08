@@ -9,8 +9,8 @@
 #include <stdio.h>
 
 #include "rice/Class.hpp"
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
+///* run this program using the console pauser or add your own getch, system("pause") or input loop */
+//
 using namespace Rice;
 
 
@@ -248,6 +248,60 @@ string gridTest(vector<Position*> &meters, vector<Position*> &poles, int s, int 
 	//cout << gresult + metricResult;
 	return "\n" + gresult + metricResult + "\n";
 }
+void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE,  double TRANSMITTER_POWER, double H_TX,  double H_RX, int SRD, int meshEnabled, string rubyPath)
+{
+	string completeMetersFile = rubyPath + "/arqsTeste/"+ metersFile;
+		string completePolesFile = rubyPath + "/arqsTeste/"+ polesFile;
+		FILE * file;
+		file = fopen(completeMetersFile.c_str(), "r");
+		FILE * file2;
+		file2 = fopen(completePolesFile.c_str(), "r");
+
+
+		vector<Position*> meters;
+		vector<Position*> poles;
+
+		while (true)
+		{
+			double lat = -1;
+			double lng = -1;
+			fscanf(file, "%lf %lf", &lat, &lng);
+			if (lat == -1)
+				break;
+			Position *toAdd = new Position(lat, lng, meters.size());
+			meters.push_back(toAdd);
+		}
+		while (true)
+		{
+			double lat = -1;
+			double lng = -1;
+			fscanf(file2, "%lf %lf", &lat, &lng);
+			if (lat == -1)
+				break;
+			Position *toAdd = new Position(lat, lng, poles.size());
+			poles.push_back(toAdd);
+		}
+
+		fclose(file);
+		fclose(file2);
+
+		string finalResult = "";
+		AutoPlanning* ap = new AutoPlanning(meters, poles,scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+
+		//string gresult = "";
+		//string ret = ap->graspAutoPlanning();
+		string gresult = "";
+		string ret = ap->gridAutoPlanning();
+		for(int i =0; i < meters.size(); i++)
+		{
+			delete meters[i];
+		}
+		for(int i =0; i < poles.size(); i++)
+		{
+			delete poles[i];
+		}
+		delete ap;
+}
 void testFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE,  double TRANSMITTER_POWER, double H_TX,  double H_RX, int SRD, int meshEnabled, string rubyPath)
 {
 
@@ -344,7 +398,7 @@ string RubyPathTest(string t)
 }
 int main(int argc, char** argv)
 {
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Sites/first_app";
 	//string rubyPath = "C:/Sites/first_app";
 	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
@@ -354,9 +408,9 @@ int main(int argc, char** argv)
 	//testFromFile("filemeters10000.txt", "filepoles10000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
-	testFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
-
+//	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+	//testFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+	testGraspFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
 //	vector<Position*> teste;
 //	Grid *g = new Grid(teste,10);
 

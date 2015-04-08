@@ -108,7 +108,7 @@ void Grid::putPositions(vector<Position*> p)
 }
 vector<Position*> Grid::getCell(Position* reference)
 {
-	cout<< "Pegando celulas da referencia: " << reference->latitude << " ; " << reference->longitude;
+	//cout<< "Pegando celulas da referencia: " << reference->latitude << " ; " << reference->longitude;
 	vector<Position*> ret;
 
 	vector<Position*> aux;
@@ -116,17 +116,17 @@ vector<Position*> Grid::getCell(Position* reference)
 	Position* auxRef = new Position(reference->latitude,reference->longitude);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	//PARTE DO TOPO
 	auxRef->latitude = reference->latitude + getLatOfDistance(cellSizeMeters);
@@ -134,17 +134,17 @@ vector<Position*> Grid::getCell(Position* reference)
 
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 	//PARTE DE BAIXO
 
 	auxRef->latitude = reference->latitude - getLatOfDistance(cellSizeMeters);
@@ -152,17 +152,17 @@ vector<Position*> Grid::getCell(Position* reference)
 
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
 	aux = getUniqueCell(auxRef);
 	ret.insert(ret.end(), aux.begin(), aux.end());
-	cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
 
 	delete auxRef;
 

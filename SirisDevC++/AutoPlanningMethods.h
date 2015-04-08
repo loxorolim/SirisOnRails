@@ -37,7 +37,7 @@ class AutoPlanning
 			meshEnabled = me;
 			rubyPath = rp;
 			regionLimiter = 0.01;
-			gridLimiter = 0.1;
+			gridLimiter = 10000000;
 
 
 		};
@@ -66,6 +66,7 @@ class AutoPlanning
 		 string gridAutoPlanning();
 		 string gridAutoPlanningTestMode(float *mtu, float* mmu);
 		 vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
+		 string graspAutoPlanning();
 
 };
 
