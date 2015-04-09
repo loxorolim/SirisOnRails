@@ -398,8 +398,9 @@ string RubyPathTest(string t)
 }
 int main(int argc, char** argv)
 {
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	//string rubyPath = "C:/Sites/first_app";
+	
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Sites/first_app";
 	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);

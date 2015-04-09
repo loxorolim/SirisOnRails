@@ -592,7 +592,8 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 	//vector<vector<int>> scpCopy = copyScp(scp);
 	//vector<vector<int>> cMatrix = coverageMatrix(scp, size);
 	int tam = invertedSCP.size();
-	while (true)
+
+	while (tam > 0)
 	{
 		vector<int> RCL = generateRCL(scp, solution);
 		if (RCL.size() == 0)
@@ -601,38 +602,31 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 		solution[cand] = 1;
 		tam -= scp[cand].size();
 //		vector<vector<int>> scpCopy = scp;
-
+		int fSize = scp[cand].size();
 		for(int i = 0; i < scp[cand].size();i++)
 		{
-			for(int j = 0; j < invertedSCP[scp[cand][i]].size(); j++)
+			vector<int> aaa = scp[cand];
+			int sSize = invertedSCP[scp[cand][i]].size();
+			for(int j = 0; j < sSize; j++)
 			{
-
-//				vector<int> vec = scp[invertedSCP[scp[cand][i]][j]];
-				for(int z = 0; z < scp[invertedSCP[scp[cand][i]][j]].size();z++)
+				vector<int> bbb = invertedSCP[scp[cand][i]];
+				int tSize = scp[invertedSCP[scp[cand][i]][j]].size();
+				if (invertedSCP[scp[cand][i]][j] != cand)
 				{
-					printf("%d ",scp[invertedSCP[scp[cand][i]][j]][z]);
-				}
-				for(int k = 0; k < scp[invertedSCP[scp[cand][i]][j]].size(); k++)
-				{
-					if(scp[invertedSCP[scp[cand][i]][j]][k] == scp[cand][i])
+					for (int k = 0; k < tSize; k++)
 					{
-						scp[invertedSCP[scp[cand][i]][j]].erase(scp[invertedSCP[scp[cand][i]][j]].begin() + k);
-						break;
+						vector<int> ccc = scp[invertedSCP[scp[cand][i]][j]];
+						if (scp[invertedSCP[scp[cand][i]][j]][k] == scp[cand][i])
+						{
+							scp[invertedSCP[scp[cand][i]][j]].erase(scp[invertedSCP[scp[cand][i]][j]].begin() + k);
+							break;
+						}
 					}
 				}
-//				std::vector<int>::iterator position = std::find(scp[invertedSCP[scp[cand][i]][j]].begin(), scp[invertedSCP[scp[cand][i]][j]].end(), scp[cand][i]);
-//				if (position != scp[invertedSCP[scp[cand][i]][j]].end())
-//				{
-//					scp[invertedSCP[scp[cand][i]][j]].erase(position);
-//				}
-				printf("\n Removendo %d \n",scp[cand][i]);
-				for(int z = 0; z < scp[invertedSCP[scp[cand][i]][j]].size();z++)
-				{
-					printf("%d ",scp[invertedSCP[scp[cand][i]][j]][z]);
-				}
 			}
+			scp[cand].clear();
 		}
-		fflush(stdout);
+
 
 //		removeCovered(scp, cMatrix, cand, &tam);
 //		updateMatrix(scpCopy, cMatrix, cand);
