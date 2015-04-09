@@ -1,8 +1,37 @@
 GLPSOL: GLPK LP/MIP Solver, v4.54
 Parameter(s) specified in the command line:
- --math C:/Sites/first_app/GlpkFile.txt --memlim 6000
-Reading model section from C:/Sites/first_app/GlpkFile.txt...
-Reading data section from C:/Sites/first_app/GlpkFile.txt...
-C:/Sites/first_app/GlpkFile.txt:11: duplicate tuple Y1 detected
-Context: ......' , m > '...' ; data ; set Z := Z1 ; set Y := Y1 Y2 Y1 Y2
-MathProg model processing error
+ --math C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt --memlim
+ 6000
+Reading model section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
+Reading data section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
+14 lines were read
+Generating cost...
+Generating covers...
+Model has been successfully generated
+GLPK Integer Optimizer, v4.54
+3548 rows, 1030 columns, 6343 non-zeros
+1030 integer variables, all of which are binary
+Preprocessing...
+371 hidden packing inequaliti(es) were detected
+496 rows, 206 columns, 1140 non-zeros
+206 integer variables, all of which are binary
+Scaling...
+ A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
+Problem data seem to be well scaled
+Constructing initial basis...
+Size of triangular part is 496
+Solving LP relaxation...
+GLPK Simplex Optimizer, v4.54
+496 rows, 206 columns, 1140 non-zeros
+      0: obj =  7.620000000e+002  infeas = 4.960e+002 (0)
+*   479: obj =  8.500000000e+002  infeas = 0.000e+000 (0)
+*   489: obj =  8.500000000e+002  infeas = 0.000e+000 (0)
+OPTIMAL LP SOLUTION FOUND
+Integer optimization begins...
++   489: mip =     not found yet >=              -inf        (1; 0)
++   498: >>>>>  8.500000000e+002 >=  8.500000000e+002   0.0% (1; 0)
++   498: mip =  8.500000000e+002 >=     tree is empty   0.0% (0; 1)
+INTEGER OPTIMAL SOLUTION FOUND
+Time used:   0.0 secs
+Memory used: 565.8 Mb (593255838 bytes)
+Model has been successfully processed

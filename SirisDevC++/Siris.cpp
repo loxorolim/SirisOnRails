@@ -8,10 +8,10 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-#include "rice/Class.hpp"
+//#include "rice/Class.hpp"
 ///* run this program using the console pauser or add your own getch, system("pause") or input loop */
 //
-using namespace Rice;
+//using namespace Rice;
 
 
 
@@ -203,7 +203,7 @@ string getResponse(string req, string rubyPath)
 				meters.push_back(toAdd);
 			}
 
-			Grid* g = new Grid(10);
+			Grid* g = new Grid(1000);
 			g->putPositions(meters);
 			return g->getCellsTeste();
 
@@ -289,9 +289,9 @@ void testGraspFromFile(string metersFile, string polesFile, int scenario, int te
 		AutoPlanning* ap = new AutoPlanning(meters, poles,scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
 
 		//string gresult = "";
-		//string ret = ap->graspAutoPlanning();
-		string gresult = "";
-		string ret = ap->gridAutoPlanning();
+		string ret = ap->graspAutoPlanning();
+		//string gresult = "";
+		//string ret = ap->gridAutoPlanning();
 		for(int i =0; i < meters.size(); i++)
 		{
 			delete meters[i];
@@ -398,7 +398,7 @@ string RubyPathTest(string t)
 }
 int main(int argc, char** argv)
 {
-	string rubyPath = "C:/Sites/first_app";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//string rubyPath = "C:/Sites/first_app";
 	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
@@ -421,12 +421,12 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-extern "C"
-
-void Init_Siris()
-{
-  Class rb_c = define_class("Siris")
-   .define_method("getResponse", &getResponse);
-
-}
+//extern "C"
+//
+//void Init_Siris()
+//{
+//  Class rb_c = define_class("Siris")
+//   .define_method("getResponse", &getResponse);
+//
+//}
 

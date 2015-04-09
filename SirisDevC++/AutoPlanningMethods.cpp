@@ -152,7 +152,7 @@ vector<vector<int> > AutoPlanning::createScp()
 //Calcula sem usar o Grid, é obsoleto.
 vector<vector<int> > AutoPlanning::createScpSemGrid()
 {
-	Grid* g = new Grid(1000000);
+	Grid* g = new Grid(10000);
 	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;
@@ -393,10 +393,10 @@ float getTimeUsageFromGlpkFile(string fname)
 string AutoPlanning::gridAutoPlanning()
 {
 	//Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
-	Grid* metergrid = new Grid(100000000);
+	Grid* metergrid = new Grid(100000);
 	metergrid->putPositions(meters);
 	//Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
-	Grid* polegrid = new Grid(100000000);
+	Grid* polegrid = new Grid(100000);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
@@ -592,7 +592,7 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 	//vector<vector<int>> scpCopy = copyScp(scp);
 	//vector<vector<int>> cMatrix = coverageMatrix(scp, size);
 	int tam = invertedSCP.size();
-	while (tam > 0)
+	while (true)
 	{
 		vector<int> RCL = generateRCL(scp, solution);
 		if (RCL.size() == 0)
@@ -608,16 +608,31 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 			{
 
 //				vector<int> vec = scp[invertedSCP[scp[cand][i]][j]];
-//				for(int z = 0; z < vec.size();z++)
-//					printf("%d ",vec[z]);
-				std::vector<int>::iterator position = std::find(scp[invertedSCP[scp[cand][i]][j]].begin(), scp[invertedSCP[scp[cand][i]][j]].end(), scp[cand][i]);
-				if (position != scp[invertedSCP[scp[cand][i]][j]].end())
-					scp[invertedSCP[scp[cand][i]][j]].erase(position);
-//				printf("\n Removendo %d \n",scp[cand][i]);
-//				for(int z = 0; z < scp[invertedSCP[scp[cand][i]][j]].size();z++)
-//					printf("%d ",scp[invertedSCP[scp[cand][i]][j]][z]);
+				for(int z = 0; z < scp[invertedSCP[scp[cand][i]][j]].size();z++)
+				{
+					printf("%d ",scp[invertedSCP[scp[cand][i]][j]][z]);
+				}
+				for(int k = 0; k < scp[invertedSCP[scp[cand][i]][j]].size(); k++)
+				{
+					if(scp[invertedSCP[scp[cand][i]][j]][k] == scp[cand][i])
+					{
+						scp[invertedSCP[scp[cand][i]][j]].erase(scp[invertedSCP[scp[cand][i]][j]].begin() + k);
+						break;
+					}
+				}
+//				std::vector<int>::iterator position = std::find(scp[invertedSCP[scp[cand][i]][j]].begin(), scp[invertedSCP[scp[cand][i]][j]].end(), scp[cand][i]);
+//				if (position != scp[invertedSCP[scp[cand][i]][j]].end())
+//				{
+//					scp[invertedSCP[scp[cand][i]][j]].erase(position);
+//				}
+				printf("\n Removendo %d \n",scp[cand][i]);
+				for(int z = 0; z < scp[invertedSCP[scp[cand][i]][j]].size();z++)
+				{
+					printf("%d ",scp[invertedSCP[scp[cand][i]][j]][z]);
+				}
 			}
 		}
+		fflush(stdout);
 
 //		removeCovered(scp, cMatrix, cand, &tam);
 //		updateMatrix(scpCopy, cMatrix, cand);
@@ -653,6 +668,7 @@ string AutoPlanning::graspAutoPlanning()
 		{
 			if(newSolution[z] == 1) count++;
 		}
+		cout<<count;
 		//WalkSat(scp, newSolution, size);
 
 
@@ -677,6 +693,7 @@ string AutoPlanning::graspAutoPlanning()
 	}
 //	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
 	//return solution;
+
 	return "wow";
 
 
