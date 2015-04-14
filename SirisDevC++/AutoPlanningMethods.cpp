@@ -657,16 +657,30 @@ void evaluateSolution(vector<vector<int> > &scp, int * solution, int* cSatisfied
 void BestFlip(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int* solut,  int* csat, int* ncol)
 {
 	int bestCSatisfied = -1, bestNumColumns = -1;
-	evaluateSolution(scp, solut, &bestCSatisfied, &bestNumColumns);
+	//evaluateSolution(scp, solut, &bestCSatisfied, &bestNumColumns);
 	int toFlip = -1;
 	for (int i = 0; i < scp.size(); i++)
 	{
-		solut[i] != solut[i];
-		int bestCSatisfied = -1, bestNumColumns = -1;
-		evaluateSolution(scp, solut, &bestCSatisfied, &bestNumColumns);
-		if (bestCS)
-		solut[i] != solut[i];
+		solut[i] = !solut[i];
+		int cSatisfied = -1, numColumns = -1;
+		evaluateSolution(scp, solut, &cSatisfied, &numColumns);
+		if (bestCSatisfied == -1)
+		{
+			bestCSatisfied = cSatisfied;
+			bestNumColumns = numColumns;
+		}
+		else
+		{
+			if (cSatisfied > bestCSatisfied)
+				toFlip = i;
+			else
+				if (cSatisfied == bestCSatisfied)
+					if (numColumns < bestNumColumns)
+						toFlip = i;
+		}		
+		solut[i] = !solut[i];
 	}
+	solut[toFlip] = !solut[toFlip];
 
 }
 void RandomFlip(int * solution, int size)
