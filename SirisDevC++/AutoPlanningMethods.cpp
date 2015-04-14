@@ -556,8 +556,8 @@ string AutoPlanning::executeAutoPlanTestMode( string * res, double gridsize)
 }
 //////////////////////////////////////////MÉTODOS PRO GRASP////////////////////////////////////////////////
 int iterations = 500;
-double p = 0.8;
-double alpha = 1;
+double p = 0.5;
+double alpha = 0.9;
 vector<int> generateRCL(vector<vector<int> > &scp, int* solution)
 {
 	vector<pair<int,int> > numSatisfied;
@@ -642,7 +642,7 @@ void evaluateSolution(vector<vector<int> > &scp, int * solution, int* cSatisfied
 	vector<int> mCovered;
 	for (int i = 0; i < scp.size(); i++)
 	{
-		if (solution[i])
+		if (solution[i] == 1)
 		{
 			mCovered.insert(mCovered.end(), scp[i].begin(), scp[i].end());
 			numC++;
@@ -654,7 +654,7 @@ void evaluateSolution(vector<vector<int> > &scp, int * solution, int* cSatisfied
 	*numColumns = numC;
 	*cSatisfied = mCovered.size();
 }
-void BestFlip(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int* solut,  int* csat, int* ncol)
+void BestFlip(vector<vector<int> > &scp, int* solut,  int* csat, int* ncol)
 {
 	int bestCSatisfied = -1, bestNumColumns = -1;
 	//evaluateSolution(scp, solut, &bestCSatisfied, &bestNumColumns);
@@ -668,6 +668,7 @@ void BestFlip(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int*
 		{
 			bestCSatisfied = cSatisfied;
 			bestNumColumns = numColumns;
+			toFlip = i;
 		}
 		else
 		{
@@ -681,6 +682,8 @@ void BestFlip(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int*
 		solut[i] = !solut[i];
 	}
 	solut[toFlip] = !solut[toFlip];
+	*csat = bestCSatisfied;
+	*ncol = bestNumColumns;
 
 }
 void RandomFlip(int * solution, int size)
@@ -688,7 +691,32 @@ void RandomFlip(int * solution, int size)
 	int pos = rand() % size;
 	solution[pos] = !solution[pos];
 }
-void WalkSat(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int * solution)
+
+void RolimLocalSearch(vector<vector<int> > &scp, int * solution)
+{
+	for (int i = 0; i < scp.size(); i++)
+	{
+		vector<int> aux;
+		if (solution[i] == 0)
+		{
+			aux = scp[i];
+			for (int j = 0; j < scp.size() ; j++)
+			{
+				if (j != i)
+				{
+					vector<int> firstFlipCoverage = scp[j];
+
+					for (int k = 0; k < scp.size(); k++)
+					{
+
+					}
+				}
+
+			}
+		}
+	}
+}
+void WalkSat(vector<vector<int> > &scp, int * solution)
 {
 	//	int* newSolution;
 	//vector<vector<int> > cMatrix = coverageMatrix(scp, size);
@@ -698,7 +726,7 @@ void WalkSat(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int *
 	int* solCopy = new int[scp.size()];
 	for (int i = 0; i < scp.size(); i++)
 		solCopy[i] = solution[i];
-	for (int i = 0; i < 10 * scp.size(); i++)
+	for (int i = 0; i < 50 ; i++)
 	{
 
 		float r = rand() % 100 + 1;
@@ -707,7 +735,7 @@ void WalkSat(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int *
 		{
 			int cSatisfied;
 			int nColumns;
-			BestFlip(scp, invertedScp, solution, &cSatisfied, &nColumns);
+			BestFlip(scp, solution, &cSatisfied, &nColumns);
 			if (cSatisfied > bestClausesSatisfied)
 			{
 				bestClausesSatisfied = cSatisfied;
@@ -723,7 +751,27 @@ void WalkSat(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int *
 			}
 		}
 		else
+		{
 			RandomFlip(solution, scp.size());
+			int cSatisfied;
+			int nColumns;
+			evaluateSolution(scp, solution, &cSatisfied, &nColumns);
+			if (cSatisfied > bestClausesSatisfied)
+			{
+				bestClausesSatisfied = cSatisfied;
+				bestNumberOfColumns = nColumns;
+				for (int i = 0; i < scp.size(); i++)
+					solCopy[i] = solution[i];
+			}
+			else if (cSatisfied == bestClausesSatisfied)
+			{
+				if (nColumns < bestNumberOfColumns)
+				for (int i = 0; i < scp.size(); i++)
+					solCopy[i] = solution[i];
+			}
+
+
+		}
 	}
 	for (int i = 0; i < scp.size(); i++)
 		solution[i] = solCopy[i];
@@ -749,17 +797,28 @@ string AutoPlanning::graspAutoPlanning()
 	int* newSolution;
 	//double bestSolutionTime;
 	//double totalTime;
+	int winner = -1;
 	for (int i = 0; i < iterations; i++)
 	{
 		newSolution =  new int[poles.size()];
 		newSolution = constructPhase(SCP,invertedSCP, newSolution);
 		int count = 0;
-		for(int z = 0; z < poles.size(); z++)
+		for (int z = 0; z < poles.size(); z++)
 		{
-			if(newSolution[z] == 1) count++;
+			if (newSolution[z] == 1) count++;
 		}
-		cout<<count<<"\n";
-		//WalkSat(scp, newSolution, size);
+		cout << count << "\n";
+		if (count < winner || winner == -1)
+			winner = count;
+	
+		WalkSat(SCP, newSolution);
+
+		count = 0;
+		for (int z = 0; z < poles.size(); z++)
+		{
+			if (newSolution[z] == 1) count++;
+		}
+		cout << "Melhorado:" << count << "\n";
 
 
 //
@@ -781,7 +840,8 @@ string AutoPlanning::graspAutoPlanning()
 
 
 	}
-//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
+	cout << "VENCEDOR: " << winner;
+	//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
 	//return solution;
 
 	return "wow";
