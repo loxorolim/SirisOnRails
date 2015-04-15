@@ -694,25 +694,38 @@ void RandomFlip(int * solution, int size)
 
 void RolimLocalSearch(vector<vector<int> > &scp, int * solution)
 {
-	for (int i = 0; i < scp.size(); i++)
+	int succeeded = 1;
+	while (succeeded)
 	{
-		vector<int> aux;
-		if (solution[i] == 0)
+		succeeded = 0;
+		for (int i = 0; i < scp.size(); i++)
 		{
-			aux = scp[i];
-			for (int j = 0; j < scp.size() ; j++)
+			vector<int> aux;
+			if (solution[i] == 0)
 			{
-				if (j != i)
+				aux = scp[i];
+				sort(aux.begin(), aux.end());
+				vector<int> removable;
+				for (int j = 0; j < scp.size(); j++)
 				{
-					vector<int> firstFlipCoverage = scp[j];
-
-					for (int k = 0; k < scp.size(); k++)
+					if (j != i)
 					{
-
+						vector<int> toCheck = scp[j];
+						sort(toCheck.begin(), toCheck.end());
+						if (includes(aux.begin(), aux.end(), toCheck.begin(), toCheck.end()))
+							removable.push_back(j);
 					}
-				}
 
-			}
+				}
+				if (removable.size() >= 2)
+				{
+					solution[i] = 1;
+					for (int z = 0; z < removable.size(); z++)
+						solution[removable[z]] = 0;
+					succeeded = 1;
+					break;
+				}
+			}			
 		}
 	}
 }
@@ -800,7 +813,9 @@ string AutoPlanning::graspAutoPlanning()
 	int winner = -1;
 	for (int i = 0; i < iterations; i++)
 	{
-		newSolution =  new int[poles.size()];
+		newSolution = new int[poles.size()];
+		for (int z = 0; z < poles.size(); z++)
+			newSolution[z] = 0;
 		newSolution = constructPhase(SCP,invertedSCP, newSolution);
 		int count = 0;
 		for (int z = 0; z < poles.size(); z++)
@@ -811,14 +826,15 @@ string AutoPlanning::graspAutoPlanning()
 		if (count < winner || winner == -1)
 			winner = count;
 	
-		WalkSat(SCP, newSolution);
+		//RolimLocalSearch(SCP, newSolution);
+		////WalkSat(SCP, newSolution);
 
-		count = 0;
-		for (int z = 0; z < poles.size(); z++)
-		{
-			if (newSolution[z] == 1) count++;
-		}
-		cout << "Melhorado:" << count << "\n";
+		//count = 0;
+		//for (int z = 0; z < poles.size(); z++)
+		//{
+		//	if (newSolution[z] == 1) count++;
+		//}
+		//cout << "Melhorado:" << count << "\n";
 
 
 //
