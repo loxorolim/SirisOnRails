@@ -8,10 +8,10 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-//#include "rice/Class.hpp"
+#include "rice/Class.hpp"
 ///* run this program using the console pauser or add your own getch, system("pause") or input loop */
 //
-//using namespace Rice;
+using namespace Rice;
 
 
 
@@ -423,12 +423,12 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-//extern "C"
-//
-//void Init_Siris()
-//{
-//  Class rb_c = define_class("Siris")
-//   .define_method("getResponse", &getResponse);
-//
-//}
+extern "C"
+
+void Init_Siris()
+{
+  Class rb_c = define_class("Siris")
+   .define_method("getResponse", &getResponse);
+
+}
 

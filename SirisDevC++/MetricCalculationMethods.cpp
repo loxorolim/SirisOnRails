@@ -2,6 +2,18 @@
 //Método para se calcular as métricas!
 //Antes de começar leia os comentários do método statisticalList
 
+double getNumberOfRetries(double quality)
+{
+	double compQuality = 1 - quality;
+	return (quality*(1 + 2 * compQuality + 3 * pow(compQuality, 2)) + 4 * pow(compQuality, 3));
+
+}
+double calculateLinkDelay(double quality, int pckSize, double rate)
+{
+	double numOfRetries = getNumberOfRetries(quality);
+	return ((pckSize / (rate*pow(2,20)))*(numOfRetries / round(numOfRetries)))*1000; //*1000 pra ser milisegundos
+}
+
 
 //Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
 vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
@@ -140,6 +152,41 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 	{
 		if(hopQnt[i] != 0)
 			ret[i] = ret[i]/hopQnt[i];
+	}
+	return ret;
+}
+
+vector<double> MetricCalculation::linkDelayPerHop(vector<sComponent*> sL)
+{
+	vector<double> ret;
+	vector<int> hopQnt;
+	for (int i = 0; i < meshEnabled + 1; i++)
+	{
+		ret.push_back(0);
+		hopQnt.push_back(0);
+	}
+	for (int i = 0; i < sL.size(); i++)
+	{
+		int hop = sL[i]->hop;
+		double delay = 0;
+		sComponent* s = sL[i];
+		while (hop >= 0)
+		{
+			//cout << s->efficiency << "\n";
+			delay += s->delay;
+
+			hop--;
+			s = s->meshFather;
+
+		}
+		ret[sL[i]->hop] += delay;
+		hopQnt[sL[i]->hop]++;
+
+	}
+	for (int i = 0; i < meshEnabled + 1; i++)
+	{
+		if (hopQnt[i] != 0)
+			ret[i] = ret[i] / hopQnt[i];
 	}
 	return ret;
 }
@@ -304,7 +351,8 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 		{
 			sComponent* father;
 			for(int i = 0; i < sC.size();i++){ if(sC[i]->index == meterToConnect->index) father = sC[i]; break; }
-			sComponent* ret = new sComponent(meter->index, dist, eff, meshHop, father);
+			double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
+			sComponent* ret = new sComponent(meter->index, dist, eff,delay, meshHop, father);
 			return ret;
 		}
 	}
@@ -333,7 +381,8 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 			sComponent* ret;
 			if(hop == 0)
 			{
-				ret = new sComponent(meter->index, dist, eff, hop, NULL);
+				double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
+				ret = new sComponent(meter->index, dist, eff,delay, hop, NULL);
 			}
 			else
 			{
@@ -346,7 +395,8 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 						break;
 					}
 				}
-				ret = new sComponent(meter->index, dist, eff, hop, father);
+				double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
+				ret = new sComponent(meter->index, dist, eff,delay, hop, father);
 			}
 			return ret;
 		}
@@ -369,6 +419,7 @@ string MetricCalculation::executeMetricCalculation()
 	vector<int > v2 = meterPerHop(sL);
 	vector<double> v3 = minMedMaxMetersPerDap(cL);
 	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
+	vector<double > v5 = linkDelayPerHop(sL);
 	int coveredMeters = 0;
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
@@ -386,6 +437,11 @@ string MetricCalculation::executeMetricCalculation()
 	{
 		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
 		ret+=  "Qualidade media do salto " + to_string(i+1) + "<>" + to_string(v[i],3) + "\n";
+	}
+	for (int i = 0; i < meshEnabled + 1; i++)
+	{
+		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
+		ret += "Atraso medio do salto " + to_string(i + 1) + "<>" + to_string(v5[i], 3) + "ms \n";
 	}
 
 	for(int i = 0; i < meshEnabled+1; i++)
@@ -414,6 +470,7 @@ string MetricCalculation::executeMetricCalculation()
 
 	return ret;
 }
+
 //string MetricCalculation::executeMetricCalculation()
 //{
 //

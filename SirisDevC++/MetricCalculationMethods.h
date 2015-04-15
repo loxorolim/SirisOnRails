@@ -17,13 +17,15 @@ class sComponent
 		int index;
 		double distance;
 		double efficiency;
+		double delay;
 		int hop;
 		sComponent *meshFather;
-		sComponent(int i, double d, double e, int h, sComponent * mf)
+		sComponent(int i, double d, double e, double dl, int h, sComponent * mf)
 		{
 			index = i;
 			distance = d;
 			efficiency = e;
+			delay = dl;
 			hop = h;
 			meshFather = mf;
 		}
@@ -37,6 +39,7 @@ class MetricCalculation
 			int scenario, technology, SRD, meshEnabled;
 			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
 			double regionLimiter ;
+			int packetSize; //em Mb
 			string rubyPath;
 	public:
 			MetricCalculation(vector<Position*> &m, vector<Position*> &d, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
@@ -53,6 +56,7 @@ class MetricCalculation
 			meshEnabled = me;
 			rubyPath = rp;
 			regionLimiter = 0.001;
+			packetSize = 400 * 8;
 		};
 		~MetricCalculation()
 		{
@@ -67,6 +71,7 @@ class MetricCalculation
 		vector<double> minMedMaxRedundancyPerMeter(vector<vector<int> > cL);
 		vector<int> meterPerHop(vector<sComponent*> sL);
 		vector<double> linkQualityPerHop(vector<sComponent*> sL);
+		vector<double> linkDelayPerHop(vector<sComponent*> sL);
 		//vector<vector<sComponent*> > createStatisticalMeterNeighbourhood(Grid *g);
 		vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		sComponent* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop);
