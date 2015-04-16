@@ -26,7 +26,7 @@ function initialize() {
 
 
     // google.maps.event.addListener(map, 'idle', showMarkers);
-    google.maps.event.addListener(map,'dragend', drawGridElements);
+    //google.maps.event.addListener(map,'dragend', drawGridElements);
     elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
     //loadFromKML();

@@ -71,6 +71,6 @@ class AutoPlanning
 };
 
 
-
+void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
 
 #endif

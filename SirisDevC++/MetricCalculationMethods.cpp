@@ -174,7 +174,8 @@ vector<double> MetricCalculation::linkDelayPerHop(vector<sComponent*> sL)
 		{
 			//cout << s->efficiency << "\n";
 			delay += s->delay;
-
+			if (hop > 0)
+				delay += perHopDelay;
 			hop--;
 			s = s->meshFather;
 
@@ -232,7 +233,8 @@ vector<sComponent*> MetricCalculation::statisticalList()
 // Esse método é igual ao createSCP() do AutoPlanning só que considera DAPs ao invés de postes!
 vector<vector<int> > MetricCalculation::coverageList()
 {
-	Grid* g = new Grid(meters,daps, regionLimiter);
+	//Grid* g = new Grid(meters,daps, regionLimiter);
+	Grid* g = new Grid(100);
 	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;

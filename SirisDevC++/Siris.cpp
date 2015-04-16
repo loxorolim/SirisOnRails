@@ -8,10 +8,10 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-#include "rice/Class.hpp"
-///* run this program using the console pauser or add your own getch, system("pause") or input loop */
-//
-using namespace Rice;
+//#include "rice/Class.hpp"
+/////* run this program using the console pauser or add your own getch, system("pause") or input loop */
+////
+//using namespace Rice;
 
 
 
@@ -343,22 +343,24 @@ void testFromFile(string metersFile, string polesFile, int scenario, int technol
 		//AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
 
 		string finalResult = "";
+		//1000x1000 m
+		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath, 1000);
 
-		cout << "Iniciando 0.001 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.001);
-		cout << "Finalizando 0.001 \n";
-		cout << "Iniciando 0.005 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.005);
-		cout << "Finalizando 0.005 \n";
-		cout << "Iniciando 0.01 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.01);
-		cout << "Finalizando 0.01 \n";
-		cout << "Iniciando 0.05 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.05);
-		cout << "Finalizando 0.05 \n";
-		cout << "Iniciando 0.1 \n";
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.1);
-		cout << "Finalizando 0.1 \n";
+		//cout << "Iniciando 0.001 \n";
+		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.001);
+		//cout << "Finalizando 0.001 \n";
+		//cout << "Iniciando 0.005 \n";
+		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.005);
+		//cout << "Finalizando 0.005 \n";
+		//cout << "Iniciando 0.01 \n";
+		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.01);
+		//cout << "Finalizando 0.01 \n";
+		//cout << "Iniciando 0.05 \n";
+		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.05);
+		//cout << "Finalizando 0.05 \n";
+		//cout << "Iniciando 0.1 \n";
+		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.1);
+		//cout << "Finalizando 0.1 \n";
 
 
 		for(int i =0; i < meters.size(); i++)
@@ -399,9 +401,9 @@ string RubyPathTest(string t)
 int main(int argc, char** argv)
 {
 	
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	//string rubyPath = "C:/Sites/first_app";
-	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Sites/first_app";
+	testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters4000.txt", "filepoles4000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
@@ -422,13 +424,13 @@ int main(int argc, char** argv)
 //	std::cout << val;
 	return 0;
 }
-
-extern "C"
-
-void Init_Siris()
-{
-  Class rb_c = define_class("Siris")
-   .define_method("getResponse", &getResponse);
-
-}
+//
+//extern "C"
+//
+//void Init_Siris()
+//{
+//  Class rb_c = define_class("Siris")
+//   .define_method("getResponse", &getResponse);
+//
+//}
 

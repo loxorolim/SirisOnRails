@@ -40,6 +40,7 @@ class MetricCalculation
 			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
 			double regionLimiter ;
 			int packetSize; //em Mb
+			double perHopDelay;
 			string rubyPath;
 	public:
 			MetricCalculation(vector<Position*> &m, vector<Position*> &d, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
@@ -57,6 +58,7 @@ class MetricCalculation
 			rubyPath = rp;
 			regionLimiter = 0.001;
 			packetSize = 400 * 8;
+			perHopDelay = 2; //ms
 		};
 		~MetricCalculation()
 		{

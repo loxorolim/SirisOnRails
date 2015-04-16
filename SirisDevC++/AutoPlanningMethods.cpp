@@ -432,6 +432,9 @@ string AutoPlanning::gridAutoPlanning()
 	//Remove redundâncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+
+
+
 	for (int i = 0; i < chosenDaps.size(); i++)
 	{
 		str += chosenDaps[i] + " ";
@@ -507,10 +510,32 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 	{
 		str += chosenDaps[i] + " ";
 	}
-	delete metergrid;
-	delete polegrid;
+	//PÓS OTIMIZAÇÃO
+	int* chosen = new int[poles.size()];
+	for (int i = 0; i < poles.size(); i++)
+		chosen[i] = 0;
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		string snum = chosenDaps[i].substr(1);
+		const char * c = snum.c_str();
+		int val = atoi(c);
+		chosen[val] = 1;
+	}
 	meters = metersAux;
 	poles = polesAux;
+	vector<vector<int> > scp = createScp();
+	RolimLocalSearch(scp, chosen);
+	int count=0; //removr depois
+	for (int i = 0; i < poles.size(); i++)
+	{
+		if (chosen[i] == 1)
+			count++;
+	}
+
+
+	delete metergrid;
+	delete polegrid;
+
 	*mtu = maximumtimeusage;
 	*mmu = maximummemusage;
 	return str;
@@ -697,6 +722,13 @@ void RolimLocalSearch(vector<vector<int> > &scp, int * solution)
 	int succeeded = 1;
 	while (succeeded)
 	{
+		int count=0;
+		for (int x = 0; x < scp.size(); x++)
+		{
+			if (solution[x] == 1)
+				count++;
+		}
+		cout << count;
 		succeeded = 0;
 		for (int i = 0; i < scp.size(); i++)
 		{
@@ -708,7 +740,7 @@ void RolimLocalSearch(vector<vector<int> > &scp, int * solution)
 				vector<int> removable;
 				for (int j = 0; j < scp.size(); j++)
 				{
-					if (j != i)
+					if (j != i && solution[j] == 1)
 					{
 						vector<int> toCheck = scp[j];
 						sort(toCheck.begin(), toCheck.end());
