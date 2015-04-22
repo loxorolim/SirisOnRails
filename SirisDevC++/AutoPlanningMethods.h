@@ -72,5 +72,6 @@ class AutoPlanning
 
 
 void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
+void WalkSat(vector<vector<int> > &scp, int * solution);
 
 #endif

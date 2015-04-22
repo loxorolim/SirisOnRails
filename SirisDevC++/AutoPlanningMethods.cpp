@@ -477,7 +477,7 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 		meters = cellsMeters;
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
-		saveGLPKFile(cellSCP);
+		saveGLPKFileReduced(cellSCP);
 		executeGlpk(rubyPath+"/GlpkFile.txt");
 		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
@@ -511,6 +511,8 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 		str += chosenDaps[i] + " ";
 	}
 	//PÓS OTIMIZAÇÃO
+	meters = metersAux;
+	poles = polesAux;
 	int* chosen = new int[poles.size()];
 	for (int i = 0; i < poles.size(); i++)
 		chosen[i] = 0;
@@ -518,19 +520,20 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 	{
 		string snum = chosenDaps[i].substr(1);
 		const char * c = snum.c_str();
-		int val = atoi(c);
+		int val = atoi(c)-1;
 		chosen[val] = 1;
 	}
-	meters = metersAux;
-	poles = polesAux;
+
 	vector<vector<int> > scp = createScp();
 	RolimLocalSearch(scp, chosen);
+	//WalkSat(scp, chosen);
 	int count=0; //removr depois
 	for (int i = 0; i < poles.size(); i++)
 	{
 		if (chosen[i] == 1)
 			count++;
 	}
+	cout << count;
 
 
 	delete metergrid;

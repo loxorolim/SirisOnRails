@@ -1,0 +1,21 @@
+
+Grid height: 8905559.263462
+ Grid width: 8905559.263462
+
+Grid planning solution time: 29.629000
+Maximum Memory Used: 161.500000
+
+Maximum Time Used in a Cell: 0.000000
+
+Quantidade de agregadores<>312
+Quantidade de medidores<>4967
+Medidores descobertos<>0
+Qualidade media do salto 1<>1
+Atraso medio do salto 1<>0.509ms 
+Medidores a 1 salto<>4967
+Min Medidores por agregador<>1.000000
+Med Medidores por agregador<>18.9
+Max Medidores por agregador<>180.000000
+Min redundancia por medidor<>1.000000
+Med redundancia por medidor<>1.19
+Max redundancia por medidor<>3.000000

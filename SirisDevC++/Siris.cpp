@@ -8,10 +8,10 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-//#include "rice/Class.hpp"
-/////* run this program using the console pauser or add your own getch, system("pause") or input loop */
-////
-//using namespace Rice;
+#include "rice/Class.hpp"
+///* run this program using the console pauser or add your own getch, system("pause") or input loop */
+//
+using namespace Rice;
 
 
 
@@ -344,7 +344,7 @@ void testFromFile(string metersFile, string polesFile, int scenario, int technol
 
 		string finalResult = "";
 		//1000x1000 m
-		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath, 1000);
+		finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath, 100);
 
 		//cout << "Iniciando 0.001 \n";
 		//finalResult += gridTest(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath, 0.001);
@@ -401,19 +401,19 @@ string RubyPathTest(string t)
 int main(int argc, char** argv)
 {
 	
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	string rubyPath = "C:/Sites/first_app";
-	testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//string rubyPath = "C:/Sites/first_app";
+	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters4000.txt", "filepoles4000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters5000.txt", "filepoles5000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters10000.txt", "filepoles10000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testGraspFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
 //	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath)//;
-	testGraspFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+	//testGraspFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
 	//testGraspFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
 //	vector<Position*> teste;
 //	Grid *g = new Grid(teste,10);
@@ -425,12 +425,12 @@ int main(int argc, char** argv)
 	return 0;
 }
 //
-//extern "C"
-//
-//void Init_Siris()
-//{
-//  Class rb_c = define_class("Siris")
-//   .define_method("getResponse", &getResponse);
-//
-//}
+extern "C"
+
+void Init_Siris()
+{
+  Class rb_c = define_class("Siris")
+   .define_method("getResponse", &getResponse);
+
+}
 
