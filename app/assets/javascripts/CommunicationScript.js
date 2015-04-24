@@ -2,6 +2,7 @@
 const DRAW_FILE_ID = 1;
 const METRIC_FILE_ID = 2;
 const TEST_COLLECTION_FILE_ID = 3;
+const KML_CREATION_FILE_ID = 5;
 
 function sendDrawRequest(){
     sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
@@ -32,7 +33,6 @@ function sendDataToServer(url,method,type) {
     var uncoveredMeters = meters.filter(function (item) {
             return (item.connected != true);
     });
-    //var data = printScpMatrixTeste(uncoveredMeters);
     var data ;
     switch(type){
         case AUTO_PLAN_FILE_ID:
@@ -50,6 +50,10 @@ function sendDataToServer(url,method,type) {
         case 4: //SÓ PRO TESTE DO GRID, PODE IGNORAR
             data = createGridTestFileModel();
             break;
+		case KML_CREATION_FILE_ID:
+            data = createMetricsFileModel();
+            break;
+
         default:
             data = -1;
             break;
@@ -74,11 +78,14 @@ function sendDataToServer(url,method,type) {
                         readPropagationResponse(data);
                         break;
                     case METRIC_FILE_ID:
-                        readMetricResponse(data);
+                        readMetricResponse(data,false);
                         break;
                     case 4: //SÓ UM TESTE DO GRID, PODE IGNORAR
                         readGridTestResponse(data);
                         break;
+					case KML_CREATION_FILE_ID:
+						readMetricResponse(data,true);
+						break;
                     default:
                         break;
                 }
@@ -173,32 +180,58 @@ function readGridTestResponse(data){
    }
 
 }
-function readMetricResponse(data){
+function readMetricResponse(data,kml){
    // alert(data);
-	var split = data.split("\n");
-	var text = "";
-	$("#metricsTable tr").remove();
-	for(var i = 0; i < split.length;i++){
-		var aux = split[i].split("<>");
-		$( "#metricsTable tbody" ).append( 
-		"<tr>" +
-		  "<th class=\"ui-widget-header \">" + aux[0] + "</th>" +
-		  "<td>" + aux[1] + "</td>" +
-		   +"</tr>" );	
-	}	
-    $(function() {
-        $( "#statisticDialog" ).dialog({
-            show: {
-				effect: "drop",
-				duration: 500
-			},
-			hide: {
-				effect: "drop",
-				duration: 500
-			},
-			resizable: false,
+ 
+   if(!kml){
+		$("#metricsTable tr").remove();
+		if(data != ""){
+			var split = data.split("\n");
+			var text = "";		
+			for(var i = 0; i < split.length;i++){
+				var aux = split[i].split("<>");
+				$( "#metricsTable tbody" ).append( 
+				"<tr>" +
+				  "<th class=\"ui-widget-header \">" + aux[0] + "</th>" +
+				  "<td>" + aux[1] + "</td>" +
+				   +"</tr>" );	
+			}
+		}
+		else{
+				$( "#metricsTable tbody" ).append( 
+				"<tr>" +
+				  "<th class=\"ui-widget-header \">" + "Nao há medidores e/ou agregadores" + "</th>" 
+				   +"</tr>" );
+		}		
+		$(function() {
+			$( "#statisticDialog" ).dialog({
+				show: {
+					effect: "drop",
+					duration: 500
+				},
+				hide: {
+					effect: "drop",
+					duration: 500
+				},
+				resizable: false,
+			});
 		});
-	});
+		
+	}
+	else{
+		var text = "\n";
+		if(data != ""){
+			var split = data.split("\n");	
+			for(var i = 0; i < split.length;i++){
+				var aux = split[i].split("<>");
+				text += aux[0]+": "+aux[1] + "\n";
+			}
+		}
+		var kml = formatKMLText(text);
+		var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
+		
+	}
 
 
 
@@ -325,9 +358,10 @@ function createTestFileModel(){
     return ret;
 }
 function download() {
-    var toSave = formatKMLText();
-    var blob = new Blob([toSave], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
+	sendDataToServer(serverAddress, 'POST', KML_CREATION_FILE_ID);
+   // var toSave = formatKMLText();
+   // var blob = new Blob([toSave], {type: "text/plain;charset=utf-8"});
+   // saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
 }
 
 function upload(fileInput) {
@@ -339,6 +373,7 @@ function upload(fileInput) {
             var fileText = reader.result;
             loadFromKMLText(fileText);
             $("#uploadDialog").dialog("close");
+			$("#resetOnUpload").prop('checked', false);
             
         }
         if(file)

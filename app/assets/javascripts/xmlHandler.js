@@ -91,6 +91,9 @@ function loadFromKMLText(kml){
 	var tech = $(kml).find('Technology').text();
 	tech = parseInt(tech);
 	setTechnology(tech);	
+	var mHops = $(kml).find('MeshHops').text();
+	mHops = parseInt(mHops);
+	setMeshHops(mHops);
 
 	$(kml).find('Placemark').each(function(){
 		var type = $(this).find('name').text();
@@ -128,12 +131,17 @@ function loadFromKMLText(kml){
 	sendDrawRequest();
 
 }
-function formatKMLText() {
+function formatKMLText(metrics) {
+
+
 	var init = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://earth.google.com/kml/2.2\">\n";
 	init += "<Document>\n";
 	init += "<Scenario>"+scenario+"</Scenario>\n";
 	init += "<Technology>"+technology+"</Technology>\n";
 	init += "<Power>"+TRANSMITTER_POWER+"</Power>\n";
+	init += "<MeshHops>"+meshMaxJumps+"</MeshHops>\n";
+	init += "<Metrics>"+metrics+"</Metrics>\n";
+	
 	init += "<Folder><name>Medidores</name>\n"
 	for(var i = 0;i<meters.length;i++){
 		init+="<Placemark>\n<name>Medidor</name>\n<Point>\n<coordinates>"+

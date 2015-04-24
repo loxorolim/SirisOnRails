@@ -144,7 +144,7 @@ string getResponse(string req, string rubyPath)
 		int pLength;
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
-		if(pLength == 0) return "Não há medidores!";
+		if(pLength == 0) return "";
 		vector<Position*> meters;
 		vector<Position*> daps;
 		for (int i = 0; i < pLength; i++)
@@ -161,7 +161,7 @@ string getResponse(string req, string rubyPath)
 		}
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
-		if(pLength == 0) return "Não há agregadores!";
+		if(pLength == 0) return "";
 		for (int i = 0; i < pLength; i++)
 		{
 			double lat;

@@ -421,11 +421,23 @@ function setButtons()
 				});
 			});     
 		});
+		
   $('#submitButton').button({
     text: "Submit"
   }).click(function () {
-      upload($("#uploadFile").get(0));
-	  
+		if($("#resetOnUpload").is(':checked')){
+			while(meters.length > 0){
+				meters[0].remove();
+			}
+			while(daps.length > 0){
+				daps[0].remove();
+			}
+			while(poles.length > 0){
+				poles[0].remove();
+			}		
+		}
+		upload($("#uploadFile").get(0));
+
     });
     $('#uploadFile').button();
 
