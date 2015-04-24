@@ -12,6 +12,11 @@ const t802_11_a = 1;
 const t802_11_g = 2;
 const serverAddress = "/autoplan";
 
+const REMOVE_ALL = 0;
+const REMOVE_DAPS = 1;
+const REMOVE_METERS = 2;
+const REMOVE_POLES = 3;
+
 var directionsService;
 var markerCluster;
 var scenario = Urbano;
@@ -58,6 +63,8 @@ var dbm = "dbm0";
 var meshEnabled = false;
 var markerPair = [];
 var markerConnections = [];
+var drawingManager;
+var removeSelectionMode = 0;
 
 
 

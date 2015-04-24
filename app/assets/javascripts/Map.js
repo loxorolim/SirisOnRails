@@ -27,8 +27,64 @@ function initialize() {
 
     // google.maps.event.addListener(map, 'idle', showMarkers);
     //google.maps.event.addListener(map,'dragend', drawGridElements);
-    elevator = new google.maps.ElevationService();  
+   // elevator = new google.maps.ElevationService();  
     directionsService = new google.maps.DirectionsService();
+
+    drawingManager = new google.maps.drawing.DrawingManager({
+    drawingMode: null,
+    drawingControl: false,
+    rectangleOptions: {
+      fillColor: '#0000ff',
+      fillOpacity: 0.1,
+      strokeWeight: 1,
+      clickable: false,
+      editable: false,
+      zIndex: 1,
+
+    }
+
+  });
+  drawingManager.setMap(map);
+  google.maps.event.addListener(drawingManager, 'rectanglecomplete', function (event) {
+       var recBounds = event.getBounds();
+       switch(removeSelectionMode){
+
+            case REMOVE_ALL:
+            case REMOVE_DAPS:
+                for(var i = 0; i < daps.length; i++){
+                    if(recBounds.contains(daps[i].getPosition())){
+                        daps[i].remove();
+                        i--;
+                    }
+                } 
+                if(removeSelectionMode != REMOVE_ALL)
+                    break;
+            case REMOVE_METERS:
+                for(var i = 0; i < meters.length; i++){
+                    if(recBounds.contains(meters[i].getPosition())){
+                        meters[i].remove();
+                        i--;
+                    }
+                }
+                if(removeSelectionMode != REMOVE_ALL)
+                    break;
+            case REMOVE_POLES:
+                for(var i = 0; i < poles.length; i++){
+                    if(recBounds.contains(poles[i].getPosition())){
+                        poles[i].remove();
+                        i--;
+                    }
+               }
+            break;
+
+            default:
+            break;
+
+       }
+
+       event.setMap(null);
+       sendDrawRequest();
+  });
     //loadFromKML();
 
     //var overlay = new google.maps.OverlayView();

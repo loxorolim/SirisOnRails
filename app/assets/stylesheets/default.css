@@ -20,6 +20,18 @@
 .ui-button .ui-icon.eraser {
      background-image: url(removecursor.png); 
 }
+.ui-button .ui-icon.eraserSelection {
+     background-image: url(removeselectionicon.png); 
+}
+.ui-button .ui-icon.dapEraserSelection {
+     background-image: url(dapremoveselectionicon.png); 
+}
+.ui-button .ui-icon.meterEraserSelection {
+     background-image: url(meterremoveselectionicon.png); 
+}
+.ui-button .ui-icon.poleEraserSelection {
+     background-image: url(poleremoveselectionicon.png); 
+}
 .ui-button .ui-icon.heatmap {
      background-image: url(heatmap.png); 
 }

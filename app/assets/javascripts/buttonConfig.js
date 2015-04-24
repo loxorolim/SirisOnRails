@@ -59,13 +59,61 @@ function setRadio() {
         text: false
     });
     $("#eraserRadio").click(function (event) {
-
-
-
         setOpMode("Removal");
         map.setOptions({ draggableCursor: "url(/assets/cursors/removecursor.cur), default" });
         setInfoWindowNull();
-        //$('#configMessage').html(getConfigurations());
+        drawingManager.setDrawingMode(null);
+    });
+    $("#eraserSelectionRadio").button({
+        icons: {
+            primary: "eraserSelection",
+            secondary: null
+        },
+        text: false
+    });
+    $("#eraserSelectionRadio").click(function (event) {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_ALL;
+        setInfoWindowNull();
+
+    });
+    $("#dapEraserSelectionRadio").button({
+        icons: {
+            primary: "dapEraserSelection",
+            secondary: null
+        },
+        text: false
+    });
+    $("#dapEraserSelectionRadio").click(function (event) {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_DAPS;
+        setInfoWindowNull();
+
+    });
+    $("#meterEraserSelectionRadio").button({
+        icons: {
+            primary: "meterEraserSelection",
+            secondary: null
+        },
+        text: false
+    });
+    $("#meterEraserSelectionRadio").click(function (event) {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_METERS;
+        setInfoWindowNull();
+
+    });
+    $("#poleEraserSelectionRadio").button({
+        icons: {
+            primary: "poleEraserSelection",
+            secondary: null
+        },
+        text: false
+    });
+    $("#poleEraserSelectionRadio").click(function (event) {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_POLES;
+        setInfoWindowNull();
 
     });
     $("#viewRadio").button({
@@ -78,6 +126,7 @@ function setRadio() {
     $("#viewRadio").click(function () {
         setOpMode("View");
         map.setOptions({ draggableCursor: "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), auto" });
+        drawingManager.setDrawingMode(null);
 
     });
     $("#dapRadio").button({
@@ -92,6 +141,7 @@ function setRadio() {
         setInfoWindowNull();
         setInsertionOptions("DAP")
         map.setOptions({ draggableCursor: "url(/assets/cursors/dapcursor.cur), auto" });
+        drawingManager.setDrawingMode(null);
 
     });
     $("#meterRadio").button({
@@ -105,7 +155,8 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Meter");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/metercursor.cur), default" })
+        map.setOptions({ draggableCursor: "url(/assets/cursors/metercursor.cur), default" });
+        drawingManager.setDrawingMode(null);
 
     });
     $("#pole").button({
@@ -119,7 +170,8 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Pole");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/polecursor.cur), default" })
+        map.setOptions({ draggableCursor: "url(/assets/cursors/polecursor.cur), default" });
+        drawingManager.setDrawingMode(null);
 
     });
 }
