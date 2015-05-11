@@ -60,7 +60,7 @@ var infowindow = new google.maps.InfoWindow();
 var opMode = "Insertion";
 var radioMode = "Line";
 var dbm = "dbm0";
-var meshEnabled = false;
+var meshEnabled = 0;
 var markerPair = [];
 var markerConnections = [];
 var drawingManager;

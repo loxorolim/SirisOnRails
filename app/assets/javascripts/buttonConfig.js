@@ -433,7 +433,11 @@ function setButtons()
     }).click(function () {
         $(this).blur();
 //        $.blockUI({ fadeIn: 0, message: '<h1><img src="siri2.gif" /> Carregando </h1>' });
-        meshEnabled = !meshEnabled;
+        if(meshEnabled) 
+			meshEnabled = 0;
+		else 
+			meshEnabled = 1;
+		
 		sendDrawRequest();
         //$('#check').button.removeClass("ui-state-focus ui-state-hover");
 //        $.unblockUI();
@@ -610,6 +614,17 @@ function setMeshHops(value){
 	  $("#meshSlider").slider('value', value);
 	}
 }   
+function setMeshActivation(value){
+	if(value == 1){
+		meshEnabled = 1;
+		$('#checkRFMesh').prop('checked', true);
+	}
+	if(value == 0){
+		$('#checkRFMesh').prop('checked', false);
+		meshEnabled = 0;
+	}
+	$('#checkRFMesh').button("refresh");
+}
 var bitRates = [1,2,5.5,6,9,11,12,18,24,36,54 ];
 function setBitRate(value){
   if(!isNaN(value)){

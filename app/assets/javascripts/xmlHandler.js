@@ -94,6 +94,10 @@ function loadFromKMLText(kml){
 	var mHops = $(kml).find('MeshHops').text();
 	mHops = parseInt(mHops);
 	setMeshHops(mHops);
+	var mEnabled = $(kml).find('MeshEnabled').text();
+	mEnabled = parseInt(mEnabled);
+	setMeshActivation(mEnabled);
+
 
 	$(kml).find('Placemark').each(function(){
 		var type = $(this).find('name').text();
@@ -140,6 +144,7 @@ function formatKMLText(metrics) {
 	init += "<Technology>"+technology+"</Technology>\n";
 	init += "<Power>"+TRANSMITTER_POWER+"</Power>\n";
 	init += "<MeshHops>"+meshMaxJumps+"</MeshHops>\n";
+	init += "<MeshEnabled>"+meshEnabled+"</MeshEnabled>\n";
 	init += "<Metrics>"+metrics+"</Metrics>\n";
 	
 	init += "<Folder><name>Medidores</name>\n"
