@@ -377,7 +377,12 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 	if (minDist != -1)
 	{
 		double dist = getDistance(meter, deviceToConnect);
-		double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		double eff = 0;
+		if (hop == 0)
+			eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+		else
+			eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
+
 		if (eff >= MARGIN_VALUE)
 		{
 			sComponent* ret;

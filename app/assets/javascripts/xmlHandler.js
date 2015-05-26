@@ -82,6 +82,14 @@ function loadNodesFromXml()
 }
 function loadFromKMLText(kml){
 	
+	//var teste = kml.split("\n");
+	//for(var i = 0; i < teste.length; i++)
+	//{
+	//	var wow = teste[i].split(" ");
+	//	var meter = createMeter();
+	//	meter.placeOnMap(wow[1], wow[0]);
+	//}
+	
 	var sce = $(kml).find('Scenario').text();
 	sce = parseInt(sce);
 	setScenario(sce);

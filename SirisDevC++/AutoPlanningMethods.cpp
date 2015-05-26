@@ -525,7 +525,17 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 	}
 
 	vector<vector<int> > scp = createScp();
-	RolimLocalSearch(scp, chosen);
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			invertedSCP[scp[i][j]].push_back(i);
+		}
+	}
+	//RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
+	RolimLocalSearch(scp,  chosen);
 	//WalkSat(scp, chosen);
 	int count=0; //removr depois
 	for (int i = 0; i < poles.size(); i++)
@@ -761,6 +771,59 @@ void RolimLocalSearch(vector<vector<int> > &scp, int * solution)
 					break;
 				}
 			}			
+		}
+	}
+}
+void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedScp,  int * solution)
+{
+	int succeeded = 1;
+
+	while (succeeded)
+	{
+		int count = 0;
+		for (int x = 0; x < scp.size(); x++)
+		{
+			if (solution[x] == 1)
+				count++;
+		}
+		cout << count;
+		succeeded = 0;
+		for (int i = 0; i < scp.size(); i++)
+		{
+			vector<int> aux;
+			if (solution[i] == 0)
+			{
+				aux = scp[i];
+				sort(aux.begin(), aux.end());
+				vector<int> removable;
+				vector<int> polesToCheck;
+				for (int z = 0; z < aux.size(); z++)
+				{
+					polesToCheck.insert(polesToCheck.end(), invertedScp[aux[z]].begin(), invertedScp[aux[z]].end());
+				}
+				sort(polesToCheck.begin(), polesToCheck.end());
+				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
+
+				for (int j = 0; j < polesToCheck.size(); j++)
+				{
+					if (polesToCheck[j] != i && solution[polesToCheck[j]] == 1)
+					{
+						vector<int> toCheck = scp[polesToCheck[j]];
+						sort(toCheck.begin(), toCheck.end());
+						if (includes(aux.begin(), aux.end(), toCheck.begin(), toCheck.end()))
+							removable.push_back(polesToCheck[j]);
+					}
+
+				}
+				if (removable.size() >= 2)
+				{
+					solution[i] = 1;
+					for (int z = 0; z < removable.size(); z++)
+						solution[removable[z]] = 0;
+					succeeded = 1;
+					break;
+				}
+			}
 		}
 	}
 }
