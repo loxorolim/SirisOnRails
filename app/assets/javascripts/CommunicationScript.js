@@ -180,8 +180,103 @@ function readGridTestResponse(data){
    }
 
 }
+//Função que lê o código recebido e retorna o que se deve escrever para o usuário na tabela de estatísticas.
+function statisticsDecode(code){
+	//Códigos:
+	//DQ - Dap Quantity
+	//MQ - Meter Quantity
+	//UM - Uncovered Meters
+	//QPHX - Quality Per Hop X=Number
+	//DPHX - Delay Per Hop X=Number
+	//MPHX - Meter Per Hop X=Number
+	//MPDMin
+	//MPDMed - Meter Per Dap
+	//MPDMax
+	//RMin
+	//RMed - Redundancy
+	//RMax  
+	switch(code){
+		case "DQ":
+			return "Quantidade de DAPs";
+		case "MQ":
+			return "Quantidade de medidores";
+		case "UM":
+			return "Medidores decobertos";
+		case "MPDMin":
+			return "Mínimo de medidores por DAP";
+		case "MPDMed":
+			return "Média de medidores por DAP";
+		case "MPDMax":
+			return "Máximo de medidores por DAP";
+		case "RMin":
+			return "Redundância Mínima";
+		case "RMed":
+			return "Redundância Média";
+		case "RMax":
+			return "Redundância Máxima";
+		default:
+			var aux = code.substring(0, 3);
+			var num = code.substring(3,4);
+			if(aux=="QPH")
+				return "Qualidade média do salto "+num;		
+			if(aux =="DPH")
+				return "Atraso médio do salto "+num;	
+			if(aux == "MPH")
+				return "Medidores a "+num+" salto(s)";			
+		break;
+	}
+	return "Código não definido";
+}
+function formatStatisticsToKML(stats){
+	var ret;
+	if(data != ""){
+		var split = data.split("\n");	
+		for(var i = 0; i < split.length;i++){	
+			var aux = split[i].split("<>");
+			var text;
+			//text += aux[0]+": "+aux[1] + "\n";
+	
+			switch(aux[0]){
+				case "DQ":
+					return "<DAPQnt> "+val+" </DAPQnt>";
+				case "MQ":
+					return "<MeterQnt> "+val+" </MeterQnt>";
+				case "UM":
+					return "<UncoveredMeters> "+val+" </UncoveredMeters>";
+				case "MPDMin":
+					return "Mínimo de medidores por DAP";
+				case "MPDMed":
+					return "<MetersPerDap>\n"+
+				"<Min>"+ </Min> double (ou integer)
+				<Med> </Med> double
+				<Max> </Max> double (ou integer)
+			</MetersPerDap>";
+				case "MPDMax":
+					return "Máximo de medidores por DAP";
+				case "RMin":
+					return "Redundância Mínima";
+				case "RMed":
+					return "Redundância Média";
+				case "RMax":
+					return "Redundância Máxima";
+				default:
+					var aux = code.substring(0, 3);
+					var num = code.substring(3,4);
+					if(aux=="QPH")
+						return "Qualidade média do salto "+num;		
+					if(aux =="DPH")
+						return "Atraso médio do salto "+num;	
+					if(aux == "MPH")
+						return "Medidores a "+num+" salto(s)";			
+				break;
+			}
+			return "Código não definido";
+			
+		}
+	}
+	
+}
 function readMetricResponse(data,kml){
-   // alert(data);
  
    if(!kml){
 		$("#metricsTable tr").remove();
@@ -192,7 +287,7 @@ function readMetricResponse(data,kml){
 				var aux = split[i].split("<>");
 				$( "#metricsTable tbody" ).append( 
 				"<tr>" +
-				  "<th class=\"ui-widget-header \">" + aux[0] + "</th>" +
+				  "<th class=\"ui-widget-header \">" + statisticsDecode(aux[0]) + "</th>" +
 				  "<td>" + aux[1] + "</td>" +
 				   +"</tr>" );	
 			}
@@ -232,9 +327,6 @@ function readMetricResponse(data,kml){
 		saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
 		
 	}
-
-
-
 }
 
 function propagationValuesToSend(){
