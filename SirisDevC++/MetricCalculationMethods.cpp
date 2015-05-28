@@ -410,6 +410,23 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 	}
 	return NULL;
 }
+string statisticFormat(string name, string val)
+{
+	string ret = "";
+	ret += "<Statistic type = \"" + name + "\">\n<Value>" + val + "</Value>\n</Statistic>\n";
+	return ret;
+}
+string statisticFormat(string name, vector<string> vals )
+{
+	string ret = "";
+	ret += "<Statistic type = \"" + name + "\">\n"
+		+ "<Min>" + vals[0] + "</Min>\n"
+		+ "<Med>" + vals[0] + "</Med>\n"
+		+ "<Max>" + vals[0] + "</Max>\n" 
+		+ "</Statistic>\n";
+
+	return ret;
+}
 //Esse é o método principal.Ele cria a Statistical List, a Coverage List, chama os métodos e cria uma String com todas essas informações que será lida pelo cliente
 // e exibida. Os caracteres "<>" são apenas da formatação para separar os valores dos textos que esses valores representam.
 string MetricCalculation::executeMetricCalculation()
@@ -451,19 +468,22 @@ string MetricCalculation::executeMetricCalculation()
 	string ret =  "";
 	//ret+= "DAPs quantity: " + to_string(daps.size()) + "\n";
 	//ret+= "Quantidade de agregadores<>" + to_string(daps.size()) + "\n";
-	ret += "DQ<>" + to_string(daps.size()) + "\n";
+	//ret += "DQ<>" + to_string(daps.size()) + "\n";
+	ret += statisticFormat("DAPQnt", to_string(daps.size()));
 	//ret+= "Meters quantity: " + to_string(meters.size()) + "\n";
 	//ret+= "Quantidade de medidores<>" + to_string(meters.size()) + "\n";
-	ret += "MQ<>" + to_string(meters.size()) + "\n";
+	//ret += "MQ<>" + to_string(meters.size()) + "\n";
+	ret += statisticFormat("MeterQnt", to_string(meters.size()));
 	//ret+= "Uncovered meters quantity: " + to_string(meters.size() - coveredMeters) + "\n";
 	//ret+= "Medidores descobertos<>" + to_string(meters.size() - coveredMeters) + "\n";
-	ret += "UM<>" + to_string(meters.size() - coveredMeters) + "\n";
+	//ret += "UM<>" + to_string(meters.size() - coveredMeters) + "\n";
+	ret += statisticFormat("UncoveredMeters", to_string(meters.size() - coveredMeters));
 
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
 		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
 		//ret+=  "Qualidade media do salto " + to_string(i+1) + "<>" + to_string(v[i],3) + "\n";
-		ret += "QPH" + to_string(i + 1) + "<>" + to_string(v[i], 3) + "\n";
+		//ret += "QPH" + to_string(i + 1) + "<>" + to_string(v[i], 3) + "\n";
 	}
 	for (int i = 0; i < meshEnabled + 1; i++)
 	{
