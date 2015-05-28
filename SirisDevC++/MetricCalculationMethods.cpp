@@ -413,17 +413,23 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 string statisticFormat(string name, string val)
 {
 	string ret = "";
-	ret += "<Statistic type = \"" + name + "\">\n<Value>" + val + "</Value>\n</Statistic>\n";
+	ret += "<statistic type = \"" + name + "\">\n<Value>" + val + "</Value>\n</statistic>\n";
+	return ret;
+}
+string statisticFormat(string name, string val, int hop)
+{
+	string ret = "";
+	ret += "<statistic type = \"" + name + "\" hop = \""+to_string(hop)+"\">\n<Value>" + val + "</Value>\n</statistic>\n";
 	return ret;
 }
 string statisticFormat(string name, vector<string> vals )
 {
 	string ret = "";
-	ret += "<Statistic type = \"" + name + "\">\n"
-		+ "<Min>" + vals[0] + "</Min>\n"
-		+ "<Med>" + vals[0] + "</Med>\n"
-		+ "<Max>" + vals[0] + "</Max>\n" 
-		+ "</Statistic>\n";
+	ret += "<statistic type = \"" + name + "\">\n"
+		+ "<min>" + vals[0] + "</min>\n"
+		+ "<med>" + vals[0] + "</med>\n"
+		+ "<max>" + vals[0] + "</max>\n" 
+		+ "</statistic>\n";
 
 	return ret;
 }
@@ -465,7 +471,7 @@ string MetricCalculation::executeMetricCalculation()
 	{
 		coveredMeters += v2[i];
 	}
-	string ret =  "";
+	string ret =  "<Statistics>\n";
 	//ret+= "DAPs quantity: " + to_string(daps.size()) + "\n";
 	//ret+= "Quantidade de agregadores<>" + to_string(daps.size()) + "\n";
 	//ret += "DQ<>" + to_string(daps.size()) + "\n";
@@ -484,19 +490,23 @@ string MetricCalculation::executeMetricCalculation()
 		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
 		//ret+=  "Qualidade media do salto " + to_string(i+1) + "<>" + to_string(v[i],3) + "\n";
 		//ret += "QPH" + to_string(i + 1) + "<>" + to_string(v[i], 3) + "\n";
+		ret += statisticFormat("QualityPerHop", to_string(v[i], 3),i+1);
 	}
 	for (int i = 0; i < meshEnabled + 1; i++)
 	{
 		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
 		//ret += "Atraso medio do salto " + to_string(i + 1) + "<>" + to_string(v5[i], 3) + "ms \n";
-		ret += "DPH" + to_string(i + 1) + "<>" + to_string(v5[i], 3) + "\n";
+		//ret += "DPH" + to_string(i + 1) + "<>" + to_string(v5[i], 3) + "\n";
+		ret += statisticFormat("DelayPerHop", to_string(v5[i], 3), i + 1);
+	
 	}
 
 	for(int i = 0; i < meshEnabled+1; i++)
 	{
 		//ret += "Meter per hop " + to_string(i+1) + ": " + to_string(v2[i]) + "\n";
 		//ret += "Medidores a " + to_string(i+1) + " salto<>" + to_string(v2[i]) + "\n";
-		ret += "MPH" + to_string(i + 1) + "<>" + to_string(v2[i]) + "\n";
+		//ret += "MPH" + to_string(i + 1) + "<>" + to_string(v2[i]) + "\n";
+		ret += statisticFormat("MetersPerHop", to_string(v2[i], 3), i + 1);	
 	}
 
 	//ret+= "Min Meters per DAP: " + to_string(v3[0]) + "\n";
@@ -505,18 +515,26 @@ string MetricCalculation::executeMetricCalculation()
 	//ret+= "Min Medidores por agregador<>" + to_string(v3[0]) + "\n";
 	//ret+=  "Med Medidores por agregador<>" + to_string(v3[1],3) + "\n";
 	//ret+=  "Max Medidores por agregador<>" + to_string(v3[2]) + "\n";
-	ret += "MPDMin<>" + to_string(v3[0]) + "\n";
-	ret += "MPDMed<>" + to_string(v3[1], 3) + "\n";
-	ret += "MPDMax<>" + to_string(v3[2]) + "\n";
+	//ret += "MPDMin<>" + to_string(v3[0]) + "\n";
+	//ret += "MPDMed<>" + to_string(v3[1], 3) + "\n";
+	//ret += "MPDMax<>" + to_string(v3[2]) + "\n";
+	vector<string> v3_string;
+	v3_string.push_back(to_string(v3[0]));	v3_string.push_back(to_string(v3[1]));	v3_string.push_back(to_string(v3[2]));
+	ret += statisticFormat("MeterPerDap", v3_string);
 	//ret+=  "Min redundancy per meter: " + to_string(v4[0]) + "\n";
 	//ret+=  "Med redundancy per meter: " + to_string(v4[1],3) + "\n";
 	//ret+=  "Max redundancy per meter: " + to_string(v4[2]) + "\n";
 	//ret+=  "Min redundancia por medidor<>" + to_string(v4[0]) + "\n";
 	//ret+=  "Med redundancia por medidor<>" + to_string(v4[1],3) + "\n";
 	//ret+=  "Max redundancia por medidor<>" + to_string(v4[2]);
-	ret += "RMin<>" + to_string(v4[0]) + "\n";
-	ret += "RMed<>" + to_string(v4[1], 3) + "\n";
-	ret += "RMax<>" + to_string(v4[2]);
+	//ret += "RMin<>" + to_string(v4[0]) + "\n";
+	//ret += "RMed<>" + to_string(v4[1], 3) + "\n";
+	//ret += "RMax<>" + to_string(v4[2]);
+	vector<string> v4_string;
+	v4_string.push_back(to_string(v4[0]));	v4_string.push_back(to_string(v4[1]));	v4_string.push_back(to_string(v4[2]));
+	ret += statisticFormat("RedundancyPerDap", v4_string);
+	ret += "</Statistics>";
+
 	for(int i = 0; i < sL.size();i++)
 	{
 		delete sL[i];

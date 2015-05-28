@@ -246,11 +246,7 @@ function formatStatisticsToKML(stats){
 				case "MPDMin":
 					return "Mínimo de medidores por DAP";
 				case "MPDMed":
-					return "<MetersPerDap>\n"+
-				"<Min>"+ </Min> double (ou integer)
-				<Med> </Med> double
-				<Max> </Max> double (ou integer)
-			</MetersPerDap>";
+					return "<MetersPerDap>\n";
 				case "MPDMax":
 					return "Máximo de medidores por DAP";
 				case "RMin":

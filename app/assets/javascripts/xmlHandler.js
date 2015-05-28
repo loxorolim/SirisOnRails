@@ -155,7 +155,7 @@ function formatKMLText(metrics) {
 	init += "<MeshEnabled>"+meshEnabled+"</MeshEnabled>\n";
 	//init += "<Metrics>"+metrics+"</Metrics>\n";
 	init += "<Statistics>"+"\n";
-	
+	init +=
 	init += "</Statistics>"+"\n";
 	
 	init += "<Folder><name>Medidores</name>\n"
