@@ -413,13 +413,13 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 string statisticFormat(string name, string val)
 {
 	string ret = "";
-	ret += "<statistic type = \"" + name + "\">\n<Value>" + val + "</Value>\n</statistic>\n";
+	ret += "<statistic type = \"" + name + "\">\n<value>" + val + "</value>\n</statistic>\n";
 	return ret;
 }
 string statisticFormat(string name, string val, int hop)
 {
 	string ret = "";
-	ret += "<statistic type = \"" + name + "\" hop = \""+to_string(hop)+"\">\n<Value>" + val + "</Value>\n</statistic>\n";
+	ret += "<statistic type = \"" + name + "\" hop = \""+to_string(hop)+"\">\n<value>" + val + "</value>\n</statistic>\n";
 	return ret;
 }
 string statisticFormat(string name, vector<string> vals )
