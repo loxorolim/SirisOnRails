@@ -248,52 +248,7 @@ function setButtons()
 	           sendDrawRequest();
 	       }
 	   });
-     $("#rateSlider").slider({
-         value: 0,
-         min: 0,
-         max: bitRates.length-1,
-         step: 1,
-         slide: function (event, ui) {
-              $("#rate").text(bitRates[ui.value] + "Mbps");
-         }
-     }); 
-     $("#rateSlider").slider({
-         stop: function (event, ui) {
-            BIT_RATE = bitRates[ui.value];
-            if(technology == t802_11_g)
-              sendDrawRequest();
-         }
-     });
-	  $("#htxSlider").slider({
-         value: 0,
-         min: 0,
-         max: 10,
-         step: 0.1,
-         slide: function (event, ui) {
-              $("#htx").text(ui.value + " Metros");
-         }
-     }); 
-     $("#htxSlider").slider({
-         stop: function (event, ui) {
-            setHTX(ui.value);
-            sendDrawRequest();
-         }
-     });
-	  $("#hrxSlider").slider({
-         value: 0,
-         min: 0,
-         max: 10,
-         step: 0.1,
-         slide: function (event, ui) {
-              $("#hrx").text(ui.value + " Metros");
-         }
-     }); 
-     $("#hrxSlider").slider({
-         stop: function (event, ui) {
-            setHRX(ui.value);
-            sendDrawRequest();
-         }
-     });
+
 	$("#meshSlider").slider({
          value: 0,
          min: 1,
@@ -309,6 +264,28 @@ function setButtons()
             sendDrawRequest();
          }
      });
+	 	$("#meshSliderDiv").slider({
+         value: 0,
+         min: 1,
+         max: 5,
+         step: 1,
+         slide: function (event, ui) {
+              $("#mesh").text(ui.value + " Saltos");
+         }
+     }); 
+     $("#meshSliderDiv").slider({
+         stop: function (event, ui) {
+            setMeshHops(ui.value);
+            sendDrawRequest();
+         }
+     });
+	 $("#meshSliderDiv").hover(function(){ //Open on hover 
+    },    
+    function(){ //Close when not hovered
+		var isHovered = $('#meshButton').is(":hover");
+		if(!isHovered)
+         $('#meshSliderDiv').hide();
+    });
 
 
 
@@ -391,7 +368,7 @@ function setButtons()
           });
         });           
     });
-
+	//$( "#speed" ).selectmenu();
     $('#autoPlanning').button().click(function () {
         
         //createMeshCoverageMatrix(poles);
@@ -422,28 +399,24 @@ function setButtons()
 
         var x = "wow";
     });
-    
-    $('#checkRFMesh').button({
+    $('#meshButton').button({
         icons: {
             primary: "mesh"
         },
  
-        text: false
-
-    }).click(function () {
-        $(this).blur();
-//        $.blockUI({ fadeIn: 0, message: '<h1><img src="siri2.gif" /> Carregando </h1>' });
-        if(meshEnabled) 
-			meshEnabled = 0;
-		else 
-			meshEnabled = 1;
-		
-		sendDrawRequest();
-        //$('#check').button.removeClass("ui-state-focus ui-state-hover");
-//        $.unblockUI();
-
+        text: true
 
     });
+	$('#meshButton').hover(function(){ //Open on hover 
+        $('#meshSliderDiv').show();
+    },    
+    function(){ //Close when not hovered
+		var isHovered = $('#meshSliderDiv').is(":hover");
+		if(!isHovered)
+         $('#meshSliderDiv').hide();
+    });
+	
+
 	$('#statistic').button({
 	icons: {
 		primary: "statistic"
@@ -617,13 +590,13 @@ function setMeshHops(value){
 function setMeshActivation(value){
 	if(value == 1){
 		meshEnabled = 1;
-		$('#checkRFMesh').prop('checked', true);
+		$('#meshButton').prop('checked', true);
 	}
 	if(value == 0){
-		$('#checkRFMesh').prop('checked', false);
+		$('#meshButton').prop('checked', false);
 		meshEnabled = 0;
 	}
-	$('#checkRFMesh').button("refresh");
+	$('#meshButton').button("refresh");
 }
 var bitRates = [1,2,5.5,6,9,11,12,18,24,36,54 ];
 function setBitRate(value){

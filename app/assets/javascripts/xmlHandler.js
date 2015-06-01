@@ -154,9 +154,7 @@ function formatKMLText(metrics) {
 	init += "<MeshHops>"+meshMaxJumps+"</MeshHops>\n";
 	init += "<MeshEnabled>"+meshEnabled+"</MeshEnabled>\n";
 	//init += "<Metrics>"+metrics+"</Metrics>\n";
-	init += "<Statistics>"+"\n";
-	init +=
-	init += "</Statistics>"+"\n";
+	init += metrics+"\n";
 	
 	init += "<Folder><name>Medidores</name>\n"
 	for(var i = 0;i<meters.length;i++){

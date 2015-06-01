@@ -413,23 +413,26 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 string statisticFormat(string name, string val)
 {
 	string ret = "";
-	ret += "<statistic type = \"" + name + "\">\n<value>" + val + "</value>\n</statistic>\n";
+	ret += "<metric type = \"" + name + "\">" + val + "</metric>\n";
 	return ret;
 }
 string statisticFormat(string name, string val, int hop)
 {
 	string ret = "";
-	ret += "<statistic type = \"" + name + "\" hop = \""+to_string(hop)+"\">\n<value>" + val + "</value>\n</statistic>\n";
+	ret += "<metric type = \"" + name + "\" hop = \""+to_string(hop)+"\">" + val + "</metric>\n";
 	return ret;
 }
 string statisticFormat(string name, vector<string> vals )
 {
 	string ret = "";
-	ret += "<statistic type = \"" + name + "\">\n"
-		+ "<min>" + vals[0] + "</min>\n"
-		+ "<med>" + vals[0] + "</med>\n"
-		+ "<max>" + vals[0] + "</max>\n" 
-		+ "</statistic>\n";
+	ret += "<metric type = \"" + name + "\" range = \"min\">" + vals[0] + "</metric>\n";
+	ret += "<metric type = \"" + name + "\" range = \"med\">" + vals[1] + "</metric>\n";
+	ret += "<metric type = \"" + name + "\" range = \"max\">" + vals[2] + "</metric>\n";
+	//ret += "<statistic type = \"" + name + "\">\n"
+	//	+ "<min>" + vals[0] + "</min>\n"
+	//	+ "<med>" + vals[1] + "</med>\n"
+	//	+ "<max>" + vals[2] + "</max>\n" 
+	//	+ "</statistic>\n";
 
 	return ret;
 }
@@ -520,7 +523,7 @@ string MetricCalculation::executeMetricCalculation()
 	//ret += "MPDMax<>" + to_string(v3[2]) + "\n";
 	vector<string> v3_string;
 	v3_string.push_back(to_string(v3[0]));	v3_string.push_back(to_string(v3[1]));	v3_string.push_back(to_string(v3[2]));
-	ret += statisticFormat("MeterPerDap", v3_string);
+	ret += statisticFormat("MetersPerDap", v3_string);
 	//ret+=  "Min redundancy per meter: " + to_string(v4[0]) + "\n";
 	//ret+=  "Med redundancy per meter: " + to_string(v4[1],3) + "\n";
 	//ret+=  "Max redundancy per meter: " + to_string(v4[2]) + "\n";
@@ -532,7 +535,7 @@ string MetricCalculation::executeMetricCalculation()
 	//ret += "RMax<>" + to_string(v4[2]);
 	vector<string> v4_string;
 	v4_string.push_back(to_string(v4[0]));	v4_string.push_back(to_string(v4[1]));	v4_string.push_back(to_string(v4[2]));
-	ret += statisticFormat("RedundancyPerDap", v4_string);
+	ret += statisticFormat("Redundancy", v4_string);
 	ret += "</Statistics>";
 
 	for(int i = 0; i < sL.size();i++)

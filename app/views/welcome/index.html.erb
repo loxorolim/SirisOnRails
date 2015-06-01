@@ -49,15 +49,29 @@
 					<input type="radio" id="dapEraserSelectionRadio" name="radio"><label for="dapEraserSelectionRadio">Remoção de DAPs por seleção</label>
 					<input type="radio" id="meterEraserSelectionRadio" name="radio"><label for="meterEraserSelectionRadio">Remoção de medidores por seleção</label>
 					<input type="radio" id="poleEraserSelectionRadio" name="radio"><label for="poleEraserSelectionRadio">Remoção de postes por seleção</label>
+					<select name="speed" id="speed">
+					  <option>Slower</option>
+					  <option>Slow</option>
+					  <option selected="selected">Medium</option>
+					  <option>Fast</option>
+					  <option>Faster</option>
+					</select>
 	
                     <button id="autoPlanning" style="margin-left: 5px">Auto Planning</button>
                     <!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
                     <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
-                    <input type="checkbox" id="checkRFMesh"><label for="checkRFMesh">RF-Mesh</label>
+                    <button id="meshButton">RF-Mesh</label>
                     <button id="statistic">Coletar Métricas</button>
 					<button id="upload">Upload de arquivo</button>
 					<button id="download">Download de planejamento</button>
 					<button id ="settings"> Configurações Avançadas</button>
+					<div id="meshSliderDiv" class = "hidden" style="width: 100%;height: 30px;" >
+						<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>
+						<div style="width:50%; float:left;margin-top:8px;margin-left:3%;margin-right: 3%">
+							<div id="meshSlider"></div>
+						</div>
+						<span id="mesh" class="selections">0 Saltos</span>
+					</div>
                     <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
                     
                 </div>
@@ -82,35 +96,8 @@
 			</div>
 			<input type="checkbox" id="resetOnUpload"><label for="resetOnUpload">Resetar ao inserir</label>
         </div>
-		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
-<!-- 			<div style="width: 426px;">	
-				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;" class="selections">Altura da antena do agregador</span></div>
-				<div style="height: 30px;" >
-					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
-						<div id="htxSlider"></div>
-					</div>
-						<span id="htx" class="selections">0 Metros</span>
-				</div>
-			</div>
-			<div style="width: 426px;">	
-				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;" class="selections">Altura da antena do medidor</span></div>
-				<div style="height: 30px;" >
-					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
-						<div id="hrxSlider"></div>
-					</div>
-						<span id="hrx" class="selections">0 Metros</span>
-				</div>
-			</div> -->
-			<div style="width: 426px;">	
-				<div style="width:426px;height:30px;"><span style="width:426px; text-align: center;" class="selections">Número máximo de saltos em malha</span></div>
-				<div style="height: 30px;" >
-					<div style="width:50%; float:left;margin-top:5px;margin-left:15%;margin-right: 3%">
-						<div id="meshSlider"></div>
-					</div>
-						<span id="mesh" class="selections">0 Saltos</span>
-				</div>
-			</div>
-		</div>
+
+
 		   
   </div>
 </div>

@@ -181,9 +181,9 @@ function readGridTestResponse(data){
 
 }
 //Função que lê o código recebido e retorna o que se deve escrever para o usuário na tabela de estatísticas.
-function statisticsDecode(code,aux){
+function statisticsDecode(type,hop,range){
     var ret = "";
-	switch(code){
+	switch(type){
 		case "DapQnt":
 			return "Quantidade de DAPs";
 		case "MeterQnt":
@@ -191,95 +191,45 @@ function statisticsDecode(code,aux){
 		case "UncoveredMeters":
 			return "Medidores decobertos";
         case "QualityPerHop":
-
-            return "Qualidade do salto "+aux;
+            return "Qualidade do salto "+hop;
         case "DelayPerHop":
-            return "Delay do salto "+aux;
+            return "Delay do salto "+hop;
         case "MetersPerHop":
-            return "Medidores a "+aux+" salto(s)";
+            return "Medidores a "+hop+" salto(s)";
 		case "MetersPerDap":
-			return aux+" Medidores por DAP";
+			return "Medidores por DAP ("+range+")";
 		case "Redundancy":
-			return aux+" Redundância";
+			return " Redundância ("+range+")";
 		default:		
 		break;
 	}
 	return "Código não definido";
 }
-function formatStatisticsToKML(stats){
-	var ret;
-	if(data != ""){
-		var split = data.split("\n");	
-		for(var i = 0; i < split.length;i++){	
-			var aux = split[i].split("<>");
-			var text;
-			//text += aux[0]+": "+aux[1] + "\n";
-	
-			switch(aux[0]){
-				case "DQ":
-					return "<DAPQnt> "+val+" </DAPQnt>";
-				case "MQ":
-					return "<MeterQnt> "+val+" </MeterQnt>";
-				case "UM":
-					return "<UncoveredMeters> "+val+" </UncoveredMeters>";
-				case "MPDMin":
-					return "Mínimo de medidores por DAP";
-				case "MPDMed":
-					return "<MetersPerDap>\n";
-				case "MPDMax":
-					return "Máximo de medidores por DAP";
-				case "RMin":
-					return "Redundância Mínima";
-				case "RMed":
-					return "Redundância Média";
-				case "RMax":
-					return "Redundância Máxima";
-				default:
-					var aux = code.substring(0, 3);
-					var num = code.substring(3,4);
-					if(aux=="QPH")
-						return "Qualidade média do salto "+num;		
-					if(aux =="DPH")
-						return "Atraso médio do salto "+num;	
-					if(aux == "MPH")
-						return "Medidores a "+num+" salto(s)";			
-				break;
-			}
-			return "Código não definido";
-			
-		}
-	}
-	
-}
-function readMetricResponse(data,kml){
- 
 
+function readMetricResponse(data,kml){
  if(!kml){
     $("#metricsTable tr").remove();
     if(data != ""){
         var split = data.split("\n");
         var text = "";
-        $(data).find('statistic').each(function(){
+        $(data).find('metric').each(function(){
             var type = $(this).attr('type');
             var hop = $(this).attr('hop');
-            var value = $(this).find('value').text();
-            var value = $(this).find('min').text();
-            var value = $(this).find('med').text();
-            var value = $(this).find('max').text();
-
+			var range = $(this).attr('range');
+			var value = $(this).text();
             $( "#metricsTable tbody" ).append( 
             "<tr>" +
-              "<th class=\"ui-widget-header \">" + type + "</th>" +
+              "<th class=\"ui-widget-header \">" + statisticsDecode(type,hop,range) + "</th>" +
               "<td>" + value + "</td>" +
                +"</tr>" );  
 
         });
     }
     else{
-                $( "#metricsTable tbody" ).append( 
-                "<tr>" +
-                  "<th class=\"ui-widget-header \">" + "Nao há medidores e/ou agregadores" + "</th>" 
-                   +"</tr>" );
+			$( "#metricsTable tbody" ).append( 
+			"<tr>" +
+			  "<th class=\"ui-widget-header \">" + "Nao há medidores e/ou agregadores" + "</th>" 
+			   +"</tr>" );
         }       
         $(function() {
             $( "#statisticDialog" ).dialog({
@@ -294,10 +244,12 @@ function readMetricResponse(data,kml){
                 resizable: false,
             });
         });
-}
-else{
-
-}
+	}
+	else{
+		var kml = formatKMLText(data);
+		var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
+	}
 
   /* if(!kml){
 		$("#metricsTable tr").remove();
@@ -373,10 +325,10 @@ function propagationValuesToSend(){
     ret+= rate + "\n";
     ret+= TRANSMITTER_POWER + "\n";
     ret+= srdv + "\n";
-    if(meshEnabled)
-        ret+=meshMaxJumps+"\n";
-    else
-        ret+="0"+"\n";
+    //if(meshEnabled)
+        ret+=(meshMaxJumps-1)+"\n";
+    //else
+    //    ret+="0"+"\n";
     return ret;
 
 }
