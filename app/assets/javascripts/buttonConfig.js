@@ -175,6 +175,66 @@ function setRadio() {
 
     });
 }
+function setOption(opt){
+   switch(opt){
+    case "view":
+      setOpMode("View");
+      map.setOptions({ draggableCursor: "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), auto" });
+      drawingManager.setDrawingMode(null);
+      break;
+    case "dap":
+        setOpMode("Insertion");
+        setInfoWindowNull();
+        setInsertionOptions("DAP")
+        map.setOptions({ draggableCursor: "url(/assets/cursors/dapcursor.cur), auto" });
+        drawingManager.setDrawingMode(null);
+        break;
+    case "meter":
+        setOpMode("Insertion");
+        setInfoWindowNull();
+        setInsertionOptions("Meter");
+        map.setOptions({ draggableCursor: "url(/assets/cursors/metercursor.cur), default" });
+        drawingManager.setDrawingMode(null);
+        break;
+    case "pole":
+        setOpMode("Insertion");
+        setInfoWindowNull();
+        setInsertionOptions("Pole");
+        map.setOptions({ draggableCursor: "url(/assets/cursors/polecursor.cur), default" });
+        drawingManager.setDrawingMode(null);
+        break;
+    case "eraser":
+        setOpMode("Removal");
+        map.setOptions({ draggableCursor: "url(/assets/cursors/removecursor.cur), default" });
+        setInfoWindowNull();
+        drawingManager.setDrawingMode(null);
+        break;
+    case "eraserSelection":
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_ALL;
+        setInfoWindowNull();
+        break;
+    case "dapEraserSelection":
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_DAPS;
+        setInfoWindowNull();
+        break;
+    case "meterEraserSelection":
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_METERS;
+        setInfoWindowNull();
+        break;
+    case "poleEraserSelection":
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
+        removeSelectionMode = REMOVE_POLES;
+        setInfoWindowNull();
+        break;
+    default:
+    break;
+
+  }
+}
+
 function setButtons()
 {
 
@@ -182,6 +242,35 @@ function setButtons()
     $( document ).tooltip({
       items: '*:not(.ui-dialog-titlebar-close)'
     });
+    
+    $.widget("custom.TFOiconSelectImg", $.ui.selectmenu, {
+            _renderItem: function (ul, item) {
+                var li = $("<li>", { html: item.element.html() });
+                var attr = item.element.attr("data-style");
+                if (typeof attr !== typeof undefined && attr !== false) {
+                    $("<span>", {
+                        style: item.element.attr("data-style"),
+                        "class": "ui-icon TFOOptlstFiltreImg"
+                    }).appendTo(li);
+                }
+                return li.appendTo(ul);
+            }
+        });
+
+        $("#eraserOptions")
+          .TFOiconSelectImg({
+              create: function (event, ui) {
+                  var widget = $(this).TFOiconSelectImg("widget");
+                  $span = $('<span id="' + this.id + 'ImgSelected" class="TFOSizeImgSelected"> ').html("&nbsp;").appendTo(widget);
+                  $span.attr("style", $(this).children(":first").data("style"));
+              },
+              change: function (event, ui) {
+                  $("#" + this.id + 'ImgSelected').attr("style", ui.item.element.data("style"));
+                  var opt = ui.item.value
+                  setOption(opt);
+              }
+          }).TFOiconSelectImg("menuWidget").addClass("ui-menu-icons customicons");
+
 
 
 	   $("#scenario")        

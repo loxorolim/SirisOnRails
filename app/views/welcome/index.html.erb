@@ -39,45 +39,54 @@
                     </div>
                     
                 </div>
-                <div id="radio" style="position: absolute;margin-top: 64px;">
-                    <input type="radio" id="viewRadio" name="radio" checked="checked"><label for="viewRadio">Visualização</label>
-                    <input type="radio" id="dapRadio" name="radio"><label for="dapRadio">DAP</label>
-                    <input type="radio" id="meterRadio" name="radio" ><label for="meterRadio">Medidor</label>
-                    <input type="radio" id="pole" name="radio"><label for="pole">Poste</label>
-                    <input type="radio" id="eraserRadio" name="radio"><label for="eraserRadio">Remoção</label>
-					<input type="radio" id="eraserSelectionRadio" name="radio"><label for="eraserSelectionRadio">Remoção por seleção</label>
-					<input type="radio" id="dapEraserSelectionRadio" name="radio"><label for="dapEraserSelectionRadio">Remoção de DAPs por seleção</label>
-					<input type="radio" id="meterEraserSelectionRadio" name="radio"><label for="meterEraserSelectionRadio">Remoção de medidores por seleção</label>
-					<input type="radio" id="poleEraserSelectionRadio" name="radio"><label for="poleEraserSelectionRadio">Remoção de postes por seleção</label>
-					<select name="speed" id="speed">
-					  <option>Slower</option>
-					  <option>Slow</option>
-					  <option selected="selected">Medium</option>
-					  <option>Fast</option>
-					  <option>Faster</option>
-					</select>
-	
-                    <button id="autoPlanning" style="margin-left: 5px">Auto Planning</button>
-                    <!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
-                    <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
-                    <button id="meshButton">RF-Mesh</label>
-                    <button id="statistic">Coletar Métricas</button>
-					<button id="upload">Upload de arquivo</button>
-					<button id="download">Download de planejamento</button>
-					<button id ="settings"> Configurações Avançadas</button>
-					<div id="meshSliderDiv" class = "hidden" style="width: 100%;height: 30px;" >
-						<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>
-						<div style="width:50%; float:left;margin-top:8px;margin-left:3%;margin-right: 3%">
-							<div id="meshSlider"></div>
+				<div id="menu" >
+		<!-- 			<div id="radio">
+						<input type="radio" id="viewRadio" name="radio" checked="checked"><label for="viewRadio">Visualização</label>
+						<input type="radio" id="dapRadio" name="radio"><label for="dapRadio">DAP</label>
+						<input type="radio" id="meterRadio" name="radio" ><label for="meterRadio">Medidor</label>
+						<input type="radio" id="pole" name="radio"><label for="pole">Poste</label>
+						<input type="radio" id="eraserRadio" name="radio"><label for="eraserRadio">Remoção</label>
+						<input type="radio" id="eraserSelectionRadio" name="radio"><label for="eraserSelectionRadio">Remoção por seleção</label>
+						<input type="radio" id="dapEraserSelectionRadio" name="radio"><label for="dapEraserSelectionRadio">Remoção de DAPs por seleção</label>
+						<input type="radio" id="meterEraserSelectionRadio" name="radio"><label for="meterEraserSelectionRadio">Remoção de medidores por seleção</label>
+						<input type="radio" id="poleEraserSelectionRadio" name="radio"><label for="poleEraserSelectionRadio">Remoção de postes por seleção</label>	
+					</div>   -->  
+						<div>
+							<select name="eraserOptions" id="eraserOptions" class="TFOlstFiltreImg" >
+								<option value="view" data-style="background-image: url(/assets/viewicon.png);" selected="selected"></option>
+								<option value="dap" data-style="background-image: url(&apos;/assets/dapicon.png&apos;);" ></option>
+								<option value="meter" data-style="background-image: url(&apos;/assets/metericon.png&apos;);" ></option>
+								<option value="pole" data-style="background-image: url(&apos;/assets/poleicon.png&apos;);" ></option>
+								<option value="eraser" data-style="background-image: url(/assets/removecursor.png);" selected="selected"></option>
+								<option value="eraserSelection" data-style="background-image: url(&apos;/assets/removeselectionicon.png&apos;);" ></option>
+								<option value="dapEraserSelection" data-style="background-image: url(&apos;/assets/dapremoveselectionicon.png&apos;);" ></option>
+								<option value="meterEraserSelectionRadio" data-style="background-image: url(&apos;/assets/meterremoveselectionicon.png&apos;);" ></option>
+								<option value="poleEraserSelectionRadio" data-style="background-image: url(&apos;/assets/poleremoveselectionicon.png&apos;);"></option>
+							</select>
 						</div>
-						<span id="mesh" class="selections">0 Saltos</span>
+						<button id="autoPlanning" style="margin-left: 5px">Auto Planning</button>
+						<!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
+						<!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
+						<button id="meshButton">RF-Mesh</label>
+						<button id="statistic">Coletar Métricas</button>
+						<button id="upload">Upload de arquivo</button>
+						<button id="download">Download de planejamento</button>
+						<button id ="settings"> Configurações Avançadas</button>
+						<div id="meshSliderDiv" class = "hidden" style="width: 100%;height: 30px;" >
+							<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>
+							<div style="width:50%; float:left;margin-top:0px;margin-left:3%;margin-right: 3%">
+								<div id="meshSlider"></div>
+							</div>
+							<span id="mesh" class="selections">0 Saltos</span>
+						</div>
+
+						<!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
+						
 					</div>
-                    <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
-                    
-                </div>
+				</div>
             </div>
         </div>
-        <div id="statisticDialog" class = "hidden"  title="Métricas"> 
+        <div id="statisticDialog" class = "hidden"  title="Estatísticas"> 
 		<div id="metricsTableDiv">
 		  <table id="metricsTable" class="ui-widget ui-widget-content">
 			<tr></tr><tr></tr>			  

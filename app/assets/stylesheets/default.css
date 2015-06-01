@@ -5,6 +5,52 @@
 .input {
 	opacity: 0;
 }
+.ui-widget
+{
+font-size: 1em;
+}
+
+.ui-widget-content
+{
+border-style: none;
+}
+
+/*Affichage des options*/
+.ui-selectmenu-menu .ui-menu.customicons .ui-menu-item
+{
+padding: 0.5em 0.5 0.5em 2.1em;
+background-repeat: no-repeat;
+}
+
+/*Agrandir sinon 16px par defaut*/
+.ui-selectmenu-menu .ui-menu.customicons .ui-menu-item .ui-icon
+{
+    height: 15px;
+    width: 15x;
+    top: 0.1em;
+	left: 1.1em;
+}
+
+.TFOlstFiltreImg
+{
+width: 50px;
+}
+.TFOSizeImgSelected
+{
+position:absolute;
+height: 15px;
+width: 15px;
+left:20%;
+margin-top:-9px; /* 24/2*/
+top:50%;
+}
+
+.TFOOptlstFiltreImg
+{
+background-size:15px 15px;
+background-repeat:no-repeat;
+}
+
 .ui-button .ui-icon.dap {
      background-image: url(dapicon.png); 
 }
@@ -20,6 +66,7 @@
 .ui-button .ui-icon.eraser {
      background-image: url(removecursor.png); 
 }
+
 .ui-button .ui-icon.eraserSelection {
      background-image: url(removeselectionicon.png); 
 }
@@ -50,6 +97,19 @@
 .ui-button .ui-icon.settings {
      background-image: url(settings.png); 
 }
+
+
+#menu {
+ 
+  position: absolute;
+  margin-top: 64px;
+  margin-left:64px;
+}
+
+#menu div {
+  float: left;
+}
+
 #pac-input {
 background-color: #fff;
 font-family: Roboto;
