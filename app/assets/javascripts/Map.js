@@ -138,7 +138,7 @@ function initialize() {
     });
     
     //markerCluster = new MarkerClusterer(map, allMarkers);
-    drawHeatMap();
+    //drawHeatMap();
     insertListener = google.maps.event.addListener(map, 'click', function (event) {
         //if (opMode == "Insertion") {
         //    placeDAP(event.latLng.lat(), event.latLng.lng(), currentTech);

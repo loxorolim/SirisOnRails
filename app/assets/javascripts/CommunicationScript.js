@@ -437,7 +437,10 @@ function upload(fileInput) {
         var reader = new FileReader();
         reader.onload = function(e) {
             var fileText = reader.result;
-            loadFromKMLText(fileText);
+			if($("#heatmapFormatRadio").is(':checked'))	
+				loadHeatmap(fileText);
+			else
+				loadFromKMLText(fileText);
             $("#uploadDialog").dialog("close");
 			$("#resetOnUpload").prop('checked', false);
             

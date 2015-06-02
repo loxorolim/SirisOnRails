@@ -441,7 +441,11 @@ function setButtons()
 
     }).click(function () {       
         $("this").blur(); 
-        $(function() {
+		var text = ""; // APENAS PRA CRIAR UM HEATMAP, PODE IGNORAR
+		for(var i = 0; i < meters.length; i++){
+			text+= meters[i].getPosition().lat() + " " + meters[i].getPosition().lng() + " " + Math.random() +",\n";
+		}
+/*         $(function() {
           $( "#settingsDialog" ).dialog({
             show: {
             effect: "drop",
@@ -455,7 +459,7 @@ function setButtons()
             width: 454
             
           });
-        });           
+        });   */         
     });
 	//$( "#speed" ).selectmenu();
     $('#autoPlanning').button().click(function () {

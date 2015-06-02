@@ -80,6 +80,21 @@ function loadNodesFromXml()
 		});
 	});
 }
+function loadHeatmap(file) {
+	var heatmap = [];
+	var data = file.split(",");
+	for(var i = 0; i < data.length;i++){
+		var info = data[i].split(" ");
+			var loc = new google.maps.LatLng(info[0], info[1])
+			var hmpoint = {
+				location: loc,
+				weight: info[2]
+			}
+			heatmap.push(hmpoint);
+	}
+	heatmapPoints = heatmap;
+	createHeatMap();
+}
 function loadFromKMLText(kml){
 	
 	//var teste = kml.split("\n");
