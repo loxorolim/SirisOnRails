@@ -257,7 +257,7 @@ function setButtons()
             }
         });
 
-        $("#eraserOptions")
+        $("#mouseOptions")
           .TFOiconSelectImg({
               create: function (event, ui) {
                   var widget = $(this).TFOiconSelectImg("widget");
