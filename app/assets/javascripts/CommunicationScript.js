@@ -150,6 +150,31 @@ function readPropagationResponse(data){
    
 
 }
+function heatgridColorInterpolation(efficiency)
+{
+
+	var yellowvalR = 0x00;	var yellowvalG = 0xff;	var yellowvalB = 0x00;
+	var bluevalR = 0xff; var bluevalG = 0xff; var bluevalB = 0x00;
+
+	var val = (yellowvalR - bluevalR);
+	var cDec =  Math.floor(bluevalR + (efficiency)*val);
+	var cR = cDec.toString(16);	
+	if(cDec < 16)
+		cR = "0" + cR;;
+
+	var val = (yellowvalG - bluevalG);
+	var cDec =  Math.floor(bluevalG + (efficiency)*val);
+	var cG = cDec.toString(16);	
+	if(cDec < 16)
+		cG = "0" + cG;;
+	var val = (yellowvalB - bluevalB);
+	var cDec =  Math.floor(bluevalB + (efficiency)*val);
+	var cB = cDec.toString(16);	
+	if(cDec < 16)
+		cB = "0" + cB;;	
+	return "#"+cR+cG+cB;
+	
+}
 function readHeatgridResponse(data){
     
    var geoms = data.split("/n");
@@ -165,7 +190,7 @@ function readHeatgridResponse(data){
         var pos2lng = pos2[1];
 
         var weight = poss[2];
-        var color = colorInterpolation(weight);
+        var color = heatgridColorInterpolation(weight);
         var rectangle = new google.maps.Rectangle({
             strokeColor: color,
             strokeOpacity: 0.8,
