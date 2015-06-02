@@ -5,6 +5,7 @@
 #include "AutoPlanningMethods.h"
 #include "LinkCalculationMethods.h"
 #include "MetricCalculationMethods.h"
+#include "HeatgridMethods.h"
 #include "HataSRD.h"
 #include <stdio.h>
 
@@ -21,26 +22,30 @@ string getResponse(string req, string rubyPath)
 	std::istringstream f(req);
 	std::string line;
 
+	
 	int option,scenario,technology, SRD, meshEnabled;
 	double H_TX,H_RX,BIT_RATE,TRANSMITTER_POWER;
 	std::getline(f, line);
 	option = std::atoi(line.c_str());
-	std::getline(f, line);
-	scenario = std::atoi(line.c_str());
-	std::getline(f, line);
-	technology = std::atoi(line.c_str());
-	std::getline(f, line);
-	H_TX = std::atof(line.c_str());
-	std::getline(f, line);
-	H_RX = std::atof(line.c_str());
-	std::getline(f, line);
-	BIT_RATE = std::atof(line.c_str());
-	std::getline(f, line);
-	TRANSMITTER_POWER = std::atof(line.c_str());
-	std::getline(f, line);
-	SRD = std::atoi(line.c_str());
-	std::getline(f, line);
-	meshEnabled = std::atoi(line.c_str());
+	if (option != HEATGRID)
+	{
+		std::getline(f, line);
+		scenario = std::atoi(line.c_str());
+		std::getline(f, line);
+		technology = std::atoi(line.c_str());
+		std::getline(f, line);
+		H_TX = std::atof(line.c_str());
+		std::getline(f, line);
+		H_RX = std::atof(line.c_str());
+		std::getline(f, line);
+		BIT_RATE = std::atof(line.c_str());
+		std::getline(f, line);
+		TRANSMITTER_POWER = std::atof(line.c_str());
+		std::getline(f, line);
+		SRD = std::atoi(line.c_str());
+		std::getline(f, line);
+		meshEnabled = std::atoi(line.c_str());
+	}
 
 	/*std::cout << scenario << "\n";
 	std::cout << technology << "\n";
@@ -182,33 +187,36 @@ string getResponse(string req, string rubyPath)
 		return ret;
 
 	}
-	if(option == 4) //SÓ PRA TESTAR UM LANCE DO GRID
+	if (option == HEATGRID)
+	{
+		int pLength;
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		if (pLength == 0) return "";
+		vector<Position*> points;
+		for (int i = 0; i < pLength; i++)
 		{
-			int pLength;
+			double lat;
+			double lng;
+			double weight;
 			std::getline(f, line);
-			pLength = std::atoi(line.c_str());
-			if(pLength == 0) return "";
-			vector<Position*> meters;
-			vector<Position*> daps;
-			for (int i = 0; i < pLength; i++)
-			{
-				double lat;
-				double lng;
-				std::getline(f, line);
-				vector<string> s = split(line, ' ');
-				lat = std::atof(s[0].c_str());
-				lng = std::atof(s[1].c_str());
-				Position *toAdd = new Position(lat, lng,i);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			weight = std::atof(s[2].c_str());
 
-				meters.push_back(toAdd);
-			}
-
-			Grid* g = new Grid(1000);
-			g->putPositions(meters);
-			return g->getCellsTeste();
-
-
+			Position *toAdd = new Position(lat, lng, weight);
+			points.push_back(toAdd);
 		}
+		Heatgrid *res = new Heatgrid(points);
+		string ret = res->executeHeatgrid();
+		//std::cout << ret;
+		//res->~AutoPlanning();
+		delete res;
+		return ret;
+
+	}
+
 
 
 	//while (std::getline(f, line))

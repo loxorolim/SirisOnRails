@@ -9,8 +9,7 @@ Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 	//PARA PEGAR A CÉLULA, SÓ QUE ESSE DAP PODERIA ESTAR FORA DO GRID, PORTANTO, NESSE CASO AS CÉLULAS DEVIAM CONSIDERAR AS POSIÇÕES DOS
 	//DAPS TAMBÉM, MAS SÓ HAVERÁ MEDIDORES NO GRID!
 
-	//OBS: ACHO QUE VOU MANDER O PADRÃO DO MINX SEMPRE -90 E O MINY SEMPRE -180 QUE SÃO OS VALORES MINIMOS DA LATITUDE LONGITUDE! ASSIM JÁ PADRONIZA SEMPRE.
-
+	
 
 	if (cS <= 0)
 		return;
@@ -88,6 +87,7 @@ Grid::Grid(double cS)
 	cellSizeMeters = cS;
 
 }
+
 void Grid::putPosition(Position* p)
 {
 	//se for igual ao min fazer algo...
@@ -103,8 +103,20 @@ void Grid::putPosition(Position* p)
 }
 void Grid::putPositions(vector<Position*> p)
 {
-	for(int i = 0; i < p.size();i++)
-		putPosition(p[i]);
+	if (p.size() > 0)
+	{
+		double mX = p[0]->latitude, mY = p[0]->longitude; //Lat e Lng mínimos
+		for (int i = 1; i < p.size(); i++)
+		{
+			if (p[i]->latitude < mX)
+				mX = p[i]->latitude;
+			if (p[i]->longitude < mY)
+				mY = p[i]->longitude;
+		}
+		minX = mX; minY = mY;
+		for (int i = 0; i < p.size(); i++)
+			putPosition(p[i]);
+	}
 }
 vector<Position*> Grid::getCell(Position* reference)
 {
@@ -257,6 +269,22 @@ string Grid::getCellsTeste()
 
 		ret += to_string(posX)+";"+to_string(posY) + "<>" + to_string(posX2)+";"+to_string(posY2) + "/n";
 	}
+	return ret;
+
+
+}
+string Grid::getCellEdgePositions(pair<int, int> pos)
+{
+	string ret = "";
+	int numLat = pos.first;
+	int numLng = pos.second;
+	double posX = minX + (numLat)*getLatOfDistance(cellSizeMeters);
+	double posY = minY + (numLng)*getLongOfDistance(posX, cellSizeMeters);
+	double posX2 = posX + getLatOfDistance(cellSizeMeters);
+	double posY2 = posY + getLongOfDistance(posX2, cellSizeMeters);
+
+	ret += to_string(posX) + ";" + to_string(posY) + "<>" + to_string(posX2) + ";" + to_string(posY2);
+	
 	return ret;
 
 

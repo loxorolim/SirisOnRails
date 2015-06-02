@@ -21,9 +21,10 @@ class Grid
 		void putPosition(Position* p);
 		void putPositions(vector<Position*> ps);
 		vector<Position*> getCell(Position* reference);
-		vector<Position*> getUniqueCell(Position* reference);
+		vector<Position*> getUniqueCell(Position* reference);	
 		map<pair<int, int>, vector<Position*> > getCells();
 		string getCellsTeste();
+		string getCellEdgePositions(pair<int, int> pos);
 
 };
 double getMinX(vector<Position*> v);

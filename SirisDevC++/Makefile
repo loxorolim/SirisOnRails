@@ -12,15 +12,15 @@ ECHO = $(ECHO1:0=@echo)
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /D/Ruby193/include/ruby-1.9.1
-hdrdir = /D/Ruby193/include/ruby-1.9.1
-arch_hdrdir = D:/Ruby193/include/ruby-1.9.1/$(arch)
+topdir = /C/RailsInstaller/Ruby1.9.3/include/ruby-1.9.1
+hdrdir = /C/RailsInstaller/Ruby1.9.3/include/ruby-1.9.1
+arch_hdrdir = C:/RailsInstaller/Ruby1.9.3/include/ruby-1.9.1/$(arch)
 VPATH = $(srcdir):$(arch_hdrdir)/ruby:$(hdrdir)/ruby
 
 
-DESTDIR = D:
+DESTDIR = C:
 
-prefix = $(DESTDIR)/Ruby193
+prefix = $(DESTDIR)/RailsInstaller/Ruby1.9.3
 
 rubylibprefix = $(libdir)/$(RUBY_BASE_NAME)
 
@@ -109,9 +109,9 @@ warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long 
 CFLAGS   =  $(cflags) $(ARCH_FLAG)
 INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
 DEFS     = 
-CPPFLAGS =  -DFD_SETSIZE=2048 $(DEFS) $(cppflags)  -ID:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/include
+CPPFLAGS =  -DFD_SETSIZE=2048 $(DEFS) $(cppflags)  -IC:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/include
 CXXFLAGS = $(CFLAGS)  -Wall -g
-ldflags  = -L.   -LD:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/lib -lrice
+ldflags  = -L.   -LC:/RailsInstaller/Ruby1.9.3/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/lib -lrice
 dldflags =  -Wl,--enable-auto-image-base,--enable-auto-import $(DEFFILE) 
 ARCH_FLAG = -march=i486
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
@@ -126,7 +126,7 @@ RUBY_SO_NAME = msvcrt-ruby191
 arch = i386-mingw32
 sitearch = i386-msvcrt
 ruby_version = 1.9.1
-ruby = D:/Ruby193/bin/ruby
+ruby = C:/RailsInstaller/Ruby1.9.3/bin/ruby
 RUBY = $(ruby)
 RM = rm -f
 RM_RF = $(RUBY) -run -e rm -- -rf
@@ -158,8 +158,8 @@ extout_prefix =
 target_prefix = 
 LOCAL_LIBS = 
 LIBS = -lmsvcrt-ruby191 -lshell32 -lws2_32 -limagehlp -lshlwapi
-SRCS = AutoPlanningMethods.cpp auxiliar.cpp global.cpp Grasp.cpp Grid.cpp HataSRD.cpp LinkCalculationMethods.cpp MetricCalculationMethods.cpp Siris.cpp
-OBJS = AutoPlanningMethods.o auxiliar.o global.o Grasp.o Grid.o HataSRD.o LinkCalculationMethods.o MetricCalculationMethods.o Siris.o
+SRCS = AutoPlanningMethods.cpp auxiliar.cpp global.cpp Grasp.cpp Grid.cpp HataSRD.cpp HeatgridMethods.cpp LinkCalculationMethods.cpp MetricCalculationMethods.cpp Siris.cpp
+OBJS = AutoPlanningMethods.o auxiliar.o global.o Grasp.o Grid.o HataSRD.o HeatgridMethods.o LinkCalculationMethods.o MetricCalculationMethods.o Siris.o
 TARGET = Siris
 TARGET_NAME = Siris
 TARGET_ENTRY = Init_$(TARGET_NAME)

@@ -87,13 +87,14 @@ function loadHeatmap(file) {
 		var info = data[i].split(" ");
 			var loc = new google.maps.LatLng(info[0], info[1])
 			var hmpoint = {
-				location: loc,
+				position: loc,
 				weight: info[2]
 			}
 			heatmap.push(hmpoint);
 	}
 	heatmapPoints = heatmap;
-	createHeatMap();
+	sendDataToServer(serverAddress, 'POST', HEATGRID_FILE_ID);
+	//createHeatMap();
 }
 function loadFromKMLText(kml){
 	

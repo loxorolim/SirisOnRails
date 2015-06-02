@@ -16,7 +16,8 @@
 #define AUTOPLAN 0
 #define DRAW 1
 #define METRIC 2
-#define TEST 3
+#define HEATGRID 3
+#define TEST 4
 
 #define Urbano  0
 #define Suburbano  1
@@ -71,17 +72,20 @@ class Position
 		double latitude;
 		double longitude;
 		int index;
+		double weight;
 		Position(double lat, double lng)
 		{
 			latitude = lat;
 			longitude = lng;
 		}
-		Position(double lat, double lng, int i)
+		Position(double lat, double lng, double w)
 		{
 			latitude = lat;
 			longitude = lng;
-			index = i;
+			index = (int)w;
+			weight = w;
 		}
+		
 		bool operator==(const int& i) const
 		{
 			return index == i;

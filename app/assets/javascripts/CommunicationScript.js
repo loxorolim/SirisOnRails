@@ -1,7 +1,8 @@
 ﻿const AUTO_PLAN_FILE_ID = 0;
 const DRAW_FILE_ID = 1;
 const METRIC_FILE_ID = 2;
-const TEST_COLLECTION_FILE_ID = 3;
+const HEATGRID_FILE_ID = 3;
+const TEST_COLLECTION_FILE_ID = 4;
 const KML_CREATION_FILE_ID = 5;
 
 function sendDrawRequest(){
@@ -44,8 +45,8 @@ function sendDataToServer(url,method,type) {
         case METRIC_FILE_ID:
             data = createMetricsFileModel();
             break;
-        case TEST_COLLECTION_FILE_ID:
-            data = createTestFileModel();
+        case HEATGRID_FILE_ID:
+            data = createHeatgridFileModel();
             break;
         case 4: //SÓ PRO TESTE DO GRID, PODE IGNORAR
             data = createGridTestFileModel();
@@ -80,8 +81,8 @@ function sendDataToServer(url,method,type) {
                     case METRIC_FILE_ID:
                         readMetricResponse(data,false);
                         break;
-                    case 4: //SÓ UM TESTE DO GRID, PODE IGNORAR
-                        readGridTestResponse(data);
+                    case HEATGRID_FILE_ID: //SÓ UM TESTE DO GRID, PODE IGNORAR
+                        readHeatgridResponse(data);
                         break;
 					case KML_CREATION_FILE_ID:
 						readMetricResponse(data,true);
@@ -148,6 +149,39 @@ function readPropagationResponse(data){
     }
    
 
+}
+function readHeatgridResponse(data){
+    
+   var geoms = data.split("/n");
+   for(var i = 0; i < geoms.length-1; i++){
+        var poss = geoms[i].split("<>");
+
+        var pos1 = poss[0].split(";");
+        var pos1lat = pos1[0];
+        var pos1lng = pos1[1];
+
+        var pos2 = poss[1].split(";");
+        var pos2lat = pos2[0];
+        var pos2lng = pos2[1];
+
+        var weight = poss[2];
+        var color = colorInterpolation(weight);
+        var rectangle = new google.maps.Rectangle({
+            strokeColor: color,
+            strokeOpacity: 0.8,
+            strokeWeight: 0.1,
+            fillColor: color,
+            fillOpacity: 0.35,
+            clickable:false,
+            map: map,
+            geodesic: true,
+            bounds: new google.maps.LatLngBounds(
+              new google.maps.LatLng(pos1lat, pos1lng),
+              new google.maps.LatLng(pos2lat,pos2lng))
+      });
+
+
+   }
 }
 function readGridTestResponse(data){
     
@@ -400,6 +434,16 @@ function createMetricsFileModel(){
     ret += "\n";
     for(var i = 0; i <daps.length; i++){
         ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
+        ret += "\n";
+    }
+    return ret;
+}
+function createHeatgridFileModel(){
+    
+    var ret = HEATGRID_FILE_ID + '\n';
+    ret+= heatmapPoints.length+"\n";
+    for(var i = 0; i <heatmapPoints.length; i++){
+        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() + " " + heatmapPoints[i].weight;
         ret += "\n";
     }
     return ret;

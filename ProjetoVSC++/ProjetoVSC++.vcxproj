@@ -77,6 +77,7 @@
     <ClCompile Include="..\sirisdevc++\Grasp.cpp" />
     <ClCompile Include="..\sirisdevc++\Grid.cpp" />
     <ClCompile Include="..\sirisdevc++\HataSRD.cpp" />
+    <ClCompile Include="..\SirisDevC++\HeatgridMethods.cpp" />
     <ClCompile Include="..\sirisdevc++\LinkCalculationMethods.cpp" />
     <ClCompile Include="..\sirisdevc++\MetricCalculationMethods.cpp" />
     <ClCompile Include="..\sirisdevc++\Siris.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="..\sirisdevc++\Grasp.h" />
     <ClInclude Include="..\sirisdevc++\Grid.h" />
     <ClInclude Include="..\sirisdevc++\HataSRD.h" />
+    <ClInclude Include="..\SirisDevC++\HeatgridMethods.h" />
     <ClInclude Include="..\sirisdevc++\LinkCalculationMethods.h" />
     <ClInclude Include="..\sirisdevc++\MetricCalculationMethods.h" />
   </ItemGroup>
