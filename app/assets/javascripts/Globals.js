@@ -105,7 +105,8 @@ const meterOffIconImage =
     {
         url: '/assets/blackSquare.png',
         size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5,5)
+        anchor: new google.maps.Point(5,5),
+        
     }
 const meterBestIconImage =
     {

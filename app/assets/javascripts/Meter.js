@@ -1,5 +1,5 @@
 ﻿function createMeter() {
-    var marker = new google.maps.Marker({
+    var marker = new google.maps.Circle({
         ID: null,
         type: "Meter",
         position: null,
@@ -9,12 +9,21 @@
         draggable: true,
         ghost: null,
         ID: null,
+        radius:1,
+        center: null,
+        strokeColor: '#FFD800',
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: '#000000',
+        fillOpacity: 1,
 
 
         //        meshConnectionLines: [],
         icon: meterOffIconImage,
         //        dapsConnected: [],
-
+        getPosition: function () {
+            return this.position;
+        },
         placeOnMap: function (latitude, longitude) {
 
             var latLng = new google.maps.LatLng(latitude, longitude);
@@ -44,12 +53,18 @@
         },
         createGhost: function () {
             var pos = this.getPosition();
-            this.ghost =  new google.maps.Marker({
+            this.ghost =  new google.maps.Circle({
                 position: pos,
+                center: pos,
                 map: map,
                 zIndex: 1,
                 draggable: false,
-                icon: meterGhostIconImage,
+                strokeColor: '#FFD800',
+                strokeOpacity: 0.6,
+                strokeWeight: 2,
+                fillColor: '#000000',
+                fillOpacity: 0.6,
+                radius: 1,
              });
         },
         removeGhost: function () {
@@ -90,6 +105,7 @@
 
     google.maps.event.addListener(marker, 'dragend', function (event) {
         marker.removeGhost();
+        this.position = this.center;
         sendDrawRequest();
     });
     return marker;
