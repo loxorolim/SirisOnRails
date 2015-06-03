@@ -177,7 +177,12 @@ function heatgridColorInterpolation(efficiency)
 }
 function readHeatgridResponse(data){
     
+   var hg = [];	
    var geoms = data.split("/n");
+   if(geoms.length > 0){
+		for(var i = 0; i < heatGrids.length; i++)
+			heatGrids[i].setMap(null);
+   }
    for(var i = 0; i < geoms.length-1; i++){
         var poss = geoms[i].split("<>");
 
@@ -191,6 +196,9 @@ function readHeatgridResponse(data){
 
         var weight = poss[2];
         var color = heatgridColorInterpolation(weight);
+		var set = null;
+		if(drawHeatmap)
+			set = map;
         var rectangle = new google.maps.Rectangle({
             strokeColor: color,
             strokeOpacity: 0.8,
@@ -198,15 +206,15 @@ function readHeatgridResponse(data){
             fillColor: color,
             fillOpacity: 0.35,
             clickable:false,
-            map: map,
+            map: set,
             geodesic: true,
             bounds: new google.maps.LatLngBounds(
               new google.maps.LatLng(pos1lat, pos1lng),
               new google.maps.LatLng(pos2lat,pos2lng))
       });
-
-
+	  hg.push(rectangle);
    }
+   	heatGrids = hg;
 }
 function readGridTestResponse(data){
     

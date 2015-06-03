@@ -7,6 +7,7 @@ function setOpMode(mode)
 {
     opMode = mode;
 }
+
 function setInsertionOptions(type)
 {
     currentIns = type;
@@ -416,21 +417,9 @@ function setButtons()
         },
         text: false
 
-    }).click(function () {
-	      
+    }).click(function () {      
         $(this).blur();
-        drawHeatmap = !drawHeatmap;
-	       if (drawHeatmap)
-	           heatmap.setMap(map);                             
-	       else 
-	           heatmap.setMap(null);
-
-	      
-	           
-	       //$('#check').button.removeClass("ui-state-focus ui-state-hover");
-
-
-	       
+		toggleHeatgrid();	       
     });
 
     $('#settings').button({
@@ -705,4 +694,15 @@ function setBitRate(value){
     $("#rate").text(bitRates[pos] + "Mbps");
     $("#rateSlider").slider('value', pos);
   }
+}
+function toggleHeatgrid(){
+	drawHeatmap = !drawHeatmap;	
+	if(heatGrids.length > 0){
+		var set = null;
+		if(heatGrids[0].getMap() ==  null)
+			set = map;
+		for(var i = 0; i < heatGrids.length;i++){
+			heatGrids[i].setMap(set);
+		}
+	}
 } 

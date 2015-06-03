@@ -31,6 +31,7 @@ var drawHeatmap = false;
 var heatmap;
 var taxiData = [];
 var heatmapPoints = [];
+var heatGrids = [];
 var efficiencyRadio = 30; //30metros
 
 var lines = [];
