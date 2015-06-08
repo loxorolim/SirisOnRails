@@ -152,7 +152,7 @@ vector<vector<int> > AutoPlanning::createInvertedScp()
 {
 	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
 	Grid* gMeters = new Grid(regionLimiter);
-	g->putPositions(meters);//Adiciona-se ao grid os medidores.
+	gMeters->putPositions(meters);//Adiciona-se ao grid os medidores.
 	Grid* g = new Grid(regionLimiter);
 	g->putPositions(poles);//Adiciona-se ao grid os medidores.
 	vector<int> aux;
@@ -176,6 +176,7 @@ vector<vector<int> > AutoPlanning::createInvertedScp()
 		vector<vector<int> > nM = createMeterNeighbourhood(gMeters); //Cria a matriz de vizinhança para se analisar o mesh
 		for (int i = 0; i < sM.size(); i++)
 		{
+			vector<int> alreadyChecked;
 			vector<int> neighbours = nM[i];
 			for (int j = 0; j < meshEnabled; j++)
 			{
@@ -187,7 +188,7 @@ vector<vector<int> > AutoPlanning::createInvertedScp()
 				}
 				sort(newNeighbours.begin(), newNeighbours.end());
 				newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
-				
+				concatVectors(alreadyChecked, neighbours);
 				neighbours = newNeighbours;
 			}
 
@@ -692,6 +693,17 @@ string AutoPlanning::executeAutoPlanTestMode(bool usePostOptimization, int redun
 	const clock_t begin_time = clock();
 	if (redundancy > 1)
 	{
+		vector<vector<int> > scp = createScp();
+		vector<vector<int> > invertedSCP;
+		invertedSCP.resize(meters.size());
+		for (int i = 0; i < scp.size(); i++)
+		{
+			for (int j = 0; j < scp[i].size(); j++)
+			{
+				invertedSCP[scp[i][j]].push_back(i);
+			}
+		}
+		vector<Position*> metersThatSatisfy = getMetersThatSatisfyRedundancy(redundancy, invertedSCP);
 
 	}
 	else

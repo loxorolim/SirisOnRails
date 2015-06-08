@@ -78,6 +78,7 @@ class AutoPlanning
 
 		 //Metodos Teste
 		 void setGridSize(double gridSize);
+		 string executeAutoPlanTestMode(bool usePostOptimization, int redundancy);
 		 string executeAutoPlanTestMode(bool usePostOptimization);
 		 string gridAutoPlanningTestMode(float *mtu, float* mmu, bool usePostOptimization);
 

@@ -178,9 +178,9 @@ string gridPlanningTest(AutoPlanning *AP,int gridSize, bool usePostOptimization)
 }
 void executeTest()
 {
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	string rubyPath = "C:/Sites/first_app";
-	AutoPlanning* AP = setAutoPlanningFromFile("C:\\Sites\\first_app\\arqsTeste\\filemeters5000.txt", "C:\\Sites\\first_app\\arqsTeste\\filepoles5000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//string rubyPath = "C:/Sites/first_app";
+	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters5000.txt", rubyPath+"/arqsTeste/filepoles5000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
 	string result = "";
 	result+=gridPlanningTest(AP, 100, true);
 	result+=gridPlanningTest(AP, 100, false);
