@@ -234,7 +234,7 @@ vector<sComponent*> MetricCalculation::statisticalList()
 vector<vector<int> > MetricCalculation::coverageList()
 {
 	//Grid* g = new Grid(meters,daps, regionLimiter);
-	Grid* g = new Grid(100);
+	Grid* g = new Grid(regionLimiter);
 	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;

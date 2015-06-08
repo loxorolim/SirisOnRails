@@ -5,10 +5,10 @@ set Z;
  minimize cost: sum{m in Y} Route[m];
  subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;
  solve; 
- printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/Results.txt";
+ printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Sites/first_app/Results.txt";
  data;
-set Z:= Z517 Z518 ;
-set Y:= Y28 Y26 Y39 Y56 Y57 Y27 ;
+set Z:= Z4159 Z4160 ;
+set Y:= Y287 Y276 ;
 param A := 
-[Z517,Y28] 1[Z518,Y28] 1
+[Z4159,Y287] 1[Z4160,Y287] 1
 ;end;

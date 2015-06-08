@@ -56,7 +56,11 @@ class MetricCalculation
 			SRD = srd;
 			meshEnabled = me;
 			rubyPath = rp;
-			regionLimiter = 0.001;
+			regionLimiter = 0;
+			while (getHataSRDSuccessRate(regionLimiter, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD) > MARGIN_VALUE)
+			{
+				regionLimiter++;
+			}
 			packetSize = 400 * 8;
 			perHopDelay = 2; //ms
 		};

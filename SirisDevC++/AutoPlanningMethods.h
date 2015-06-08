@@ -62,11 +62,13 @@ class AutoPlanning
 		
 		 vector<vector<int> > createScpSemGrid();
 		 vector<vector<int> > createScp();
+		 vector<vector<int> > createInvertedScp();
 		 void saveGLPKFile(vector<vector<int> > &scp);
 		 void saveGLPKFileReduced(vector<vector<int> > &SCP);
 		 vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		 string executeAutoPlan();
-
+		 string executeAutoPlan(int redundancy);
+		 vector<Position*> getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP);
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP);
 		 void executeGlpk(string filename);
 		 string gridAutoPlanning();

@@ -148,6 +148,54 @@ vector<vector<int> > AutoPlanning::createScp()
 	delete g;
 	return sM;
 }
+vector<vector<int> > AutoPlanning::createInvertedScp()
+{
+	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
+	Grid* gMeters = new Grid(regionLimiter);
+	g->putPositions(meters);//Adiciona-se ao grid os medidores.
+	Grid* g = new Grid(regionLimiter);
+	g->putPositions(poles);//Adiciona-se ao grid os medidores.
+	vector<int> aux;
+	vector<vector<int> > sM;
+	for (int i = 0; i < meters.size(); i++)
+	{
+		vector<int> polesCovered;
+		vector<Position*> polesReduced = g->getCell(meters[i]);//Pega os medidores das células vizinhas e da sua
+		// própria célula para fazer a análise.
+		for (int j = 0; j < polesReduced.size(); j++)
+		{
+			double dist = getDistance(meters[i], polesReduced[j]);
+			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			if (eff >= MARGIN_VALUE)//Se a eficiencia for superior a 90%(MARGIN_VALUE) então o poste cobre esse medidor.
+				polesCovered.push_back(polesReduced[j]->index);
+		}
+		sM.push_back(polesCovered);
+	}
+	if (meshEnabled)
+	{
+		vector<vector<int> > nM = createMeterNeighbourhood(gMeters); //Cria a matriz de vizinhança para se analisar o mesh
+		for (int i = 0; i < sM.size(); i++)
+		{
+			vector<int> neighbours = nM[i];
+			for (int j = 0; j < meshEnabled; j++)
+			{
+				vector<int> newNeighbours;
+				for (int k = 0; k < neighbours.size(); k++)
+				{
+					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
+					sM[i] = concatVectors(sM[i], sM[neighbours[k]]);
+				}
+				sort(newNeighbours.begin(), newNeighbours.end());
+				newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
+				
+				neighbours = newNeighbours;
+			}
+
+		}
+	}
+	delete g;
+	return sM;
+}
 
 //Calcula sem usar o Grid, é obsoleto.
 vector<vector<int> > AutoPlanning::createScpSemGrid()
@@ -502,15 +550,19 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 		}
 
 	}
+	meters = metersAux;
+	poles = polesAux;
 	string str = "";
 	//Remove redundâncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
-
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		str += chosenDaps[i] + " ";
+	}
 	if (usePostOptimization)//PÓS OTIMIZAÇÃO
 	{	
-		meters = metersAux;
-		poles = polesAux;
+
 		int* chosen = new int[poles.size()];
 		for (int i = 0; i < poles.size(); i++)
 			chosen[i] = 0;
@@ -533,11 +585,16 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 			}
 		}
 		RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
+		string resultPosOpt = "";
+		for (int i = 0; i < poles.size(); i++)
+		{
+			if (chosen[i] == 1)
+				resultPosOpt += "Y"+to_string(i + 1) + " ";
+		}
+		str = resultPosOpt;
 	}
-	for (int i = 0; i < chosenDaps.size(); i++)
-	{
-		str += chosenDaps[i] + " ";
-	}
+
+
 	delete metergrid;
 	delete polegrid;
 
@@ -548,6 +605,38 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 //Executa o planejamento automático
 string AutoPlanning::executeAutoPlan()
 {
+	//vector<vector<int> > SCP = createScp();
+	//saveGLPKFileReduced(SCP);
+	return gridAutoPlanning();
+	//executeGlpk("GlpkFile.txt");
+	//ifstream f("Results.txt");
+	//string str;
+	//getline(f, str);
+	//return str;
+}
+vector<Position*> AutoPlanning::getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP)
+{	
+	vector<Position*> metersThatSatisfy;
+	for (int i = 0; i < invertedSCP.size(); i++)
+	{
+		if (invertedSCP[i].size() >= redundancy)
+			metersThatSatisfy.push_back(meters[i]);
+	}
+	return metersThatSatisfy;
+}
+string AutoPlanning::executeAutoPlan(int redundancy)
+{
+	vector<vector<int> > scp = createScp();
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			invertedSCP[scp[i][j]].push_back(i);
+		}
+	}
+	vector<Position*> metersThatSatisfy = getMetersThatSatisfyRedundancy(redundancy, invertedSCP);
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
 	return gridAutoPlanning();
@@ -570,6 +659,49 @@ string AutoPlanning::executeAutoPlanTestMode( bool usePostOptimization)
 
 	string ret =  "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
 	ret += "Maximum Memory Used: " + to_string(mme) +"\n\n";
+	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
+
+	vector<string> xgp = split(result, ' ');
+	vector<Position*> daps;
+	vector<Position*> metersCopy;
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		string snum = xgp[i].substr(1);
+		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
+		daps.push_back(dapToInsert);
+	}
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+		metersCopy.push_back(copy);
+	}
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+	string metricResult = mc->executeMetricCalculation();
+	delete mc;
+
+	ret += metricResult;
+	return ret;
+}
+string AutoPlanning::executeAutoPlanTestMode(bool usePostOptimization, int redundancy)
+{
+	//vector<vector<int> > SCP = createScp();
+	//saveGLPKFileReduced(SCP);
+	float mtu, mme;
+	double secondsgp = -1;
+	string result;
+	const clock_t begin_time = clock();
+	if (redundancy > 1)
+	{
+
+	}
+	else
+	{
+		result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization);
+	}
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+
+	string ret = "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
+	ret += "Maximum Memory Used: " + to_string(mme) + "\n\n";
 	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
 
 	vector<string> xgp = split(result, ' ');
