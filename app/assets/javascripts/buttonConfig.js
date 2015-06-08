@@ -528,7 +528,7 @@ function setButtons()
 					},
 					resizable: false,
 					width: 471,
-					height: 150
+					height: 170
 				});
 			});     
 		});

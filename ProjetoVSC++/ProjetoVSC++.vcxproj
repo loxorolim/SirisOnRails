@@ -81,6 +81,7 @@
     <ClCompile Include="..\sirisdevc++\LinkCalculationMethods.cpp" />
     <ClCompile Include="..\sirisdevc++\MetricCalculationMethods.cpp" />
     <ClCompile Include="..\sirisdevc++\Siris.cpp" />
+    <ClCompile Include="..\SirisDevC++\TestMethods.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sirisdevc++\Siris-i386-mingw32.def" />
@@ -95,6 +96,7 @@
     <ClInclude Include="..\SirisDevC++\HeatgridMethods.h" />
     <ClInclude Include="..\sirisdevc++\LinkCalculationMethods.h" />
     <ClInclude Include="..\sirisdevc++\MetricCalculationMethods.h" />
+    <ClInclude Include="..\SirisDevC++\TestMethods.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

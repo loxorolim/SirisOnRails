@@ -11,6 +11,7 @@
 #include "Grid.h"
 #include <time.h>
 #include <stdio.h>
+#include "MetricCalculationMethods.h"
 
 
 class AutoPlanning
@@ -36,10 +37,15 @@ class AutoPlanning
 			SRD = srd;
 			meshEnabled = me;
 			rubyPath = rp;
-			regionLimiter = 0.01;
 			gridLimiter = 10000000;
-
-
+			
+			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
+			regionLimiter = 0;
+			while (getHataSRDSuccessRate(regionLimiter, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD) > MARGIN_VALUE)
+			{
+				regionLimiter++;
+			}
+		
 		};
 		~AutoPlanning()
 		{
@@ -60,13 +66,18 @@ class AutoPlanning
 		 void saveGLPKFileReduced(vector<vector<int> > &SCP);
 		 vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		 string executeAutoPlan();
-		 string executeAutoPlanTestMode(string * res, double gridsize);
+
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP);
 		 void executeGlpk(string filename);
 		 string gridAutoPlanning();
-		 string gridAutoPlanningTestMode(float *mtu, float* mmu);
+
 		 vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 		 string graspAutoPlanning();
+
+		 //Metodos Teste
+		 void setGridSize(double gridSize);
+		 string executeAutoPlanTestMode(bool usePostOptimization);
+		 string gridAutoPlanningTestMode(float *mtu, float* mmu, bool usePostOptimization);
 
 };
 

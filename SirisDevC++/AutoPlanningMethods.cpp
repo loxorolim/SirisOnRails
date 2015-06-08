@@ -98,7 +98,7 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 vector<vector<int> > AutoPlanning::createScp()
 {
 	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
-	Grid* g = new Grid(100);
+	Grid* g = new Grid(regionLimiter);
 	g->putPositions(meters);//Adiciona-se ao grid os medidores.
 	vector<int> aux;
 	vector<vector<int> > sM;
@@ -452,7 +452,7 @@ string AutoPlanning::gridAutoPlanning()
 }
 
 //Pode ignorar, usei pra testes.
-string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
+string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePostOptimization)
 {
 	Grid* metergrid = new Grid(gridLimiter);
 	metergrid->putPositions(meters);
@@ -506,46 +506,38 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu)
 	//Remove redundâncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+
+	if (usePostOptimization)//PÓS OTIMIZAÇÃO
+	{	
+		meters = metersAux;
+		poles = polesAux;
+		int* chosen = new int[poles.size()];
+		for (int i = 0; i < poles.size(); i++)
+			chosen[i] = 0;
+		for (int i = 0; i < chosenDaps.size(); i++)
+		{
+			string snum = chosenDaps[i].substr(1);
+			const char * c = snum.c_str();
+			int val = atoi(c) - 1;
+			chosen[val] = 1;
+		}
+
+		vector<vector<int> > scp = createScp();
+		vector<vector<int> > invertedSCP;
+		invertedSCP.resize(meters.size());
+		for (int i = 0; i < scp.size(); i++)
+		{
+			for (int j = 0; j < scp[i].size(); j++)
+			{
+				invertedSCP[scp[i][j]].push_back(i);
+			}
+		}
+		RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
+	}
 	for (int i = 0; i < chosenDaps.size(); i++)
 	{
 		str += chosenDaps[i] + " ";
 	}
-	//PÓS OTIMIZAÇÃO
-	meters = metersAux;
-	poles = polesAux;
-	int* chosen = new int[poles.size()];
-	for (int i = 0; i < poles.size(); i++)
-		chosen[i] = 0;
-	for (int i = 0; i < chosenDaps.size(); i++)
-	{
-		string snum = chosenDaps[i].substr(1);
-		const char * c = snum.c_str();
-		int val = atoi(c)-1;
-		chosen[val] = 1;
-	}
-
-	vector<vector<int> > scp = createScp();
-	vector<vector<int> > invertedSCP;
-	invertedSCP.resize(meters.size());
-	for (int i = 0; i < scp.size(); i++)
-	{
-		for (int j = 0; j < scp[i].size(); j++)
-		{
-			invertedSCP[scp[i][j]].push_back(i);
-		}
-	}
-	//RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
-	RolimLocalSearch(scp,  chosen);
-	//WalkSat(scp, chosen);
-	int count=0; //removr depois
-	for (int i = 0; i < poles.size(); i++)
-	{
-		if (chosen[i] == 1)
-			count++;
-	}
-	cout << count;
-
-
 	delete metergrid;
 	delete polegrid;
 
@@ -566,31 +558,40 @@ string AutoPlanning::executeAutoPlan()
 	//return str;
 }
 //Coisa de teste
-string AutoPlanning::executeAutoPlanTestMode( string * res, double gridsize)
+string AutoPlanning::executeAutoPlanTestMode( bool usePostOptimization)
 {
-
-	gridLimiter = gridsize;
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
 	float mtu, mme;
 	double secondsgp = -1;
 	const clock_t begin_time = clock();
-	string result = gridAutoPlanningTestMode(&mtu,&mme);
+	string result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization);
 	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 
-
-	Position* aux = new Position(0, 0);
-	Position* aux2 = new Position(0 + gridsize, 0);
-	Position* aux3 = new Position(0, 0 + gridsize);
-	double gheight = getDistance(aux,aux2);
-	double gwidth = getDistance(aux,aux3);
-
-	string ret =  "Grid height: " + to_string(gheight) + "\n Grid width: " + to_string(gwidth) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
+	string ret =  "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
 	ret += "Maximum Memory Used: " + to_string(mme) +"\n\n";
 	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
 
-	*res = ret;
-	return result;
+	vector<string> xgp = split(result, ' ');
+	vector<Position*> daps;
+	vector<Position*> metersCopy;
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		string snum = xgp[i].substr(1);
+		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
+		daps.push_back(dapToInsert);
+	}
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+		metersCopy.push_back(copy);
+	}
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+	string metricResult = mc->executeMetricCalculation();
+	delete mc;
+
+	ret += metricResult;
+	return ret;
 }
 //////////////////////////////////////////MÉTODOS PRO GRASP////////////////////////////////////////////////
 int iterations = 500;
@@ -961,4 +962,8 @@ string AutoPlanning::graspAutoPlanning()
 	return "wow";
 
 
+}
+void AutoPlanning::setGridSize(double gridSize)
+{
+	gridLimiter = gridSize;
 }

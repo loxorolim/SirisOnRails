@@ -1,36 +1,19 @@
 GLPSOL: GLPK LP/MIP Solver, v4.54
 Parameter(s) specified in the command line:
- --math C:/Sites/first_app/GlpkFile.txt --memlim 6000
-Reading model section from C:/Sites/first_app/GlpkFile.txt...
-Reading data section from C:/Sites/first_app/GlpkFile.txt...
+ --math C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt --memlim
+ 6000
+Reading model section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
+Reading data section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
 14 lines were read
 Generating cost...
 Generating covers...
 Model has been successfully generated
 GLPK Integer Optimizer, v4.54
-62 rows, 32 columns, 820 non-zeros
-32 integer variables, all of which are binary
+3 rows, 6 columns, 8 non-zeros
+6 integer variables, all of which are binary
 Preprocessing...
-12 hidden packing inequaliti(es) were detected
-54 rows, 27 columns, 777 non-zeros
-27 integer variables, all of which are binary
-Scaling...
- A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
-Problem data seem to be well scaled
-Constructing initial basis...
-Size of triangular part is 54
-Solving LP relaxation...
-GLPK Simplex Optimizer, v4.54
-54 rows, 27 columns, 777 non-zeros
-      0: obj =  3.000000000e+000  infeas = 5.400e+001 (0)
-*    44: obj =  7.000000000e+000  infeas = 0.000e+000 (0)
-*    45: obj =  7.000000000e+000  infeas = 0.000e+000 (0)
-OPTIMAL LP SOLUTION FOUND
-Integer optimization begins...
-+    45: mip =     not found yet >=              -inf        (1; 0)
-+    45: >>>>>  7.000000000e+000 >=  7.000000000e+000   0.0% (1; 0)
-+    45: mip =  7.000000000e+000 >=     tree is empty   0.0% (0; 1)
-INTEGER OPTIMAL SOLUTION FOUND
+Objective value =  1.000000000e+000
+INTEGER OPTIMAL SOLUTION FOUND BY MIP PREPROCESSOR
 Time used:   0.0 secs
-Memory used: 0.6 Mb (669725 bytes)
+Memory used: 0.1 Mb (118446 bytes)
 Model has been successfully processed

@@ -103,10 +103,9 @@ background-repeat:no-repeat;
 
 
 #menu {
- 
   position: absolute;
   margin-top: 64px;
-  margin-left:64px;
+  margin-left:52px;
 }
 
 #menu div {
