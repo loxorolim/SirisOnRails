@@ -39,7 +39,7 @@ vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
 // 1 - 0,
 // 2 -
 // 3 - 0, 1
-vector<int> AutoPlanning::uncoverableMeters(vector<vector<int> > &SCP)
+vector<int> AutoPlanning::uncoverableMeters(vector<vector<int> > &SCP,int redundancy)
 {
 	
 	vector<int> uncoverableMeters;
@@ -50,16 +50,38 @@ vector<int> AutoPlanning::uncoverableMeters(vector<vector<int> > &SCP)
 		{			
 			int cov = -1;
 			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
-			if (cov)
-			{
-				coverable = 1;
+			if (cov)			
+				coverable++;
+			if (coverable >= redundancy)
 				break;
-			}
+			
 		}
-		if (!coverable)
+		if (coverable < redundancy)
 			uncoverableMeters.push_back(meters[i]->index);
 	}
 	return uncoverableMeters;
+}
+vector<int> AutoPlanning::coverableMeters(vector<vector<int> > &SCP, int redundancy)
+{
+
+	vector<int> coverableMeters;
+	for (int i = 0; i < meters.size(); i++)
+	{
+		int coverable = 0;
+		for (int j = 0; j < poles.size(); j++)
+		{
+			int cov = -1;
+			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+			if (cov)
+				coverable++;
+			if (coverable >= redundancy)
+			{
+				coverableMeters.push_back(meters[i]->index);
+				break;
+			}
+		}		
+	}
+	return coverableMeters;
 }
 
 //Esse método cria uma matriz que relaciona quais medidores alcançam outors medidores.
@@ -240,96 +262,18 @@ vector<vector<int> > AutoPlanning::createScpSemGrid()
 	delete g;
 	return sM;
 }
-//Ignora esse método, passa pro saveGLPKFileReduced, que usa o Grid.
-void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP)
-{
-	FILE *file;
-		{
-
-			//TEM Q MUDAR ESSE NEGÓCIO AQUI!
-		    vector<int> uncMeters = uncoverableMeters(SCP);
-			string resp;
-			resp += "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" +rubyPath+ "/Results.txt\";\n data;\n";
-			//fprintf_s(file, "%s", "set Z;\n set Y;\n param A{r in Z, m in Y}, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"Results.txt\";\n data;\n");
-			//ret += "set Z:= ";
-			//fprintf_s(file, "set Z:= ");
-			resp += "set Z:= ";
-			for (int i = 0; i < meters.size(); i++)
-			{
-				int uncov = -1;
-				uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
-				if (!uncov)
-					resp += "Z" + to_string(i + 1) + " ";
-			}
-
-			resp += ";\n";
-			resp += "set Y:= ";
-
-			for (int i = 0; i < poles.size(); i++)
-				resp += "Y" + to_string(i + 1) + " ";
-
-			resp += ";\n";
-
-			resp += "param A : ";
-	
-			for (int i = 0; i < poles.size(); i++)
-				resp += "Y" + to_string(i + 1) + " ";
-
-			resp += ":= \n";
-			for (int i = 0; i < meters.size(); i++) 
-			{
-				int uncov = -1;
-				uncov = (find(uncMeters.begin(), uncMeters.end(), i) != uncMeters.end());
-				if (!uncov)
-				{
-					resp += "Z" + to_string(i + 1) + " ";
-					//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
-					for (int j = 0; j < poles.size(); j++)
-					{
-						//bool um = false;
-						//for (int k = 0; k < SCP.size(); k++)
-						int cov = -1;
-						cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
-						if (cov)
-							resp += "1 ";
-						else
-							resp += "0 ";
-
-					}
-				}
-	
-			}
-			resp += "\n";
-			resp += ";";
-			resp += "end;\n";
-		
-			string filename = rubyPath + "/GlpkFile.txt";
-			ofstream f(filename.c_str());
-
-			f << resp;
-			f.close();
-
-	
-	
-		}
-	
-}
 //Esse método monta o arquivo de entrada pro GLPK.
-void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
+void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToDisconsider, int redundancy)
 {
-		
-		vector<int> uncMeters = uncoverableMeters(SCP);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+		//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
 		//Pois se não, o método retornaria que a solução é impossível!
 		//A formatação você ve no arquivo GlpkFile.txt
 		string resp;
-		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath +"/Results.txt\";\n data;\n";
+		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>="+to_string(redundancy)+";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath +"/Results.txt\";\n data;\n";
 		resp += "set Z:= ";
-		for (int i = 0; i < meters.size(); i++)
+		for (int i = 0; i < metersToConsider.size(); i++)
 		{
-			int uncov = -1;
-			uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
-			if (!uncov)
-				resp += "Z" + to_string(meters[i]->index + 1) + " ";
+				resp += "Z" + to_string(metersToConsider[i]->index + 1) + " ";
 		}
 		
 		resp += ";\n";
@@ -340,25 +284,20 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 		resp += ";\n";
 		resp += "param A := ";
 		resp += "\n";
-		for (int i = 0; i < meters.size(); i++)
+		for (int i = 0; i < metersToConsider.size(); i++)
 		{
-			int uncov = -1;
-			uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
-			if (!uncov)
-			{
-				//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
 				for (int j = 0; j < poles.size(); j++)
 				{
 					//bool um = false;
 					//for (int k = 0; k < SCP.size(); k++)
 					int cov = -1;
-					cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
-					if (cov)
-						resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1)+"] 1";
+					cov = (find(SCP[j].begin(), SCP[j].end(), metersToConsider[i]->index) != SCP[j].end());
+					int covP = 1;
+					for (int k = 0; k < polesToDisconsider.size(); k++){ if (polesToDisconsider[k]->index == poles[j]->index){ covP = -1; break; } }
+					if (cov && covP)
+						resp += "[Z" + to_string(metersToConsider[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1)+"] 1";
 
-				}
-			}
-
+				}			
 		}
 		resp += "\n";
 		resp += ";";
@@ -369,6 +308,60 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP)
 
 		f << resp;
 		f.close();
+}
+void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy)
+{
+	vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+	//Pois se não, o método retornaria que a solução é impossível!
+	//A formatação você ve no arquivo GlpkFile.txt
+	string resp;
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=" + to_string(redundancy) + ";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z:= ";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		int uncov = -1;
+		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
+		if (!uncov)
+			resp += "Z" + to_string(meters[i]->index + 1) + " ";
+	}
+
+	resp += ";\n";
+	resp += "set Y:= ";
+
+	for (int i = 0; i < poles.size(); i++)
+		resp += "Y" + to_string(poles[i]->index + 1) + " ";
+	resp += ";\n";
+	resp += "param A := ";
+	resp += "\n";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		int uncov = -1;
+		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
+		if (!uncov)
+		{
+			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+			for (int j = 0; j < poles.size(); j++)
+			{
+				//bool um = false;
+				//for (int k = 0; k < SCP.size(); k++)
+				int cov = -1;
+				cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+				if (cov)
+					resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
+
+			}
+		}
+
+	}
+	resp += "\n";
+	resp += ";";
+	resp += "end;\n";
+
+	string filename = rubyPath + "/GlpkFile.txt";
+	ofstream f(filename.c_str());
+
+	f << resp;
+	f.close();
 }
 //Esse método faz um system call ao GLPK
 void AutoPlanning::executeGlpk(string filename)
@@ -438,8 +431,40 @@ float getTimeUsageFromGlpkFile(string fname)
 	return time;
 
 }
+string AutoPlanning::planWithRedundancy(vector<vector<int> > &scp, int redundancy)
+{
+	vector<int> chosenPoles;
+	vector<int> aux = coverableMeters(scp,redundancy);
+	//vector<Position*> polesToDisconsider;
+	vector<Position*> selectedPoles;
+	vector<Position*> metersToConsider;
+	for (int i = 0; i < aux.size(); i++)
+	{
+		metersToConsider.push_back(meters[aux[i]]);
+	}
+	saveGLPKFileReduced(scp, metersToConsider,selectedPoles, redundancy);
+	executeGlpk(rubyPath + "/GlpkFile.txt");
+	ifstream f((rubyPath + "/Results.txt").c_str());
+	string gridAnswer;
+	getline(f, gridAnswer);
+	vector<string> xgp = split(gridAnswer, ' ');
+
+	vector<Position*> metersCopy;
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		string snum = xgp[i].substr(1);
+		Position* selected = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
+		selectedPoles.push_back(selected);
+	}
+
+
+	//lembrar dos FREES
+
+
+	return "wow";
+}
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
-string AutoPlanning::gridAutoPlanning()
+string AutoPlanning::gridAutoPlanning(int redundancy)
 {
 	//Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
 	Grid* metergrid = new Grid(100000);
@@ -463,7 +488,7 @@ string AutoPlanning::gridAutoPlanning()
 		meters = cellsMeters;
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
-		saveGLPKFileReduced(cellSCP);
+		saveGLPKFileReduced(cellSCP,redundancy);
 		executeGlpk(rubyPath + "/GlpkFile.txt");
 		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
@@ -501,7 +526,7 @@ string AutoPlanning::gridAutoPlanning()
 }
 
 //Pode ignorar, usei pra testes.
-string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePostOptimization)
+string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePostOptimization, int redundancy)
 {
 	Grid* metergrid = new Grid(gridLimiter);
 	metergrid->putPositions(meters);
@@ -526,7 +551,7 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 		meters = cellsMeters;
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
-		saveGLPKFileReduced(cellSCP);
+		saveGLPKFileReduced(cellSCP,redundancy);
 		executeGlpk(rubyPath+"/GlpkFile.txt");
 		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
@@ -608,7 +633,7 @@ string AutoPlanning::executeAutoPlan()
 {
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
-	return gridAutoPlanning();
+	return gridAutoPlanning(1);
 	//executeGlpk("GlpkFile.txt");
 	//ifstream f("Results.txt");
 	//string str;
@@ -627,25 +652,9 @@ vector<Position*> AutoPlanning::getMetersThatSatisfyRedundancy(int redundancy, v
 }
 string AutoPlanning::executeAutoPlan(int redundancy)
 {
-	vector<vector<int> > scp = createScp();
-	vector<vector<int> > invertedSCP;
-	invertedSCP.resize(meters.size());
-	for (int i = 0; i < scp.size(); i++)
-	{
-		for (int j = 0; j < scp[i].size(); j++)
-		{
-			invertedSCP[scp[i][j]].push_back(i);
-		}
-	}
-	vector<Position*> metersThatSatisfy = getMetersThatSatisfyRedundancy(redundancy, invertedSCP);
-	//vector<vector<int> > SCP = createScp();
-	//saveGLPKFileReduced(SCP);
-	return gridAutoPlanning();
-	//executeGlpk("GlpkFile.txt");
-	//ifstream f("Results.txt");
-	//string str;
-	//getline(f, str);
-	//return str;
+
+	return gridAutoPlanning(redundancy);
+
 }
 //Coisa de teste
 string AutoPlanning::executeAutoPlanTestMode( bool usePostOptimization)
@@ -655,7 +664,7 @@ string AutoPlanning::executeAutoPlanTestMode( bool usePostOptimization)
 	float mtu, mme;
 	double secondsgp = -1;
 	const clock_t begin_time = clock();
-	string result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization);
+	string result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,1);
 	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 
 	string ret =  "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
@@ -704,11 +713,45 @@ string AutoPlanning::executeAutoPlanTestMode(bool usePostOptimization, int redun
 			}
 		}
 		vector<Position*> metersThatSatisfy = getMetersThatSatisfyRedundancy(redundancy, invertedSCP);
+		vector<Position*> metersThatSatisfyCopy;
+		vector<Position*> polesCopy;
+		for (int i = 0; i < metersThatSatisfy.size(); i++)
+		{
+			Position* copy = new Position(metersThatSatisfy[i]->latitude, metersThatSatisfy[i]->longitude, metersThatSatisfy[i]->index);
+			metersThatSatisfyCopy.push_back(copy);
+		}
+		for (int i = 0; i < poles.size(); i++)
+		{
+			Position* copy = new Position(poles[i]->latitude, poles[i]->longitude, poles[i]->index);
+			polesCopy.push_back(copy);
+		}
+		AutoPlanning* res = new AutoPlanning(metersThatSatisfyCopy, polesCopy, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		string ret = res->executeAutoPlan(redundancy);
+		delete res;
+
+		vector<string> xgp = split(ret, ' ');
+		vector<Position*> daps;
+		vector<Position*> metersCopy;
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			string snum = xgp[i].substr(1);
+			Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
+			daps.push_back(dapToInsert);
+		}
+		for (int i = 0; i < metersThatSatisfy.size(); i++)
+		{
+			Position* copy = new Position(metersThatSatisfy[i]->latitude, metersThatSatisfy[i]->longitude, i);
+			metersCopy.push_back(copy);
+		}
+		MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		string metricResult = mc->executeMetricCalculation();
+		cout << metricResult;
+		delete mc;
 
 	}
 	else
 	{
-		result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization);
+		result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,1);
 	}
 	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 

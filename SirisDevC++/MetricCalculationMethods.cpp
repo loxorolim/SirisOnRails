@@ -351,7 +351,7 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 		double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
 		if (eff >= MARGIN_VALUE)
 		{
-			sComponent* father;
+			sComponent* father = NULL;
 			for(int i = 0; i < sC.size();i++){ if(sC[i]->index == meterToConnect->index) father = sC[i]; break; }
 			double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
 			sComponent* ret = new sComponent(meter->index, dist, eff,delay, meshHop, father);
@@ -393,7 +393,7 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 			}
 			else
 			{
-				sComponent* father;
+				sComponent* father = NULL;
 				for(int i = 0; i < sC.size();i++)
 				{
 					if(sC[i]->index == deviceToConnect->index)
