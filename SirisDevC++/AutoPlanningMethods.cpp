@@ -435,6 +435,9 @@ string AutoPlanning::planWithRedundancy(vector<vector<int> > &scp, int redundanc
 {
 	vector<int> chosenPoles;
 	vector<int> aux = coverableMeters(scp,redundancy);
+	vector<int> redundancyInfoPerMeter;
+	for (int i = 0; i < meters.size(); i++)
+		redundancyInfoPerMeter.push_back(0);
 	//vector<Position*> polesToDisconsider;
 	vector<Position*> selectedPoles;
 	vector<Position*> metersToConsider;
@@ -453,8 +456,20 @@ string AutoPlanning::planWithRedundancy(vector<vector<int> > &scp, int redundanc
 	for (int i = 0; i < xgp.size(); i++)
 	{
 		string snum = xgp[i].substr(1);
-		Position* selected = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
+		Position* selected = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);
+		for (int j = 0; j < scp[poles[atoi(snum.c_str()) - 1]->index].size(); j++)
+		{
+			redundancyInfoPerMeter[scp[poles[atoi(snum.c_str()) - 1]->index][j]]++;
+		}
 		selectedPoles.push_back(selected);
+	}
+	redundancy--;
+	aux = coverableMeters(scp, redundancy);
+	metersToConsider.clear();
+	for (int i = 0; i < aux.size(); i++)
+	{
+		if (redundancyInfoPerMeter[aux[i]] < redundancy)
+			metersToConsider.push_back(meters[aux[i]]);
 	}
 
 
