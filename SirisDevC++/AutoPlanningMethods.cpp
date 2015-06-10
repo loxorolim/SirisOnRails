@@ -274,7 +274,9 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	{
 		for (int j = 0; j < SCP[i].size(); j++)
 		{
-			covInfo[SCP[i][j]]++;
+			int pos=-1;
+			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == SCP[i][j]){ pos = k; break; } }
+			covInfo[pos]++;
 		}
 	}
 	string resp;
@@ -314,7 +316,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	for (int i = 0; i < meters.size(); i++)
 	{
 		if (covInfo[i] < redundancy)
-			resp += "[Z" + to_string(i + 1) + "] "+to_string(covInfo[i]);
+			resp += "[Z" + to_string(meters[i]->index + 1) + "] "+to_string(covInfo[i]);
 	}
 	resp += "\n;\nend;\n";
 	delete covInfo;
@@ -778,59 +780,7 @@ string AutoPlanning::executeAutoPlanTestMode(bool usePostOptimization, int redun
 	double secondsgp = -1;
 	string result;
 	const clock_t begin_time = clock();
-	if (redundancy > 1)
-	{
-		vector<vector<int> > scp = createScp();
-		vector<vector<int> > invertedSCP;
-		invertedSCP.resize(meters.size());
-		for (int i = 0; i < scp.size(); i++)
-		{
-			for (int j = 0; j < scp[i].size(); j++)
-			{
-				invertedSCP[scp[i][j]].push_back(i);
-			}
-		}
-		vector<Position*> metersThatSatisfy = getMetersThatSatisfyRedundancy(redundancy, invertedSCP);
-		vector<Position*> metersThatSatisfyCopy;
-		vector<Position*> polesCopy;
-		for (int i = 0; i < metersThatSatisfy.size(); i++)
-		{
-			Position* copy = new Position(metersThatSatisfy[i]->latitude, metersThatSatisfy[i]->longitude, metersThatSatisfy[i]->index);
-			metersThatSatisfyCopy.push_back(copy);
-		}
-		for (int i = 0; i < poles.size(); i++)
-		{
-			Position* copy = new Position(poles[i]->latitude, poles[i]->longitude, poles[i]->index);
-			polesCopy.push_back(copy);
-		}
-		AutoPlanning* res = new AutoPlanning(metersThatSatisfyCopy, polesCopy, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
-		string ret = res->executeAutoPlan(redundancy);
-		delete res;
-
-		vector<string> xgp = split(ret, ' ');
-		vector<Position*> daps;
-		vector<Position*> metersCopy;
-		for (int i = 0; i < xgp.size(); i++)
-		{
-			string snum = xgp[i].substr(1);
-			Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
-			daps.push_back(dapToInsert);
-		}
-		for (int i = 0; i < metersThatSatisfy.size(); i++)
-		{
-			Position* copy = new Position(metersThatSatisfy[i]->latitude, metersThatSatisfy[i]->longitude, i);
-			metersCopy.push_back(copy);
-		}
-		MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
-		string metricResult = mc->executeMetricCalculation();
-		cout << metricResult;
-		delete mc;
-
-	}
-	else
-	{
-		result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,1);
-	}
+	result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,redundancy);
 	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 
 	string ret = "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";

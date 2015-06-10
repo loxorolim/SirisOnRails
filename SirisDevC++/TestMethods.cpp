@@ -170,10 +170,10 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 	//f << finalResult;
 	//f.close();
 }
-string gridPlanningTest(AutoPlanning *AP,int gridSize, bool usePostOptimization)
+string gridPlanningTest(AutoPlanning *AP,int gridSize, bool usePostOptimization, int redundancy)
 {
 	AP->setGridSize(gridSize);
-	string ret = AP->executeAutoPlanTestMode(usePostOptimization,2);
+	string ret = AP->executeAutoPlanTestMode(usePostOptimization,redundancy);
 	return ret;
 }
 void executeTest()
@@ -183,7 +183,9 @@ void executeTest()
 	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters1000.txt", rubyPath+"/arqsTeste/filepoles1000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
 	string result = "";
 	//result+=gridPlanningTest(AP, 100, true);
-	result+=gridPlanningTest(AP, 100, false);
+	result+=gridPlanningTest(AP, 100, false,1);
+	result += gridPlanningTest(AP, 100, false, 2);
+	result += gridPlanningTest(AP, 100, false, 3);
 	cout << result;
 
 
@@ -191,12 +193,6 @@ void executeTest()
 
 int main(int argc, char** argv)
 {
-
-	Position* doge = new Position(1, 1, 1);
-	vector<Position*> wow;
-	wow.push_back(doge);
-	vector<Position*> ah = wow;
-	ah.erase(ah.begin() + 0);
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	executeTest();
