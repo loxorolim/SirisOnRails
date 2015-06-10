@@ -251,7 +251,7 @@ function readGridTestResponse(data){
 function statisticsDecode(type,hop,range){
     var ret = "";
 	switch(type){
-		case "DapQnt":
+		case "DAPQnt":
 			return "Quantidade de DAPs";
 		case "MeterQnt":
 			return "Quantidade de medidores";
@@ -286,7 +286,7 @@ function readMetricResponse(data,kml){
 			var value = $(this).text();
             $( "#metricsTable tbody" ).append( 
             "<tr>" +
-              "<th class=\"ui-widget-header \">" + statisticsDecode(type,hop,range) + "</th>" +
+              "<th class=\"ui-widget-header \" style=\"width: 170px;\">" + statisticsDecode(type,hop,range) + "</th>" +
               "<td>" + value + "</td>" +
                +"</tr>" );  
 
@@ -406,6 +406,7 @@ function createAutoPlanningFileModel(){
     var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
     var ret = AUTO_PLAN_FILE_ID + '\n';
     ret += propagationValuesToSend();
+    ret += REDUNDANCY+'\n';
 
     ret+= uncoveredMeters.length+"\n";
     for(var i = 0; i <uncoveredMeters.length; i++){

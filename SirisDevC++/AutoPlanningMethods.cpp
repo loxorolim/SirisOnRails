@@ -262,6 +262,69 @@ vector<vector<int> > AutoPlanning::createScpSemGrid()
 	delete g;
 	return sM;
 }
+void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy)
+{
+	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+	//Pois se não, o método retornaria que a solução é impossível!
+	//A formatação você ve no arquivo GlpkFile.txt
+
+	int* covInfo = new int[meters.size()];
+	for (int i = 0; i < meters.size(); i++){ covInfo[i] = 0; }
+	for (int i = 0; i < SCP.size(); i++)
+	{
+		for (int j = 0; j < SCP[i].size(); j++)
+		{
+			covInfo[SCP[i][j]]++;
+		}
+	}
+	string resp;
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default "+to_string(redundancy)+", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z:= ";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		resp += "Z" + to_string(meters[i]->index + 1) + " ";
+	}
+
+	resp += ";\n";
+	resp += "set Y:= ";
+
+	for (int i = 0; i < poles.size(); i++)
+		resp += "Y" + to_string(poles[i]->index + 1) + " ";
+	resp += ";\n";
+	resp += "param A := ";
+	resp += "\n";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		for (int j = 0; j < poles.size(); j++)
+		{
+			//bool um = false;
+			//for (int k = 0; k < SCP.size(); k++)
+			int cov = -1;
+			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+			if (cov)
+				resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
+
+		}
+	}
+	resp += "\n";
+	resp += ";";
+	resp += "\n";
+	resp += "param B := ";
+	resp += "\n";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		if (covInfo[i] < redundancy)
+			resp += "[Z" + to_string(i + 1) + "] "+to_string(covInfo[i]);
+	}
+	resp += "\n;\nend;\n";
+	delete covInfo;
+
+	string filename = rubyPath + "/GlpkFile.txt";
+	ofstream f(filename.c_str());
+
+	f << resp;
+	f.close();
+}
 //Esse método monta o arquivo de entrada pro GLPK.
 void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToDisconsider, int redundancy)
 {
@@ -309,60 +372,60 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Positio
 		f << resp;
 		f.close();
 }
-void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy)
-{
-	vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
-	//Pois se não, o método retornaria que a solução é impossível!
-	//A formatação você ve no arquivo GlpkFile.txt
-	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=" + to_string(redundancy) + ";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
-	resp += "set Z:= ";
-	for (int i = 0; i < meters.size(); i++)
-	{
-		int uncov = -1;
-		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
-		if (!uncov)
-			resp += "Z" + to_string(meters[i]->index + 1) + " ";
-	}
-
-	resp += ";\n";
-	resp += "set Y:= ";
-
-	for (int i = 0; i < poles.size(); i++)
-		resp += "Y" + to_string(poles[i]->index + 1) + " ";
-	resp += ";\n";
-	resp += "param A := ";
-	resp += "\n";
-	for (int i = 0; i < meters.size(); i++)
-	{
-		int uncov = -1;
-		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
-		if (!uncov)
-		{
-			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
-			for (int j = 0; j < poles.size(); j++)
-			{
-				//bool um = false;
-				//for (int k = 0; k < SCP.size(); k++)
-				int cov = -1;
-				cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
-				if (cov)
-					resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
-
-			}
-		}
-
-	}
-	resp += "\n";
-	resp += ";";
-	resp += "end;\n";
-
-	string filename = rubyPath + "/GlpkFile.txt";
-	ofstream f(filename.c_str());
-
-	f << resp;
-	f.close();
-}
+//void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy)
+//{
+//	vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+//	//Pois se não, o método retornaria que a solução é impossível!
+//	//A formatação você ve no arquivo GlpkFile.txt
+//	string resp;
+//	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=" + to_string(redundancy) + ";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+//	resp += "set Z:= ";
+//	for (int i = 0; i < meters.size(); i++)
+//	{
+//		int uncov = -1;
+//		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
+//		if (!uncov)
+//			resp += "Z" + to_string(meters[i]->index + 1) + " ";
+//	}
+//
+//	resp += ";\n";
+//	resp += "set Y:= ";
+//
+//	for (int i = 0; i < poles.size(); i++)
+//		resp += "Y" + to_string(poles[i]->index + 1) + " ";
+//	resp += ";\n";
+//	resp += "param A := ";
+//	resp += "\n";
+//	for (int i = 0; i < meters.size(); i++)
+//	{
+//		int uncov = -1;
+//		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
+//		if (!uncov)
+//		{
+//			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
+//			for (int j = 0; j < poles.size(); j++)
+//			{
+//				//bool um = false;
+//				//for (int k = 0; k < SCP.size(); k++)
+//				int cov = -1;
+//				cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+//				if (cov)
+//					resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
+//
+//			}
+//		}
+//
+//	}
+//	resp += "\n";
+//	resp += ";";
+//	resp += "end;\n";
+//
+//	string filename = rubyPath + "/GlpkFile.txt";
+//	ofstream f(filename.c_str());
+//
+//	f << resp;
+//	f.close();
+//}
 //Esse método faz um system call ao GLPK
 void AutoPlanning::executeGlpk(string filename)
 {

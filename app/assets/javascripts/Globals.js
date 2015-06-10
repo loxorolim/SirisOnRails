@@ -26,6 +26,7 @@ var H_RX = 5;
 var BIT_RATE;
 var TRANSMITTER_POWER = -20;
 var SRD = true;
+var REDUNDANCY = 1;
 
 var drawHeatmap = false;
 var heatmap;
