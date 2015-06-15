@@ -181,6 +181,8 @@ void executeTest()
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters1000.txt", rubyPath+"/arqsTeste/filepoles1000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	AP->createScpWithLimit(5);
+
 	string result = "";
 	//result+=gridPlanningTest(AP, 100, true);
 	result+=gridPlanningTest(AP, 100, false,1);

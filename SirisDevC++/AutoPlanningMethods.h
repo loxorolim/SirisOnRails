@@ -60,7 +60,8 @@ class AutoPlanning
 			}
 		};
 		
-		 vector<vector<int> > createScpSemGrid();
+
+		vector<vector<int> > createScpWithLimit(int limit);
 		 vector<vector<int> > createScp();
 		 vector<vector<int> > createInvertedScp();
 		 void saveGLPKFile(vector<vector<int> > &scp);

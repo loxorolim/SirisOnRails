@@ -170,6 +170,72 @@ vector<vector<int> > AutoPlanning::createScp()
 	delete g;
 	return sM;
 }
+
+vector<vector<int> > AutoPlanning::createScpWithLimit(int limit)
+{
+	vector<vector<int> > completeSCP = createScp();
+	int* covInfo = new int[meters.size()];
+	for (int i = 0; i < meters.size(); i++){ covInfo[i] = 0; }
+	for (int i = 0; i < completeSCP.size(); i++)
+	{
+		for (int j = 0; j < completeSCP[i].size(); j++)
+		{
+			int pos = -1;
+			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == completeSCP[i][j]){ pos = k; break; } }
+			covInfo[pos]++;
+		}
+	}
+	for (int i = 0; i < completeSCP.size(); i++)
+	{
+		vector<int> coverageReduced;
+		vector<int> orderedByDistance;
+		vector<int> aux = completeSCP[i];
+		while (aux.size() > 0)
+		{
+			int toAdd = 0;
+			double dist = getDistance(poles[i], meters[aux[0]]);;
+			for (int j = 1; j < aux.size(); j++)
+			{
+				double d = getDistance(poles[i], meters[aux[j]]);
+				if (d < dist)
+				{
+					toAdd = j;
+					dist = d;
+				}
+			}
+			orderedByDistance.push_back(aux[toAdd]);
+			aux.erase(aux.begin() + toAdd);
+		}
+
+		for (int j = 0; j < orderedByDistance.size(); j++)
+		{
+			if (coverageReduced.size() == limit)
+			{
+				break;
+			}
+			else if (covInfo[orderedByDistance[j]] == 1 )
+			{
+				coverageReduced.push_back(orderedByDistance[j]);
+				orderedByDistance.erase(orderedByDistance.begin() + j);
+				j = 0;
+			}
+		}
+		if (coverageReduced.size() < limit )
+		{
+			int aux = limit - coverageReduced.size();
+			for (int j = 0; (j < aux) && orderedByDistance.size() > 0; j++)
+			{
+				coverageReduced.push_back(orderedByDistance[0]);
+				orderedByDistance.erase(orderedByDistance.begin());
+			}
+		}
+		completeSCP[i] = coverageReduced;
+	}
+	delete covInfo;
+	return completeSCP;
+}
+
+/*
 vector<vector<int> > AutoPlanning::createInvertedScp()
 {
 	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
@@ -219,49 +285,8 @@ vector<vector<int> > AutoPlanning::createInvertedScp()
 	delete g;
 	return sM;
 }
+*/
 
-//Calcula sem usar o Grid, é obsoleto.
-vector<vector<int> > AutoPlanning::createScpSemGrid()
-{
-	Grid* g = new Grid(10000);
-	g->putPositions(meters);
-	vector<int> aux;
-	vector<vector<int> > sM;
-	for (int i = 0; i < poles.size(); i++)
-	{
-		vector<int> metersCovered;
-		vector<Position*> metersReduced = g->getCell(poles[i]);
-		for (int j = 0; j < metersReduced.size(); j++)
-		{
-			double dist = getDistance(poles[i], metersReduced[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-
-			if (eff >= MARGIN_VALUE)
-				metersCovered.push_back(metersReduced[j]->index);
-		}
-		sM.push_back(metersCovered);
-	}
-	if (meshEnabled)
-	{
-		vector<vector<int> > nM = createMeterNeighbourhood(g);
-		for (int i = 0; i < sM.size(); i++)
-		{
-			vector<int> neighbours = sM[i];
-			for (int j = 0; j < meshEnabled; j++)
-			{
-				vector<int> newNeighbours;
-				for (int k = 0; k < neighbours.size(); k++)
-				{
-					sM[i] = concatVectors(sM[i], nM[neighbours[k]]);
-					newNeighbours = concatVectors(newNeighbours, nM[neighbours[k]]);
-				}
-				neighbours = newNeighbours;
-			}
-		}
-	}
-	delete g;
-	return sM;
-}
 void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy)
 {
 	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
