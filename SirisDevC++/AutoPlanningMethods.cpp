@@ -352,6 +352,83 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	f << resp;
 	f.close();
 }
+void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int limit)
+{
+	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+	//Pois se não, o método retornaria que a solução é impossível!
+	//A formatação você ve no arquivo GlpkFile.txt
+
+	int* covInfo = new int[meters.size()];
+	for (int i = 0; i < meters.size(); i++){ covInfo[i] = 0; }
+	for (int i = 0; i < SCP.size(); i++)
+	{
+		for (int j = 0; j < SCP[i].size(); j++)
+		{
+			int pos = -1;
+			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == SCP[i][j]){ pos = k; break; } }
+			covInfo[pos]++;
+		}
+	}
+	string resp;
+	resp += "set Z;\n";
+	resp += "set Y;\n";
+	resp += "param A{ r in Z, m in Y } default 0, binary;\n";
+	resp += " param B{r in Z} default 2, integer;\n";
+	resp += "var Route{ m in Y }, binary;\n";
+	resp += "var Link{ r in Z, m in Y }, binary;\n";
+	resp += "minimize cost : sum{ m in Y } Route[m];\n";
+	resp += "subject to covers{ r in Z }: sum{ m in Y } A[r, m] * Route[m] >= 1;\n";
+	resp += "subject to linked{ m in Y }: sum{ r in Z } Link[r, m] <= 3;\n";
+	resp += "subject to decis{ r in Z, m in Y }: Link[r, m] <= A[r, m] * Route[m];\n";
+	resp += "subject to decis2 : sum{ r in Z, m in Y } Link[r, m] = card(Z);\n";
+	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] = 1;\n ";
+	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z:= ";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		resp += "Z" + to_string(meters[i]->index + 1) + " ";
+	}
+
+	resp += ";\n";
+	resp += "set Y:= ";
+
+	for (int i = 0; i < poles.size(); i++)
+		resp += "Y" + to_string(poles[i]->index + 1) + " ";
+	resp += ";\n";
+	resp += "param A := ";
+	resp += "\n";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		for (int j = 0; j < poles.size(); j++)
+		{
+			//bool um = false;
+			//for (int k = 0; k < SCP.size(); k++)
+			int cov = -1;
+			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+			if (cov)
+				resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
+
+		}
+	}
+	resp += "\n";
+	resp += ";";
+	resp += "\n";
+	resp += "param B := ";
+	resp += "\n";
+	for (int i = 0; i < meters.size(); i++)
+	{
+		if (covInfo[i] < 1)
+			resp += "[Z" + to_string(meters[i]->index + 1) + "] " + to_string(covInfo[i]);
+	}
+	resp += "\n;\nend;\n";
+	delete covInfo;
+
+	string filename = rubyPath + "/GlpkFile.txt";
+	ofstream f(filename.c_str());
+
+	f << resp;
+	f.close();
+}
 //Esse método monta o arquivo de entrada pro GLPK.
 void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToDisconsider, int redundancy)
 {

@@ -66,6 +66,7 @@ class AutoPlanning
 		 vector<vector<int> > createInvertedScp();
 		 void saveGLPKFile(vector<vector<int> > &scp);
 		 void saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy);
+		 void saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy);
 		 void saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToConsider, int redundancy);
 		 vector<vector<int> > createMeterNeighbourhood(Grid *g);
 		 string executeAutoPlan();

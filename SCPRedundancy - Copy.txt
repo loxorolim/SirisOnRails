@@ -1,0 +1,24 @@
+ set Z;
+ set Y;
+ param A{r in Z, m in Y} default 0, binary;
+ var Route{m in Y}, binary;
+ var Link{r in Z, m in Y}, binary;
+ minimize cost: sum{m in Y} Route[m];
+ subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=1;
+ subject to linked{m in Y}: sum{r in Z} Link[r,m]<=3;
+ subject to decis{r in Z, m in Y}: Link[r,m] <= A[r,m]*Route[m];
+ subject to decis2: sum{r in Z, m in Y} Link[r,m] = card(Z); 
+ subject to decis3{r in Z}: sum{m in Y} Link[r,m] = 1; 
+
+ 
+ solve; 
+printf {m in Y:  Route[m] == 1} "%s ", m ;
+printf {m in Y,r in Z:  Link[r,m] == 1} "\n%s -> %s ", r, m ;
+ data;
+set Z:= Z1 Z2 Z3 Z4 Z5 ;
+set Y:= Y1 Y2 Y3 Y4 Y5 ;
+param A := 
+[Z1,Y3] 1[Z1,Y5] 1 [Z2,Y3] 1[Z2,Y5] 1 [Z3,Y1] 1 [Z3,Y2] 1 [Z3,Y3] 1 [Z3,Y5] 1[Z4,Y1] 1 [Z4,Y2] 1[Z4,Y5] 1[Z5,Y2] 1[Z5,Y4] 1  
+;
+
+end;
