@@ -369,14 +369,6 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int l
 			covInfo[pos]++;
 		}
 	}
-	int maxCovered=0;
-	for (int i = 0; i < SCP.size(); i++)
-	{
-		if (SCP[i].size() >= limit)
-			maxCovered += limit;
-		else
-			maxCovered += SCP[i].size();
-	}
 	string resp;
 	resp += "set Z;\n";
 	resp += "set Y;\n";
@@ -384,11 +376,10 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int l
 	resp += "param B{r in Z} default 1, integer;\n";
 	resp += "var Route{ m in Y }, binary;\n";
 	resp += "var Link{ r in Z, m in Y }, binary;\n";
-	resp += "minimize cost : sum{ m in Y } Route[m];\n";
+	resp += "minimize cost: (sum{m in Y} Route[m])/(card(Y)+1) + (card(Z)-sum{r in Z, m in Y} Link[r,m]);\n";
 	resp += "subject to covers{ r in Z }: sum{ m in Y } A[r, m] * Route[m] >= B[r];\n";
 	resp += "subject to linked{ m in Y }: sum{ r in Z } Link[r, m] <= "+to_string(limit)+";\n";
 	resp += "subject to decis{ r in Z, m in Y }: Link[r, m] <= A[r, m] * Route[m];\n";
-	resp += "subject to decis2 : sum{ r in Z, m in Y } Link[r, m] = "+to_string()+";\n";
 	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] = 1;\n ";
 	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
 	resp += "set Z:= ";
