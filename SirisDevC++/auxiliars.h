@@ -18,6 +18,8 @@
 #define METRIC 2
 #define HEATGRID 3
 #define TEST 4
+#define GET_RANGE 6
+
 
 #define Urbano  0
 #define Suburbano  1
@@ -128,6 +130,41 @@ public:
 		ret += to_string(b->longitude);
 		ret += "/";
 		ret += to_string(color);
+		ret += "/";
+		ret += to_string(efficiency);
+		ret += "/";
+		ret += to_string(distance);
+		ret += "/";
+		ret += to_string(dashed);
+		//ret += "/";
+		return ret;
+	}
+
+};
+class DrawInfo2
+{
+public:
+	int dashed;
+	int a,b,hopnumber;
+	double efficiency;
+	double distance;
+	DrawInfo2(int mainIndex, int toConnectIndex, int hn, double eff, double d, int da)
+	{
+		a = mainIndex;
+		b = toConnectIndex;
+		hopnumber = hn;
+		efficiency = eff;
+		distance = d;
+		dashed = da;
+	};
+	string toString()
+	{
+		string ret;
+		ret += to_string(a);
+		ret += "/";
+		ret += to_string(b);
+		ret += "/";
+		ret += to_string(hopnumber);
 		ret += "/";
 		ret += to_string(efficiency);
 		ret += "/";

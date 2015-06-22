@@ -70,9 +70,9 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfoOld()
 	return toCover;
 }
 
-vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
+vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
 {
-	vector<DrawInfo*> toCover;
+	vector<DrawInfo2*> toCover;
 	vector<Position*> connectedDevices;
 	connectedDevices = daps;
 	vector<Position*> uncoveredMeters = meters;
@@ -90,7 +90,7 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 		for (int j = 0; j < uncoveredMeters.size(); j++)
 		{
 			//vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
-			DrawInfo* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);//Esse método que escolhe quem o medidor vai
+			DrawInfo2* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);//Esse método que escolhe quem o medidor vai
 			//se conectar. Ele sempre escolhe o cara mais próximo (isso é, com melhor qualidade). Então, no primeiro salto
 			//ele só vai considerar os agregadores, a partir do segundo ele vai considerar também os medidores cobertos a
 			//1 salto, depois a 2 e assim sucessivamente.
@@ -112,7 +112,7 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 //o toString do DrawInfo
 string LinkCalculation::executeLinkCalculation()
 {
-	vector<DrawInfo*> drawInfos = calculateDrawingInfo();
+	vector<DrawInfo2*> drawInfos = calculateDrawingInfo();
 	string ret = "";
 	for (int i = 0; i < drawInfos.size(); i++)
 		ret += drawInfos[i]->toString() + " ";
@@ -149,7 +149,7 @@ DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position
 //conexão. Lembrando que ele se conecta sempre a um dispositivo já conectado com menor distância. De inicio, apenas
 //os DAPs são considerados como dispositivos conectados, depois os medidores ligados a esse DAP também são considerados
 //como conectados, depois os medidores que ligaram a outros medidores e assim por diante.
-DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, int hopNumber)
+DrawInfo2* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, int hopNumber)
 {
 	double minDist = -1;
 	Position* deviceToConnect = NULL;
@@ -172,14 +172,16 @@ DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Positio
 			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
 		if (effs >= MARGIN_VALUE)
 		{
-			DrawInfo* ret;
+			DrawInfo2* ret;
 			if(hopNumber == 0)
 			{
-				ret = new DrawInfo(meter, deviceToConnect, effs, dist, 0);
+				//ret = new DrawInfo(meter, deviceToConnect, effs, dist, 0);
+				ret = new DrawInfo2(meter->index, deviceToConnect->index,hopNumber, effs, dist, 0);
 			}
 			else
 			{
-				ret = new DrawInfo(meter, deviceToConnect, effs, dist, 1);
+				//ret = new DrawInfo(meter, deviceToConnect, effs, dist, 1);
+				ret = new DrawInfo2(meter->index, deviceToConnect->index, hopNumber, effs, dist, 1);
 			}
 			return ret;
 		}

@@ -4,6 +4,7 @@ const METRIC_FILE_ID = 2;
 const HEATGRID_FILE_ID = 3;
 const TEST_COLLECTION_FILE_ID = 4;
 const KML_CREATION_FILE_ID = 5;
+const GET_RANGE_FILE_ID = 6;
 
 function sendDrawRequest(){
     sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
@@ -54,6 +55,10 @@ function sendDataToServer(url,method,type) {
 		case KML_CREATION_FILE_ID:
             data = createMetricsFileModel();
             break;
+        case GET_RANGE_FILE_ID:
+            data = GET_RANGE_FILE_ID + '\n';
+            data += propagationValuesToSend();
+            break;
 
         default:
             data = -1;
@@ -87,6 +92,9 @@ function sendDataToServer(url,method,type) {
 					case KML_CREATION_FILE_ID:
 						readMetricResponse(data,true);
 						break;
+                    case GET_RANGE_FILE_ID:
+                        readGetRangeResponse(data,true);
+                        break;
                     default:
                         break;
                 }
@@ -105,6 +113,32 @@ function getLastLine(x){
     } else {
         return x;
     }
+}
+function readGetRangeResponse(data){
+    if(coveragePolygon)
+        coveragePolygon.setMap(null);
+    var split = data.split("\n");
+    var dapRange = parseFloat(split[0]);
+    var meterRange = parseFloat(split[1]);
+    var circles = [];
+    for(var i = 0; i < daps.length; i++){
+        circles.push(drawCircle(daps[i].getPosition(),dapRange/1609.344,1)) ;
+    }
+    for(var i = 0; i < meters.length; i++){
+        if(meters[i].hop != null && meters[i].hop < meshMaxJumps  )
+            circles.push(drawCircle(meters[i].getPosition(),meterRange/1609.344,1)) ;
+    }
+    coveragePolygon = new google.maps.Polygon({
+                 paths: circles,
+                 strokeColor: "#00FF00",
+                 strokeOpacity: 0.35,
+                 strokeWeight: 0,
+                 fillColor: "#00FF00",
+                 fillOpacity: 0.35,
+                 clickable: false
+     });
+     coveragePolygon.setMap(map);
+    
 }
 function readAutoPlanResponse(data){
 	if(data == "")
@@ -130,7 +164,7 @@ function readAutoPlanResponse(data){
 function readPropagationResponse(data){
     resetDraw();
     var drawInfo = data.split(" ");
-    for(var i = 0; i < drawInfo.length-1; i++){
+   /* for(var i = 0; i < drawInfo.length-1; i++){
         var split = drawInfo[i].split("/");
         var latlng1 = split[0].split("<>");
         var lat1 = parseFloat(latlng1[0]);
@@ -146,7 +180,27 @@ function readPropagationResponse(data){
         var dashed = parseInt(split[5]);
         drawLine(pos1,pos2,color,efficiency,distance,dashed);
 
+    }*/
+    for(var i = 0; i < drawInfo.length-1; i++){
+        var split = drawInfo[i].split("/");
+        var latlng1 = meters[parseInt(split[0])].getPosition();
+        var latlng2;
+        var hopnumber = parseInt(split[2]);
+        meters[parseInt(split[0])].hop = hopnumber+1;//+1 pq ta vindo do servidor que 0 = 1 salto
+        if(hopnumber==0)
+            latlng2 = daps[parseInt(split[1])].getPosition();
+        else
+            latlng2 = meters[parseInt(split[1])].getPosition();
+
+
+        var efficiency = parseFloat(split[3]);
+        var distance = parseFloat(split[4]);
+        var dashed = parseInt(split[5]);
+        drawLine(latlng1,latlng2,efficiency,distance,dashed);
+
     }
+    if(drawRangeView)
+        sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
    
 
 }

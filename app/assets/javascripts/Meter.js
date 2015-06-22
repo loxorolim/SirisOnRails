@@ -16,6 +16,7 @@
         strokeWeight: 2,
         fillColor: '#000000',
         fillOpacity: 1,
+        hop: null,
 
 
         //        meshConnectionLines: [],

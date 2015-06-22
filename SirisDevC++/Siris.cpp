@@ -9,10 +9,10 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-//#include "rice/Class.hpp"
+#include "rice/Class.hpp"
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-//using namespace Rice;
+using namespace Rice;
 
 
 
@@ -219,6 +219,23 @@ string getResponse(string req, string rubyPath)
 		return ret;
 
 	}
+	if (option == GET_RANGE)
+	{
+		double dapdist = 0, step = 0.1, effs = 1;
+		while (effs > MARGIN_VALUE)
+		{
+			dapdist += step;
+			effs = getHataSRDSuccessRate(dapdist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);	
+		}
+		effs = 1;
+		double meterdist = 0;
+		while (effs > MARGIN_VALUE)
+		{
+			meterdist += step;
+			effs = getHataSRDSuccessRate(meterdist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
+		}
+		return to_string(dapdist - step) + "\n" + to_string(meterdist - step);
+	}
 
 
 
@@ -236,12 +253,12 @@ string getResponse(string req, string rubyPath)
 	return "";
 }
 
-//extern "C"
-//
-//void Init_Siris()
-//{
-//  Class rb_c = define_class("Siris")
-//   .define_method("getResponse", &getResponse);
-//
-//}
-//
+extern "C"
+
+void Init_Siris()
+{
+  Class rb_c = define_class("Siris")
+   .define_method("getResponse", &getResponse);
+
+}
+

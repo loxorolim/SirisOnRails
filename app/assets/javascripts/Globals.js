@@ -29,6 +29,7 @@ var SRD = true;
 var REDUNDANCY = 1;
 
 var drawHeatmap = false;
+var drawRangeView = false;
 var heatmap;
 var taxiData = [];
 var heatmapPoints = [];
@@ -37,6 +38,7 @@ var efficiencyRadio = 30; //30metros
 
 var lines = [];
 var dashedLines = [];
+var coveragePolygon;
 
 var ID = 0;
 

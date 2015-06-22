@@ -461,6 +461,18 @@ function setButtons()
           });
         });            
     });
+     $('#rangeview').button({
+        icons: {
+            primary: "rangeview"
+        },
+        text: false
+
+    }).click(function () {       
+        $("this").blur();    
+        toggleRangeView();
+         
+
+    });
 	//$( "#speed" ).selectmenu();
     $('#autoPlanning').button().click(function () {
         
@@ -717,3 +729,15 @@ function toggleHeatgrid(){
 		}
 	}
 } 
+function toggleRangeView(){
+  drawRangeView = !drawRangeView;
+  if(drawRangeView) 
+    sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
+  else
+  {
+    if(coveragePolygon)
+      coveragePolygon.setMap(null);
+  }
+} 
+
+  

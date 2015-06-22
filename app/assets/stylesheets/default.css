@@ -100,6 +100,9 @@ background-repeat:no-repeat;
 .ui-button .ui-icon.settings {
      background-image: url(settings.png); 
 }
+.ui-button .ui-icon.rangeview {
+     background-image: url(rangeview.png); 
+}
 
 
 #menu {

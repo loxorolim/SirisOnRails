@@ -380,7 +380,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int l
 	resp += "subject to covers{ r in Z }: sum{ m in Y } A[r, m] * Route[m] >= B[r];\n";
 	resp += "subject to linked{ m in Y }: sum{ r in Z } Link[r, m] <= "+to_string(limit)+";\n";
 	resp += "subject to decis{ r in Z, m in Y }: Link[r, m] <= A[r, m] * Route[m];\n";
-	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] = 1;\n ";
+	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] <= 1;\n ";
 	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < meters.size(); i++)
