@@ -1,6 +1,8 @@
 ﻿
 
 function resetDraw(){
+    for(var i = 0; i < meters.length; i++)
+        meters[i].hop = null;
     for(var i = 0; i < lines.length; i++){
         lines[i].setMap(null);
     }

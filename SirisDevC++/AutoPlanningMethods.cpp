@@ -352,7 +352,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	f << resp;
 	f.close();
 }
-void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int limit)
+void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit)
 {
 	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
 	//Pois se não, o método retornaria que a solução é impossível!
@@ -373,7 +373,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int l
 	resp += "set Z;\n";
 	resp += "set Y;\n";
 	resp += "param A{ r in Z, m in Y } default 0, binary;\n";
-	resp += "param B{r in Z} default 1, integer;\n";
+	resp += "param B{r in Z} default "+to_string(redundancy)+", integer;\n";
 	resp += "var Route{ m in Y }, binary;\n";
 	resp += "var Link{ r in Z, m in Y }, binary;\n";
 	resp += "minimize cost: (sum{m in Y} Route[m])/(card(Y)+1) + (card(Z)-sum{r in Z, m in Y} Link[r,m]);\n";
@@ -416,7 +416,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int l
 	resp += "\n";
 	for (int i = 0; i < meters.size(); i++)
 	{
-		if (covInfo[i] < 1)
+		if (covInfo[i] < redundancy)
 			resp += "[Z" + to_string(meters[i]->index + 1) + "] " + to_string(covInfo[i]);
 	}
 	resp += "\n;\nend;\n";
@@ -645,7 +645,7 @@ string AutoPlanning::planWithRedundancy(vector<vector<int> > &scp, int redundanc
 	return "wow";
 }
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
-string AutoPlanning::gridAutoPlanning(int redundancy)
+string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 {
 	//Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
 	Grid* metergrid = new Grid(100000);
@@ -669,7 +669,10 @@ string AutoPlanning::gridAutoPlanning(int redundancy)
 		meters = cellsMeters;
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
-		saveGLPKFileReduced(cellSCP,redundancy);
+		if (limit == -1)
+			saveGLPKFileReduced(cellSCP, redundancy);
+		else
+			saveGLPKFileReducedWithLimit(cellSCP, redundancy, limit);
 		executeGlpk(rubyPath + "/GlpkFile.txt");
 		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
@@ -814,7 +817,7 @@ string AutoPlanning::executeAutoPlan()
 {
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
-	return gridAutoPlanning(1);
+	return gridAutoPlanning(1,-1);
 	//executeGlpk("GlpkFile.txt");
 	//ifstream f("Results.txt");
 	//string str;
@@ -831,10 +834,10 @@ vector<Position*> AutoPlanning::getMetersThatSatisfyRedundancy(int redundancy, v
 	}
 	return metersThatSatisfy;
 }
-string AutoPlanning::executeAutoPlan(int redundancy)
+string AutoPlanning::executeAutoPlan(int redundancy,int limit)
 {
 
-	return gridAutoPlanning(redundancy);
+	return gridAutoPlanning(redundancy,limit);
 
 }
 //Coisa de teste

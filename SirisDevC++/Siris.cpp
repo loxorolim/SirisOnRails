@@ -9,11 +9,11 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-//#include "rice/Class.hpp"
-///* run this program using the console pauser or add your own getch, system("pause") or input loop */
-//
-//using namespace Rice;
-//
+#include "rice/Class.hpp"
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+using namespace Rice;
+
 
 
 string getResponse(string req, string rubyPath)
@@ -101,7 +101,7 @@ string getResponse(string req, string rubyPath)
 		}
 
 		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
-		string ret = res->executeAutoPlan(redundancy);
+		string ret = res->executeAutoPlan(redundancy,limit);
 		//res->~AutoPlanning();
 		cout << ret;
 		delete res;
@@ -256,12 +256,12 @@ string getResponse(string req, string rubyPath)
 	return "";
 }
 
-//extern "C"
-//
-//void Init_Siris()
-//{
-//  Class rb_c = define_class("Siris")
-//   .define_method("getResponse", &getResponse);
-//
-//}
+extern "C"
+
+void Init_Siris()
+{
+  Class rb_c = define_class("Siris")
+   .define_method("getResponse", &getResponse);
+
+}
 

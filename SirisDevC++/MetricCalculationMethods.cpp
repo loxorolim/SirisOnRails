@@ -8,10 +8,14 @@ double getNumberOfRetries(double quality)
 	return (quality*(1 + 2 * compQuality + 3 * pow(compQuality, 2)) + 4 * pow(compQuality, 3));
 
 }
-double calculateLinkDelay(double quality, int pckSize, double rate)
+
+double calculateLinkDelay(double quality, int pckSize, double rate,int technology)
 {
 	double numOfRetries = getNumberOfRetries(quality);
-	return ((pckSize / (rate*pow(2,20)))*(numOfRetries / round(numOfRetries)))*1000; //*1000 pra ser milisegundos
+	if (technology == t802_11_g)
+		return ((pckSize / (rate*pow(2,20)))*(numOfRetries / round(numOfRetries)))*1000; //*1000 pra ser milisegundos
+	if (technology == t802_15_4)
+		return ((pckSize / (250*pow(2, 10)))*(numOfRetries / round(numOfRetries))) * 1000; //*1000 pra ser milisegundos
 }
 
 
@@ -353,7 +357,7 @@ sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Posi
 		{
 			sComponent* father = NULL;
 			for(int i = 0; i < sC.size();i++){ if(sC[i]->index == meterToConnect->index) father = sC[i]; break; }
-			double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
+			double delay = calculateLinkDelay(eff, packetSize, BIT_RATE, technology);
 			sComponent* ret = new sComponent(meter->index, dist, eff,delay, meshHop, father);
 			return ret;
 		}
@@ -388,7 +392,7 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 			sComponent* ret;
 			if(hop == 0)
 			{
-				double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
+				double delay = calculateLinkDelay(eff, packetSize, BIT_RATE,technology);
 				ret = new sComponent(meter->index, dist, eff,delay, hop, NULL);
 			}
 			else
@@ -402,7 +406,7 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 						break;
 					}
 				}
-				double delay = calculateLinkDelay(eff, packetSize, BIT_RATE);
+				double delay = calculateLinkDelay(eff, packetSize, BIT_RATE,technology);
 				ret = new sComponent(meter->index, dist, eff,delay, hop, father);
 			}
 			return ret;

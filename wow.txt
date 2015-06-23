@@ -4,34 +4,53 @@ Parameter(s) specified in the command line:
  --memlim 6000
 Reading model section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt...
 Reading data section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt...
-19 lines were read
+23 lines were read
 Generating cost...
 Generating covers...
+Generating linked...
+Generating decis...
+Generating decis3...
 Model has been successfully generated
+glp_mpl_build_prob: row cost; constant term 83 ignored
 GLPK Integer Optimizer, v4.54
-71 rows, 29 columns, 174 non-zeros
-29 integer variables, all of which are binary
+1511 rows, 1344 columns, 6064 non-zeros
+1344 integer variables, all of which are binary
 Preprocessing...
-13 hidden packing inequaliti(es) were detected
-33 rows, 22 columns, 95 non-zeros
-22 integer variables, all of which are binary
+469 rows, 383 columns, 1622 non-zeros
+383 integer variables, all of which are binary
 Scaling...
  A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
 Problem data seem to be well scaled
 Constructing initial basis...
-Size of triangular part is 33
+Size of triangular part is 469
 Solving LP relaxation...
 GLPK Simplex Optimizer, v4.54
-33 rows, 22 columns, 95 non-zeros
-      0: obj =  7.000000000e+000  infeas = 3.300e+001 (0)
-*    40: obj =  1.700000000e+001  infeas = 0.000e+000 (0)
-*    42: obj =  1.600000000e+001  infeas = 0.000e+000 (0)
+469 rows, 383 columns, 1622 non-zeros
+      0: obj =  8.305882353e+001  infeas = 4.300e+001 (0)
+*    47: obj =  8.329411765e+001  infeas = 0.000e+000 (0)
+*   472: obj =  3.525649245e+001  infeas = 0.000e+000 (0)
 OPTIMAL LP SOLUTION FOUND
 Integer optimization begins...
-+    42: mip =     not found yet >=              -inf        (1; 0)
-+    44: >>>>>  1.600000000e+001 >=  1.600000000e+001   0.0% (1; 0)
-+    44: mip =  1.600000000e+001 >=     tree is empty   0.0% (0; 1)
-INTEGER OPTIMAL SOLUTION FOUND
-Time used:   0.0 secs
-Memory used: 0.5 Mb (556643 bytes)
-Model has been successfully processed
++   472: mip =     not found yet >=              -inf        (1; 0)
++   933: >>>>>  4.182352941e+001 >=  3.570588235e+001  14.6% (26; 0)
++  1341: >>>>>  3.888235294e+001 >=  3.570588235e+001   8.2% (78; 2)
++  1677: >>>>>  3.594117647e+001 >=  3.582352941e+001   0.3% (83; 42)
++ 30168: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (59; 2096)
++ 55964: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (64; 4219)
++ 83066: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (72; 6608)
++109528: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (52; 8943)
++133552: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (174; 10624)
++158789: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (179; 12656)
++184980: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (188; 14838)
++211090: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (224; 16991)
++239000: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (213; 19280)
++265432: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (283; 21210)
++291204: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (363; 23462)
+Time used: 60.0 secs.  Memory used: 3.3 Mb.
++317807: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (394; 25812)
++343654: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (385; 28235)
++369342: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (406; 30679)
++396162: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (353; 33290)
++421774: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (349; 35711)
++446652: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (383; 37731)
++467512: mip =  3.594117647e+001 >=  3.582352941e+001   0.3% (423; 39312)

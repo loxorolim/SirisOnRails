@@ -745,12 +745,14 @@ function toggleHeatgrid(){
 } 
 function toggleRangeView(){
   drawRangeView = !drawRangeView;
+
   if(drawRangeView) 
     sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
   else
   {
     if(coveragePolygon)
       coveragePolygon.setMap(null);
+
   }
 } 
 

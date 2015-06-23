@@ -115,6 +115,7 @@ function getLastLine(x){
     }
 }
 function readGetRangeResponse(data){
+
     if(coveragePolygon)
         coveragePolygon.setMap(null);
     var split = data.split("\n");
@@ -461,10 +462,10 @@ function createAutoPlanningFileModel(){
     var ret = AUTO_PLAN_FILE_ID + '\n';
     ret += propagationValuesToSend();
     ret += REDUNDANCY+'\n';
-	if($("#heatmapFormatRadio").is(':checked'))	
-		ret+= LIMIT;
+	if($("#considerLimit").is(':checked'))	
+		ret+= LIMIT+'\n';
 	else
-		ret+= -1;
+		ret+= -1+'\n';
 	
     ret+= uncoveredMeters.length+"\n";
     for(var i = 0; i <uncoveredMeters.length; i++){
