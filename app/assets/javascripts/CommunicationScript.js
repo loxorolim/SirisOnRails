@@ -461,7 +461,11 @@ function createAutoPlanningFileModel(){
     var ret = AUTO_PLAN_FILE_ID + '\n';
     ret += propagationValuesToSend();
     ret += REDUNDANCY+'\n';
-
+	if($("#heatmapFormatRadio").is(':checked'))	
+		ret+= LIMIT;
+	else
+		ret+= -1;
+	
     ret+= uncoveredMeters.length+"\n";
     for(var i = 0; i <uncoveredMeters.length; i++){
         ret += uncoveredMeters[i].getPosition().lat() + " " + uncoveredMeters[i].getPosition().lng();

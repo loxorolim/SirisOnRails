@@ -9,11 +9,11 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
-#include "rice/Class.hpp"
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
-
-using namespace Rice;
-
+//#include "rice/Class.hpp"
+///* run this program using the console pauser or add your own getch, system("pause") or input loop */
+//
+//using namespace Rice;
+//
 
 
 string getResponse(string req, string rubyPath)
@@ -62,6 +62,9 @@ string getResponse(string req, string rubyPath)
 		int redundancy;
 		std::getline(f, line);
 		redundancy = std::atoi(line.c_str());
+		int limit;
+		std::getline(f, line);
+		limit = std::atoi(line.c_str());
 		int mLength;
 		std::getline(f, line);
 		mLength = std::atoi(line.c_str());
@@ -253,12 +256,12 @@ string getResponse(string req, string rubyPath)
 	return "";
 }
 
-extern "C"
-
-void Init_Siris()
-{
-  Class rb_c = define_class("Siris")
-   .define_method("getResponse", &getResponse);
-
-}
+//extern "C"
+//
+//void Init_Siris()
+//{
+//  Class rb_c = define_class("Siris")
+//   .define_method("getResponse", &getResponse);
+//
+//}
 

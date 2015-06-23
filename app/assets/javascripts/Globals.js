@@ -27,6 +27,7 @@ var BIT_RATE;
 var TRANSMITTER_POWER = -20;
 var SRD = true;
 var REDUNDANCY = 1;
+var LIMIT = 100;
 
 var drawHeatmap = false;
 var drawRangeView = false;

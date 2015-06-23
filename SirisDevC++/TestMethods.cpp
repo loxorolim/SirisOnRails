@@ -178,9 +178,9 @@ string gridPlanningTest(AutoPlanning *AP,int gridSize, bool usePostOptimization,
 }
 void executeTest()
 {
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters10000.txt", rubyPath+"/arqsTeste/filepoles10000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters1000.txt", rubyPath+"/arqsTeste/filepoles1000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
 	vector<vector<int> > scp = AP->createScp();
 	AP->saveGLPKFileReducedWithLimit(scp, 5);
 

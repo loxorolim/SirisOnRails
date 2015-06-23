@@ -347,6 +347,20 @@ function setButtons()
              $("#redundancy").text(ui.value);
          }
      });
+     $("#limitSlider").slider({
+         stop: function (event, ui) {
+             LIMIT = ui.value;
+         }
+     });
+	 $("#limitSlider").slider({
+         value: 100,
+         min: 1,
+         max: 100,
+         step: 1,
+         slide: function (event, ui) {
+             $("#limit").text(ui.value);
+         }
+     });
      $("#redundancySlider").slider({
          stop: function (event, ui) {
              REDUNDANCY = ui.value;
