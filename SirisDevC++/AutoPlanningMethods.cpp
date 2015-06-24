@@ -1137,6 +1137,26 @@ void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &in
 				}
 				if (removable.size() >= 2)
 				{
+
+					vector< pair<int,int> > relations;
+					for (int z = 0; z < removable.size(); z++)
+					{
+						for (int a = 0; a < scp[removable[z]].size(); a++)
+						{
+							int succ = 0;
+							for (int b = 0; b < relations.size(); b++)
+							{
+								if (relations[b].first == scp[removable[z]][a])
+								{
+									succ = 1;
+									relations[b].second++;
+									break;
+								}
+							}
+							if (!succ)													
+								relations.push_back(make_pair(scp[removable[z]][a], 1));
+						}
+					}
 					solution[i] = 1;
 					for (int z = 0; z < removable.size(); z++)
 						solution[removable[z]] = 0;

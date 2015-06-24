@@ -178,17 +178,17 @@ string gridPlanningTest(AutoPlanning *AP,int gridSize, bool usePostOptimization,
 }
 void executeTest()
 {
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters1000.txt", rubyPath+"/arqsTeste/filepoles1000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters5000.txt", rubyPath+"/arqsTeste/filepoles5000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
 	vector<vector<int> > scp = AP->createScp();
 	AP->saveGLPKFileReducedWithLimit(scp,1, 5);
 
 	string result = "";
 	//result+=gridPlanningTest(AP, 100, true);
-	result+=gridPlanningTest(AP, 100, false,1);
-	result += gridPlanningTest(AP, 100, false, 2);
-	result += gridPlanningTest(AP, 100, false, 3);
+	result+=gridPlanningTest(AP, 100, false,2);
+	result += gridPlanningTest(AP, 100, true, 2);
+	//result += gridPlanningTest(AP, 100, false, 3);
 	cout << result;
 
 
