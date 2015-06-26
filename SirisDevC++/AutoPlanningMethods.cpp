@@ -794,7 +794,7 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 				invertedSCP[scp[i][j]].push_back(i);
 			}
 		}
-		RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
+		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen,redundancy);
 		string resultPosOpt = "";
 		for (int i = 0; i < poles.size(); i++)
 		{
@@ -1149,6 +1149,42 @@ void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &in
 		}
 	}
 }
+int intersectionSize(vector<int> &v1, vector<int> &v2)
+{
+
+	vector<int> v3;
+
+	sort(v1.begin(), v1.end());
+	sort(v2.begin(), v2.end());
+
+	set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(v3));
+
+	return v3.size();
+}
+vector<int> intersection(vector<int> &v1, vector<int> &v2)
+{
+
+	vector<int> v3;
+
+	sort(v1.begin(), v1.end());
+	sort(v2.begin(), v2.end());
+
+	set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(v3));
+
+	return v3;
+}
+vector<int> difference(vector<int> &v1, vector<int> &v2)
+{
+
+	vector<int> v3;
+
+	sort(v1.begin(), v1.end());
+	sort(v2.begin(), v2.end());
+
+	set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), back_inserter(v3));
+
+	return v3;
+}
 void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int * solution, int redundancy)
 {
 	int succeeded = 1;
@@ -1158,8 +1194,10 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 	{
 		if (solution[i])
 		{
-			for (int j = 0; j < scp.size(); j++)
+			for (int j = 0; j < scp[i].size(); j++)
+			{
 				covInfo[scp[i][j]]++;
+			}
 		}
 	}
 
@@ -1189,55 +1227,89 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 				sort(polesToCheck.begin(), polesToCheck.end());
 				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
 
+				vector<int> checkedCoverage = scp[i];
+
+				for (int j = 0; j < polesToCheck.size()-1; j++)//ordenada básica de acordo com o tamanho de medidores em interseção com o poste analisado.
+				{
+					int aux = intersectionSize(scp[polesToCheck[j]], scp[i]);
+					int pos=-1;
+					int posSize=-1;
+					for (int k = j + 1; k < polesToCheck.size(); k++)
+					{
+						int aux2 = intersectionSize(scp[polesToCheck[k]], scp[i]);
+						if (posSize == -1 || aux2 < posSize)
+						{
+							pos = k;
+							posSize = aux2;
+						}
+					}
+					if (posSize < aux)
+					{
+						int aux3 = polesToCheck[j];
+						polesToCheck[j] = polesToCheck[pos];
+						polesToCheck[pos] = aux3;
+					}
+				}//ORDENEI DE MENOR PRA MAIOR A QNT DE MEDIDORES EM INTERSEÇÃO COM O POSTE QUE TO ANALISANDO
+			
+				vector<int> toRemove;
 				for (int j = 0; j < polesToCheck.size(); j++)
 				{
-					if (polesToCheck[j] != i && solution[polesToCheck[j]] == 1)
+					vector<int> setDifference = difference(scp[polesToCheck[j]], scp[i]);
+					vector<int> setIntersection = intersection(scp[polesToCheck[j]], scp[i]);
+					bool canRemove = true;
+					for (int k = 0; k < setDifference.size(); k++)
 					{
-						bool add = true;
-						for (int k = 0; k < scp[polesToCheck[j]].size(); k++)
-						{
-							if (covInfo[scp[polesToCheck[j]][k]] <= redundancy)
-							{
-								add = false;
-								break;
-							}
-						}
-						//vector<int> toCheck = scp[polesToCheck[j]];
-
-						//sort(toCheck.begin(), toCheck.end());
-
-						//if (includes(aux.begin(), aux.end(), toCheck.begin(), toCheck.end()))
-						//	removable.push_back(polesToCheck[j]);
+						if (covInfo[setDifference[k]] <= redundancy)
+							canRemove = false;
 					}
+					if (canRemove)
+					{
+						for (int k = 0; k < setIntersection.size(); k++)
+						{
+							if (covInfo[setIntersection[k]] < redundancy)
+								canRemove = false;
+						}
+					}
+					if (canRemove)
+					{
 
+						toRemove.push_back(polesToCheck[j]);
+						for (int a = 0; a < scp[polesToCheck[j]].size(); a++)
+						{
+							covInfo[scp[polesToCheck[j]][a]]--;
+						}
+					}
 				}
-				if (removable.size() >= 2)
-				{
+				
 
-					vector< pair<int, int> > relations;
-					for (int z = 0; z < removable.size(); z++)
+				if (toRemove.size() >= 2)
+				{
+					solution[i] = 1;
+					for (int z = 0; z < toRemove.size(); z++)
 					{
-						for (int a = 0; a < scp[removable[z]].size(); a++)
+						solution[toRemove[z]] = 0;
+						for (int a = 0; a < scp[toRemove[z]].size(); a++)
 						{
-							int succ = 0;
-							for (int b = 0; b < relations.size(); b++)
-							{
-								if (relations[b].first == scp[removable[z]][a])
-								{
-									succ = 1;
-									relations[b].second++;
-									break;
-								}
-							}
-							if (!succ)
-								relations.push_back(make_pair(scp[removable[z]][a], 1));
+							covInfo[scp[toRemove[z]][a]]--;
 						}
 					}
-					solution[i] = 1;
-					for (int z = 0; z < removable.size(); z++)
-						solution[removable[z]] = 0;
+					for (int a = 0; a < scp[i].size(); a++)
+					{
+						covInfo[scp[i][a]]++;
+					}
 					succeeded = 1;
 					break;
+				
+				}
+				else
+				{
+					for (int z = 0; z < toRemove.size(); z++)
+					{
+						for (int a = 0; a < scp[toRemove[z]].size(); a++)
+						{
+							covInfo[scp[toRemove[z]][a]]++;
+						}
+					}
 				}
 			}
 		}

@@ -92,6 +92,7 @@ class AutoPlanning
 
 void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
 void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution);
+void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution,int redundancy);
 void WalkSat(vector<vector<int> > &scp, int * solution);
 
 #endif
