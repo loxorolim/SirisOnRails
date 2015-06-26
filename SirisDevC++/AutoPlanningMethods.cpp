@@ -1129,16 +1129,92 @@ void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &in
 					if (polesToCheck[j] != i && solution[polesToCheck[j]] == 1)
 					{
 						vector<int> toCheck = scp[polesToCheck[j]];
+						
 						sort(toCheck.begin(), toCheck.end());
+
 						if (includes(aux.begin(), aux.end(), toCheck.begin(), toCheck.end()))
 							removable.push_back(polesToCheck[j]);
 					}
 
 				}
 				if (removable.size() >= 2)
+				{			
+					solution[i] = 1;
+					for (int z = 0; z < removable.size(); z++)
+						solution[removable[z]] = 0;
+					succeeded = 1;
+					break;
+				}
+			}
+		}
+	}
+}
+void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int * solution, int redundancy)
+{
+	int succeeded = 1;
+	int* covInfo = new int[invertedScp.size()];
+	for (int i = 0; i < invertedScp.size(); i++){ covInfo[i] = 0; }
+	for (int i = 0; i < scp.size(); i++)
+	{
+		if (solution[i])
+		{
+			for (int j = 0; j < scp.size(); j++)
+				covInfo[scp[i][j]]++;
+		}
+	}
+
+	while (succeeded)
+	{
+		int count = 0;
+		for (int x = 0; x < scp.size(); x++)
+		{
+			if (solution[x] == 1)
+				count++;
+		}
+		cout << count;
+		succeeded = 0;
+		for (int i = 0; i < scp.size(); i++)
+		{
+			vector<int> aux;
+			if (solution[i] == 0)
+			{
+				aux = scp[i];
+				sort(aux.begin(), aux.end());
+				vector<int> removable;
+				vector<int> polesToCheck;
+				for (int z = 0; z < aux.size(); z++)
+				{
+					polesToCheck.insert(polesToCheck.end(), invertedScp[aux[z]].begin(), invertedScp[aux[z]].end());
+				}
+				sort(polesToCheck.begin(), polesToCheck.end());
+				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
+
+				for (int j = 0; j < polesToCheck.size(); j++)
+				{
+					if (polesToCheck[j] != i && solution[polesToCheck[j]] == 1)
+					{
+						bool add = true;
+						for (int k = 0; k < scp[polesToCheck[j]].size(); k++)
+						{
+							if (covInfo[scp[polesToCheck[j]][k]] <= redundancy)
+							{
+								add = false;
+								break;
+							}
+						}
+						//vector<int> toCheck = scp[polesToCheck[j]];
+
+						//sort(toCheck.begin(), toCheck.end());
+
+						//if (includes(aux.begin(), aux.end(), toCheck.begin(), toCheck.end()))
+						//	removable.push_back(polesToCheck[j]);
+					}
+
+				}
+				if (removable.size() >= 2)
 				{
 
-					vector< pair<int,int> > relations;
+					vector< pair<int, int> > relations;
 					for (int z = 0; z < removable.size(); z++)
 					{
 						for (int a = 0; a < scp[removable[z]].size(); a++)
@@ -1153,7 +1229,7 @@ void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &in
 									break;
 								}
 							}
-							if (!succ)													
+							if (!succ)
 								relations.push_back(make_pair(scp[removable[z]][a], 1));
 						}
 					}

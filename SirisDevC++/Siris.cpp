@@ -8,12 +8,12 @@
 #include "HeatgridMethods.h"
 #include "HataSRD.h"
 #include <stdio.h>
-
+//
 //#include "rice/Class.hpp"
 ///* run this program using the console pauser or add your own getch, system("pause") or input loop */
 //
 //using namespace Rice;
-
+//
 
 
 string getResponse(string req, string rubyPath)
@@ -264,4 +264,4 @@ string getResponse(string req, string rubyPath)
 //   .define_method("getResponse", &getResponse);
 //
 //}
-
+//

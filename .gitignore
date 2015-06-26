@@ -33,3 +33,4 @@
 *.tlog
 *.lastbuildstate
 *.log
+*.o
