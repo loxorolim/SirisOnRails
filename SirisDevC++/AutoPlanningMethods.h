@@ -83,9 +83,9 @@ class AutoPlanning
 
 		 //Metodos Teste
 		 void setGridSize(double gridSize);
-		 string executeAutoPlanTestMode(bool usePostOptimization, int redundancy);
-		 string executeAutoPlanTestMode(bool usePostOptimization);
-		 string gridAutoPlanningTestMode(float *mtu, float* mmu, bool usePostOptimization, int redundancy);
+		 string executeAutoPlanTestMode(int usePostOptimization, int redundancy);
+		 string executeAutoPlanTestMode(int usePostOptimization);
+		 string gridAutoPlanningTestMode(float *mtu, float* mmu, int usePostOptimization, int redundancy);
 
 };
 
@@ -93,6 +93,7 @@ class AutoPlanning
 void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
 void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution);
 void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution,int redundancy);
+void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution, int redundancy);
 void WalkSat(vector<vector<int> > &scp, int * solution);
 
 #endif

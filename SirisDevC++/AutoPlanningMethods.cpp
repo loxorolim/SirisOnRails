@@ -710,7 +710,7 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 }
 
 //Pode ignorar, usei pra testes.
-string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePostOptimization, int redundancy)
+string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, int usePostOptimization, int redundancy)
 {
 	Grid* metergrid = new Grid(gridLimiter);
 	metergrid->putPositions(meters);
@@ -794,7 +794,12 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 				invertedSCP[scp[i][j]].push_back(i);
 			}
 		}
-		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen,redundancy);
+		if (usePostOptimization == 1)
+			RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
+		if (usePostOptimization == 2)
+			RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen,redundancy);
+		if (usePostOptimization == 3)
+			RolimEGuerraLocalSearchWithRedundancy2(scp, invertedSCP, chosen, redundancy);
 		string resultPosOpt = "";
 		for (int i = 0; i < poles.size(); i++)
 		{
@@ -841,7 +846,7 @@ string AutoPlanning::executeAutoPlan(int redundancy,int limit)
 
 }
 //Coisa de teste
-string AutoPlanning::executeAutoPlanTestMode( bool usePostOptimization)
+string AutoPlanning::executeAutoPlanTestMode( int usePostOptimization)
 {
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
@@ -876,7 +881,7 @@ string AutoPlanning::executeAutoPlanTestMode( bool usePostOptimization)
 	ret += metricResult;
 	return ret;
 }
-string AutoPlanning::executeAutoPlanTestMode(bool usePostOptimization, int redundancy)
+string AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redundancy)
 {
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
@@ -1185,6 +1190,71 @@ vector<int> difference(vector<int> &v1, vector<int> &v2)
 
 	return v3;
 }
+bool canBeRemoved(int checkedPole, vector<int> polesToCheck, int* covInfo, vector<vector<int> > &scp, int redundancy)
+{
+	bool ret = true;
+	vector<int> checked;
+	for (int i = 0; i < polesToCheck.size(); i++)
+	{
+		for (int j = 0; j < scp[polesToCheck[i]].size(); j++)
+		{
+			covInfo[scp[polesToCheck[i]][j]]--;
+			if (find(scp[checkedPole].begin(), scp[checkedPole].end(), scp[polesToCheck[i]][j]) != scp[checkedPole].end())
+			{
+				if (covInfo[scp[polesToCheck[i]][j]]+1 < redundancy)
+					ret = false;
+			}
+			else
+			{
+				if (covInfo[scp[polesToCheck[i]][j]] < redundancy)
+					ret = false;
+			}
+
+		}
+		checked.push_back(i);
+		if (ret == false)
+			break;		
+	}
+	for (int i = 0; i < checked.size(); i++)
+	{
+		for (int j = 0; j < scp[checked[i]].size(); j++)
+		{
+			covInfo[scp[checked[i]][j]]++;
+		}
+	}
+	return ret;
+}
+vector<int> postOptReduction(int checkedPole, vector<int> polesToCheck, int* covInfo, vector<vector<int> > &scp, int redundancy)
+{
+	vector<vector<int> > toBeChecked;
+	toBeChecked.push_back(polesToCheck);
+	while (toBeChecked.size() > 0)
+	{
+		vector<vector<int> > nextToBeChecked;
+		for (int i = 0; i < toBeChecked.size(); i++)
+		{
+			if (canBeRemoved(checkedPole,toBeChecked[i], covInfo, scp, redundancy))
+				return toBeChecked[i];
+			else
+			{
+				for (int j = 0; j < toBeChecked[i].size(); j++)
+				{
+					if (toBeChecked[i].size() > 1)
+					{
+						vector<int> toAdd = toBeChecked[i];
+						toAdd.erase(toAdd.begin() + j);
+						nextToBeChecked.push_back(toAdd);
+					}
+				}
+			}
+		}
+		sort(nextToBeChecked.begin(), nextToBeChecked.end());
+		nextToBeChecked.erase(unique(nextToBeChecked.begin(), nextToBeChecked.end()), nextToBeChecked.end());
+		toBeChecked = nextToBeChecked;
+	}
+	return vector<int>();
+
+}
 void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int * solution, int redundancy)
 {
 	int succeeded = 1;
@@ -1226,6 +1296,9 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 				}
 				sort(polesToCheck.begin(), polesToCheck.end());
 				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
+				int aux = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
+				if (aux >= 0)
+					polesToCheck.erase(polesToCheck.begin() + aux);
 
 				vector<int> checkedCoverage = scp[i];
 
@@ -1310,6 +1383,65 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 							covInfo[scp[toRemove[z]][a]]++;
 						}
 					}
+				}
+			}
+		}
+	}
+}
+void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int * solution, int redundancy)
+{
+	int succeeded = 1;
+	int* covInfo = new int[invertedScp.size()];
+	for (int i = 0; i < invertedScp.size(); i++){ covInfo[i] = 0; }
+	for (int i = 0; i < scp.size(); i++)
+	{
+		if (solution[i])
+		{
+			for (int j = 0; j < scp[i].size(); j++)
+			{
+				covInfo[scp[i][j]]++;
+			}
+		}
+	}
+
+	while (succeeded)
+	{
+		int count = 0;
+		for (int x = 0; x < scp.size(); x++)
+		{
+			if (solution[x] == 1)
+				count++;
+		}
+		cout << count;
+		succeeded = 0;
+		for (int i = 0; i < scp.size(); i++)
+		{
+			vector<int> aux;
+			if (solution[i] == 0)
+			{
+				aux = scp[i];
+				sort(aux.begin(), aux.end());
+				//vector<int> removable;
+				vector<int> polesToCheck;
+				for (int z = 0; z < aux.size(); z++)
+				{
+					polesToCheck.insert(polesToCheck.end(), invertedScp[aux[z]].begin(), invertedScp[aux[z]].end());
+				}
+				sort(polesToCheck.begin(), polesToCheck.end());
+				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
+				int aux = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
+				if (aux>=0)
+					polesToCheck.erase(polesToCheck.begin() + aux);
+
+				vector<int> toRemove = postOptReduction(i, polesToCheck, covInfo, scp, redundancy);
+
+				if (toRemove.size() >= 2)
+				{
+					solution[i] = 1;
+					for (int z = 0; z <toRemove.size(); z++)
+						solution[toRemove[z]] = 0;
+					succeeded = 1;
+					break;
 				}
 			}
 		}

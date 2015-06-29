@@ -170,7 +170,7 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 	//f << finalResult;
 	//f.close();
 }
-string gridPlanningTest(AutoPlanning *AP,int gridSize, bool usePostOptimization, int redundancy)
+string gridPlanningTest(AutoPlanning *AP,int gridSize, int usePostOptimization, int redundancy)
 {
 	AP->setGridSize(gridSize);
 	string ret = AP->executeAutoPlanTestMode(usePostOptimization,redundancy);
@@ -180,17 +180,19 @@ void executeTest()
 {
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/filemeters5000.txt", rubyPath+"/arqsTeste/filepoles5000.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	AutoPlanning* AP = setAutoPlanningFromFile(rubyPath+"/arqsTeste/metersInstanciaMédia3666.txt", rubyPath+"/arqsTeste/polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
 	//vector<vector<int> > scp = AP->createScp();
 //	AP->saveGLPKFileReducedWithLimit(scp,1, 5);
 
 	string result = "";
 	//result+=gridPlanningTest(AP, 100, true);
 
-	result += gridPlanningTest(AP, 100, true, 2);
-	result += gridPlanningTest(AP, 500, true, 2);
-	result += gridPlanningTest(AP, 1000, true, 2);
-	result += gridPlanningTest(AP, 100000, false, 2);
+	//result += gridPlanningTest(AP, 100, 1, 1);
+	//result += gridPlanningTest(AP, 100, 2, 1);
+	result += gridPlanningTest(AP, 100, 3, 1);
+	//result += gridPlanningTest(AP, 500, true, 2);
+	//result += gridPlanningTest(AP, 1000, true, 2);
+	//result += gridPlanningTest(AP, 100000, false, 2);
 
 	//result += gridPlanningTest(AP, 100, false, 3);
 	cout << result;
