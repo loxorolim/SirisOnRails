@@ -892,7 +892,14 @@ string AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redund
 	result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,redundancy);
 	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 
-	string ret = "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
+	string ret = "";
+	ret += "\n -------------------------------------------------------------------------- \n";
+	ret += "\nRedundancy: " + to_string(redundancy) + "\n";
+	if (usePostOptimization)
+		ret += "Post Optimization ON!\n";
+	else
+		ret += "Post Optimization OFF!\n";
+	ret += "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
 	ret += "Maximum Memory Used: " + to_string(mme) + "\n\n";
 	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
 
@@ -1424,30 +1431,44 @@ void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<ve
 		succeeded = 0;
 		for (int i = 0; i < scp.size(); i++)
 		{
-			vector<int> aux;
+			
 			if (solution[i] == 0)
 			{
-				aux = scp[i];
+				vector<int> aux = scp[i];
 				sort(aux.begin(), aux.end());
 				//vector<int> removable;
 				vector<int> polesToCheck;
 				for (int z = 0; z < aux.size(); z++)
 				{
-					polesToCheck.insert(polesToCheck.end(), invertedScp[aux[z]].begin(), invertedScp[aux[z]].end());
+					for (int a = 0; a < invertedScp[aux[z]].size(); a++)
+					{
+						if (solution[invertedScp[aux[z]][a]])
+							polesToCheck.push_back(invertedScp[aux[z]][a]);
+					}
 				}
 				sort(polesToCheck.begin(), polesToCheck.end());
 				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
-				int aux = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
-				if (aux>=0)
-					polesToCheck.erase(polesToCheck.begin() + aux);
+				int posFound = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
+				if (posFound != polesToCheck.size())
+					polesToCheck.erase(polesToCheck.begin() + posFound);
 
 				vector<int> toRemove = postOptReduction(i, polesToCheck, covInfo, scp, redundancy);
 
 				if (toRemove.size() >= 2)
 				{
 					solution[i] = 1;
-					for (int z = 0; z <toRemove.size(); z++)
+					for (int z = 0; z < toRemove.size(); z++)
+					{
 						solution[toRemove[z]] = 0;
+						for (int a = 0; a < scp[toRemove[z]].size(); a++)
+						{
+							covInfo[scp[toRemove[z]][a]]--;
+						}
+					}
+					for (int a = 0; a < scp[i].size(); a++)
+					{
+						covInfo[scp[i][a]]++;
+					}
 					succeeded = 1;
 					break;
 				}

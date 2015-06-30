@@ -1,19 +1,19 @@
 GLPSOL: GLPK LP/MIP Solver, v4.54
 Parameter(s) specified in the command line:
- --math C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt --memlim
- 6000
-Reading model section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
-Reading data section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/GlpkFile.txt...
+ --math C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt
+ --memlim 6000
+Reading model section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt...
+Reading data section from C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt...
 19 lines were read
 Generating cost...
 Generating covers...
 Model has been successfully generated
 GLPK Integer Optimizer, v4.54
-25 rows, 4 columns, 28 non-zeros
-4 integer variables, all of which are binary
+8 rows, 13 columns, 20 non-zeros
+13 integer variables, all of which are binary
 Preprocessing...
-Objective value =  1.000000000e+000
+Objective value =  2.000000000e+000
 INTEGER OPTIMAL SOLUTION FOUND BY MIP PREPROCESSOR
 Time used:   0.0 secs
-Memory used: 0.1 Mb (127022 bytes)
+Memory used: 0.1 Mb (126971 bytes)
 Model has been successfully processed

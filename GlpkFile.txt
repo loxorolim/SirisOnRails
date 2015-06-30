@@ -6,12 +6,12 @@ param B{r in Z} default 1, integer;
  minimize cost: sum{m in Y} Route[m];
  subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];
  solve; 
- printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/Results.txt";
+ printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/Results.txt";
  data;
-set Z:= Z9832 Z9833 Z9834 Z9835 Z9836 Z9837 Z9838 Z9839 Z9840 Z9841 Z9842 Z9843 Z9844 Z9845 Z9846 Z9847 Z9848 Z9849 Z9850 Z9851 Z9852 Z9853 Z9854 Z9855 ;
-set Y:= Y739 Y748 Y740 Y741 ;
+set Z:= Z764 Z765 Z796 Z798 Z800 Z805 Z806 ;
+set Y:= Y51 Y28 Y39 Y56 Y57 Y52 Y53 Y54 Y55 Y58 Y62 Y31 Y38 ;
 param A := 
-[Z9832,Y739] 1[Z9833,Y739] 1[Z9834,Y739] 1[Z9835,Y739] 1[Z9836,Y739] 1[Z9837,Y739] 1[Z9838,Y739] 1[Z9839,Y739] 1[Z9840,Y739] 1[Z9841,Y739] 1[Z9842,Y739] 1[Z9843,Y739] 1[Z9844,Y739] 1[Z9845,Y739] 1[Z9846,Y739] 1[Z9847,Y739] 1[Z9848,Y739] 1[Z9849,Y739] 1[Z9850,Y739] 1[Z9851,Y739] 1[Z9852,Y739] 1[Z9853,Y739] 1[Z9854,Y739] 1[Z9855,Y739] 1
+[Z764,Y51] 1[Z765,Y51] 1[Z796,Y56] 1[Z798,Y56] 1[Z800,Y56] 1[Z805,Y56] 1[Z806,Y56] 1
 ;
 param B := 
 
