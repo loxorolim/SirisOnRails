@@ -1283,22 +1283,27 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 		succeeded = 0;
 		for (int i = 0; i < scp.size(); i++)
 		{
-			vector<int> aux;
+
 			if (solution[i] == 0)
 			{
-				aux = scp[i];
+				vector<int> aux = scp[i];
 				sort(aux.begin(), aux.end());
 				vector<int> removable;
 				vector<int> polesToCheck;
 				for (int z = 0; z < aux.size(); z++)
 				{
-					polesToCheck.insert(polesToCheck.end(), invertedScp[aux[z]].begin(), invertedScp[aux[z]].end());
+					for (int a = 0; a < invertedScp[aux[z]].size(); a++)
+					{
+						if (solution[invertedScp[aux[z]][a]])
+							polesToCheck.push_back(invertedScp[aux[z]][a]);
+					}
+					//polesToCheck.insert(polesToCheck.end(), invertedScp[aux[z]].begin(), invertedScp[aux[z]].end());
 				}
 				sort(polesToCheck.begin(), polesToCheck.end());
 				polesToCheck.erase(unique(polesToCheck.begin(), polesToCheck.end()), polesToCheck.end());
-				int aux = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
-				if (aux >= 0)
-					polesToCheck.erase(polesToCheck.begin() + aux);
+				int posFound = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
+				if (posFound != polesToCheck.size())
+					polesToCheck.erase(polesToCheck.begin() + posFound);
 
 				vector<int> checkedCoverage = scp[i];
 
@@ -1333,7 +1338,10 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 					for (int k = 0; k < setDifference.size(); k++)
 					{
 						if (covInfo[setDifference[k]] <= redundancy)
+						{
 							canRemove = false;
+							break;
+						}
 					}
 					if (canRemove)
 					{
@@ -1361,10 +1369,10 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 					for (int z = 0; z < toRemove.size(); z++)
 					{
 						solution[toRemove[z]] = 0;
-						for (int a = 0; a < scp[toRemove[z]].size(); a++)
-						{
-							covInfo[scp[toRemove[z]][a]]--;
-						}
+						//for (int a = 0; a < scp[toRemove[z]].size(); a++)
+						//{
+						//	covInfo[scp[toRemove[z]][a]]--;
+						//}
 					}
 					for (int a = 0; a < scp[i].size(); a++)
 					{
