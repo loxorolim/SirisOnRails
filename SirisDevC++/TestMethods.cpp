@@ -24,6 +24,65 @@
 //	//cout << gresult + metricResult;
 //	return "\n" + gresult + metricResult + "\n";
 //}
+
+vector<Position*> generateBlock(double latStart, double lngStart, int scenario)
+{
+	//consideramos blocos de 100m x 100m
+	vector<Position*> ret;
+	int n=0; //numero de elementos por lado, é baseado no cenário
+	if (scenario == Urbano)n = 5;
+	if (scenario == Suburbano)n = 3;
+	int dist = 100/(n-1);
+	for (int i = 0; i < n; i++)
+	{
+		if (i == 0 || i == n)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				Position* p = new Position(latStart + getLatOfDistance(i*dist), lngStart + getLongOfDistance(latStart + getLatOfDistance(i*dist),j*dist), 0);
+				ret.push_back(p);
+			}
+		}
+		else
+		{
+			Position* p1 = new Position(latStart + getLatOfDistance(i*dist), lngStart, 0);
+			Position* p2 = new Position(latStart + getLatOfDistance(i*dist), lngStart + getLongOfDistance(latStart + getLatOfDistance(i*dist), 100), 0);
+			ret.push_back(p1);
+			ret.push_back(p2);
+		}
+	}
+	return ret;
+
+	
+}
+void gridInstanceGenerator(double latStart, double lngStart, double streetWidth, int scenario)
+{
+	//vector<Position*> medidores;
+	//vector<Position*> postes;
+	//int meterCount= 0;
+	//double currentLat, currentLng;
+	//if (scenario = Urbano)
+	//{
+
+	//}
+	//if (scenario = Suburbano)
+	//{
+	//	Position* m1 = new Position(currentLat, currentLng, meterCount++);
+	//	Position* m2 = new Position(currentLat, currentLng + getLongOfDistance(currentLat,50), meterCount++);
+	//	Position* m3 = new Position(currentLat, currentLng + getLongOfDistance(currentLat, 100), meterCount++);
+	//	Position* m4 = new Position(currentLat + getLatOfDistance(50), currentLng, meterCount++);
+	//	Position* m5 = new Position(currentLat + getLatOfDistance(50), currentLng + getLongOfDistance(currentLat + getLatOfDistance(50), 100), meterCount++);
+	//	Position* m6 = new Position(currentLat + getLatOfDistance(100), currentLng, meterCount++);
+	//	Position* m7 = new Position(currentLat + getLatOfDistance(100), currentLng + getLongOfDistance(currentLat + getLatOfDistance(100), 50), meterCount++);
+	//	Position* m8 = new Position(currentLat + getLatOfDistance(100), currentLng + getLongOfDistance(currentLat + getLatOfDistance(100), 100), meterCount++);
+	//	medidores.push_back(m1); medidores.push_back(m2); medidores.push_back(m3); medidores.push_back(m4);
+	//	medidores.push_back(m5); medidores.push_back(m6); medidores.push_back(m7); medidores.push_back(m8);
+	//	currentLat = currentLat + getLatOfDistance(100 + streetWidth);
+
+	//}
+
+
+}
 void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
 {
 	string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
@@ -235,7 +294,8 @@ int main(int argc, char** argv)
 {
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	executeTest("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Urbano, t802_11_g,6, 20, 3, 5, 1, 3);
+	//executeTest("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Urbano, t802_11_g,6, 20, 3, 5, 1, 3);
+	generateBlock(0, 0, Suburbano);
 	//string rubyPath = "C:/Sites/first_app";
 	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
 	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);

@@ -13,7 +13,14 @@ using namespace std;
 //Na verdade acho que só o split e o removeVectorfromAnother que eu uso.
 //PS: O split eu tive que fazer esse método aí por causa que o compilador lá do ruby é antigo e cheio de frescura. Aí não reconhece alguns métodos novos.
 
-
+double getLongOfDistance(double lat, double distance)
+{
+	return ((180 * distance) / (M_PI*EARTH_RADIUS*cos(lat*(M_PI / 180))));
+}
+double getLatOfDistance(double distance)
+{
+	return ((180 * distance) / (M_PI*EARTH_RADIUS));
+}
 void readConfiguration(int *scenario,int* technology, double* H_TX, double *H_RX, double *BIT_RATE, double *TRANSMITTER_POWER,int *SRD,int *meshEnabled)
 {
 	//scanf("%d", scenario);

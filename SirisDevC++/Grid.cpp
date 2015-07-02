@@ -243,14 +243,7 @@ double getMaxY(vector<Position*> v)
 	}
 	return dy;
 }
-double getLongOfDistance(double lat, double distance)
-{
-	return ((180*distance)/(M_PI*EARTH_RADIUS*cos(lat*(M_PI/180))));
-}
-double getLatOfDistance(double distance)
-{
-	return ((180*distance)/(M_PI*EARTH_RADIUS));
-}
+
 string Grid::getCellsTeste()
 {
 	string ret = "";

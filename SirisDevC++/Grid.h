@@ -31,8 +31,7 @@ double getMinX(vector<Position*> v);
 double getMinY(vector<Position*> v);
 double getMaxX(vector<Position*> v);
 double getMaxY(vector<Position*> v);
-double getLongOfDistance(double lat, double distance);
-double getLatOfDistance(double distance);
+
 
 
 

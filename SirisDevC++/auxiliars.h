@@ -215,6 +215,8 @@ size_t getTotalSystemMemory();
 vector<string> &split(const string &s, char delim, vector<string> &elems);
 std::vector<std::string> split(const std::string &s, char delim);
 vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2);
+double getLongOfDistance(double lat, double distance);
+double getLatOfDistance(double distance);
 
 //bool compareByLatitude(Position* a, Position *b);
 
