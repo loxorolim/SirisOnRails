@@ -59,16 +59,17 @@ vector<Position*> gridInstanceGenerator(double latStart, double lngStart, double
 {
 	vector<Position*> ret;
 	int aux = 1;
+	double latStartAux = latStart;
 	while(numOfRuns>0)
 	{
 		for(int j = 0; j < (aux/2 + 1); j++)
 		{
-			vector<Position*> block = generateBlock(latStart, lngStart + getLongOfDistance(latStart + getLatOfDistance(blockWidth + streetWidth), blockWidth)*j, scenario,blockWidth);
+			vector<Position*> block = generateBlock(latStart, lngStart + getLongOfDistance(latStart , blockWidth+streetWidth)*j, scenario,blockWidth);
 			ret.insert(ret.end(), block.begin(), block.end());
 		}
 		for(int j = 0; j < aux/2; j++)
 		{
-			vector<Position*> block = generateBlock(latStart + getLatOfDistance(blockWidth + streetWidth)*j, lngStart + getLongOfDistance(latStart + getLatOfDistance(blockWidth + streetWidth), blockWidth)*(aux/2), scenario, blockWidth);
+			vector<Position*> block = generateBlock(latStartAux + getLatOfDistance(blockWidth + streetWidth)*(j), lngStart + getLongOfDistance(latStartAux + getLatOfDistance(blockWidth + streetWidth)*j, blockWidth + streetWidth )*(aux / 2), scenario, blockWidth);
 			ret.insert(ret.end(), block.begin(), block.end());
 		}
 		//vector<Position*> block = generateBlock(latStart, lngStart + getLongOfDistance(latStart + getLatOfDistance(blockWidth + streetWidth), blockWidth)*(aux / 2), scenario, blockWidth);
@@ -294,14 +295,14 @@ int main(int argc, char** argv)
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//executeTest("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Urbano, t802_11_g,6, 20, 3, 5, 1, 3);
-	vector<Position*> teste = gridInstanceGenerator(0, 0, 3, Suburbano, 5, 100);
+	vector<Position*> teste = gridInstanceGenerator(0, 0, 10, Suburbano, 5, 100);
 	string ret = "";
 	for(int i = 0; i < teste.size();i++)
 	{
 		ret += to_string(teste[i]->latitude) + " " + to_string(teste[i]->longitude) + "\n";
 	}
 
-	ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\instanciagrid.txt");
+	ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagrid.txt");
 	f << ret;
 	f.close();
 	//string rubyPath = "C:/Sites/first_app";
