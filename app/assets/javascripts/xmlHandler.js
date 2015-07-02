@@ -96,6 +96,18 @@ function loadHeatmap(file) {
 	sendDataToServer(serverAddress, 'POST', HEATGRID_FILE_ID);
 	//createHeatMap();
 }
+function loadMetersTeste(file) {
+	var heatmap = [];
+	var data = file.split("\n");
+	for(var i = 0; i < data.length;i++){
+		var info = data[i].split(" ");
+			//var loc = new google.maps.LatLng(info[0], info[1])
+			    var meter = createDAP();
+                meter.placeOnMap(info[0], info[1]);
+	}
+
+	//createHeatMap();
+}
 function loadFromKMLText(kml){
 	
 	//var teste = kml.split("\n");

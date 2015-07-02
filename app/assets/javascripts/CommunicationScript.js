@@ -575,7 +575,10 @@ function upload(fileInput) {
         reader.onload = function(e) {
             var fileText = reader.result;
 			if($("#heatmapFormatRadio").is(':checked'))	
+            {
 				loadHeatmap(fileText);
+                loadMetersTeste(fileText);
+            }
 			else
 				loadFromKMLText(fileText);
             $("#uploadDialog").dialog("close");
