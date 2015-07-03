@@ -25,14 +25,17 @@
 //	return "\n" + gresult + metricResult + "\n";
 //}
 
-vector<Position*> generateBlock(double latStart, double lngStart, int scenario, int blockWidth)
+vector<Position*> generateBlock(double latStart, double lngStart, int scenario, int blockWidth, int streetWidth, int polesPerSide, bool sidesToPutPoles[])
 {
+	
 	//consideramos blocos de 100m x 100m
 	vector<Position*> ret;
+	vector<Position*> polesRet;
 	int n=0; //numero de elementos por lado, é baseado no cenário
 	if (scenario == Urbano)n = 5;
 	if (scenario == Suburbano)n = 3;
 	int dist = blockWidth/(n-1);
+	
 	for (int i = 0; i < n; i++)
 	{
 		if (i == 0 || i == n-1)
@@ -51,25 +54,86 @@ vector<Position*> generateBlock(double latStart, double lngStart, int scenario, 
 			ret.push_back(p2);
 		}
 	}
+	//Depois de inserir os medidores, prepara pra inserir os postes!
+	n = polesPerSide;
+	latStart = latStart - getLatOfDistance(streetWidth/2);
+	lngStart = lngStart - getLongOfDistance(latStart, streetWidth/2);
+	blockWidth = blockWidth + streetWidth;
+	dist = blockWidth / (polesPerSide - 1);
+
+	if (sidesToPutPoles[0])
+		for (int j = 0; j < n - 1; j++)
+		{
+			Position* p = new Position(latStart , lngStart + getLongOfDistance(latStart, j*dist), 0);
+		}
+	if (sidesToPutPoles[1])
+		for (int j = 0; j < n - 1; j++)
+		{
+		Position* p = new Position(latStart + getLatOfDistance(j*dist), lngStart + getLongOfDistance(latStart, blockWidth), 0);
+		}
+	if (sidesToPutPoles[2])
+		for (int j = 0; j < n - 1; j++)
+		{
+		double aux = lngStart + getLongOfDistance(latStart + getLatOfDistance(blockWidth), blockWidth);
+		Position* p = new Position(latStart + getLatOfDistance(blockWidth), aux - getLongOfDistance(latStart + getLatOfDistance(blockWidth), j*dist), 0);
+		}
+	if (sidesToPutPoles[3])
+		for (int j = 0; j < n - 1; j++)
+		{
+		double aux = latStart + getLatOfDistance(blockWidth);
+			Position* p = new Position(aux - getLatOfDistance(j*dist), lngStart, 0);
+		}
+	
+	//for (int i = 0; i < n; i++)
+	//{
+	//	if ((i == 0 ) )
+	//	{
+	//		if ((i == 0 && sidesToPutPoles[0]) )
+	//		{
+	//			for (int j = 1; j < n; j++)
+	//			{
+
+	//				Position* p = new Position(latStart + getLatOfDistance(i*dist), lngStart + getLongOfDistance(latStart + getLatOfDistance(i*dist), j*dist), 0);
+	//				ret.push_back(p);
+
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (sidesToPutPoles[1])
+	//		{
+	//			Position* p1 = new Position(latStart + getLatOfDistance(i*dist), lngStart, 0);
+	//			ret.push_back(p1);
+	//		}
+	//		if (sidesToPutPoles[2])
+	//		{
+	//			Position* p2 = new Position(latStart + getLatOfDistance(i*dist), lngStart + getLongOfDistance(latStart + getLatOfDistance(i*dist), blockWidth), 0);
+	//			ret.push_back(p2);
+	//		}
+	//	}
+	//}
 	return ret;
 
 	
 }
-vector<Position*> gridInstanceGenerator(double latStart, double lngStart, double streetWidth, int scenario, int numOfRuns, int blockWidth)
+vector<Position*> gridInstanceGenerator(double latStart, double lngStart, double streetWidth, int scenario, int numOfRuns, int blockWidth,int polesPerSide)
 {
 	vector<Position*> ret;
+
 	int aux = 1;
 	double latStartAux = latStart;
+	bool wow[] = { 0,1 , 0, 0 };
 	while(numOfRuns>0)
 	{
 		for(int j = 0; j < (aux/2 + 1); j++)
 		{
-			vector<Position*> block = generateBlock(latStart, lngStart + getLongOfDistance(latStart , blockWidth+streetWidth)*j, scenario,blockWidth);
+			vector<Position*> block = generateBlock(latStart, lngStart + getLongOfDistance(latStart , blockWidth+streetWidth)*j, scenario,blockWidth,streetWidth,polesPerSide,wow);
 			ret.insert(ret.end(), block.begin(), block.end());
 		}
 		for(int j = 0; j < aux/2; j++)
 		{
-			vector<Position*> block = generateBlock(latStartAux + getLatOfDistance(blockWidth + streetWidth)*(j), lngStart + getLongOfDistance(latStartAux + getLatOfDistance(blockWidth + streetWidth)*j, blockWidth + streetWidth )*(aux / 2), scenario, blockWidth);
+			vector<Position*> block = generateBlock(latStartAux + getLatOfDistance(blockWidth + streetWidth)*(j), lngStart + getLongOfDistance(latStartAux + getLatOfDistance(blockWidth + streetWidth)*j, blockWidth + streetWidth)*(aux / 2), scenario, blockWidth,streetWidth, polesPerSide,wow);
 			ret.insert(ret.end(), block.begin(), block.end());
 		}
 		//vector<Position*> block = generateBlock(latStart, lngStart + getLongOfDistance(latStart + getLatOfDistance(blockWidth + streetWidth), blockWidth)*(aux / 2), scenario, blockWidth);
@@ -295,7 +359,7 @@ int main(int argc, char** argv)
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//executeTest("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Urbano, t802_11_g,6, 20, 3, 5, 1, 3);
-	vector<Position*> teste = gridInstanceGenerator(0, 0, 10, Suburbano, 5, 100);
+	vector<Position*> teste = gridInstanceGenerator(0, 0, 10, Suburbano, 1, 100, 4);
 	string ret = "";
 	for(int i = 0; i < teste.size();i++)
 	{
