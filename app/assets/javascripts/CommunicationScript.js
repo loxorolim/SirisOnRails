@@ -571,16 +571,27 @@ function upload(fileInput) {
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         var file = fileInput.files[0];
+         var extension = fileInput.files[0].name.split('.').pop().toLowerCase();
         var reader = new FileReader();
         reader.onload = function(e) {
             var fileText = reader.result;
 			if($("#heatmapFormatRadio").is(':checked'))	
             {
 				loadHeatmap(fileText);
-                loadMetersTeste(fileText);
+                //loadMetersTeste(fileText);
             }
 			else
-				loadFromKMLText(fileText);
+            {
+                if(extension == "txt")
+                {
+                    if($("#meterFormatRadio").is(':checked'))
+                        loadMetersTeste(fileText);
+                    if($("#poleFormatRadio").is(':checked'))
+                        loadPolesTeste(fileText);
+                }
+                else                   
+				    loadFromKMLText(fileText);
+            }
             $("#uploadDialog").dialog("close");
 			$("#resetOnUpload").prop('checked', false);
             
