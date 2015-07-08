@@ -9,29 +9,28 @@ Generating cost...
 Generating covers...
 Model has been successfully generated
 GLPK Integer Optimizer, v4.54
-74 rows, 73 columns, 206 non-zeros
-73 integer variables, all of which are binary
+73 rows, 300 columns, 1105 non-zeros
+300 integer variables, all of which are binary
 Preprocessing...
-60 hidden packing inequaliti(es) were detected
-60 rows, 64 columns, 120 non-zeros
-64 integer variables, all of which are binary
+72 rows, 260 columns, 805 non-zeros
+260 integer variables, all of which are binary
 Scaling...
  A: min|aij| = 1.000e+000  max|aij| = 1.000e+000  ratio = 1.000e+000
 Problem data seem to be well scaled
 Constructing initial basis...
-Size of triangular part is 60
+Size of triangular part is 72
 Solving LP relaxation...
 GLPK Simplex Optimizer, v4.54
-60 rows, 64 columns, 120 non-zeros
-      0: obj =  8.000000000e+000  infeas = 6.000e+001 (0)
-*    89: obj =  4.000000000e+001  infeas = 0.000e+000 (0)
-*    90: obj =  4.000000000e+001  infeas = 0.000e+000 (0)
+72 rows, 260 columns, 805 non-zeros
+      0: obj =  0.000000000e+000  infeas = 7.200e+001 (0)
+*    91: obj =  1.900000000e+001  infeas = 0.000e+000 (0)
+*   103: obj =  1.800000000e+001  infeas = 0.000e+000 (0)
 OPTIMAL LP SOLUTION FOUND
 Integer optimization begins...
-+    90: mip =     not found yet >=              -inf        (1; 0)
-+    90: >>>>>  4.000000000e+001 >=  4.000000000e+001   0.0% (1; 0)
-+    90: mip =  4.000000000e+001 >=     tree is empty   0.0% (0; 1)
++   103: mip =     not found yet >=              -inf        (1; 0)
++   113: >>>>>  1.800000000e+001 >=  1.800000000e+001   0.0% (1; 0)
++   113: mip =  1.800000000e+001 >=     tree is empty   0.0% (0; 1)
 INTEGER OPTIMAL SOLUTION FOUND
 Time used:   0.0 secs
-Memory used: 1.1 Mb (1145831 bytes)
+Memory used: 4.0 Mb (4144199 bytes)
 Model has been successfully processed

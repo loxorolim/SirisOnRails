@@ -1,5 +1,6 @@
 #include "TestMethods.h"
-
+#define distFromHouseToStreet 40
+#define distToRandom 20
 //string gridTest(vector<Position*> &meters, vector<Position*> &poles, int s, int t, double B, double T, double h1, double h2, int srd, int me, string rp, double gridSize)
 //{
 //	AutoPlanning* ap = new AutoPlanning(meters, poles, s, t, B, T, h1, h2, srd, me, rp);
@@ -24,36 +25,38 @@
 //	//cout << gresult + metricResult;
 //	return "\n" + gresult + metricResult + "\n";
 //}
-
+double generateRandom()
+{
+	return rand() % (2 * distToRandom / 2 + 1) - distToRandom / 2;
+}
 vector<vector<Position*> > generateBlock(double latStart, double lngStart, int scenario, int blockWidth, int streetWidth, int polesPerSide, int n, vector<bool> sidesToPutPoles )
 {
 	
 	//consideramos blocos de 100m x 100m
 	vector<Position*> ret;
 	vector<Position*> polesRet;
-	
-	int dist = blockWidth/(n-1);
+	double dist = blockWidth/(n-1);
 	double latStart2 = latStart + getLatOfDistance(blockWidth);
 	double lngStart2 = lngStart + getLongOfDistance(latStart, blockWidth);
 	double lngStart3 = lngStart + getLongOfDistance(latStart2, blockWidth);
 	for (int j = 0; j < n - 1; j++)
 	{
-		Position* p = new Position(latStart, lngStart + getLongOfDistance(latStart, j*dist), 0);
+		Position* p = new Position(latStart + getLatOfDistance(generateRandom()), lngStart + getLongOfDistance(latStart, j*dist + generateRandom()), 0);
 		ret.push_back(p);
 	}
 	for (int j = 0; j < n - 1; j++)
 	{
-		Position* p = new Position(latStart + getLatOfDistance(j*dist), lngStart2, 0);
+		Position* p = new Position(latStart + getLatOfDistance(j*dist + generateRandom()), lngStart2 + getLongOfDistance(latStart,generateRandom()), 0);
 		ret.push_back(p);
 	}
 	for (int j = 0; j < n - 1; j++)
 	{
-		Position* p = new Position(latStart2, lngStart3 - getLongOfDistance(latStart2, j*dist), 0);
+		Position* p = new Position(latStart2 + getLatOfDistance(generateRandom()), lngStart3 - getLongOfDistance(latStart2, j*dist + generateRandom()), 0);
 		ret.push_back(p);
 	}
 	for (int j = 0; j < n - 1; j++)
 	{
-		Position* p = new Position(latStart2 - getLatOfDistance(j*dist), lngStart, 0);
+		Position* p = new Position(latStart2 - getLatOfDistance(j*dist + generateRandom()), lngStart + getLongOfDistance(latStart2, generateRandom()), 0);
 		ret.push_back(p);
 	}
 	//Depois de inserir os medidores, prepara pra inserir os postes!
@@ -61,7 +64,7 @@ vector<vector<Position*> > generateBlock(double latStart, double lngStart, int s
 	latStart = latStart - getLatOfDistance(streetWidth/2);
 	lngStart = lngStart - getLongOfDistance(latStart, streetWidth/2);
 	blockWidth = blockWidth + streetWidth;
-	dist = blockWidth / (polesPerSide - 1);
+	dist = (double) blockWidth / (polesPerSide - 1);
 	latStart2 = latStart + getLatOfDistance(blockWidth);
 	lngStart2 = lngStart + getLongOfDistance(latStart,blockWidth);
 	lngStart3 = lngStart + getLongOfDistance(latStart2, blockWidth);
@@ -69,6 +72,14 @@ vector<vector<Position*> > generateBlock(double latStart, double lngStart, int s
 		for (int j = 0; j < n - 1; j++)
 		{
 			Position* p = new Position(latStart , lngStart + getLongOfDistance(latStart, j*dist), 0);
+			if (j != 0)
+			{
+				for (int k = 0; k < n - 1; k++)
+				{
+					Position* p2 = new Position(latStart + getLatOfDistance(k*dist), lngStart + getLongOfDistance(latStart, j*dist), 0);
+					polesRet.push_back(p2);
+				}
+			}
 			polesRet.push_back(p);
 		}
 	if (sidesToPutPoles[1])
@@ -360,7 +371,8 @@ int main(int argc, char** argv)
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//executeTest("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles1000.txt", "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Urbano, t802_11_g,6, 20, 3, 5, 1, 3);
-	vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10, Suburbano, 3, 100, 4,3);
+
+	vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Suburbano, 3, 100 - distFromHouseToStreet, 6, 3);
 	string ret = "";
 	for(int i = 0; i < teste[0].size();i++)
 	{

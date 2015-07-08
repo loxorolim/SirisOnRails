@@ -100,18 +100,22 @@ function loadMetersTeste(file) {
 	var heatmap = [];
 	var data = file.split("\n");
 	for(var i = 0; i < data.length;i++){
-		var info = data[i].split(" ");
-	    var meter = createMeter();
-        meter.placeOnMap(info[0], info[1]);
+		if(data[i] != ""){
+			var info = data[i].split(" ");
+		    var meter = createMeter();
+	        meter.placeOnMap(info[0], info[1]);
+   		}
 	}
 }
 function loadPolesTeste(file) {
 	var heatmap = [];
 	var data = file.split("\n");
 	for(var i = 0; i < data.length;i++){
-		var info = data[i].split(" ");
-	    var pole = createPole();
-        pole.placeOnMap(info[0], info[1]);
+		if(data[i] != ""){
+			var info = data[i].split(" ");
+	   		var pole = createPole();
+        	pole.placeOnMap(info[0], info[1]);
+        }
 	}
 }
 function loadFromKMLText(kml){
