@@ -1,6 +1,13 @@
 #include "AutoPlanningMethods.h"
 
-
+int AutoPlanning::getMetersSize()
+{
+	return meters.size();
+}
+int AutoPlanning::getPolesSize()
+{
+	return poles.size();
+}
 //Une dois vetores de inteiros sem repetição, nada demais.
 vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
 {
@@ -119,8 +126,8 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 //automático.
 vector<vector<int> > AutoPlanning::createScp()
 {
-	//Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
-	Grid* g = new Grid(regionLimiter);
+	Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
+	//Grid* g = new Grid(regionLimiter);
 	g->putPositions(meters);//Adiciona-se ao grid os medidores.
 	vector<int> aux;
 	vector<vector<int> > sM;
@@ -293,8 +300,8 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	//Pois se não, o método retornaria que a solução é impossível!
 	//A formatação você ve no arquivo GlpkFile.txt
 
-	int* covInfo = new int[meters.size()];
-	for (int i = 0; i < meters.size(); i++){ covInfo[i] = 0; }
+	vector<int> covInfo;
+	for (int i = 0; i < meters.size(); i++){ covInfo.push_back(0); }
 	for (int i = 0; i < SCP.size(); i++)
 	{
 		for (int j = 0; j < SCP[i].size(); j++)
@@ -344,7 +351,6 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 			resp += "[Z" + to_string(meters[i]->index + 1) + "] "+to_string(covInfo[i]);
 	}
 	resp += "\n;\nend;\n";
-	delete covInfo;
 
 	string filename = rubyPath + "/GlpkFile.txt";
 	ofstream f(filename.c_str());
@@ -532,7 +538,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Positio
 //Esse método faz um system call ao GLPK
 void AutoPlanning::executeGlpk(string filename)
 {
-	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 6000  > " + rubyPath +"/wow.txt";
+	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	system(access.c_str());
 }
@@ -647,11 +653,11 @@ string AutoPlanning::planWithRedundancy(vector<vector<int> > &scp, int redundanc
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
 string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 {
-	//Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
-	Grid* metergrid = new Grid(100000);
+	Grid* metergrid = new Grid(meters, poles, gridLimiter);//cria o grid dos medidores, bla bla bla.
+	//Grid* metergrid = new Grid(100000);
 	metergrid->putPositions(meters);
-	//Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
-	Grid* polegrid = new Grid(100000);
+	Grid* polegrid = new Grid(poles, meters, gridLimiter);//cria o grid dos postes
+	//Grid* polegrid = new Grid(100000);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
@@ -710,27 +716,29 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 }
 
 //Pode ignorar, usei pra testes.
-string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, int usePostOptimization, int redundancy)
+string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePostOptimization, int redundancy)
 {
-	Grid* metergrid = new Grid(gridLimiter);
+	Grid* metergrid = new Grid(meters,poles,gridLimiter);
 	metergrid->putPositions(meters);
-	Grid* polegrid = new Grid(gridLimiter);
+	Grid* polegrid = new Grid(meters,poles,gridLimiter);
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
 	vector<string> chosenDaps;
 	//string str;
-	int i = 1;
+	int numCel = 1;
 	float maximummemusage = -1;
 	float maximumtimeusage = -1;
 
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
-
+		cout << "Planejando célula " << to_string(numCel) << " de " << to_string(meterCells.size()) << "\n";
+		numCel++;
 		vector<Position*> cellsMeters;
 		vector<Position*> cellsPoles;
 
 		cellsMeters = it->second; //Recebe todas as posições dos medidores que estão na célula
+		//cellsPoles = polesAux;
 		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posição de um desses medidores e usa como referência pra pegar os postes da mesma célula e das células vizinhas.
 		meters = cellsMeters;
 		poles = cellsPoles;
@@ -770,12 +778,12 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, int usePos
 	{
 		str += chosenDaps[i] + " ";
 	}
-	if (usePostOptimization)//PÓS OTIMIZAÇÃO
+	if (usePostOptimization && meterCells.size() > 1)//PÓS OTIMIZAÇÃO
 	{	
-
-		int* chosen = new int[poles.size()];
+		cout << "Iniciando pós otimização\n";
+		vector<int> chosen ;
 		for (int i = 0; i < poles.size(); i++)
-			chosen[i] = 0;
+			chosen.push_back(0);
 		for (int i = 0; i < chosenDaps.size(); i++)
 		{
 			string snum = chosenDaps[i].substr(1);
@@ -794,12 +802,12 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, int usePos
 				invertedSCP[scp[i][j]].push_back(i);
 			}
 		}
-		if (usePostOptimization == 1)
-			RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
-		if (usePostOptimization == 2)
+		//if (usePostOptimization == 1)
+			//RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
+		//if (usePostOptimization == 2)
 			RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen,redundancy);
-		if (usePostOptimization == 3)
-			RolimEGuerraLocalSearchWithRedundancy2(scp, invertedSCP, chosen, redundancy);
+		//if (usePostOptimization == 3)
+		//	RolimEGuerraLocalSearchWithRedundancy2(scp, invertedSCP, chosen, redundancy);
 		string resultPosOpt = "";
 		for (int i = 0; i < poles.size(); i++)
 		{
@@ -850,6 +858,7 @@ string AutoPlanning::executeAutoPlanTestMode( int usePostOptimization)
 {
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
+	cout << "Iniciando planejamento\n";
 	float mtu, mme;
 	double secondsgp = -1;
 	const clock_t begin_time = clock();
@@ -874,6 +883,7 @@ string AutoPlanning::executeAutoPlanTestMode( int usePostOptimization)
 		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
 		metersCopy.push_back(copy);
 	}
+	cout << "Calculando métricas\n";
 	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
 	string metricResult = mc->executeMetricCalculation();
 	delete mc;
@@ -885,6 +895,7 @@ string AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redund
 {
 	//vector<vector<int> > SCP = createScp();
 	//saveGLPKFileReduced(SCP);
+	cout << "Iniciando planejamento\n";
 	float mtu, mme;
 	double secondsgp = -1;
 	string result;
@@ -909,7 +920,7 @@ string AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redund
 	for (int i = 0; i < xgp.size(); i++)
 	{
 		string snum = xgp[i].substr(1);
-		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
+		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, i);
 		daps.push_back(dapToInsert);
 	}
 	for (int i = 0; i < meters.size(); i++)
@@ -917,6 +928,7 @@ string AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redund
 		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
 		metersCopy.push_back(copy);
 	}
+	cout << "Calculando métricas\n";
 	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
 	string metricResult = mc->executeMetricCalculation();
 	delete mc;
@@ -1106,7 +1118,7 @@ void RolimLocalSearch(vector<vector<int> > &scp, int * solution)
 		}
 	}
 }
-void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedScp,  int * solution)
+void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedScp,  vector<int> solution)
 {
 	int succeeded = 1;
 
@@ -1262,11 +1274,12 @@ vector<int> postOptReduction(int checkedPole, vector<int> polesToCheck, int* cov
 	return vector<int>();
 
 }
-void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, int * solution, int redundancy)
+void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedScp, vector<int> &solution, int redundancy)
 {
 	int succeeded = 1;
-	int* covInfo = new int[invertedScp.size()];
-	for (int i = 0; i < invertedScp.size(); i++){ covInfo[i] = 0; }
+	//int* covInfo = new int[invertedScp.size()];
+	vector<int> covInfo;
+	for (int i = 0; i < invertedScp.size(); i++){ covInfo.push_back(0); }
 	for (int i = 0; i < scp.size(); i++)
 	{
 		if (solution[i])
@@ -1311,31 +1324,34 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 				int posFound = find(polesToCheck.begin(), polesToCheck.end(), i) - polesToCheck.begin();
 				if (posFound != polesToCheck.size())
 					polesToCheck.erase(polesToCheck.begin() + posFound);
+				if (polesToCheck.size() < 2)
+					continue;
+				//vector<int> checkedCoverage = scp[i];
 
-				vector<int> checkedCoverage = scp[i];
-
-				for (int j = 0; j < polesToCheck.size()-1; j++)//ordenada básica de acordo com o tamanho de medidores em interseção com o poste analisado.
+				if (redundancy > 1)
 				{
-					int aux = intersectionSize(scp[polesToCheck[j]], scp[i]);
-					int pos=-1;
-					int posSize=-1;
-					for (int k = j + 1; k < polesToCheck.size(); k++)
+					for (int j = 0; j < polesToCheck.size() - 1; j++)//ordenada básica de acordo com o tamanho de medidores em interseção com o poste analisado.
 					{
-						int aux2 = intersectionSize(scp[polesToCheck[k]], scp[i]);
-						if (posSize == -1 || aux2 < posSize)
+						int aux = intersectionSize(scp[polesToCheck[j]], scp[i]);
+						int pos = -1;
+						int posSize = -1;
+						for (int k = j + 1; k < polesToCheck.size(); k++)
 						{
-							pos = k;
-							posSize = aux2;
+							int aux2 = intersectionSize(scp[polesToCheck[k]], scp[i]);
+							if (posSize == -1 || aux2 < posSize)
+							{
+								pos = k;
+								posSize = aux2;
+							}
 						}
-					}
-					if (posSize < aux)
-					{
-						int aux3 = polesToCheck[j];
-						polesToCheck[j] = polesToCheck[pos];
-						polesToCheck[pos] = aux3;
-					}
-				}//ORDENEI DE MENOR PRA MAIOR A QNT DE MEDIDORES EM INTERSEÇÃO COM O POSTE QUE TO ANALISANDO
-			
+						if (posSize < aux)
+						{
+							int aux3 = polesToCheck[j];
+							polesToCheck[j] = polesToCheck[pos];
+							polesToCheck[pos] = aux3;
+						}
+					}//ORDENEI DE MENOR PRA MAIOR A QNT DE MEDIDORES EM INTERSEÇÃO COM O POSTE QUE TO ANALISANDO
+				}
 				vector<int> toRemove;
 				for (int j = 0; j < polesToCheck.size(); j++)
 				{

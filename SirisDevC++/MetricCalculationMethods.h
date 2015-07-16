@@ -61,6 +61,7 @@ class MetricCalculation
 			{
 				regionLimiter++;
 			}
+			regionLimiter++;
 			packetSize = 400 * 8;
 			perHopDelay = 2; //ms
 		};

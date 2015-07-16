@@ -237,8 +237,8 @@ vector<sComponent*> MetricCalculation::statisticalList()
 // Esse método é igual ao createSCP() do AutoPlanning só que considera DAPs ao invés de postes!
 vector<vector<int> > MetricCalculation::coverageList()
 {
-	//Grid* g = new Grid(meters,daps, regionLimiter);
-	Grid* g = new Grid(regionLimiter);
+	Grid* g = new Grid(meters,daps, regionLimiter);
+	//Grid* g = new Grid(regionLimiter);
 	g->putPositions(meters);
 	vector<int> aux;
 	vector<vector<int> > sM;

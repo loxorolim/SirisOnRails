@@ -45,6 +45,7 @@ class AutoPlanning
 			{
 				regionLimiter++;
 			}
+			regionLimiter++;
 		
 		};
 		~AutoPlanning()
@@ -85,15 +86,17 @@ class AutoPlanning
 		 void setGridSize(double gridSize);
 		 string executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		 string executeAutoPlanTestMode(int usePostOptimization);
-		 string gridAutoPlanningTestMode(float *mtu, float* mmu, int usePostOptimization, int redundancy);
+		 string gridAutoPlanningTestMode(float *mtu, float* mmu, bool usePostOptimization, int redundancy);
+		 int getMetersSize();
+		 int getPolesSize();
 
 };
 
 
 void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
-void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution);
-void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution,int redundancy);
-void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * solution, int redundancy);
+void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> solution);
+void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> &solution,int redundancy);
+void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * &solution, int redundancy);
 void WalkSat(vector<vector<int> > &scp, int * solution);
 
 #endif

@@ -1,0 +1,239 @@
+
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization OFF!
+Grid size: 100.000000
+
+Grid planning solution time: 61.151001
+Maximum Memory Used: 28.700001
+
+Maximum Time Used in a Cell: 0.000000
+
+<Statistics>
+<metric type = "DAPQnt">2048</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">0</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "QualityPerHop" hop = "2">0.966</metric>
+<metric type = "QualityPerHop" hop = "3">0.953</metric>
+<metric type = "QualityPerHop" hop = "4">0.946</metric>
+<metric type = "DelayPerHop" hop = "1">0.51</metric>
+<metric type = "DelayPerHop" hop = "2">3.04</metric>
+<metric type = "DelayPerHop" hop = "3">5.55</metric>
+<metric type = "DelayPerHop" hop = "4">8.06</metric>
+<metric type = "MetersPerHop" hop = "1">17765</metric>
+<metric type = "MetersPerHop" hop = "2">7833</metric>
+<metric type = "MetersPerHop" hop = "3">2932</metric>
+<metric type = "MetersPerHop" hop = "4">472</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">28.679199</metric>
+<metric type = "MetersPerDap" range = "max">664.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">2.025205</metric>
+<metric type = "Redundancy" range = "max">7.000000</metric>
+</Statistics>
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization ON!
+Grid size: 100.000000
+
+Grid planning solution time: 152.477005
+Maximum Memory Used: 28.700001
+
+Maximum Time Used in a Cell: 0.000000
+
+<Statistics>
+<metric type = "DAPQnt">1632</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">0</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "QualityPerHop" hop = "2">0.964</metric>
+<metric type = "QualityPerHop" hop = "3">0.948</metric>
+<metric type = "QualityPerHop" hop = "4">0.934</metric>
+<metric type = "DelayPerHop" hop = "1">0.51</metric>
+<metric type = "DelayPerHop" hop = "2">3.04</metric>
+<metric type = "DelayPerHop" hop = "3">5.55</metric>
+<metric type = "DelayPerHop" hop = "4">8.07</metric>
+<metric type = "MetersPerHop" hop = "1">13528</metric>
+<metric type = "MetersPerHop" hop = "2">8117</metric>
+<metric type = "MetersPerHop" hop = "3">5377</metric>
+<metric type = "MetersPerHop" hop = "4">1980</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">21.871936</metric>
+<metric type = "MetersPerDap" range = "max">662.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">1.230777</metric>
+<metric type = "Redundancy" range = "max">4.000000</metric>
+</Statistics>
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization OFF!
+Grid size: 500.000000
+
+Grid planning solution time: 284.449005
+Maximum Memory Used: 1272.800049
+
+Maximum Time Used in a Cell: 0.200000
+
+<Statistics>
+<metric type = "DAPQnt">1680</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">0</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "QualityPerHop" hop = "2">0.964</metric>
+<metric type = "QualityPerHop" hop = "3">0.953</metric>
+<metric type = "QualityPerHop" hop = "4">0.931</metric>
+<metric type = "DelayPerHop" hop = "1">0.51</metric>
+<metric type = "DelayPerHop" hop = "2">3.04</metric>
+<metric type = "DelayPerHop" hop = "3">5.55</metric>
+<metric type = "DelayPerHop" hop = "4">8.07</metric>
+<metric type = "MetersPerHop" hop = "1">13823</metric>
+<metric type = "MetersPerHop" hop = "2">8601</metric>
+<metric type = "MetersPerHop" hop = "3">4904</metric>
+<metric type = "MetersPerHop" hop = "4">1674</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">22.948214</metric>
+<metric type = "MetersPerDap" range = "max">664.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">1.329322</metric>
+<metric type = "Redundancy" range = "max">6.000000</metric>
+</Statistics>
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization ON!
+Grid size: 500.000000
+
+Grid planning solution time: 348.790009
+Maximum Memory Used: 1272.800049
+
+Maximum Time Used in a Cell: 0.200000
+
+<Statistics>
+<metric type = "DAPQnt">1579</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">0</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "QualityPerHop" hop = "2">0.964</metric>
+<metric type = "QualityPerHop" hop = "3">0.952</metric>
+<metric type = "QualityPerHop" hop = "4">0.932</metric>
+<metric type = "DelayPerHop" hop = "1">0.51</metric>
+<metric type = "DelayPerHop" hop = "2">3.04</metric>
+<metric type = "DelayPerHop" hop = "3">5.55</metric>
+<metric type = "DelayPerHop" hop = "4">8.07</metric>
+<metric type = "MetersPerHop" hop = "1">12976</metric>
+<metric type = "MetersPerHop" hop = "2">8433</metric>
+<metric type = "MetersPerHop" hop = "3">5474</metric>
+<metric type = "MetersPerHop" hop = "4">2119</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">21.404053</metric>
+<metric type = "MetersPerDap" range = "max">664.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">1.165333</metric>
+<metric type = "Redundancy" range = "max">4.000000</metric>
+</Statistics>
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization OFF!
+Grid size: 1000.000000
+
+Grid planning solution time: 557.190979
+Maximum Memory Used: 5313.399902
+
+Maximum Time Used in a Cell: 0.700000
+
+<Statistics>
+<metric type = "DAPQnt">1619</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">0</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "QualityPerHop" hop = "2">0.964</metric>
+<metric type = "QualityPerHop" hop = "3">0.952</metric>
+<metric type = "QualityPerHop" hop = "4">0.93</metric>
+<metric type = "DelayPerHop" hop = "1">0.51</metric>
+<metric type = "DelayPerHop" hop = "2">3.04</metric>
+<metric type = "DelayPerHop" hop = "3">5.55</metric>
+<metric type = "DelayPerHop" hop = "4">8.07</metric>
+<metric type = "MetersPerHop" hop = "1">13269</metric>
+<metric type = "MetersPerHop" hop = "2">8520</metric>
+<metric type = "MetersPerHop" hop = "3">5186</metric>
+<metric type = "MetersPerHop" hop = "4">2027</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">22.594194</metric>
+<metric type = "MetersPerDap" range = "max">664.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">1.261292</metric>
+<metric type = "Redundancy" range = "max">5.000000</metric>
+</Statistics>
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization ON!
+Grid size: 1000.000000
+
+Grid planning solution time: 630.158997
+Maximum Memory Used: 5313.399902
+
+Maximum Time Used in a Cell: 0.700000
+
+<Statistics>
+<metric type = "DAPQnt">1570</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">0</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "QualityPerHop" hop = "2">0.964</metric>
+<metric type = "QualityPerHop" hop = "3">0.953</metric>
+<metric type = "QualityPerHop" hop = "4">0.93</metric>
+<metric type = "DelayPerHop" hop = "1">0.51</metric>
+<metric type = "DelayPerHop" hop = "2">3.04</metric>
+<metric type = "DelayPerHop" hop = "3">5.55</metric>
+<metric type = "DelayPerHop" hop = "4">8.07</metric>
+<metric type = "MetersPerHop" hop = "1">12813</metric>
+<metric type = "MetersPerHop" hop = "2">8291</metric>
+<metric type = "MetersPerHop" hop = "3">5543</metric>
+<metric type = "MetersPerHop" hop = "4">2355</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">21.630573</metric>
+<metric type = "MetersPerDap" range = "max">664.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">1.170954</metric>
+<metric type = "Redundancy" range = "max">4.000000</metric>
+</Statistics>
+ -------------------------------------------------------------------------- 
+
+Redundancy: 1
+Post Optimization ON!
+Grid size: 10000.000000
+
+Grid planning solution time: 269.153015
+Maximum Memory Used: -1.000000
+
+Maximum Time Used in a Cell: -1.000000
+
+<Statistics>
+<metric type = "DAPQnt">4</metric>
+<metric type = "MeterQnt">29002</metric>
+<metric type = "UncoveredMeters">28986</metric>
+<metric type = "QualityPerHop" hop = "1">0.982</metric>
+<metric type = "QualityPerHop" hop = "2">0.968</metric>
+<metric type = "QualityPerHop" hop = "3">0.908</metric>
+<metric type = "QualityPerHop" hop = "4">0.992</metric>
+<metric type = "DelayPerHop" hop = "1">0.519</metric>
+<metric type = "DelayPerHop" hop = "2">3.03</metric>
+<metric type = "DelayPerHop" hop = "3">5.58</metric>
+<metric type = "DelayPerHop" hop = "4">8.04</metric>
+<metric type = "MetersPerHop" hop = "1">8</metric>
+<metric type = "MetersPerHop" hop = "2">5</metric>
+<metric type = "MetersPerHop" hop = "3">2</metric>
+<metric type = "MetersPerHop" hop = "4">1</metric>
+<metric type = "MetersPerDap" range = "min">1.000000</metric>
+<metric type = "MetersPerDap" range = "med">3.750000</metric>
+<metric type = "MetersPerDap" range = "max">7.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">0.000517</metric>
+<metric type = "Redundancy" range = "max">1.000000</metric>
+</Statistics>

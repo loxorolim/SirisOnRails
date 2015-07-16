@@ -27,33 +27,11 @@ Grid::Grid(vector<Position*> v, vector<Position*> v2, double cS)
 	int ny = ceil((maxdy - mindy) / cS);
 	minX = mindx;
 	minY = mindy;
-	minX = -90;
-	minY = -180;
+	//minX = -90;
+	//minY = -180;
 
+	cellSizeMeters = cS;
 
-
-	//cells = vector<vector<vector<Position*>>>(nx);
-	//for (int i = 0; i < nx; i++)
-	//	cells[i] = vector<vector<Position*>>(ny);
-	cellSize = cS;
-	//putPositions(v);
-	//for (int i = 0; i < v.size(); i++)
-	//	putPosition(v[i]);
-
-	//FILE* f;
-	//fopen_s(&f, "gridTeste.txt", "w");
-	//if (f)
-	//{
-	//	for (map<pair<int, int>, vector<Position*>>::iterator it = cells.begin(); it != cells.end(); ++it)
-	//	{
-
-	//		fprintf_s(f, "%lf %lf\n", mindx + it->first.first*cS, mindy + it->first.second*cS);
-	//		fprintf_s(f, "%lf %lf\n", mindx + it->first.first*cS + cS, mindy + it->first.second*cS + cS);
-	//		fprintf_s(f, "%lf %lf\n", mindx + it->first.first*cS + cS, mindy + it->first.second*cS);
-	//		fprintf_s(f, "%lf %lf\n", mindx + it->first.first*cS, mindy + it->first.second*cS+ cS);
-	//	}
-	//}
-	//fclose(f);
 
 }
 Grid::Grid(vector<Position*> v, double cS)
@@ -103,84 +81,105 @@ void Grid::putPosition(Position* p)
 }
 void Grid::putPositions(vector<Position*> p)
 {
-	if (p.size() > 0)
+	if (p.size())
 	{
-		double mX = p[0]->latitude, mY = p[0]->longitude; //Lat e Lng mínimos
-		for (int i = 1; i < p.size(); i++)
-		{
-			if (p[i]->latitude < mX)
-				mX = p[i]->latitude;
-			if (p[i]->longitude < mY)
-				mY = p[i]->longitude;
-		}
-		minX = mX; minY = mY;
+		//double mX = p[0]->latitude, mY = p[0]->longitude; //Lat e Lng mínimos
+		//for (int i = 1; i < p.size(); i++)
+		//{
+		//	if (p[i]->latitude < mX)
+		//		mX = p[i]->latitude;
+		//	if (p[i]->longitude < mY)
+		//		mY = p[i]->longitude;
+		//}
+		//minX = mX; minY = mY;
 		for (int i = 0; i < p.size(); i++)
 			putPosition(p[i]);
 	}
 }
 vector<Position*> Grid::getCell(Position* reference)
 {
-	//cout<< "Pegando celulas da referencia: " << reference->latitude << " ; " << reference->longitude;
 	vector<Position*> ret;
+	int posX = -1, posY = -1;
+	//int posX = 0, posY = 0;
+	if (reference->latitude != minX)
+		posX = ceil((reference->latitude - minX) / ((180 * cellSizeMeters) / (M_PI*EARTH_RADIUS))) - 1;
+	if (reference->longitude != minY)
+		posY = ceil((reference->longitude - minY) / ((180 * cellSizeMeters) / (M_PI*EARTH_RADIUS*cos((minX + (posX)*((180 * cellSizeMeters) / (M_PI*EARTH_RADIUS)))*(M_PI / 180))))) - 1;
 
-	vector<Position*> aux;
-	//PARTE CENTRAL
-	Position* auxRef = new Position(reference->latitude,reference->longitude);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	//PARTE DO TOPO
-	auxRef->latitude = reference->latitude + getLatOfDistance(cellSizeMeters);
-	auxRef->longitude = reference->longitude;
-
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-	//PARTE DE BAIXO
-
-	auxRef->latitude = reference->latitude - getLatOfDistance(cellSizeMeters);
-	auxRef->longitude = reference->longitude;
-
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
-	aux = getUniqueCell(auxRef);
-	ret.insert(ret.end(), aux.begin(), aux.end());
-	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
-
-	delete auxRef;
-
+	for (int i = -1; i < 2; i++)
+	{
+		for (int j = -1; j < 2; j++)
+		{
+			map<pair<int, int>, vector<Position*> >::iterator it = cells.find(make_pair(posX + i, posY + j));
+			if (it != cells.end())
+				ret.insert(ret.end(), it->second.begin(), it->second.end());
+		}
+	}
 	return ret;
-	//return cells[posX][posY];
-//	return cells[make_pair(posX, posY)];
+	
+	
+
+//	//cout<< "Pegando celulas da referencia: " << reference->latitude << " ; " << reference->longitude;
+//	vector<Position*> ret;
+//
+//	vector<Position*> aux;
+//	//PARTE CENTRAL
+//	Position* auxRef = new Position(reference->latitude,reference->longitude);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	//PARTE DO TOPO
+//	auxRef->latitude = reference->latitude + getLatOfDistance(cellSizeMeters);
+//	auxRef->longitude = reference->longitude;
+//
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//	//PARTE DE BAIXO
+//
+//	auxRef->latitude = reference->latitude - getLatOfDistance(cellSizeMeters);
+//	auxRef->longitude = reference->longitude;
+//
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	auxRef->longitude = reference->longitude + getLongOfDistance(auxRef->latitude,cellSizeMeters);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	auxRef->longitude = reference->longitude - getLongOfDistance(auxRef->latitude,cellSizeMeters);
+//	aux = getUniqueCell(auxRef);
+//	ret.insert(ret.end(), aux.begin(), aux.end());
+//	//cout<< "Pegando celula da AuxRef: " << auxRef->latitude << " ; " << auxRef->longitude;
+//
+//	delete auxRef;
+//
+//	return ret;
+//	//return cells[posX][posY];
+////	return cells[make_pair(posX, posY)];
 }
 vector<Position*> Grid::getUniqueCell(Position* reference)
 {
