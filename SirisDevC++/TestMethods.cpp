@@ -1,4 +1,5 @@
 #include "TestMethods.h"
+#include "GLPK\glpk.h"
 #define distFromHouseToStreet 40
 #define distToRandom 20
 //string gridTest(vector<Position*> &meters, vector<Position*> &poles, int s, int t, double B, double T, double h1, double h2, int srd, int me, string rp, double gridSize)
@@ -28,6 +29,62 @@
 double generateRandom()
 {
 	return rand() % (2 * distToRandom / 2 + 1) - distToRandom / 2;
+}
+float memoryTest(int x, int y, string rubyPath)
+{
+	string resp;
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(1) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z:= ";
+	for (int i = 0; i < x; i++)
+	{
+		resp += "Z" + to_string(i) + " ";
+	}
+
+	resp += ";\n";
+	resp += "set Y:= ";
+
+	for (int i = 0; i < y; i++)
+		resp += "Y" + to_string(i) + " ";
+	resp += ";\n";
+	resp += "param A := ";
+	resp += "\n";
+	resp += ";";
+	resp += "\n";
+	resp += "param B := ";
+	resp += "\n";
+	resp += "\n;\nend;\n";
+
+	string filename = rubyPath + "/GlpkFile.txt";
+	ofstream f(filename.c_str());
+	f << resp;
+	f.close();
+	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "/wow.txt";
+	system(access.c_str());
+
+	ifstream fi(rubyPath + "/wow.txt");
+	string str;
+	float mem = -1;
+	while (getline(fi, str))
+	{
+		int c = str.find("Memory used: ");
+		if (c >= 0)
+		{
+			vector<string> s = split(str, ' ');
+			int pos = -1;
+			for (int i = 0; i < s.size(); i++)
+			{
+				int c2 = s[i].find("bytes");
+				if (c2 >= 0)
+				{
+					pos = i;
+					break;
+				}
+			}
+			mem = atof((s[pos - 1].substr(1)).c_str());
+		}
+	}
+	return mem;
+
 }
 vector<vector<Position*> > generateBlock(double latStart, double lngStart, int scenario, int blockWidth, int streetWidth, int polesPerSide, int n, vector<bool> sidesToPutPoles )
 {
@@ -370,9 +427,29 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 int main(int argc, char** argv)
 {
 
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	string metersFile = "", polesFile = "";
+	float aux = 0;
+	string v = "";
+	float mem=1;
+	int i = 1, init = 1000;
+	while (mem > 0)
+	{	
+		mem = memoryTest(i,init, rubyPath);
+		if (mem<0)
+			break;
+		cout << i << "x" << init << ": " << mem/(1024*1024)<< "\n";
+		v += to_string(init) + " " + to_string(mem/(1024*1024)) +"\n";
+		aux = mem;
+		i += 5000;
+
+	}
+	string filename = rubyPath + "/arqsTeste/ix"+to_string(init)+"MemTest.txt";
+	ofstream f(filename.c_str());
+	f << v;
+	f.close();
+
+	//string metersFile = "", polesFile = "";
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
@@ -398,9 +475,9 @@ int main(int argc, char** argv)
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
 	//
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-	executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
 
 
