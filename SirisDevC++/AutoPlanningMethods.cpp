@@ -536,11 +536,47 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Positio
 //	f.close();
 //}
 //Esse método faz um system call ao GLPK
-void AutoPlanning::executeGlpk(string filename)
+vector<int> AutoPlanning::executeGlpk(string filename)
 {
-	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
-	system(access.c_str());
+	//system(access.c_str());
+	vector<int> answer;
+	glp_prob *lp;
+	glp_tran *tran;
+	int ret,count,cpeak;
+	size_t total, tpeak;
+	double totalInMb, tpeakInMb;
+	lp = glp_create_prob();
+	tran = glp_mpl_alloc_wksp();
+	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+	glp_mem_limit(10);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on translating model\n");
+		goto skip;
+	}
+
+	ret = glp_mpl_generate(tran, NULL);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on generating model\n");
+		goto skip;
+	}
+	glp_mpl_build_prob(tran, lp);
+	glp_simplex(lp, NULL);
+	for (int i = 1; i < poles.size()+1; i++)
+	{
+		if (glp_get_col_prim(lp, i))
+			answer.push_back(i);
+	}
+	glp_mem_usage(&count, &cpeak, &total, &tpeak);
+	printf("%d memory block(s) are still allocated\n", count);
+	totalInMb = ((double)total / (1024 * 1024));
+	tpeakInMb = ((double)tpeak / (1024 * 1024));
+skip: glp_mpl_free_wksp(tran);
+	glp_delete_prob(lp);
+	return answer;
 }
 //Pode ignorar esse método
 float getMemUsageFromGlpkFile(string fname)
@@ -724,7 +760,7 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
-	vector<string> chosenDaps;
+	vector<int> chosenDaps;
 	//string str;
 	int numCel = 1;
 	float maximummemusage = -1;
@@ -744,17 +780,17 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP,redundancy);
-		executeGlpk(rubyPath+"/GlpkFile.txt");
-		ifstream f((rubyPath + "/Results.txt").c_str());
-		string gridAnswer;
-		getline(f, gridAnswer);
+		vector<int> answer = executeGlpk(rubyPath+"/GlpkFile.txt");
+		//ifstream f((rubyPath + "/Results.txt").c_str());
+		//string gridAnswer;
+		//getline(f, gridAnswer);
 
-		vector<string> x = split(gridAnswer, ' ');
-			int wow = x.size();
-		for (int i = 0; i < x.size(); i++)
+		//vector<string> x = split(gridAnswer, ' ');
+		//	int wow = x.size();
+		for (int i = 0; i < answer.size(); i++)
 		{
 			//string snum = x[i].substr(1);
-			chosenDaps.push_back(x[i]);
+			chosenDaps.push_back(answer[i]);
 		}
 		float memusage = getMemUsageFromGlpkFile(rubyPath+"/wow.txt");
 		float timeusage = getTimeUsageFromGlpkFile(rubyPath+"/wow.txt");
@@ -786,10 +822,10 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 			chosen.push_back(0);
 		for (int i = 0; i < chosenDaps.size(); i++)
 		{
-			string snum = chosenDaps[i].substr(1);
-			const char * c = snum.c_str();
-			int val = atoi(c) - 1;
-			chosen[val] = 1;
+			//string snum = chosenDaps[i].substr(1);
+			//const char * c = snum.c_str();
+			//int val = atoi(c) - 1;
+			chosen[chosenDaps[i]] = 1;
 		}
 
 		vector<vector<int> > scp = createScp();

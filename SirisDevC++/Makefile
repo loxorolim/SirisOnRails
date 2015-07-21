@@ -143,7 +143,7 @@ TOUCH = exit >
 preload = 
 
 
-CXX = g++ -w
+CXX = g++ -w -I GLPK -std=c++0x -lglpk
 
 libpath = . $(libdir)
 LIBPATH =  -L. -L$(libdir)

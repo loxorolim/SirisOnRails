@@ -423,36 +423,34 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 
 
 }
-
 int main(int argc, char** argv)
 {
-
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	float aux = 0;
-	string v = "";
-	float mem=1;
-	int i = 1, init = 1000;
-	while (mem > 0)
-	{	
-		mem = memoryTest(i,init, rubyPath);
-		if (mem<0)
-			break;
-		cout << i << "x" << init << ": " << mem/(1024*1024)<< "\n";
-		v += to_string(init) + " " + to_string(mem/(1024*1024)) +"\n";
-		aux = mem;
-		i += 5000;
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//float aux = 0;
+	//string v = "";
+	//float mem=1;
+	//int i = 1, init = 1000;
+	//while (mem > 0)
+	//{	
+	//	mem = memoryTest(i,init, rubyPath);
+	//	if (mem<0)
+	//		break;
+	//	cout << i << "x" << init << ": " << mem/(1024*1024)<< "\n";
+	//	v += to_string(init) + " " + to_string(mem/(1024*1024)) +"\n";
+	//	aux = mem;
+	//	i += 5000;
 
-	}
-	string filename = rubyPath + "/arqsTeste/ix"+to_string(init)+"MemTest.txt";
-	ofstream f(filename.c_str());
-	f << v;
-	f.close();
+	//}
+	//string filename = rubyPath + "/arqsTeste/ix"+to_string(init)+"MemTest.txt";
+	//ofstream f(filename.c_str());
+	//f << v;
+	//f.close();
 
-	//string metersFile = "", polesFile = "";
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
-	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	string metersFile = "", polesFile = "";
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
+	executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);

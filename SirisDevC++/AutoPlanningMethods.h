@@ -12,6 +12,9 @@
 #include <time.h>
 #include <stdio.h>
 #include "MetricCalculationMethods.h"
+#include "glpk.h"
+#include <thread>
+#include <future>
 
 
 class AutoPlanning
@@ -75,7 +78,7 @@ class AutoPlanning
 		 vector<Position*> getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP);
 		 vector<int> uncoverableMeters(vector<vector<int> > &SCP, int redundancy);
 		 vector<int> coverableMeters(vector<vector<int> > &SCP, int redundancy);
-		 void executeGlpk(string filename);
+		 vector<int> executeGlpk(string filename);
 		 string gridAutoPlanning(int redundancy, int limit);
 		 string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
 
