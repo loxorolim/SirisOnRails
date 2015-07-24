@@ -1,5 +1,4 @@
 #include "TestMethods.h"
-#include "GLPK\glpk.h"
 #define distFromHouseToStreet 40
 #define distToRandom 20
 //string gridTest(vector<Position*> &meters, vector<Position*> &poles, int s, int t, double B, double T, double h1, double h2, int srd, int me, string rp, double gridSize)

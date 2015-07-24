@@ -153,7 +153,7 @@ function readAutoPlanResponse(data){
 	}
 	for(var i = 0 ; i < split.length-1; i ++){
 		var toAdd = parseInt(split[i]);
-		var latLng = poles[toAdd-1].position;
+		var latLng = poles[toAdd].position;
 		var newDap = createDAP();
 		newDap.placeOnMap(latLng.lat(),latLng.lng());
 		

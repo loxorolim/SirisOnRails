@@ -496,8 +496,9 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 	vector<int> answer;
 	glp_prob *lp;
 	glp_tran *tran;
-	int ret,count,cpeak;
+	int ret, count, cpeak;
 	size_t total, tpeak;
+	int err;
 	double totalInMb, tpeakInMb;
 	lp = glp_create_prob();
 	tran = glp_mpl_alloc_wksp();
@@ -516,11 +517,14 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 		goto skip;
 	}
 	glp_mpl_build_prob(tran, lp);
-	glp_intopt(lp, NULL);
-	for (int i = 1; i < poles.size()+1; i++)
+	glp_iocp parm;
+	glp_init_iocp(&parm);
+	parm.presolve = GLP_ON;
+	err = glp_intopt(lp, &parm);
+	for (int i = 1; i < poles.size() + 1; i++)
 	{
-		if (glp_get_col_prim(lp, i))
-			answer.push_back(poles[i-1]->index);
+		if (glp_mip_col_val(lp, i))
+			answer.push_back(poles[i - 1]->index);
 	}
 	glp_mem_usage(&count, &cpeak, &total, &tpeak);
 	printf("%d memory block(s) are still allocated\n", count);
@@ -538,6 +542,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem)
 	vector<int> answer;
 	glp_prob *lp;
 	glp_tran *tran;
+	int err;
 	int ret, count, cpeak;
 	size_t total, tpeak;
 	double totalInMb, tpeakInMb;
@@ -561,7 +566,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem)
 	glp_iocp parm;
 	glp_init_iocp(&parm);
 	parm.presolve = GLP_ON;
-	int err = glp_intopt(lp, &parm);
+	err = glp_intopt(lp, &parm);
 	for (int i = 1; i < poles.size() + 1; i++)
 	{
 		if (glp_mip_col_val(lp, i))
