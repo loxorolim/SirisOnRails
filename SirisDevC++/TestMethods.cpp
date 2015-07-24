@@ -365,9 +365,10 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 string gridPlanningTest(AutoPlanning *AP,int gridSize, int usePostOptimization, int redundancy)
 {
 	AP->setGridSize(gridSize);
+	
 	cout << "\nIniciando teste com célula de tamanho " << to_string(gridSize) << " com " << to_string(AP->getMetersSize()) << " medidores e " << to_string(AP->getPolesSize()) << " postes\n";
-	string ret = AP->executeAutoPlanTestMode(usePostOptimization,redundancy);
-	return ret;
+	TestResult* ret = AP->executeAutoPlanTestMode(usePostOptimization,redundancy);
+	return "";
 }
 void executeTest(string meterFile, string poleFile, string pathToSave,int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh)
 {
@@ -389,7 +390,7 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 	//result += gridPlanningTest(AP, 1000, true, 1);
 	//result += gridPlanningTest(AP, 5000, false, 1);
 	//result += gridPlanningTest(AP, 5000, true, 1);
-	result += gridPlanningTest(AP, 10000, true, 1);
+	result += gridPlanningTest(AP, 10000, false, 1);
 	//result + "\n------------------------------\n";
 	//result += gridPlanningTest(AP, 100, 0, 2);
 	//result += gridPlanningTest(AP, 100, 2, 2);
@@ -446,11 +447,10 @@ int main(int argc, char** argv)
 	//ofstream f(filename.c_str());
 	//f << v;
 	//f.close();
-
 	string metersFile = "", polesFile = "";
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
-	executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
+	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
@@ -464,10 +464,10 @@ int main(int argc, char** argv)
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
 
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaPequena1576.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaPequena453.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);

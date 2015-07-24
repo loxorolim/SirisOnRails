@@ -466,8 +466,6 @@ string MetricCalculation::executeMetricCalculation()
 	//{
 	//	cout << sL[i]->index << " "<< sL[i]->distance << " "<< sL[i]->efficiency << " " << sL[i]->hop << " \n";
 	//}
-
-
 	vector<double > v = linkQualityPerHop(sL);
 	vector<int > v2 = meterPerHop(sL);
 	vector<double> v3 = minMedMaxMetersPerDap(cL);
@@ -549,99 +547,25 @@ string MetricCalculation::executeMetricCalculation()
 
 	return ret;
 }
+MetricResult* MetricCalculation::executeMetricCalculationTest()
+{
+	vector<sComponent*> sL = statisticalList();
+	vector<vector<int> > cL = coverageList();
 
-//string MetricCalculation::executeMetricCalculation()
-//{
-//
-//
-//	double mpdSum = 0, max = -1, min = -1;
-//	vector<vector<int>> SCP = createScp();
-//	for (int i = 0; i < SCP.size(); i++)
-//	{
-//
-//		int toFind = i;
-//		int pos = -1;
-//		for (int i = 0; i < daps.size(); i++){ if (daps[i]->index == toFind){ pos = i; break; } }
-//		if (pos != -1)
-//		{
-//			//vector<sComponent*> uniqueArray = noRepeat(statisticalList[i]);
-//			int nMeters = SCP[i].size();
-//			mpdSum += nMeters;
-//			if (max == -1 || nMeters > max)
-//				max = nMeters;
-//			if (min == -1 || nMeters < min)
-//				min = nMeters;
-//		}
-//	}
-//	string answer = "Number of DAPs: "+ to_string(daps.size()) +"\n";
-//	answer += "Average Number of Meters per DAP: " + to_string(mpdSum/daps.size()) + "\n";
-//	answer += "Maximum Number of Meters in a DAP: " + to_string(max) + "\n";
-//	answer += "Minimum Number of Meters in a DAP: " + to_string(min) + "\n";
-//	return  answer;
-//
-//
-//
-//	vector<vector<sComponent*>> sL = statisticalList();
-//	//COLOCAR A FUNÇÃO DE ROBUSTEZ!
-//	//ARMAZENAR ESSA STATISTICAL LIST
-//
-//	//string answer = "";
-//	if (sL.size() > 0)
-//	{
-//
-//		int numOfDaps = sL.size();
-//
-//	/*	answer += "Number of DAPs: " + to_string(numOfDaps) + "\n";
-//
-//		vector<double> alpd = averageLinksPerDap(sL);
-//
-//		double alpdmedia = alpd[0];
-//		double alpdmax = alpd[1];
-//		double alpdmin = alpd[2];
-//
-//		answer += "Average Links per DAP: " + to_string(alpdmedia) + "\n";
-//		answer += "Maximum Links in a DAP: " + to_string(alpdmax) + "\n";
-//		answer += "Minimum Links in a DAP: " + to_string(alpdmin) + "\n";*/
-//
-//		vector<double> ampd = averageMetersPerDap(sL);
-//		double ampdmedia = ampd[0];
-//		double ampdmax = ampd[1];
-//		double ampdmin = ampd[2];
-//
-//		answer += "Average Number of Meters per DAP: " + to_string(ampdmedia) + "\n";
-//		answer += "Maximum Number of Meters in a DAP: " + to_string(ampdmax) + "\n";
-//		answer += "Minimum Number of Meters in a DAP: " + to_string(ampdmin) + "\n";
-//
-//		/*vector<vector<double>> ammpd = avaregeMeshMetersPerDap(sL, meshEnabled);
-//		for (int i = 0; i < meshEnabled + 1; i++)
-//		{
-//			double ammpdmedia = ammpd[i][0];
-//			double ammpdmax = ammpd[i][1];
-//			double ammpdmin = ammpd[i][2];
-//			double hop = ammpd[i][3];
-//			if (ammpdmedia > 0)
-//			{
-//				answer += "Average " + to_string(i) + " mesh hops links: " + to_string(ammpdmedia) + "\n";
-//				answer += "Maximum " + to_string(i) + " mesh hops links: " + to_string(ammpdmax) + "\n";
-//				answer += "Minimum " + to_string(i) + " mesh hops links: " + to_string(ammpdmin) + "\n";
-//			}
-//		}
-//		vector<vector<double>> avgHops = averageHops(sL, meshEnabled);
-//		for (int i = 0; i < meshEnabled + 1; i++)
-//		{
-//			double avgHopsEff = avgHops[i][0];
-//			double avgHopsQnt = avgHops[i][1];
-//			if (avgHopsEff > 0)
-//			{
-//				answer += "Average " + to_string(i) + " mesh hops efficiency: " + to_string(avgHopsEff) + "\n";
-//				answer += to_string(i) + " mesh hops links quantity: " + to_string(avgHopsQnt) + "\n";
-//			}
-//
-//		}*/
-//	}
-//	else
-//	{
-//		answer = "Nao ha DAPs para se coletar estatasticas!";
-//	}
-//	return answer.c_str();
-//}
+	MetricResult* result = new MetricResult();
+	result->linkQualityPerHop = linkQualityPerHop(sL);
+	result->meterPerHop = meterPerHop(sL);
+	result->minMedMaxMetersPerDap = minMedMaxMetersPerDap(cL);
+	result->minMedMaxRedundancyPerMeter = minMedMaxRedundancyPerMeter(cL);
+	result->linkDelayPerHop = linkDelayPerHop(sL);
+	result->numOfDaps = daps.size();
+	result->numOfMeters = meters.size();
+	int coveredMeters = 0;
+	for (int i = 0; i < meshEnabled + 1; i++)
+	{
+		coveredMeters += result->meterPerHop[i];
+	}
+	result->uncoveredMeters = meters.size() - coveredMeters;
+
+	return result;
+}

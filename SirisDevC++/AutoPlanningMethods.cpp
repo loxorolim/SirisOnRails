@@ -307,7 +307,12 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 		for (int j = 0; j < SCP[i].size(); j++)
 		{
 			int pos=-1;
-			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == SCP[i][j]){ pos = k; break; } }
+			for (int k = 0; k < meters.size(); k++){
+				if (meters[k]->index == SCP[i][j])
+				{ 
+					pos = k; break;
+				} 
+			}
 			covInfo[pos]++;
 		}
 	}
@@ -316,14 +321,14 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	resp += "set Z:= ";
 	for (int i = 0; i < meters.size(); i++)
 	{
-		resp += "Z" + to_string(meters[i]->index + 1) + " ";
+		resp += "Z" + to_string(meters[i]->index) + " ";
 	}
 
 	resp += ";\n";
 	resp += "set Y:= ";
 
 	for (int i = 0; i < poles.size(); i++)
-		resp += "Y" + to_string(poles[i]->index + 1) + " ";
+		resp += "Y" + to_string(poles[i]->index) + " ";
 	resp += ";\n";
 	resp += "param A := ";
 	resp += "\n";
@@ -336,7 +341,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 			int cov = -1;
 			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
 			if (cov)
-				resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
+				resp += "[Z" + to_string(meters[i]->index) + ",Y" + to_string(poles[j]->index) + "] 1";
 
 		}
 	}
@@ -348,7 +353,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	for (int i = 0; i < meters.size(); i++)
 	{
 		if (covInfo[i] < redundancy)
-			resp += "[Z" + to_string(meters[i]->index + 1) + "] "+to_string(covInfo[i]);
+			resp += "[Z" + to_string(meters[i]->index) + "] "+to_string(covInfo[i]);
 	}
 	resp += "\n;\nend;\n";
 
@@ -481,60 +486,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Positio
 		f << resp;
 		f.close();
 }
-//void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy)
-//{
-//	vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
-//	//Pois se não, o método retornaria que a solução é impossível!
-//	//A formatação você ve no arquivo GlpkFile.txt
-//	string resp;
-//	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=" + to_string(redundancy) + ";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
-//	resp += "set Z:= ";
-//	for (int i = 0; i < meters.size(); i++)
-//	{
-//		int uncov = -1;
-//		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
-//		if (!uncov)
-//			resp += "Z" + to_string(meters[i]->index + 1) + " ";
-//	}
-//
-//	resp += ";\n";
-//	resp += "set Y:= ";
-//
-//	for (int i = 0; i < poles.size(); i++)
-//		resp += "Y" + to_string(poles[i]->index + 1) + " ";
-//	resp += ";\n";
-//	resp += "param A := ";
-//	resp += "\n";
-//	for (int i = 0; i < meters.size(); i++)
-//	{
-//		int uncov = -1;
-//		uncov = (find(uncMeters.begin(), uncMeters.end(), meters[i]->index) != uncMeters.end());
-//		if (!uncov)
-//		{
-//			//fprintf_s(file, "%s%d%s", "Z", (i + 1), " ");
-//			for (int j = 0; j < poles.size(); j++)
-//			{
-//				//bool um = false;
-//				//for (int k = 0; k < SCP.size(); k++)
-//				int cov = -1;
-//				cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
-//				if (cov)
-//					resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
-//
-//			}
-//		}
-//
-//	}
-//	resp += "\n";
-//	resp += ";";
-//	resp += "end;\n";
-//
-//	string filename = rubyPath + "/GlpkFile.txt";
-//	ofstream f(filename.c_str());
-//
-//	f << resp;
-//	f.close();
-//}
+
 //Esse método faz um system call ao GLPK
 vector<int> AutoPlanning::executeGlpk(string filename)
 {
@@ -550,7 +502,7 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 	lp = glp_create_prob();
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
-	glp_mem_limit(10);
+	glp_mem_limit(5800);
 	if (ret != 0)
 	{
 		fprintf(stderr, "Error on translating model\n");
@@ -564,16 +516,62 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 		goto skip;
 	}
 	glp_mpl_build_prob(tran, lp);
-	glp_simplex(lp, NULL);
+	glp_intopt(lp, NULL);
 	for (int i = 1; i < poles.size()+1; i++)
 	{
 		if (glp_get_col_prim(lp, i))
-			answer.push_back(i);
+			answer.push_back(poles[i-1]->index);
 	}
 	glp_mem_usage(&count, &cpeak, &total, &tpeak);
 	printf("%d memory block(s) are still allocated\n", count);
 	totalInMb = ((double)total / (1024 * 1024));
 	tpeakInMb = ((double)tpeak / (1024 * 1024));
+skip: glp_mpl_free_wksp(tran);
+	glp_delete_prob(lp);
+	return answer;
+}
+vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem)
+{
+	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+	//system(access.c_str());
+	vector<int> answer;
+	glp_prob *lp;
+	glp_tran *tran;
+	int ret, count, cpeak;
+	size_t total, tpeak;
+	double totalInMb, tpeakInMb;
+	lp = glp_create_prob();
+	tran = glp_mpl_alloc_wksp();
+	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+	glp_mem_limit(5800);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on translating model\n");
+		goto skip;
+	}
+
+	ret = glp_mpl_generate(tran, NULL);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on generating model\n");
+		goto skip;
+	}
+	glp_mpl_build_prob(tran, lp);
+	glp_iocp parm;
+	glp_init_iocp(&parm);
+	parm.presolve = GLP_ON;
+	int err = glp_intopt(lp, &parm);
+	for (int i = 1; i < poles.size() + 1; i++)
+	{
+		if (glp_mip_col_val(lp, i))
+			answer.push_back(poles[i - 1]->index);
+	}
+	glp_mem_usage(&count, &cpeak, &total, &tpeak);
+	printf("%d memory block(s) are still allocated\n", count);
+	totalInMb = ((double)total / (1024 * 1024));
+	tpeakInMb = ((double)tpeak / (1024 * 1024));
+	maxMem = totalInMb;
 skip: glp_mpl_free_wksp(tran);
 	glp_delete_prob(lp);
 	return answer;
@@ -697,7 +695,7 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 	polegrid->putPositions(poles);
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
-	vector<string> chosenDaps;
+	vector<int> chosenDaps;
 	int i = 1;
 	//Mais informação, ler meu artigo da SBRC ;)
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
@@ -715,29 +713,24 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 			saveGLPKFileReduced(cellSCP, redundancy);
 		else
 			saveGLPKFileReducedWithLimit(cellSCP, redundancy, limit);
-		executeGlpk(rubyPath + "/GlpkFile.txt");
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt");
 		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
 		getline(f, gridAnswer);
 
-		vector<string> x = split(gridAnswer, ' ');
-		int wow = x.size();
-		for (int i = 0; i < x.size(); i++)
+		for (int i = 0; i < answer.size(); i++)
 		{
 			//string snum = x[i].substr(1);
-			chosenDaps.push_back(x[i]);
+			chosenDaps.push_back(answer[i]);
 		}
 	}
 	string str = "";
 	//Remove redundâncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
-
-
-
 	for (int i = 0; i < chosenDaps.size(); i++)
 	{
-		str += chosenDaps[i] + " ";
+		str += to_string(chosenDaps[i]) + " ";
 	}
 
 	delete metergrid;
@@ -752,8 +745,11 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 }
 
 //Pode ignorar, usei pra testes.
-string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePostOptimization, int redundancy)
+TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, int redundancy)
 {
+	TestResult* result = new TestResult();
+	const clock_t begin_time = clock();
+
 	Grid* metergrid = new Grid(meters,poles,gridLimiter);
 	metergrid->putPositions(meters);
 	Grid* polegrid = new Grid(meters,poles,gridLimiter);
@@ -761,13 +757,13 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 	vector<Position*> metersAux = meters, polesAux = poles;
 	map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
 	vector<int> chosenDaps;
-	//string str;
 	int numCel = 1;
-	float maximummemusage = -1;
-	float maximumtimeusage = -1;
+	double maxMem = -1;
 
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
+		if (numCel == 109)
+			cout << "wow";
 		cout << "Planejando célula " << to_string(numCel) << " de " << to_string(meterCells.size()) << "\n";
 		numCel++;
 		vector<Position*> cellsMeters;
@@ -780,40 +776,24 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 		poles = cellsPoles;
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP,redundancy);
-		vector<int> answer = executeGlpk(rubyPath+"/GlpkFile.txt");
-		//ifstream f((rubyPath + "/Results.txt").c_str());
-		//string gridAnswer;
-		//getline(f, gridAnswer);
-
-		//vector<string> x = split(gridAnswer, ' ');
-		//	int wow = x.size();
+		double memUsageInCell= -1;
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell);
+		if (memUsageInCell > maxMem)
+			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)
-		{
-			//string snum = x[i].substr(1);
 			chosenDaps.push_back(answer[i]);
-		}
-		float memusage = getMemUsageFromGlpkFile(rubyPath+"/wow.txt");
-		float timeusage = getTimeUsageFromGlpkFile(rubyPath+"/wow.txt");
-		if (memusage > maximummemusage)
-		{
-			maximummemusage = memusage;
-		}
-		if (timeusage > maximumtimeusage)
-		{
-			maximumtimeusage = timeusage;
-		}
-
+		
 	}
 	meters = metersAux;
 	poles = polesAux;
-	string str = "";
 	//Remove redundâncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
-	for (int i = 0; i < chosenDaps.size(); i++)
-	{
-		str += chosenDaps[i] + " ";
-	}
+
+	result->solutionQuality = chosenDaps.size();
+	result->chosenPoles = chosenDaps;
+	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	result->time = secondsgp;
 	if (usePostOptimization && meterCells.size() > 1)//PÓS OTIMIZAÇÃO
 	{	
 		cout << "Iniciando pós otimização\n";
@@ -822,12 +802,8 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 			chosen.push_back(0);
 		for (int i = 0; i < chosenDaps.size(); i++)
 		{
-			//string snum = chosenDaps[i].substr(1);
-			//const char * c = snum.c_str();
-			//int val = atoi(c) - 1;
 			chosen[chosenDaps[i]] = 1;
 		}
-
 		vector<vector<int> > scp = createScp();
 		vector<vector<int> > invertedSCP;
 		invertedSCP.resize(meters.size());
@@ -838,28 +814,26 @@ string AutoPlanning::gridAutoPlanningTestMode(float* mtu, float* mmu, bool usePo
 				invertedSCP[scp[i][j]].push_back(i);
 			}
 		}
-		//if (usePostOptimization == 1)
-			//RolimEGuerraLocalSearch(scp, invertedSCP, chosen);
-		//if (usePostOptimization == 2)
-			RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen,redundancy);
-		//if (usePostOptimization == 3)
-		//	RolimEGuerraLocalSearchWithRedundancy2(scp, invertedSCP, chosen, redundancy);
-		string resultPosOpt = "";
+		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen,redundancy);
+
+		vector<int> resultPosOpt;
 		for (int i = 0; i < poles.size(); i++)
 		{
 			if (chosen[i] == 1)
-				resultPosOpt += "Y"+to_string(i + 1) + " ";
+				resultPosOpt.push_back(i);
 		}
-		str = resultPosOpt;
+		result->poChosenPoles = resultPosOpt;
+		result->poSolutionQuality = resultPosOpt.size();
 	}
-
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	result->poTime = secondsgp;
 
 	delete metergrid;
 	delete polegrid;
 
-	*mtu = maximumtimeusage;
-	*mmu = maximummemusage;
-	return str;
+	result->maxMem = maxMem;
+//	return str;
+	return result;
 }
 //Executa o planejamento automático
 string AutoPlanning::executeAutoPlan()
@@ -890,87 +864,65 @@ string AutoPlanning::executeAutoPlan(int redundancy,int limit)
 
 }
 //Coisa de teste
-string AutoPlanning::executeAutoPlanTestMode( int usePostOptimization)
+TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redundancy)
 {
-	//vector<vector<int> > SCP = createScp();
-	//saveGLPKFileReduced(SCP);
+	TestResult* result;
+
 	cout << "Iniciando planejamento\n";
-	float mtu, mme;
-	double secondsgp = -1;
-	const clock_t begin_time = clock();
-	string result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,1);
-	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
-
-	string ret =  "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
-	ret += "Maximum Memory Used: " + to_string(mme) +"\n\n";
-	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
-
-	vector<string> xgp = split(result, ' ');
+	result = gridAutoPlanningTestMode(usePostOptimization,redundancy);
+	result->gridSize = gridLimiter;
+	result->numMeters = meters.size();
+	result->numPoles = poles.size();
+	vector<int> xgp = result->chosenPoles;
 	vector<Position*> daps;
 	vector<Position*> metersCopy;
-	for (int i = 0; i < xgp.size(); i++)
-	{
-		string snum = xgp[i].substr(1);
-		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, poles[atoi(snum.c_str()) - 1]->index);;
-		daps.push_back(dapToInsert);
-	}
+
 	for (int i = 0; i < meters.size(); i++)
 	{
 		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
 		metersCopy.push_back(copy);
 	}
 	cout << "Calculando métricas\n";
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+		daps.push_back(dapToInsert);
+	}
+	//Calcula métricas sem pos-opt
 	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
-	string metricResult = mc->executeMetricCalculation();
+	MetricResult* metricResult = mc->executeMetricCalculationTest();
+	result->metersPerHop = metricResult->meterPerHop;
+	result->qualityPerHop = metricResult->linkQualityPerHop;
+	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->uncoveredMeters = metricResult->uncoveredMeters;
+	delete metricResult;
 	delete mc;
-
-	ret += metricResult;
-	return ret;
-}
-string AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redundancy)
-{
-	//vector<vector<int> > SCP = createScp();
-	//saveGLPKFileReduced(SCP);
-	cout << "Iniciando planejamento\n";
-	float mtu, mme;
-	double secondsgp = -1;
-	string result;
-	const clock_t begin_time = clock();
-	result = gridAutoPlanningTestMode(&mtu, &mme, usePostOptimization,redundancy);
-	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
-
-	string ret = "";
-	ret += "\n -------------------------------------------------------------------------- \n";
-	ret += "\nRedundancy: " + to_string(redundancy) + "\n";
+	//Calcula métricas com pos-opt
+	metersCopy.clear();
+	daps.clear();
 	if (usePostOptimization)
-		ret += "Post Optimization ON!\n";
-	else
-		ret += "Post Optimization OFF!\n";
-	ret += "Grid size: " + to_string(gridLimiter) + "\n\nGrid planning solution time: " + to_string(secondsgp) + "\n";
-	ret += "Maximum Memory Used: " + to_string(mme) + "\n\n";
-	ret += "Maximum Time Used in a Cell: " + to_string(mtu) + "\n\n";
-
-	vector<string> xgp = split(result, ' ');
-	vector<Position*> daps;
-	vector<Position*> metersCopy;
-	for (int i = 0; i < xgp.size(); i++)
 	{
-		string snum = xgp[i].substr(1);
-		Position* dapToInsert = new Position(poles[atoi(snum.c_str()) - 1]->latitude, poles[atoi(snum.c_str()) - 1]->longitude, i);
-		daps.push_back(dapToInsert);
+		xgp = result->poChosenPoles;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+			metersCopy.push_back(copy);
+		}
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+			daps.push_back(dapToInsert);
+		}
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		metricResult = mc->executeMetricCalculationTest();
+		result->poMetersPerHop = metricResult->meterPerHop;
+		result->poQualityPerHop = metricResult->linkQualityPerHop;
+		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		delete metricResult;
+		delete mc;
 	}
-	for (int i = 0; i < meters.size(); i++)
-	{
-		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
-		metersCopy.push_back(copy);
-	}
-	cout << "Calculando métricas\n";
-	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
-	string metricResult = mc->executeMetricCalculation();
-	delete mc;
-
-	ret += metricResult;
-	return ret;
+	cout << result->toString();
+	return result;
 }
 //////////////////////////////////////////MÉTODOS PRO GRASP////////////////////////////////////////////////
 int iterations = 500;

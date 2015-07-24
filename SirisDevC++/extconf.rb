@@ -1,5 +1,7 @@
 require 'mkmf-rice'
-$CXX += " -w -I GLPK -std=c++0x -lglpk"
+$CXX += " -w  -std=c++0x" 
+$INCFLAGS += " -I GLPK"
+$LDFLAGS += " -L GLPK -lglpk"
 create_makefile('Siris')
 
 

@@ -16,7 +16,45 @@
 #include <thread>
 #include <future>
 
+struct TestResult
+{
+	//Pros dois
+	int gridSize, numMeters, numPoles, uncoveredMeters;
+	float maxMem;
+	//Sem post-opt
+	int solutionQuality;
+	float time;
+	vector<int> chosenPoles;
+	vector<int> metersPerHop;
+	vector<double> qualityPerHop;
+	vector<double>  redundancy;
+	//Com post-opt
+	int poSolutionQuality;
+	float poTime;
+	vector<int> poChosenPoles;
+	vector<int> poMetersPerHop;
+	vector<double> poQualityPerHop;
+	vector<double>  poRedundancy;
 
+	string toString()
+	{
+		string ret = "";
+		ret += "Dimension: " + to_string(numMeters) + " x " + to_string(numPoles) + "\n";
+		ret += "Grid Size: " + to_string(gridSize) + "\n";
+		ret += "Uncovered meters: " + to_string(uncoveredMeters) + "\n";
+		ret += "Solution Quality: " + to_string(solutionQuality) + "\n";
+		ret += "Time: " + to_string(time) + "\n";
+
+		ret += "P.O Solution Quality: " + to_string(poSolutionQuality) + "\n";
+		ret += "P.O Time: " + to_string(poTime) + "\n";
+		return ret;
+
+	
+
+	}
+
+
+};
 class AutoPlanning
 {
 	private:
@@ -87,13 +125,14 @@ class AutoPlanning
 
 		 //Metodos Teste
 		 void setGridSize(double gridSize);
-		 string executeAutoPlanTestMode(int usePostOptimization, int redundancy);
-		 string executeAutoPlanTestMode(int usePostOptimization);
-		 string gridAutoPlanningTestMode(float *mtu, float* mmu, bool usePostOptimization, int redundancy);
+		 TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
+		 TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
+		 vector<int> executeGlpk(string filename, double &maxmem);
 		 int getMetersSize();
 		 int getPolesSize();
 
 };
+
 
 
 void RolimLocalSearch(vector<vector<int> > &scp, int * solution);

@@ -10,6 +10,15 @@
 #include "HataSRD.h"
 #include "Grid.h"
 
+struct MetricResult
+{
+	int numOfDaps, numOfMeters, uncoveredMeters;
+	vector<double > linkQualityPerHop;
+	vector<int> meterPerHop;
+	vector<double> minMedMaxMetersPerDap;
+	vector<double> minMedMaxRedundancyPerMeter;
+	vector<double > linkDelayPerHop;
+};
 
 class sComponent
 {
@@ -84,6 +93,7 @@ class MetricCalculation
 		sComponent* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop);
 		sComponent* chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int meshHop);
 		string executeMetricCalculation();
+		MetricResult* executeMetricCalculationTest();
 		vector<vector<int> > coverageList();
 		vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 

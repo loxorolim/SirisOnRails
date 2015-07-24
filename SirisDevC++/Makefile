@@ -107,11 +107,11 @@ optflags = -O3 -fno-omit-frame-pointer
 debugflags = -g
 warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration
 CFLAGS   =  $(cflags) $(ARCH_FLAG)
-INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir)
+INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) -I GLPK
 DEFS     = 
 CPPFLAGS =  -DFD_SETSIZE=2048 $(DEFS) $(cppflags)  -ID:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/include
 CXXFLAGS = $(CFLAGS)  -Wall -g
-ldflags  = -L.   -LD:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/lib -lrice
+ldflags  = -L.   -LD:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/lib -lrice -L GLPK -lglpk
 dldflags =  -Wl,--enable-auto-image-base,--enable-auto-import $(DEFFILE) 
 ARCH_FLAG = -march=i486
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
@@ -143,7 +143,7 @@ TOUCH = exit >
 preload = 
 
 
-CXX = g++ -w -I GLPK -std=c++0x -lglpk
+CXX = g++ -w  -std=c++0x
 
 libpath = . $(libdir)
 LIBPATH =  -L. -L$(libdir)
