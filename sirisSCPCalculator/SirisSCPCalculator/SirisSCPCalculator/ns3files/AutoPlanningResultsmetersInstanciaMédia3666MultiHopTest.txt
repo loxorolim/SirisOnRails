@@ -1,6 +1,0 @@
-Meters sem cobertura: 1299
-Meters sem cobertura: 1166
-Meters sem cobertura: 1147
-Meters sem cobertura: 1146
-Meters sem cobertura: 1146
-Meters sem cobertura: 1146

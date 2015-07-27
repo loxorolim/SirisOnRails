@@ -423,9 +423,47 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 
 
 }
+double memEstimation(double val1, double val2)
+{
+	double x = min(val1, val2);
+
+	double estimation =  0.0001530206*pow(x, 2) + 0.0072606821*x - 10.7817256808;
+	if (val1 == val2)
+		return estimation;
+	if (x == val1)
+		estimation *= val2 / val1;
+	else
+		estimation *= val1 / val2;
+	return estimation;
+}
 int main(int argc, char** argv)
 {
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	srand(time(NULL));
+	double x = 3501;
+	double wow = -1E-19;
+
+	//for (int x = 1; x < 10002; x+=500)
+		//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
+		//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	for (int i = 0; i < 10; i++)
+	{
+		int max = 2000, min = 1;
+		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+		double realmem = memoryTest(val1, val2, rubyPath) / (1024 * 1024);
+		double estMem = memEstimation(val1, val2);
+		cout << "Dimension: " << val1 << "x" << val2<< " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
+	}
+
+
+	double memest = memEstimation(1999, 1438);
+	double memest2 = memEstimation(1438, 1438);
+	double memest3 = memEstimation(5001, 5001);
+	double mem1 = memoryTest(1438, 1438, rubyPath)/(1024*1024);
+	double error1 = mem1 / memest2;
+	double mem = memoryTest(1999, 1438, rubyPath) / (1024 * 1024);
+	double error2 = mem / memest;
+	double aaaa=0;
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//float aux = 0;
 	//string v = "";
