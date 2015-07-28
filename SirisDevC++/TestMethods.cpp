@@ -29,8 +29,9 @@ double generateRandom()
 {
 	return rand() % (2 * distToRandom / 2 + 1) - distToRandom / 2;
 }
-float memoryTest(int x, int y, string rubyPath)
+double memoryTest(int x, int y, string rubyPath)
 {
+	
 	string resp;
 	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(1) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
 	resp += "set Z:= ";
@@ -57,32 +58,71 @@ float memoryTest(int x, int y, string rubyPath)
 	ofstream f(filename.c_str());
 	f << resp;
 	f.close();
-	string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "/wow.txt";
-	system(access.c_str());
+	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "/wow.txt";
+	//system(access.c_str());
 
-	ifstream fi(rubyPath + "/wow.txt");
-	string str;
-	float mem = -1;
-	while (getline(fi, str))
+	glp_prob *lp;
+	glp_tran *tran;
+	int err;
+	int ret, count, cpeak;
+	size_t total, tpeak;
+	double totalInMb, tpeakInMb;
+	glp_term_out(GLP_OFF);
+	lp = glp_create_prob();
+	tran = glp_mpl_alloc_wksp();
+	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+
+	glp_mem_limit(5800);
+	if (ret != 0)
 	{
-		int c = str.find("Memory used: ");
-		if (c >= 0)
-		{
-			vector<string> s = split(str, ' ');
-			int pos = -1;
-			for (int i = 0; i < s.size(); i++)
-			{
-				int c2 = s[i].find("bytes");
-				if (c2 >= 0)
-				{
-					pos = i;
-					break;
-				}
-			}
-			mem = atof((s[pos - 1].substr(1)).c_str());
-		}
+		fprintf(stderr, "Error on translating model\n");
+		goto skip;
 	}
-	return mem;
+
+	ret = glp_mpl_generate(tran, NULL);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on generating model\n");
+		goto skip;
+	}
+	glp_mpl_build_prob(tran, lp);
+	glp_iocp parm;
+	glp_init_iocp(&parm);
+	parm.presolve = GLP_ON;
+	err = glp_intopt(lp, &parm);
+
+	glp_mem_usage(&count, &cpeak, &total, &tpeak);
+	//printf("%d memory block(s) are still allocated\n", count);
+	totalInMb = ((double)total / (1024 * 1024));
+	tpeakInMb = ((double)tpeak / (1024 * 1024));
+
+skip: glp_mpl_free_wksp(tran);
+	glp_delete_prob(lp);
+
+	//ifstream fi(rubyPath + "/wow.txt");
+	//string str;
+	//float mem = -1;
+	//while (getline(fi, str))
+	//{
+	//	int c = str.find("Memory used: ");
+	//	if (c >= 0)
+	//	{
+	//		vector<string> s = split(str, ' ');
+	//		int pos = -1;
+	//		for (int i = 0; i < s.size(); i++)
+	//		{
+	//			int c2 = s[i].find("bytes");
+	//			if (c2 >= 0)
+	//			{
+	//				pos = i;
+	//				break;
+	//			}
+	//		}
+	//		mem = atof((s[pos - 1].substr(1)).c_str());
+	//	}
+	//}
+	return totalInMb;
+	//return mem;
 
 }
 vector<vector<Position*> > generateBlock(double latStart, double lngStart, int scenario, int blockWidth, int streetWidth, int polesPerSide, int n, vector<bool> sidesToPutPoles )
@@ -427,7 +467,7 @@ double memEstimation(double val1, double val2)
 {
 	double x = min(val1, val2);
 
-	double estimation =  0.0001530206*pow(x, 2) + 0.0072606821*x - 10.7817256808;
+	double estimation = 0.0001536814 * pow(x, 2) + 0.0016503684 * x - 0.0914468615;
 	if (val1 == val2)
 		return estimation;
 	if (x == val1)
@@ -438,6 +478,32 @@ double memEstimation(double val1, double val2)
 }
 int main(int argc, char** argv)
 {
+
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//float aux = 0;
+	//string v = "";
+	//float mem=1;
+	//int i = 1, init = 100;
+	//while (mem > 0)
+	//{	
+	//	mem = memoryTest(i,i, rubyPath);
+	//	if (mem<0)
+	//		break;
+	//	cout << i << "x" << i << ": " << mem<< "\n";
+	//	v += to_string(i) + " " + to_string(mem) +"\n";
+	//	aux = mem;
+	//	if (i < 1001)
+	//		i += 10;
+	//	else 
+	//		i += 500;
+
+	//}
+	//string filename = rubyPath + "/arqsTeste/ix"+to_string(i)+"MemTest.txt";
+	//ofstream f(filename.c_str());
+	//f << v;
+	//f.close();
+
+
 	srand(time(NULL));
 	double x = 3501;
 	double wow = -1E-19;
@@ -445,45 +511,18 @@ int main(int argc, char** argv)
 	//for (int x = 1; x < 10002; x+=500)
 		//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
 		//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	for (int i = 0; i < 10; i++)
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	for (int i = 0; i < 100; i++)
 	{
-		int max = 2000, min = 1;
+		int max = 5000, min = 1;
 		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-		double realmem = memoryTest(val1, val2, rubyPath) / (1024 * 1024);
+		double realmem = memoryTest(val1, val2, rubyPath);
 		double estMem = memEstimation(val1, val2);
 		cout << "Dimension: " << val1 << "x" << val2<< " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
 	}
 
 
-	double memest = memEstimation(1999, 1438);
-	double memest2 = memEstimation(1438, 1438);
-	double memest3 = memEstimation(5001, 5001);
-	double mem1 = memoryTest(1438, 1438, rubyPath)/(1024*1024);
-	double error1 = mem1 / memest2;
-	double mem = memoryTest(1999, 1438, rubyPath) / (1024 * 1024);
-	double error2 = mem / memest;
-	double aaaa=0;
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	//float aux = 0;
-	//string v = "";
-	//float mem=1;
-	//int i = 1, init = 1000;
-	//while (mem > 0)
-	//{	
-	//	mem = memoryTest(i,init, rubyPath);
-	//	if (mem<0)
-	//		break;
-	//	cout << i << "x" << init << ": " << mem/(1024*1024)<< "\n";
-	//	v += to_string(init) + " " + to_string(mem/(1024*1024)) +"\n";
-	//	aux = mem;
-	//	i += 5000;
 
-	//}
-	//string filename = rubyPath + "/arqsTeste/ix"+to_string(init)+"MemTest.txt";
-	//ofstream f(filename.c_str());
-	//f << v;
-	//f.close();
 	string metersFile = "", polesFile = "";
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
