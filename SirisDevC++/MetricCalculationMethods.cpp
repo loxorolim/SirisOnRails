@@ -566,6 +566,8 @@ MetricResult* MetricCalculation::executeMetricCalculationTest()
 		coveredMeters += result->meterPerHop[i];
 	}
 	result->uncoveredMeters = meters.size() - coveredMeters;
+	for (int i = 0; i < sL.size(); i++)
+		delete sL[i];
 
 	return result;
 }

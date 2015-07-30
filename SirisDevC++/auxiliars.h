@@ -31,7 +31,7 @@
 #define t802_11_b  3
 
 #define EARTH_RADIUS 6378137
-#define MEM_LIMIT 4000
+#define MEM_LIMIT 5000
 #define MEM_EST_SAFETY 1.1
 
 #include<string>

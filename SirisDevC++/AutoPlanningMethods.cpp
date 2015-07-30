@@ -735,20 +735,20 @@ vector<pair<double,double> > getClusters(double *data, int numData)
 	return ret;
 }
 
-vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Position*> poles)
+vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Position*> poles, vector<vector<int> > &invertedScp)
 {
-	double* data = (double*)vl_malloc(sizeof(double) * 2 * (meters.size() + poles.size()));
+	double* data = (double*)vl_malloc(sizeof(double) * 2 * meters.size());
 	for (int i = 0; i < meters.size(); i++)
 	{
 		data[i * 2 + 0] = meters[i]->latitude;
 		data[i * 2 + 1] = meters[i]->longitude;
 	}
-	for (int i = 0; i < poles.size(); i++)
-	{
-		data[(meters.size() + i) * 2 + 0] = poles[i]->latitude;
-		data[(meters.size() + i) * 2 + 1] = poles[i]->longitude;
-	}
-	vector<pair<double, double> > clusters = getClusters(data, meters.size() + poles.size());
+	//for (int i = 0; i < poles.size(); i++)
+	//{
+	//	data[(meters.size() + i) * 2 + 0] = poles[i]->latitude;
+	//	data[(meters.size() + i) * 2 + 1] = poles[i]->longitude;
+	//}
+	vector<pair<double, double> > clusters = getClusters(data, meters.size());
 	vector<ClusterProblem*> subProblems;
 	for (int i = 0; i < clusters.size(); i++)
 		subProblems.push_back(new ClusterProblem);
@@ -769,29 +769,57 @@ vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Posit
 		}
 		subProblems[chosenCluster]->meters.push_back(meters[i]);
 	}
-	for (int i = 0; i < poles.size(); i++)
+	for (int i = 0; i < subProblems.size(); i++)
 	{
-		int chosenCluster = -1;
-		double dist = -1;
-		for (int j = 0; j < clusters.size(); j++)
+		vector<int> toAdd;
+		for (int j = 0; j < subProblems[i]->meters.size(); j++)
 		{
-			double distancex = pow((clusters[j].first - poles[i]->latitude), 2);
-			double distancey = pow((clusters[j].second - poles[i]->longitude), 2);
-			double calcdistance = sqrt(distancex + distancey);
-			if (calcdistance < dist || dist == -1)
+			for (int k = 0; k < invertedScp[subProblems[i]->meters[j]->index].size(); k++)
 			{
-				dist = calcdistance;
-				chosenCluster = j;
+				toAdd.push_back(invertedScp[subProblems[i]->meters[j]->index][k]);
 			}
 		}
-		subProblems[chosenCluster]->poles.push_back(poles[i]);
+		sort(toAdd.begin(), toAdd.end());
+		toAdd.erase(unique(toAdd.begin(), toAdd.end()), toAdd.end());
+		for (int j = 0; j < toAdd.size(); j++)
+		{
+			subProblems[i]->poles.push_back(poles[toAdd[j]]);
+		}
 	}
+	//for (int i = 0; i < poles.size(); i++)
+	//{
+	//	int chosenCluster = -1;
+	//	double dist = -1;
+	//	for (int j = 0; j < clusters.size(); j++)
+	//	{
+	//		double distancex = pow((clusters[j].first - poles[i]->latitude), 2);
+	//		double distancey = pow((clusters[j].second - poles[i]->longitude), 2);
+	//		double calcdistance = sqrt(distancex + distancey);
+	//		if (calcdistance < dist || dist == -1)
+	//		{
+	//			dist = calcdistance;
+	//			chosenCluster = j;
+	//		}
+	//	}
+	//	subProblems[chosenCluster]->poles.push_back(poles[i]);
+	//}
 	vl_free(data);
 	return subProblems;
 }
 TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
 {
 	const clock_t begin_time = clock();
+
+	vector<vector<int> > scp = createScp();
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			invertedSCP[scp[i][j]].push_back(i);
+		}
+	}
 	vector<ClusterProblem*> subProblems;
 	ClusterProblem* init = new ClusterProblem;
 	init->meters = meters; init->poles = poles;
@@ -807,7 +835,7 @@ TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 			double memEst = memEstimation(subProblems[i]->meters.size(), subProblems[i]->poles.size());
 			if (memEst*MEM_EST_SAFETY >= MEM_LIMIT)
 			{
-				vector<ClusterProblem*> clusterized = clusterizeProblem(subProblems[i]->meters, subProblems[i]->poles);
+				vector<ClusterProblem*> clusterized = clusterizeProblem(subProblems[i]->meters,poles,invertedSCP);
 				toConcat.insert(toConcat.end(), clusterized.begin(), clusterized.end());
 				//subProblems.erase(subProblems.begin() + i);
 				toRemove.push_back(i);
@@ -864,16 +892,7 @@ TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 		{
 			chosen[chosenDaps[i]] = 1;
 		}
-		vector<vector<int> > scp = createScp();
-		vector<vector<int> > invertedSCP;
-		invertedSCP.resize(meters.size());
-		for (int i = 0; i < scp.size(); i++)
-		{
-			for (int j = 0; j < scp[i].size(); j++)
-			{
-				invertedSCP[scp[i][j]].push_back(i);
-			}
-		}
+
 		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen, redundancy);
 
 		vector<int> resultPosOpt;
@@ -887,10 +906,12 @@ TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 	}
 	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 	result->poTime = secondsgp;
-
-
 	result->maxMem = maxMem;
-	cout << result->toString();
+	for (int i = 0; i < subProblems.size(); i++)
+	{
+		delete(subProblems[i]);
+	}
+	//cout << result->toString();
 	//	return str;
 	return result;
 }
@@ -924,6 +945,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 	result->metersPerHop = metricResult->meterPerHop;
 	result->qualityPerHop = metricResult->linkQualityPerHop;
 	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
 	result->uncoveredMeters = metricResult->uncoveredMeters;
 	delete metricResult;
 	delete mc;
@@ -948,6 +970,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 		result->poMetersPerHop = metricResult->meterPerHop;
 		result->poQualityPerHop = metricResult->linkQualityPerHop;
 		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
 		delete metricResult;
 		delete mc;
 	}

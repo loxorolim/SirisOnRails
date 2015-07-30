@@ -36,6 +36,7 @@ struct TestResult
 	float time;
 	vector<int> chosenPoles;
 	vector<int> metersPerHop;
+	vector<double> metersPerDap;
 	vector<double> qualityPerHop;
 	vector<double>  redundancy;
 	//Com post-opt
@@ -43,6 +44,7 @@ struct TestResult
 	float poTime;
 	vector<int> poChosenPoles;
 	vector<int> poMetersPerHop;
+	vector<double> poMetersPerDap;
 	vector<double> poQualityPerHop;
 	vector<double>  poRedundancy;
 
@@ -52,11 +54,39 @@ struct TestResult
 		ret += "Dimension: " + to_string(numMeters) + " x " + to_string(numPoles) + "\n";
 		ret += "Grid Size: " + to_string(gridSize) + "\n";
 		ret += "Uncovered meters: " + to_string(uncoveredMeters) + "\n";
-		ret += "Solution Quality: " + to_string(solutionQuality) + "\n";
+		ret += "\nSolution Quality: " + to_string(solutionQuality) + "\n";
 		ret += "Time: " + to_string(time) + "\n";
+		for (int i = 0; i < metersPerHop.size(); i++)
+		{
+			ret += "Hop" + to_string(i + 1) + "Quantity: " + to_string(metersPerHop[i]) + "\n";
+		}
+		for (int i = 0; i < qualityPerHop.size(); i++)
+		{
+			ret += "Hop" + to_string(i + 1) + "Quality: " + to_string(qualityPerHop[i]) + "\n";
+		}
+		ret += "Min Meters per DAP: " + to_string(metersPerDap[0]) + "\n";
+		ret += "Med Meters per DAP: " + to_string(metersPerDap[1]) + "\n";
+		ret += "Max Meters per DAP: " + to_string(metersPerDap[2]) + "\n";
+		ret += "Min Redundancy: " + to_string(redundancy[0]) + "\n";
+		ret += "Med Redundancy: " + to_string(redundancy[1]) + "\n";
+		ret += "Max Redundancy: " + to_string(redundancy[2]) + "\n";
 
-		ret += "P.O Solution Quality: " + to_string(poSolutionQuality) + "\n";
+		ret += "\nP.O Solution Quality: " + to_string(poSolutionQuality) + "\n";
 		ret += "P.O Time: " + to_string(poTime) + "\n";
+		for (int i = 0; i < poMetersPerHop.size(); i++)
+		{
+			ret += "Hop" + to_string(i + 1) + "Quantity: " + to_string(poMetersPerHop[i]) + "\n";
+		}
+		for (int i = 0; i < poQualityPerHop.size(); i++)
+		{
+			ret += "Hop" + to_string(i + 1) + "Quality: " + to_string(poQualityPerHop[i]) + "\n";
+		}
+		ret += "Min Meters per DAP: " + to_string(poMetersPerDap[0]) + "\n";
+		ret += "Med Meters per DAP: " + to_string(poMetersPerDap[1]) + "\n";
+		ret += "Max Meters per DAP: " + to_string(poMetersPerDap[2]) + "\n";
+		ret += "Min Redundancy: " + to_string(poRedundancy[0]) + "\n";
+		ret += "Med Redundancy: " + to_string(poRedundancy[1]) + "\n";
+		ret += "Max Redundancy: " + to_string(poRedundancy[2]) + "\n";
 		return ret;
 
 	
