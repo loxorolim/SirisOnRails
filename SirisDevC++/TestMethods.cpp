@@ -1,4 +1,11 @@
 #include "TestMethods.h"
+extern "C" {
+#include <vl/kmeans.h>
+#include <vl/generic.h>
+#include <vl/host.h>
+#include <vl/kdtree.h>
+}
+
 #define distFromHouseToStreet 40
 #define distToRandom 20
 //string gridTest(vector<Position*> &meters, vector<Position*> &poles, int s, int t, double B, double T, double h1, double h2, int srd, int me, string rp, double gridSize)
@@ -463,21 +470,17 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 
 
 }
-double memEstimation(double val1, double val2)
-{
-	double x = min(val1, val2);
 
-	double estimation = 0.0001536814 * pow(x, 2) + 0.0016503684 * x - 0.0914468615;
-	if (val1 == val2)
-		return estimation;
-	if (x == val1)
-		estimation *= val2 / val1;
-	else
-		estimation *= val1 / val2;
-	return estimation;
+void kmeansTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh)
+{
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
+	AP->executeClusterAutoPlanTestMode(true, 1);
 }
 int main(int argc, char** argv)
 {
+	
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//float aux = 0;
@@ -504,22 +507,22 @@ int main(int argc, char** argv)
 	//f.close();
 
 
-	srand(time(NULL));
-	double x = 3501;
-	double wow = -1E-19;
+	//srand(time(NULL));
+	//double x = 3501;
+	//double wow = -1E-19;
 
-	//for (int x = 1; x < 10002; x+=500)
-		//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
-		//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
-	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	for (int i = 0; i < 100; i++)
-	{
-		int max = 5000, min = 1;
-		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-		double realmem = memoryTest(val1, val2, rubyPath);
-		double estMem = memEstimation(val1, val2);
-		cout << "Dimension: " << val1 << "x" << val2<< " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
-	}
+	////for (int x = 1; x < 10002; x+=500)
+	//	//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
+	//	//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
+	////string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	//for (int i = 0; i < 100; i++)
+	//{
+	//	int max = 5000, min = 1;
+	//	double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+	//	double realmem = memoryTest(val1, val2, rubyPath);
+	//	double estMem = memEstimation(val1, val2);
+	//	cout << "Dimension: " << val1 << "x" << val2<< " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
+	//}
 
 
 
@@ -536,14 +539,16 @@ int main(int argc, char** argv)
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+	kmeansTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+	
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+	
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaPequena1576.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaPequena453.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);

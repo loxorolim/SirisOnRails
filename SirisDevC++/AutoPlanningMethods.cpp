@@ -689,6 +689,271 @@ string AutoPlanning::planWithRedundancy(vector<vector<int> > &scp, int redundanc
 
 	return "wow";
 }
+vector<pair<double,double> > getClusters(double *data, int numData)
+{
+	VlRand rand;
+	vl_size dimension = 2;
+	vl_size numCenters = 2;
+	vl_size maxiter = 100;
+	vl_size maxComp = 100;
+	vl_size maxrep = 1;
+	vl_size ntrees = 1;
+
+
+	//VlKMeansAlgorithm algorithm = VlKMeansANN ;
+	//VlKMeansAlgorithm algorithm = VlKMeansLloyd;
+	VlKMeansAlgorithm algorithm = VlKMeansElkan ;
+	VlVectorComparisonType distance = VlDistanceL2;
+	VlKMeans * kmeans = vl_kmeans_new(VL_TYPE_DOUBLE, distance);
+
+	vl_rand_init(&rand);
+	vl_rand_seed(&rand, 1000);
+	vl_kmeans_set_verbosity(kmeans, 1);
+	vl_kmeans_set_max_num_iterations(kmeans, maxiter);
+	vl_kmeans_set_max_num_comparisons(kmeans, maxComp);
+	vl_kmeans_set_num_repetitions(kmeans, maxrep);
+	vl_kmeans_set_num_trees(kmeans, ntrees);
+	vl_kmeans_set_algorithm(kmeans, algorithm);
+	vl_kmeans_init_centers_plus_plus(kmeans, data, dimension, numData, numCenters);
+	//struct timeval t1,t2;
+	//gettimeofday(&t1, NULL);
+	vector<pair<double, double> > ret;
+	vl_kmeans_cluster(kmeans, data, dimension, numData, numCenters);
+	double* centers = (double*)vl_kmeans_get_centers(kmeans);
+	int i, j;
+	for (i = 0; i < numCenters; i++) {
+		pair<double, double> toAdd(centers[dimension * i + 0], centers[dimension * i + 1] );
+		ret.push_back(toAdd);
+	}
+	//vl_free(centers);
+
+	//gettimeofday(&t2, NULL);
+
+	//VL_PRINT("elapsed vlfeat: %f s\n",(double)(t2.tv_sec - t1.tv_sec) + ((double)(t2.tv_usec - t1.tv_usec))/1000000.);	
+	vl_kmeans_delete(kmeans);
+
+	return ret;
+}
+
+vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Position*> poles)
+{
+	double* data = (double*)vl_malloc(sizeof(double) * 2 * (meters.size() + poles.size()));
+	for (int i = 0; i < meters.size(); i++)
+	{
+		data[i * 2 + 0] = meters[i]->latitude;
+		data[i * 2 + 1] = meters[i]->longitude;
+	}
+	for (int i = 0; i < poles.size(); i++)
+	{
+		data[(meters.size() + i) * 2 + 0] = poles[i]->latitude;
+		data[(meters.size() + i) * 2 + 1] = poles[i]->longitude;
+	}
+	vector<pair<double, double> > clusters = getClusters(data, meters.size() + poles.size());
+	vector<ClusterProblem*> subProblems;
+	for (int i = 0; i < clusters.size(); i++)
+		subProblems.push_back(new ClusterProblem);
+	for (int i = 0; i < meters.size(); i++)
+	{
+		int chosenCluster = -1;
+		double dist = -1;
+		for (int j = 0; j < clusters.size(); j++)
+		{
+			double distancex = pow((clusters[j].first - meters[i]->latitude), 2);
+			double distancey = pow((clusters[j].second - meters[i]->longitude), 2);
+			double calcdistance = sqrt(distancex + distancey);
+			if (calcdistance < dist || dist == -1)
+			{
+				dist = calcdistance;
+				chosenCluster = j;
+			}
+		}
+		subProblems[chosenCluster]->meters.push_back(meters[i]);
+	}
+	for (int i = 0; i < poles.size(); i++)
+	{
+		int chosenCluster = -1;
+		double dist = -1;
+		for (int j = 0; j < clusters.size(); j++)
+		{
+			double distancex = pow((clusters[j].first - poles[i]->latitude), 2);
+			double distancey = pow((clusters[j].second - poles[i]->longitude), 2);
+			double calcdistance = sqrt(distancex + distancey);
+			if (calcdistance < dist || dist == -1)
+			{
+				dist = calcdistance;
+				chosenCluster = j;
+			}
+		}
+		subProblems[chosenCluster]->poles.push_back(poles[i]);
+	}
+	vl_free(data);
+	return subProblems;
+}
+TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
+{
+	const clock_t begin_time = clock();
+	vector<ClusterProblem*> subProblems;
+	ClusterProblem* init = new ClusterProblem;
+	init->meters = meters; init->poles = poles;
+	subProblems.push_back(init);
+	bool cont = true;
+	while (true)
+	{
+		bool success = false;
+		vector<int> toRemove;
+		vector<ClusterProblem*> toConcat;
+		for (int i = 0; i < subProblems.size(); i++)
+		{
+			double memEst = memEstimation(subProblems[i]->meters.size(), subProblems[i]->poles.size());
+			if (memEst*MEM_EST_SAFETY >= MEM_LIMIT)
+			{
+				vector<ClusterProblem*> clusterized = clusterizeProblem(subProblems[i]->meters, subProblems[i]->poles);
+				toConcat.insert(toConcat.end(), clusterized.begin(), clusterized.end());
+				//subProblems.erase(subProblems.begin() + i);
+				toRemove.push_back(i);
+				success = true;
+			}
+		}
+		for (int i = 0; i < toRemove.size(); i++)
+		{
+			free(subProblems[toRemove[i]]);
+			subProblems.erase(subProblems.begin() + toRemove[i]);
+			for (int j = 0; j < toRemove.size(); j++)
+				toRemove[j]--;
+		}
+		subProblems.insert(subProblems.end(), toConcat.begin(), toConcat.end());
+		if (!success)
+			break;
+	}
+	double maxMem = -1;
+	vector<int> chosenDaps;
+	vector<Position*> metersAux = meters, polesAux = poles;
+	TestResult* result = new TestResult();
+
+	for (int i = 0; i < subProblems.size();i++)
+	{
+		meters = subProblems[i]->meters;
+		poles = subProblems[i]->poles;
+		vector<vector<int> > cellSCP = createScp();
+		saveGLPKFileReduced(cellSCP, redundancy);
+		double memUsageInCell = -1;
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell);
+		if (memUsageInCell > maxMem)
+			maxMem = memUsageInCell;
+		for (int i = 0; i < answer.size(); i++)
+			chosenDaps.push_back(answer[i]);
+
+	}
+	meters = metersAux;
+	poles = polesAux;
+	//Remove redundâncias
+	sort(chosenDaps.begin(), chosenDaps.end());
+	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+
+	result->solutionQuality = chosenDaps.size();
+	result->chosenPoles = chosenDaps;
+	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	result->time = secondsgp;
+	if (usePostOptimization && subProblems.size() > 1)//PÓS OTIMIZAÇÃO
+	{
+		cout << "Iniciando pós otimização\n";
+		vector<int> chosen;
+		for (int i = 0; i < poles.size(); i++)
+			chosen.push_back(0);
+		for (int i = 0; i < chosenDaps.size(); i++)
+		{
+			chosen[chosenDaps[i]] = 1;
+		}
+		vector<vector<int> > scp = createScp();
+		vector<vector<int> > invertedSCP;
+		invertedSCP.resize(meters.size());
+		for (int i = 0; i < scp.size(); i++)
+		{
+			for (int j = 0; j < scp[i].size(); j++)
+			{
+				invertedSCP[scp[i][j]].push_back(i);
+			}
+		}
+		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen, redundancy);
+
+		vector<int> resultPosOpt;
+		for (int i = 0; i < poles.size(); i++)
+		{
+			if (chosen[i] == 1)
+				resultPosOpt.push_back(i);
+		}
+		result->poChosenPoles = resultPosOpt;
+		result->poSolutionQuality = resultPosOpt.size();
+	}
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	result->poTime = secondsgp;
+
+
+	result->maxMem = maxMem;
+	cout << result->toString();
+	//	return str;
+	return result;
+}
+TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy)
+{
+	TestResult* result;
+
+	cout << "Iniciando planejamento\n";
+	result = clusterAutoPlanning(usePostOptimization, redundancy);
+	result->gridSize = gridLimiter;
+	result->numMeters = meters.size();
+	result->numPoles = poles.size();
+	vector<int> xgp = result->chosenPoles;
+	vector<Position*> daps;
+	vector<Position*> metersCopy;
+
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+		metersCopy.push_back(copy);
+	}
+	cout << "Calculando métricas\n";
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+		daps.push_back(dapToInsert);
+	}
+	//Calcula métricas sem pos-opt
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+	MetricResult* metricResult = mc->executeMetricCalculationTest();
+	result->metersPerHop = metricResult->meterPerHop;
+	result->qualityPerHop = metricResult->linkQualityPerHop;
+	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->uncoveredMeters = metricResult->uncoveredMeters;
+	delete metricResult;
+	delete mc;
+	//Calcula métricas com pos-opt
+	metersCopy.clear();
+	daps.clear();
+	if (usePostOptimization)
+	{
+		xgp = result->poChosenPoles;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+			metersCopy.push_back(copy);
+		}
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+			daps.push_back(dapToInsert);
+		}
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		metricResult = mc->executeMetricCalculationTest();
+		result->poMetersPerHop = metricResult->meterPerHop;
+		result->poQualityPerHop = metricResult->linkQualityPerHop;
+		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		delete metricResult;
+		delete mc;
+	}
+	cout << result->toString();
+	return result;
+}
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
 string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 {
@@ -767,8 +1032,6 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
-		if (numCel == 109)
-			cout << "wow";
 		cout << "Planejando célula " << to_string(numCel) << " de " << to_string(meterCells.size()) << "\n";
 		numCel++;
 		vector<Position*> cellsMeters;

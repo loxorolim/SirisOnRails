@@ -31,6 +31,8 @@
 #define t802_11_b  3
 
 #define EARTH_RADIUS 6378137
+#define MEM_LIMIT 4000
+#define MEM_EST_SAFETY 1.1
 
 #include<string>
 #include <vector>
@@ -217,6 +219,7 @@ std::vector<std::string> split(const std::string &s, char delim);
 vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2);
 double getLongOfDistance(double lat, double distance);
 double getLatOfDistance(double distance);
+double memEstimation(double val1, double val2);
 
 //bool compareByLatitude(Position* a, Position *b);
 

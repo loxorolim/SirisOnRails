@@ -15,7 +15,17 @@
 #include "glpk.h"
 #include <thread>
 #include <future>
+extern "C" {
+#include <vl/kmeans.h>
+#include <vl/generic.h>
+#include <vl/host.h>
+#include <vl/kdtree.h>
+}
 
+struct ClusterProblem
+{
+	vector<Position*> meters, poles;
+};
 struct TestResult
 {
 	//Pros dois
@@ -119,13 +129,14 @@ class AutoPlanning
 		 vector<int> executeGlpk(string filename);
 		 string gridAutoPlanning(int redundancy, int limit);
 		 string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
-
+		 TestResult* clusterAutoPlanning(bool usePostOptimization, int redundancy);
 		 vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 		 string graspAutoPlanning();
 
 		 //Metodos Teste
 		 void setGridSize(double gridSize);
 		 TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
+		 TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
 		 TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
 		 vector<int> executeGlpk(string filename, double &maxmem);
 		 int getMetersSize();
