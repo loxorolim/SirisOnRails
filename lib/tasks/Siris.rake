@@ -17,3 +17,9 @@ task :build_siris_w32 => [:clean] do
     sh "make"
   end
 end 
+task :build_siris_w64 => [:clean] do
+  Dir.chdir("SirisDevC++/") do   
+    ruby "extconfw64.rb"
+    sh "make"
+  end
+end 
