@@ -107,11 +107,11 @@ optflags = -O3 -fno-omit-frame-pointer
 debugflags = -g
 warnflags = -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration
 CFLAGS   =  $(cflags) $(ARCH_FLAG)
-INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) -I GLPK -I vlfeat-0.9.20
+INCFLAGS = -I. -I$(arch_hdrdir) -I$(hdrdir)/ruby/backward -I$(hdrdir) -I$(srcdir) -I GLPK -I VLFEAT
 DEFS     = 
 CPPFLAGS =  -DFD_SETSIZE=2048 $(DEFS) $(cppflags)  -ID:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/include
 CXXFLAGS = $(CFLAGS)  -Wall -g
-ldflags  = -L.   -LD:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/lib -lrice -L GLPK -lglpk -llibvl.so
+ldflags  = -L.   -LD:/Ruby193/lib/ruby/gems/1.9.1/gems/rice-1.7.0/ruby/lib/lib -lrice -L GLPK/w32/ -lglpk_4_54 -L VLFEAT/bin/win32 -lvl
 dldflags =  -Wl,--enable-auto-image-base,--enable-auto-import $(DEFFILE) 
 ARCH_FLAG = -march=i486
 DLDFLAGS = $(ldflags) $(dldflags) $(ARCH_FLAG)
