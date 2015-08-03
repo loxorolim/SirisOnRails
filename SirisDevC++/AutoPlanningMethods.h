@@ -31,6 +31,7 @@ struct TestResult
 	//Pros dois
 	int gridSize, numMeters, numPoles, uncoveredMeters;
 	float maxMem;
+	double solverTime;
 	//Sem post-opt
 	int solutionQuality;
 	float time;
@@ -168,7 +169,7 @@ class AutoPlanning
 		 TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		 TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
 		 TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
-		 vector<int> executeGlpk(string filename, double &maxmem);
+		 vector<int> executeGlpk(string filename, double &maxmem, double &solverTime);
 		 int getMetersSize();
 		 int getPolesSize();
 

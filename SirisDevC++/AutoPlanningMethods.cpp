@@ -494,6 +494,7 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
 	vector<int> answer;
+	
 	glp_prob *lp;
 	glp_tran *tran;
 	int ret, count, cpeak;
@@ -504,6 +505,7 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
 	glp_mem_limit(5800);
+
 	if (ret != 0)
 	{
 		fprintf(stderr, "Error on translating model\n");
@@ -516,6 +518,7 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 		fprintf(stderr, "Error on generating model\n");
 		goto skip;
 	}
+
 	glp_mpl_build_prob(tran, lp);
 	glp_iocp parm;
 	glp_init_iocp(&parm);
@@ -534,11 +537,12 @@ skip: glp_mpl_free_wksp(tran);
 	glp_delete_prob(lp);
 	return answer;
 }
-vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem)
+vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &solverTime)
 {
 	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
+	//glp_term_out(GLP_OFF);
 	vector<int> answer;
 	glp_prob *lp;
 	glp_tran *tran;
@@ -566,14 +570,17 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem)
 	glp_iocp parm;
 	glp_init_iocp(&parm);
 	parm.presolve = GLP_ON;
+	const clock_t begin_time = clock();
 	err = glp_intopt(lp, &parm);
+	double seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	solverTime = seconds;
 	for (int i = 1; i < poles.size() + 1; i++)
 	{
 		if (glp_mip_col_val(lp, i))
 			answer.push_back(poles[i - 1]->index);
 	}
 	glp_mem_usage(&count, &cpeak, &total, &tpeak);
-	printf("%d memory block(s) are still allocated\n", count);
+	//printf("%d memory block(s) are still allocated\n", count);
 	totalInMb = ((double)total / (1024 * 1024));
 	tpeakInMb = ((double)tpeak / (1024 * 1024));
 	maxMem = totalInMb;
@@ -809,7 +816,7 @@ vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Posit
 TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
 {
 	const clock_t begin_time = clock();
-
+	double solverTime;
 	vector<vector<int> > scp = createScp();
 	vector<vector<int> > invertedSCP;
 	invertedSCP.resize(meters.size());
@@ -865,7 +872,8 @@ TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP, redundancy);
 		double memUsageInCell = -1;
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		result->solverTime = solverTime;
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)
@@ -1040,7 +1048,9 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 //Pode ignorar, usei pra testes.
 TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, int redundancy)
 {
+
 	TestResult* result = new TestResult();
+	double solverTime;
 	const clock_t begin_time = clock();
 
 	Grid* metergrid = new Grid(meters,poles,gridLimiter);
@@ -1068,7 +1078,7 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP,redundancy);
 		double memUsageInCell= -1;
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)

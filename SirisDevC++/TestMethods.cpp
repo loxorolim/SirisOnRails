@@ -446,9 +446,45 @@ void executeClusterTest(string meterFile, string poleFile, string pathToSave, in
 void kmeansTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh)
 {
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
 	AP->executeClusterAutoPlanTestMode(true, 1);
+}
+void executionTimeTest(int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, string rubyPath)
+{
+
+	ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\executionTimeTestResults");
+	int numOfCells = 1;
+	while (true)
+	{
+	
+		vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, scenario, numOfCells, 100 - distFromHouseToStreet, 4, 3);
+		vector<Position*> meters;
+		for(int i = 0; i < teste[0].size();i++)
+		{
+			Position* toAdd = new Position(teste[0][i]->latitude,teste[0][i]->longitude, i);
+			meters.push_back(toAdd);
+		}
+		vector<Position*> poles;
+		for (int i = 0; i < teste[1].size(); i++)
+		{
+			Position* toAdd = new Position(teste[1][i]->latitude, teste[1][i]->longitude, i);
+			poles.push_back(toAdd);
+		}
+		string ret = "";
+		AutoPlanning* AP = new AutoPlanning(meters,poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, rubyPath);
+		TestResult *res = AP->clusterAutoPlanning(false, 1);
+		cout << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
+		f << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
+		delete res;
+		delete AP;
+		numOfCells++;
+	}
+
+
+	f.close();
+
 }
 int main(int argc, char** argv)
 {
@@ -456,6 +492,7 @@ int main(int argc, char** argv)
 	//_CrtSetBreakAlloc(368619);
 	{
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	executionTimeTest(Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, rubyPath);
 	//float aux = 0;
 	//string v = "";
 	//float mem=1;
