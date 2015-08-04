@@ -543,6 +543,8 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
 	//glp_term_out(GLP_OFF);
+	double seconds;
+	clock_t begin_time = 0;
 	vector<int> answer;
 	glp_prob *lp;
 	glp_tran *tran;
@@ -570,9 +572,9 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	glp_iocp parm;
 	glp_init_iocp(&parm);
 	parm.presolve = GLP_ON;
-	const clock_t begin_time = clock();
+	begin_time = clock();
 	err = glp_intopt(lp, &parm);
-	double seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
 	solverTime = seconds;
 	for (int i = 1; i < poles.size() + 1; i++)
 	{

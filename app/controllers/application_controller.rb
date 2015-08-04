@@ -1,4 +1,4 @@
-require './SirisDevC++/Siris'
+#require './SirisDevC++/Siris'
 class ApplicationController < ActionController::Base
 
 
@@ -6,19 +6,20 @@ class ApplicationController < ActionController::Base
 	toPass = params['data']
 
 	path = Dir.pwd;
-	answer = Siris.new.getResponse(toPass, path);
+	#answer = Siris.new.getResponse(toPass, path);
 	#teste = RiceTest.new.pathteste(path);
-	print answer
-  	#answer = ""
-  	#answer2 = ""
-	#IO.popen('C:\Sites\first_app\sirisSCPCalculator\SirisSCPCalculator\Release\SirisSCPCalculator.exe', 'r+') do |pipe|
-	#  pipe.puts(toPass)
-	#  pipe.close_write
-	#  answer = pipe.read
-	#  answer2 = pipe.read
-	#  pipe.close_read
-	#end
 	#print answer
+  	answer = ""
+  	#answer2 = ""
+	IO.popen(path+'/Siris/SirisW64/SirisOnRailsC++.exe', 'r+') do |pipe|
+	  pipe.puts(path)
+	  pipe.puts(toPass)	  
+	  pipe.close_write
+	  answer = pipe.read
+	  #answer2 = pipe.read
+	  #pipe.close_read
+	end
+	print answer
 	#print answer2
 
 	#print shell_output
