@@ -1,4 +1,5 @@
-
+#ifndef _GRASP_H
+#define _GRASP_H
 #include "stdafx.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,3 +37,5 @@ class Grasp
 		int* metaheuristic(vector<vector<int>> &scp, int size, int* cSatisfied, int* nColumns);
 		vector<int> greedyheuristic(vector<vector<int>> &scp, int size);
 }
+
+#endif

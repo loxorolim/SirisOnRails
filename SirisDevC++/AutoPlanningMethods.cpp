@@ -494,7 +494,7 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
 	vector<int> answer;
-	
+	glp_term_out(GLP_OFF);
 	glp_prob *lp;
 	glp_tran *tran;
 	int ret, count, cpeak;
@@ -542,7 +542,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
-	//glp_term_out(GLP_OFF);
+	glp_term_out(GLP_OFF);
 	double seconds;
 	clock_t begin_time = 0;
 	vector<int> answer;
@@ -929,7 +929,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 {
 	TestResult* result;
 
-	cout << "Iniciando planejamento\n";
+	//cout << "Iniciando planejamento\n";
 	result = clusterAutoPlanning(usePostOptimization, redundancy);
 	result->gridSize = gridLimiter;
 	result->numMeters = meters.size();
@@ -943,7 +943,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
 		metersCopy.push_back(copy);
 	}
-	cout << "Calculando métricas\n";
+	//cout << "Calculando métricas\n";
 	for (int i = 0; i < xgp.size(); i++)
 	{
 		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
@@ -984,7 +984,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 		delete metricResult;
 		delete mc;
 	}
-	cout << result->toString();
+	//cout << result->toString();
 	return result;
 }
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
@@ -1921,4 +1921,8 @@ string AutoPlanning::graspAutoPlanning()
 void AutoPlanning::setGridSize(double gridSize)
 {
 	gridLimiter = gridSize;
+}
+void AutoPlanning::setRegionLimiter(double rl)
+{
+	regionLimiter = rl;
 }

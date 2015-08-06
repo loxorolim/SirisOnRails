@@ -4,6 +4,8 @@ vector<vector<double> > table;
 
 //Funções EXTENDED HATA SRD! Bruxaria da galera de Tele, não faço ideia do que são essas contas aí!
 
+double hataTestRange = 1;
+
 double bit_error_probability(int env, int technology, int  bit_rate, int  transmitter_power, int  h_tx, int  h_rx, double  d, int SRD)
 {
 
@@ -566,9 +568,13 @@ double uncoded_modulation(int modulation_type, double gamma_b)
 //	
 //
 //}
+
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
-
+	if (distance <= hataTestRange)
+		return 1;
+	else
+		return 0;
 	double ber = bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);
 	double packet_size = 1500;
 	//double loss = loss(f,h_tx,h_rx,distance, SRD);

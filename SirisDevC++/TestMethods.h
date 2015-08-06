@@ -1,3 +1,6 @@
+#ifndef _TEST_METHODS_H
+#define _TEST_METHODS_H
+
 #include <iostream>
 #include <sstream>
 #include "Grid.h"
@@ -8,4 +11,13 @@
 #include "HeatgridMethods.h"
 #include "HataSRD.h"
 #include <stdio.h>
+#include "global.h"
+extern "C"
+{
+#include <vl/kmeans.h>
+#include <vl/generic.h>
+#include <vl/host.h>
+#include <vl/kdtree.h>
+}
 
+#endif

@@ -4,6 +4,7 @@
 
 #include "auxiliars.h"
 #include "math.h"
+#include "global.h"
 #include <vector>
 #include <stdio.h>
 
@@ -20,6 +21,8 @@
 #define hard 1
 #define sdd 2
 #define soft 3
+
+extern double hataTestRange;
 
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD);
 double bit_error_probability(int env, int technology, int  bit_rate, int  transmitter_power, int  h_tx, int  h_rx, int  d, int SRD);
