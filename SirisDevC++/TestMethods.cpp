@@ -487,7 +487,7 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 
 	string toSave = "";
 	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
-	hataTestRange = 20;
+	hataTestRange = 10;
 	while (true)
 	{
 		AP->setRegionLimiter(hataTestRange);
@@ -495,7 +495,7 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 		toSave += to_string(hataTestRange) + " " + to_string(ret->solverTime) + "\n";
 		cout << to_string(hataTestRange) << " " << to_string(ret->solverTime) << " " << to_string(ret->solutionQuality) << " " << to_string(ret->uncoveredMeters) << "\n";
 		delete ret;
-		hataTestRange += 1;
+		hataTestRange += 50;
 	}
 	delete AP;
 
@@ -510,10 +510,12 @@ int main(int argc, char** argv)
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);
 	{
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-	increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3,rubyPath);
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+	metersFile = rubyPath+"/arqsTeste/filemeters10000.txt";
+	polesFile = rubyPath + "/arqsTeste/filepoles10000.txt";
+	increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3,rubyPath);
 	//float aux = 0;
 	//string v = "";
 	//float mem=1;

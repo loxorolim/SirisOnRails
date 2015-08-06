@@ -61,6 +61,7 @@ class ApplicationController < ActionController::Base
 	post = DataFile.save(params[:upload])
 	render :text => "File has been uploaded successfully"
   end
+
  
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.

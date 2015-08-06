@@ -1,0 +1,8 @@
+<h1>Arquivos teste</h1>
+<table>
+<ul>
+<% Dir["public/Exemplos/*.kml"].each do |file| %>
+  <li><%= link_to file, file[/\/.*/] %></li>
+<% end %>
+</ul>
+</table>
