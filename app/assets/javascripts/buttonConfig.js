@@ -748,7 +748,12 @@ function toggleHeatgrid(){
 				
 			}
 		}
+    if(coveragePolygon != null)
+      coveragePolygon.setMap(null);
 		drawRangeView = false;
+    for(var i = 0; i < lines.length; i++){
+      lines[i].setMap(map);
+    }
 	}
 	else
 		if(heatmapPolygon)
@@ -762,18 +767,23 @@ function toggleRangeView(){
 
   if(drawRangeView) {
   	$("#checkHeatmap").removeAttr('checked');
-	$("#checkHeatmap").button("refresh");
-
+  	$("#checkHeatmap").button("refresh");
     sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
-	if(drawHeatmap && heatmapPolygon != null){
-		drawHeatmap = !drawHeatmap;
-		heatmapPolygon.setMap(null);
-		
-	}
-		drawHeatmap = false;
+  	if(drawHeatmap && heatmapPolygon != null){
+  		drawHeatmap = !drawHeatmap;
+  		heatmapPolygon.setMap(null);
+  		
+  	}
+  	drawHeatmap = false;
+    for(var i = 0; i < lines.length; i++){
+      lines[i].setMap(null);
+    }
   }
   else
   {
+    for(var i = 0; i < lines.length; i++){
+      lines[i].setMap(map);
+    }
     if(coveragePolygon)
       coveragePolygon.setMap(null);
 

@@ -143,7 +143,8 @@ function loadFromKMLText(kml){
 	var mEnabled = $(kml).find('MeshEnabled').text();
 	mEnabled = parseInt(mEnabled);
 	setMeshActivation(mEnabled);
-
+	var first = true;
+	var sw_lat = -1,sw_lng=-1,ne_lat=-1,ne_lng=-1;
 
 	$(kml).find('Placemark').each(function(){
 		var type = $(this).find('name').text();
@@ -158,6 +159,17 @@ function loadFromKMLText(kml){
 			var coords = coord.split(",");
 			var longitude = coords[0];
 			var latitude = coords[1];
+			//Para centralizar a tela nas posições inseridas
+			if(latitude < sw_lat || first == true)
+				sw_lat = latitude;
+			if(latitude >= ne_lat || first == true)
+				ne_lat = latitude;
+			if(longitude < sw_lng || first == true)
+				sw_lng = longitude;
+			if(longitude >= ne_lng || first == true)	
+				ne_lng = longitude;
+			first = false;
+
 			switch(type){
 				case "Medidor":
 					var meter = createMeter();
@@ -177,7 +189,11 @@ function loadFromKMLText(kml){
 		});
 		
 	})
-	
+	var pos1 = new google.maps.LatLng(sw_lat,sw_lng);
+	var pos2 = new google.maps.LatLng(ne_lat,ne_lng);
+	var bounds = new google.maps.LatLngBounds(pos2,pos1);
+	map.fitBounds(bounds);
+
 	sendDrawRequest();
 
 }

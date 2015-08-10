@@ -182,9 +182,16 @@ function readPropagationResponse(data){
         drawLine(pos1,pos2,color,efficiency,distance,dashed);
 
     }*/
+    var circOptions = { strokeColor: connectedColor};
+    var circOptions2 = { strokeColor: disconnectedColor};
+    for(var i = 0; i < meters.length; i++)
+        meters[i].setOptions(circOptions2);
+    var connectedMeters = [];
     for(var i = 0; i < drawInfo.length-1; i++){
         var split = drawInfo[i].split("/");
         var latlng1 = meters[parseInt(split[0])].getPosition();
+        
+        meters[parseInt(split[0])].setOptions(circOptions);
         var latlng2;
         var hopnumber = parseInt(split[2]);
         meters[parseInt(split[0])].hop = hopnumber+1;//+1 pq ta vindo do servidor que 0 = 1 salto
@@ -200,6 +207,7 @@ function readPropagationResponse(data){
         drawLine(latlng1,latlng2,efficiency,distance,dashed);
 
     }
+
     if(drawRangeView)
         sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
    

@@ -83,6 +83,7 @@ function drawLine(latlng1,latlng2,efficiency,distance,dashed){
 
             });
     lines.push(routerPath);
+    if(!drawRangeView)
     routerPath.setMap(map);
 }
 

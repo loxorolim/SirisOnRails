@@ -81,7 +81,7 @@ function initialize() {
             break;
 
        }
-
+       markerCluster.repaint();
        event.setMap(null);
        sendDrawRequest();
   });

@@ -1,6 +1,10 @@
-﻿function createMeter() {
+﻿const connectedColor = '#4EC335';
+const disconnectedColor = '#FF0000';
+
+function createMeter() {
     var marker = new google.maps.Circle({
         ID: null,
+        connected: false,
         type: "Meter",
         position: null,
 		visible: false,
@@ -11,7 +15,7 @@
         ID: null,
         radius:1,
         center: null,
-        strokeColor: '#FFD800',
+        strokeColor: disconnectedColor,
         strokeOpacity: 1,
         strokeWeight: 2,
         fillColor: '#000000',
@@ -60,7 +64,7 @@
                 map: map,
                 zIndex: 1,
                 draggable: false,
-                strokeColor: '#FFD800',
+                strokeColor: connectedColor,
                 strokeOpacity: 0.6,
                 strokeWeight: 2,
                 fillColor: '#000000',
