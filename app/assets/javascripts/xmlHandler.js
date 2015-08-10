@@ -93,8 +93,8 @@ function loadHeatmap(file) {
 			heatmap.push(hmpoint);
 	}
 	heatmapPoints = heatmap;
-	sendDataToServer(serverAddress, 'POST', HEATGRID_FILE_ID);
-	//createHeatMap();
+	//sendDataToServer(serverAddress, 'POST', HEATGRID_FILE_ID);
+	setHeatmap();
 }
 function loadMetersTeste(file) {
 	var heatmap = [];

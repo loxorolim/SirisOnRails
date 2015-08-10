@@ -40,6 +40,7 @@ var efficiencyRadio = 30; //30metros
 var lines = [];
 var dashedLines = [];
 var coveragePolygon;
+var heatmapPolygon;
 
 var ID = 0;
 

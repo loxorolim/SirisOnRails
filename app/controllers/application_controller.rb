@@ -19,17 +19,17 @@ class ApplicationController < ActionController::Base
 	if(OS.posix?)
 		system('export LD_LIBRARY_PATH='+path+'/Siris/glnxa64/')
 		if(OS.bits == 32)
-			execPath = path+'/Siris/glnxa64/SirisOnRailsC++'
-		end
-		if(OS.bits == 64)
 			execPath = path+'/Siris/glnx86/SirisOnRailsC++'
 		end
+		if(OS.bits == 64)
+			execPath = path+'/Siris/glnxa64/SirisOnRailsC++'
+		end
 	end
-	print OS.bits
+
 
 	#answer = Siris.new.getResponse(toPass, path);
 	#teste = RiceTest.new.pathteste(path);
-	#print answer
+	#print execPath
   	answer = ""
   	#answer2 = ""
 	IO.popen(execPath, 'r+') do |pipe|

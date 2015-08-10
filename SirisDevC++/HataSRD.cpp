@@ -571,10 +571,10 @@ double uncoded_modulation(int modulation_type, double gamma_b)
 
 double getHataSRDSuccessRate(double distance, int env, int technology, double bit_rate, double transmitter_power, double h_tx, double h_rx, bool SRD)
 {
-	if (distance <= hataTestRange)
-		return 1;
-	else
-		return 0;
+	//if (distance <= hataTestRange)
+	//	return 1;
+	//else
+	//	return 0;
 	double ber = bit_error_probability(env, technology, bit_rate, transmitter_power,  h_tx,  h_rx,  distance/1000, SRD);
 	double packet_size = 1500;
 	//double loss = loss(f,h_tx,h_rx,distance, SRD);

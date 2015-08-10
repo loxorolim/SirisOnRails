@@ -734,20 +734,44 @@ function setBitRate(value){
 }
 function toggleHeatgrid(){
 	drawHeatmap = !drawHeatmap;	
-	if(heatGrids.length > 0){
-		var set = null;
-		if(heatGrids[0].getMap() ==  null)
-			set = map;
-		for(var i = 0; i < heatGrids.length;i++){
-			heatGrids[i].setMap(set);
+	
+	
+	if(drawHeatmap){
+		$("#rangeview").removeAttr('checked');
+		$("#rangeview").button("refresh");
+
+		if(heatmapPolygon){
+			heatmapPolygon.setMap(map);
+			if(drawRangeView && coveragePolygon != null){
+				drawRangeView = !drawRangeView;
+				coveragePolygon.setMap(null);
+				
+			}
 		}
+		drawRangeView = false;
 	}
+	else
+		if(heatmapPolygon)
+			heatmapPolygon.setMap(null);
+	
+
+
 } 
 function toggleRangeView(){
   drawRangeView = !drawRangeView;
 
-  if(drawRangeView) 
+  if(drawRangeView) {
+  	$("#checkHeatmap").removeAttr('checked');
+	$("#checkHeatmap").button("refresh");
+
     sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
+	if(drawHeatmap && heatmapPolygon != null){
+		drawHeatmap = !drawHeatmap;
+		heatmapPolygon.setMap(null);
+		
+	}
+		drawHeatmap = false;
+  }
   else
   {
     if(coveragePolygon)
