@@ -239,11 +239,7 @@ function setOption(opt){
 function setButtons()
 {
 
-    setRadio();
-    $( document ).tooltip({
-      items: '*:not(.ui-dialog-titlebar-close)'
-    });
-    
+    setRadio(); 
     $.widget("custom.TFOiconSelectImg", $.ui.selectmenu, {
             _renderItem: function (ul, item) {
                 var li = $("<li>", { html: item.element.html() });
@@ -397,13 +393,24 @@ function setButtons()
             sendDrawRequest();
          }
      });
-	 $("#meshSliderDiv").hover(function(){ //Open on hover 
-    },    
-    function(){ //Close when not hovered
-		var isHovered = $('#meshButton').is(":hover");
-		if(!isHovered)
-         $('#meshSliderDiv').hide();
-    });
+	$('#meshSliderDiv').mouseenter(function(){
+		clearTimeout($('#meshButton').data('timeoutId'));
+	}).mouseleave(function(){
+		var someElement = $('#meshButton'),
+        timeoutId = setTimeout(function(){
+           $('#meshSliderDiv').hide();
+    }, 100);
+	someElement.data('timeoutId', timeoutId); 
+    //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
+ 
+	});
+	//$("#meshSliderDiv").hover(function(){ //Open on hover 
+    //},    
+    //function(){ //Close when not hovered
+	//	var isHovered = $('#meshButton').is(":hover");
+	//	if(!isHovered)
+    //     $('#meshSliderDiv').hide();
+    //});
 
 
 
@@ -526,14 +533,25 @@ function setButtons()
         text: true
 
     });
-	$('#meshButton').hover(function(){ //Open on hover 
-        $('#meshSliderDiv').show();
-    },    
-    function(){ //Close when not hovered
-		var isHovered = $('#meshSliderDiv').is(":hover");
-		if(!isHovered)
-         $('#meshSliderDiv').hide();
-    });
+	$('#meshButton').mouseenter(function(){
+		clearTimeout($(this).data('timeoutId'));
+		$('#meshSliderDiv').show();
+	}).mouseleave(function(){
+		var someElement = $(this),
+        timeoutId = setTimeout(function(){
+             $('#meshSliderDiv').hide();
+        }, 100);
+		someElement.data('timeoutId', timeoutId);
+	});
+	
+	//$('#meshButton').hover(function(){ //Open on hover 
+    //    $('#meshSliderDiv').show();
+    //},    
+    //function(){ //Close when not hovered
+	//	var isHovered = $('#meshSliderDiv').is(":hover");
+	//	if(!isHovered)
+    //     $('#meshSliderDiv').hide();
+    //});
 	
 
 	$('#statistic').button({
