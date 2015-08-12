@@ -239,6 +239,7 @@ function setOption(opt){
 
 function setButtons()
 {
+  $('#helpmenu').attr('src', document.URL+'/assets/helpmenu.png');
 	$('option[value=view]').attr('data-style', 'background-image: url('+document.URL+'/assets/viewicon.png);');
 	$('option[value=dap]').attr('data-style', 'background-image: url('+document.URL+'/assets/dapicon.png);');
 	$('option[value=meter]').attr('data-style', 'background-image: url('+document.URL+'/assets/metericon.png);');
