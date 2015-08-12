@@ -10,7 +10,7 @@ const Rural = 2;
 const t802_15_4 = 0;
 const t802_11_a = 1;
 const t802_11_g = 2;
-const serverAddress = "/autoplan";
+const serverAddress = document.URL+"autoplan";
 
 const REMOVE_ALL = 0;
 const REMOVE_DAPS = 1;
@@ -84,19 +84,19 @@ var currentIns = "DAP";
 //DEFINE O FORMATO E AS IMAGENS UTILIZADAS PARA OS ÍCONES, TAMBÉM SERVE PARA CENTRALIZAR AS IMAGENS COM SUAS RESPECTIVAS POSIÇÕES
 const dapOnIconImage =
        {
-           url: '/assets/daprouter.png',
+           url: document.URL+'assets/daprouter.png',
            size: new google.maps.Size(19, 19),
            anchor: new google.maps.Point(9.5, 9.5)
        };
 const dapOffIconImage =
     {
-        url: '/assets/daprouteroff.png',
+        url: document.URL+'assets/daprouteroff.png',
         size: new google.maps.Size(19, 19),
         anchor: new google.maps.Point(9.5, 9.5)
     };
 const dapGhostIconImage =
    {
-       url: '/assets/dapghost.png',
+       url: document.URL+'assets/dapghost.png',
        size: new google.maps.Size(19, 19),
        anchor: new google.maps.Point(9.5, 9.5)
    };
@@ -139,7 +139,7 @@ const meterMeshIconImage =
     }
 
 const poleIcon = {
-    url: '/assets/pole.png'
+    url: document.URL+'assets/pole.png'
 }
         
 //////////

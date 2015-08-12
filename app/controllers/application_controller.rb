@@ -17,12 +17,11 @@ class ApplicationController < ActionController::Base
 		end
 	end
 	if(OS.posix?)
-		system('export LD_LIBRARY_PATH='+path+'/Siris/glnxa64/')
-		if(OS.bits == 32)
-			execPath = path+'/Siris/glnx86/SirisOnRailsC++'
+		if(OS.bits == 32)	
+			execPath = 'LD_LIBRARY_PATH='+path+'/Siris/glnx86/ ' + path+'/Siris/glnx86/SirisOnRailsC++'
 		end
 		if(OS.bits == 64)
-			execPath = path+'/Siris/glnxa64/SirisOnRailsC++'
+			execPath = 'LD_LIBRARY_PATH='+path+'/Siris/glnxa64/ ' + path+'/Siris/glnxa64/SirisOnRailsC++'
 		end
 	end
 

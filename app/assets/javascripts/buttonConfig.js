@@ -48,6 +48,7 @@ function setInsertionOptions(type)
     });
 }
 function setRadio() {
+    
     $("#radio").buttonset();
     $("#Insertion").click(function () {
 
@@ -61,7 +62,7 @@ function setRadio() {
     });
     $("#eraserRadio").click(function (event) {
         setOpMode("Removal");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/removecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/removecursor.cur), default" });
         setInfoWindowNull();
         drawingManager.setDrawingMode(null);
     });
@@ -141,7 +142,7 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("DAP")
-        map.setOptions({ draggableCursor: "url(/assets/cursors/dapcursor.cur), auto" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/dapcursor.cur), auto" });
         drawingManager.setDrawingMode(null);
 
     });
@@ -156,7 +157,7 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Meter");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/metercursor.cur), default" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/metercursor.cur), default" });
         drawingManager.setDrawingMode(null);
 
     });
@@ -171,7 +172,7 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Pole");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/polecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/polecursor.cur), default" });
         drawingManager.setDrawingMode(null);
 
     });
@@ -187,26 +188,26 @@ function setOption(opt){
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("DAP")
-        map.setOptions({ draggableCursor: "url(/assets/cursors/dapcursor.cur), auto" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/dapcursor.cur), auto" });
         drawingManager.setDrawingMode(null);
         break;
     case "meter":
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Meter");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/metercursor.cur), default" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/metercursor.cur), default" });
         drawingManager.setDrawingMode(null);
         break;
     case "pole":
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Pole");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/polecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/polecursor.cur), default" });
         drawingManager.setDrawingMode(null);
         break;
     case "eraser":
         setOpMode("Removal");
-        map.setOptions({ draggableCursor: "url(/assets/cursors/removecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url(assets/cursors/removecursor.cur), default" });
         setInfoWindowNull();
         drawingManager.setDrawingMode(null);
         break;
@@ -238,6 +239,15 @@ function setOption(opt){
 
 function setButtons()
 {
+	$('option[value=view]').attr('data-style', 'background-image: url('+document.URL+'/assets/viewicon.png);');
+	$('option[value=dap]').attr('data-style', 'background-image: url('+document.URL+'/assets/dapicon.png);');
+	$('option[value=meter]').attr('data-style', 'background-image: url('+document.URL+'/assets/metericon.png);');
+	$('option[value=pole]').attr('data-style', 'background-image: url('+document.URL+'/assets/poleicon.png);');
+	$('option[value=eraser]').attr('data-style', 'background-image: url('+document.URL+'/assets/removecursor.png);');
+	$('option[value=eraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/removeselectionicon.png);');
+	$('option[value=dapEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/dapremoveselectionicon.png);');
+	$('option[value=meterEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/meterremoveselectionicon.png);');
+	$('option[value=poleEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/poleremoveselectionicon.png);');
 
     setRadio(); 
     $.widget("custom.TFOiconSelectImg", $.ui.selectmenu, {
