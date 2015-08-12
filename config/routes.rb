@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'smartplanner/files' => 'files#files'
+  get 'files' => 'files#files'
   post 'autoplan' => 'application#autoplan'
   get 'autoplan' => 'application#autoplan'
   post 'welcome/uploadFile' => 'application#uploadFile'

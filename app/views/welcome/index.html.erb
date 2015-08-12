@@ -3,7 +3,9 @@
     </div>
     <div id="over_map">
 		<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+		
 		<div id="controller">
+			
             <div id="trapezoid">
 
                 <div id="insideTrapezoid">
@@ -73,7 +75,8 @@
 						<input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Mapa de Calor</label>
 						<button id="upload">Upload de arquivo</button>
 						<button id="download">Download de planejamento</button>
-						<button id ="settings"> Configurações Avançadas</button>
+						<!--<button id ="settings"> Configurações Avançadas</button>-->
+						<button id="help">Botão de Ajuda</button>
 						<div id="meshSliderDiv" class = "hidden" style="height: 26px; width: 300px;" >
 							<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>						
 							<div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
@@ -119,6 +122,9 @@
 			</div>	
 			<input style="margin-left:4%" type="checkbox" id="considerLimit"><label for="considerLimit">Considerar limite por DAP</label>	
 				
+        </div>
+		<div id="helpDialog" class = "hidden" title="Ajuda">
+			<img src="/assets/helpmenu.png" >
         </div>
 
 

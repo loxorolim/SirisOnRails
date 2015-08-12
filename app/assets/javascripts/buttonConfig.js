@@ -62,7 +62,7 @@ function setRadio() {
     });
     $("#eraserRadio").click(function (event) {
         setOpMode("Removal");
-        map.setOptions({ draggableCursor: "url(assets/cursors/removecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/removecursor.cur), default" });
         setInfoWindowNull();
         drawingManager.setDrawingMode(null);
     });
@@ -142,7 +142,7 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("DAP")
-        map.setOptions({ draggableCursor: "url(assets/cursors/dapcursor.cur), auto" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/dapcursor.cur), auto" });
         drawingManager.setDrawingMode(null);
 
     });
@@ -157,7 +157,7 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Meter");
-        map.setOptions({ draggableCursor: "url(assets/cursors/metercursor.cur), default" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/metercursor.cur), default" });
         drawingManager.setDrawingMode(null);
 
     });
@@ -172,7 +172,7 @@ function setRadio() {
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Pole");
-        map.setOptions({ draggableCursor: "url(assets/cursors/polecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/polecursor.cur), default" });
         drawingManager.setDrawingMode(null);
 
     });
@@ -188,26 +188,26 @@ function setOption(opt){
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("DAP")
-        map.setOptions({ draggableCursor: "url(assets/cursors/dapcursor.cur), auto" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/dapcursor.cur), auto" });
         drawingManager.setDrawingMode(null);
         break;
     case "meter":
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Meter");
-        map.setOptions({ draggableCursor: "url(assets/cursors/metercursor.cur), default" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/metercursor.cur), default" });
         drawingManager.setDrawingMode(null);
         break;
     case "pole":
         setOpMode("Insertion");
         setInfoWindowNull();
         setInsertionOptions("Pole");
-        map.setOptions({ draggableCursor: "url(assets/cursors/polecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/polecursor.cur), default" });
         drawingManager.setDrawingMode(null);
         break;
     case "eraser":
         setOpMode("Removal");
-        map.setOptions({ draggableCursor: "url(assets/cursors/removecursor.cur), default" });
+        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/removecursor.cur), default" });
         setInfoWindowNull();
         drawingManager.setDrawingMode(null);
         break;
@@ -488,6 +488,31 @@ function setButtons()
             },
             resizable: false,
             width: 454
+            
+          });
+        });            
+    });
+    $('#help').button({
+        icons: {
+            primary: "help"
+        },
+        text: false
+
+    }).click(function () {       
+        $("this").blur(); 
+
+         $(function() {
+          $( "#helpDialog" ).dialog({
+            show: {
+            effect: "drop",
+            duration: 500
+            },
+            hide: {
+            effect: "drop",
+            duration: 500
+            },
+            resizable: false,
+            width: 1170
             
           });
         });            

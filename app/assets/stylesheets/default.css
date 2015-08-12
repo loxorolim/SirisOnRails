@@ -103,6 +103,9 @@ background-repeat:no-repeat;
 .ui-button .ui-icon.rangeview {
      background-image: url(rangeview.png); 
 }
+.ui-button .ui-icon.help {
+     background-image: url(help.png); 
+}
 
 
 #menu {
