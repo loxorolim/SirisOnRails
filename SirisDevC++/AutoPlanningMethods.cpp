@@ -815,6 +815,23 @@ vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Posit
 	vl_free(data);
 	return subProblems;
 }
+void evaluateSCP(vector<vector<int> > &SCP, int metersSize, subProblem* sp )
+{
+	int numOfMeters, nummOfPoles;
+	double solverTime, memUsed, density, avgCoverage, coverageDeviation;
+	sp->numOfMeters = metersSize;
+	sp->nummOfPoles = SCP.size();
+	int numOfCov = 0;
+	for (int i = 0; i < SCP.size(); i++)
+		numOfCov += SCP[i].size();
+	sp->density = (double)numOfCov / (SCP.size()*metersSize);
+	sp->avgCoverage = (double)numOfCov / (SCP.size());
+	double variance = 0;
+	for (int i = 0; i < SCP.size(); i++)
+		variance += pow(SCP[i].size() - sp->avgCoverage, 2);
+	variance = variance / SCP.size();
+	sp->coverageDeviation = sqrt(variance);
+}
 TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
 {
 	const clock_t begin_time = clock();
@@ -872,9 +889,14 @@ TestResult* AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 		meters = subProblems[i]->meters;
 		poles = subProblems[i]->poles;
 		vector<vector<int> > cellSCP = createScp();
+		subProblem* sp = new subProblem();
+		evaluateSCP(cellSCP, meters.size(), sp);
 		saveGLPKFileReduced(cellSCP, redundancy);
 		double memUsageInCell = -1;
 		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		sp->solverTime = solverTime;
+		sp->memUsed = memUsageInCell;
+		result->subProblemStats.push_back(sp);
 		result->solverTime = solverTime;
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;

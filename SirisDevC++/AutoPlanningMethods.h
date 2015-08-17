@@ -26,12 +26,18 @@ struct ClusterProblem
 {
 	vector<Position*> meters, poles;
 };
+struct subProblem
+{
+	int numOfMeters, nummOfPoles;
+	double solverTime, memUsed, density, avgCoverage, coverageDeviation;
+};
 struct TestResult
 {
 	//Pros dois
 	int gridSize, numMeters, numPoles, uncoveredMeters;
 	float maxMem;
 	double solverTime;
+	vector<subProblem*> subProblemStats;
 	//Sem post-opt
 	int solutionQuality;
 	float time;
@@ -40,6 +46,7 @@ struct TestResult
 	vector<double> metersPerDap;
 	vector<double> qualityPerHop;
 	vector<double>  redundancy;
+
 	//Com post-opt
 	int poSolutionQuality;
 	float poTime;
@@ -48,6 +55,7 @@ struct TestResult
 	vector<double> poMetersPerDap;
 	vector<double> poQualityPerHop;
 	vector<double>  poRedundancy;
+
 
 	string toString()
 	{
