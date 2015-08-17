@@ -489,25 +489,28 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 	//AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), Urbano, t802_15_4, bitrate, 0, hx, rx, SRD, mesh, rubyPath);
 	AutoPlanning* AP;
 	TestResult* ret;
-	////Primeiro teste: Menor alcance considerado
-	//AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), Urbano, t802_15_4, bitrate, 0, hx, rx, SRD, mesh, rubyPath);
-	//ret = AP->executeClusterAutoPlanTestMode(false, 1);
+	//Primeiro teste: Menor alcance considerado
+	AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), Urbano, t802_15_4, bitrate, 0, hx, rx, SRD, mesh, rubyPath);
+	ret = AP->executeClusterAutoPlanTestMode(false, 1);
+	cout << ret->toString();
 	//toSave += to_string(hataTestRange) + " " + to_string(ret->solverTime) + "\n";
 	//cout << to_string(hataTestRange) << " " << to_string(ret->solverTime) << " " << to_string(ret->solutionQuality) << " " << to_string(ret->uncoveredMeters) << " " << to_string(ret->maxMem) << "\n";
-	//delete ret;
-	//delete AP;
+	delete ret;
+	delete AP;
 	//Segundo teste: Médio alcance considerado
-	//AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), Suburbano, t802_11_g, bitrate, 20, hx, rx, SRD, mesh, rubyPath);
-	//ret = AP->executeClusterAutoPlanTestMode(false, 1);
+	AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), Suburbano, t802_11_g, bitrate, 20, hx, rx, SRD, mesh, rubyPath);
+	ret = AP->executeClusterAutoPlanTestMode(false, 1);
 	//toSave += to_string(hataTestRange) + " " + to_string(ret->solverTime) + "\n";
 	//cout << to_string(hataTestRange) << " " << to_string(ret->solverTime) << " " << to_string(ret->solutionQuality) << " " << to_string(ret->uncoveredMeters) << " " << to_string(ret->maxMem) << "\n";
-	//delete ret;
-	//delete AP;
+	cout << ret->toString();
+	delete ret;
+	delete AP;
 	//Terceiro teste: Maior alcance considerado
 	 AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), Rural, t802_11_g, bitrate, 22, hx, rx, SRD, mesh, rubyPath);
 	ret = AP->executeClusterAutoPlanTestMode(false, 1);
-	toSave += to_string(hataTestRange) + " " + to_string(ret->solverTime) + "\n";
-	cout << to_string(hataTestRange) << " " << to_string(ret->solverTime) << " " << to_string(ret->solutionQuality) << " " << to_string(ret->uncoveredMeters) << " " << to_string(ret->maxMem) << "\n";
+	//toSave += to_string(hataTestRange) + " " + to_string(ret->solverTime) + "\n";
+	//cout << to_string(hataTestRange) << " " << to_string(ret->solverTime) << " " << to_string(ret->solutionQuality) << " " << to_string(ret->uncoveredMeters) << " " << to_string(ret->maxMem) << "\n";
+	cout << ret->toString();
 	delete ret;
 	delete AP;
 
@@ -522,12 +525,12 @@ int main(int argc, char** argv)
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);
 	{
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
 
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
 	increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0,rubyPath);
 	
 	//float aux = 0;

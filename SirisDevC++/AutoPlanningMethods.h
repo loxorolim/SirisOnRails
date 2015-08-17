@@ -28,8 +28,19 @@ struct ClusterProblem
 };
 struct subProblem
 {
-	int numOfMeters, nummOfPoles;
+	int numOfMeters, numOfPoles;
 	double solverTime, memUsed, density, avgCoverage, coverageDeviation;
+	string toString()
+	{
+		string ret = "";
+		ret += to_string(numOfMeters) + "x" + to_string(numOfPoles) + ":\n";
+		ret += "Densidade: " + to_string(density) + "\n";
+		ret += "Cobertura média por DAP: " + to_string(avgCoverage) + "\n";
+		ret += "Desvio padrão da cobertura: " + to_string(coverageDeviation) + "\n";
+		ret += "Memória utilizada: " + to_string(memUsed) + "\n";
+		ret += "Tempo utilizado: " + to_string(solverTime) + "\n";
+		return ret;
+	}
 };
 struct TestResult
 {
@@ -39,7 +50,7 @@ struct TestResult
 	double solverTime;
 	vector<subProblem*> subProblemStats;
 	//Sem post-opt
-	int solutionQuality;
+	int solutionQuality=-1;
 	float time;
 	vector<int> chosenPoles;
 	vector<int> metersPerHop;
@@ -48,7 +59,7 @@ struct TestResult
 	vector<double>  redundancy;
 
 	//Com post-opt
-	int poSolutionQuality;
+	int poSolutionQuality=-1;
 	float poTime;
 	vector<int> poChosenPoles;
 	vector<int> poMetersPerHop;
@@ -79,27 +90,34 @@ struct TestResult
 		ret += "Min Redundancy: " + to_string(redundancy[0]) + "\n";
 		ret += "Med Redundancy: " + to_string(redundancy[1]) + "\n";
 		ret += "Max Redundancy: " + to_string(redundancy[2]) + "\n";
+		if (poSolutionQuality != -1)
+		{
 
-		ret += "\nP.O Solution Quality: " + to_string(poSolutionQuality) + "\n";
-		ret += "P.O Time: " + to_string(poTime) + "\n";
-		for (int i = 0; i < poMetersPerHop.size(); i++)
-		{
-			ret += "Hop" + to_string(i + 1) + "Quantity: " + to_string(poMetersPerHop[i]) + "\n";
+			ret += "\nP.O Solution Quality: " + to_string(poSolutionQuality) + "\n";
+			ret += "P.O Time: " + to_string(poTime) + "\n";
+			for (int i = 0; i < poMetersPerHop.size(); i++)
+			{
+				ret += "Hop" + to_string(i + 1) + "Quantity: " + to_string(poMetersPerHop[i]) + "\n";
+			}
+			for (int i = 0; i < poQualityPerHop.size(); i++)
+			{
+				ret += "Hop" + to_string(i + 1) + "Quality: " + to_string(poQualityPerHop[i]) + "\n";
+			}
+			ret += "Min Meters per DAP: " + to_string(poMetersPerDap[0]) + "\n";
+			ret += "Med Meters per DAP: " + to_string(poMetersPerDap[1]) + "\n";
+			ret += "Max Meters per DAP: " + to_string(poMetersPerDap[2]) + "\n";
+			ret += "Min Redundancy: " + to_string(poRedundancy[0]) + "\n";
+			ret += "Med Redundancy: " + to_string(poRedundancy[1]) + "\n";
+			ret += "Max Redundancy: " + to_string(poRedundancy[2]) + "\n";
 		}
-		for (int i = 0; i < poQualityPerHop.size(); i++)
-		{
-			ret += "Hop" + to_string(i + 1) + "Quality: " + to_string(poQualityPerHop[i]) + "\n";
-		}
-		ret += "Min Meters per DAP: " + to_string(poMetersPerDap[0]) + "\n";
-		ret += "Med Meters per DAP: " + to_string(poMetersPerDap[1]) + "\n";
-		ret += "Max Meters per DAP: " + to_string(poMetersPerDap[2]) + "\n";
-		ret += "Min Redundancy: " + to_string(poRedundancy[0]) + "\n";
-		ret += "Med Redundancy: " + to_string(poRedundancy[1]) + "\n";
-		ret += "Max Redundancy: " + to_string(poRedundancy[2]) + "\n";
+		for (int i = 0; i < subProblemStats.size(); i++)
+			ret += subProblemStats[i]->toString();
 		return ret;
-
-	
-
+	}
+	~TestResult()
+	{
+		for (int i = 0; i < subProblemStats.size(); i++)
+			delete subProblemStats[i];
 	}
 
 

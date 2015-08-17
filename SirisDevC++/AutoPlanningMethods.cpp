@@ -556,6 +556,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
 	glp_mem_limit(5800);
+	
 	if (ret != 0)
 	{
 		fprintf(stderr, "Error on translating model\n");
@@ -572,6 +573,8 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	glp_iocp parm;
 	glp_init_iocp(&parm);
 	parm.presolve = GLP_ON;
+	parm.tm_lim = 30*1000;
+	
 	begin_time = clock();
 	err = glp_intopt(lp, &parm);
 	seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
@@ -820,7 +823,7 @@ void evaluateSCP(vector<vector<int> > &SCP, int metersSize, subProblem* sp )
 	int numOfMeters, nummOfPoles;
 	double solverTime, memUsed, density, avgCoverage, coverageDeviation;
 	sp->numOfMeters = metersSize;
-	sp->nummOfPoles = SCP.size();
+	sp->numOfPoles = SCP.size();
 	int numOfCov = 0;
 	for (int i = 0; i < SCP.size(); i++)
 		numOfCov += SCP[i].size();
