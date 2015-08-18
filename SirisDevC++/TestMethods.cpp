@@ -481,6 +481,24 @@ void executionTimeTest(int scenario, int tech, int bitrate, int power, int hx, i
 	f.close();
 
 }
+vector<vector<int> > SCPGenerator(int mSize, int pSize, double density)
+{
+	int covNum = ((mSize*pSize)*density)/pSize;
+	vector<vector<int> > ret;
+	for (int i = 0; i < pSize; i++)
+	{
+		vector<int> toAdd;
+		for (int j = 0; j < covNum; j++)
+		{
+			int x = rand() % mSize;
+			toAdd.push_back(x);
+		}
+		ret.push_back(toAdd);
+
+		
+	}
+	return ret;
+}
 void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh,string rubyPath)
 {
 	
@@ -519,8 +537,75 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 	f << toSave;
 	f.close();
 }
+void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int redundancy, string rubyPath)
+{
+	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
+	//Pois se não, o método retornaria que a solução é impossível!
+	//A formatação você ve no arquivo GlpkFile.txt
+
+	
+	string resp;
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(redundancy) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z:= ";
+	for (int i = 0; i < mSize; i++)
+	{
+		resp += "Z" + to_string(i) + " ";
+	}
+
+	resp += ";\n";
+	resp += "set Y:= ";
+
+	for (int i = 0; i < pSize; i++)
+		resp += "Y" + to_string(i) + " ";
+	resp += ";\n";
+	resp += "param A := ";
+	resp += "\n";
+	for (int i = 0; i < mSize; i++)
+	{
+		for (int j = 0; j < pSize; j++)
+		{
+			//bool um = false;
+			//for (int k = 0; k < SCP.size(); k++)
+			int cov = -1;
+			cov = (find(SCP[j].begin(), SCP[j].end(), i) != SCP[j].end());
+			if (cov)
+				resp += "[Z" + to_string(i) + ",Y" + to_string(j) + "] 1";
+
+		}
+	}
+	resp += "\n";
+	resp += ";";
+	resp += "\n";
+	resp += "param B := ";
+	resp += "\n";
+	vector<int> aux(mSize, 0);
+	for (int i = 0; i < SCP.size(); i++)
+	{
+		for (int j = 0; j < SCP[i].size(); j++)
+		{
+			aux[SCP[i][j]] = 1;
+		}
+		
+		
+	}
+	for (int i = 0; i < aux.size(); i++)
+	{
+		if (aux[i] == 0)
+		resp += "[Z" + to_string(i) + "] " + to_string(0);
+	}
+	
+	resp += "\n;\nend;\n";
+
+	string filename = rubyPath + "/GlpkFile.txt";
+	ofstream f(filename.c_str());
+
+	f << resp;
+	f.close();
+}
 int main(int argc, char** argv)
 {
+	vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
+	saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
 	string metersFile = "", polesFile = "";
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);
