@@ -573,7 +573,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	glp_iocp parm;
 	glp_init_iocp(&parm);
 	parm.presolve = GLP_ON;
-	parm.tm_lim = 30*1000;
+	parm.tm_lim = TIME_LIMIT;
 	
 	begin_time = clock();
 	err = glp_intopt(lp, &parm);

@@ -32,6 +32,7 @@
 
 #define EARTH_RADIUS 6378137
 #define MEM_LIMIT 99999
+#define TIME_LIMIT 60*1000
 #define MEM_EST_SAFETY 1.1
 
 #include<string>
