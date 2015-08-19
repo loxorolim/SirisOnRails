@@ -491,6 +491,10 @@ vector<vector<int> > SCPGenerator(int mSize, int pSize, double density)
 		for (int j = 0; j < covNum; j++)
 		{
 			int x = rand() % mSize;
+			while (find(toAdd.begin(), toAdd.end(), x) != toAdd.end())
+			{
+				x = rand() % mSize;
+			}
 			toAdd.push_back(x);
 		}
 		ret.push_back(toAdd);
@@ -602,10 +606,78 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 	f << resp;
 	f.close();
 }
+void increaseDensityTest(int mSize, int pSize)
+{
+	string filename = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt";
+	string fileOutput = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+".txt";
+
+	double density = 0.0005;
+	ofstream f(fileOutput.c_str());
+	while (density <= 0.01)
+	{
+		double solverTime = -1, maxMem = -1;
+		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
+		saveGLPKFileReduced(scp, mSize, pSize, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
+		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+		//system(access.c_str());
+		glp_term_out(GLP_ON);
+		double seconds;
+		clock_t begin_time = 0;
+		vector<int> answer;
+		glp_prob *lp;
+		glp_tran *tran;
+		int err;
+		int ret, count, cpeak;
+		size_t total, tpeak;
+		double totalInMb, tpeakInMb;
+		lp = glp_create_prob();
+		tran = glp_mpl_alloc_wksp();
+		ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+		glp_mem_limit(5800);
+
+		if (ret != 0)
+		{
+			fprintf(stderr, "Error on translating model\n");
+			goto skip;
+		}
+
+		ret = glp_mpl_generate(tran, NULL);
+		if (ret != 0)
+		{
+			fprintf(stderr, "Error on generating model\n");
+			goto skip;
+		}
+		glp_mpl_build_prob(tran, lp);
+		glp_iocp parm;
+		glp_init_iocp(&parm);
+		parm.presolve = GLP_ON;
+		parm.tm_lim = 360*1000; //TEMPO LIMITE DE 60 SEGUNDOS
+
+		begin_time = clock();
+		err = glp_intopt(lp, &parm);
+		seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
+		solverTime = seconds;
+		glp_mem_usage(&count, &cpeak, &total, &tpeak);
+		//printf("%d memory block(s) are still allocated\n", count);
+		totalInMb = ((double)total / (1024 * 1024));
+		tpeakInMb = ((double)tpeak / (1024 * 1024));
+		maxMem = totalInMb;
+	skip: glp_mpl_free_wksp(tran);
+		glp_delete_prob(lp);
+		
+
+		f << to_string(density) << " " << solverTime << " " << maxMem << "\n";
+		density += 0.0005;
+	}
+	f.close();
+}
 int main(int argc, char** argv)
 {
-	vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
-	saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
+	increaseDensityTest(2500, 2500);
+	return 0;
+	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
+	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
 	string metersFile = "", polesFile = "";
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);
