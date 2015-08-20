@@ -488,14 +488,17 @@ vector<vector<int> > SCPGenerator(int mSize, int pSize, double density)
 	for (int i = 0; i < pSize; i++)
 	{
 		vector<int> toAdd;
+		vector<int> options;
+		for (int j = 0; j < mSize; j++)
+		{
+			options.push_back(j);
+		}
 		for (int j = 0; j < covNum; j++)
 		{
-			int x = rand() % mSize;
-			while (find(toAdd.begin(), toAdd.end(), x) != toAdd.end())
-			{
-				x = rand() % mSize;
-			}
-			toAdd.push_back(x);
+			int x = rand() % options.size();
+			toAdd.push_back(options[x]);
+			options.erase(options.begin() + x);
+			
 		}
 		ret.push_back(toAdd);
 
@@ -606,18 +609,18 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 	f << resp;
 	f.close();
 }
-void increaseDensityTest(int mSize, int pSize)
+void increaseDensityTest(int mSize, int pSize, string rubyPath, string id)
 {
-	string filename = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/GlpkFile.txt";
-	string fileOutput = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+".txt";
-
+	string filename = rubyPath + "/GlpkFile.txt";
+	string fileOutput = rubyPath +"/density_tests/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+"-"+id+".txt";
+	double timeLimit = 60*10; //segundos
 	double density = 0.0005;
 	ofstream f(fileOutput.c_str());
-	while (density <= 0.01)
+	while (density <= 0.1)
 	{
 		double solverTime = -1, maxMem = -1;
 		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
-		saveGLPKFileReduced(scp, mSize, pSize, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
+		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
 		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
@@ -652,7 +655,7 @@ void increaseDensityTest(int mSize, int pSize)
 		glp_iocp parm;
 		glp_init_iocp(&parm);
 		parm.presolve = GLP_ON;
-		parm.tm_lim = 360*1000; //TEMPO LIMITE DE 60 SEGUNDOS
+		parm.tm_lim = timeLimit*1000; //TEMPO LIMITE DE 60 SEGUNDOS
 
 		begin_time = clock();
 		err = glp_intopt(lp, &parm);
@@ -669,12 +672,32 @@ void increaseDensityTest(int mSize, int pSize)
 
 		f << to_string(density) << " " << solverTime << " " << maxMem << "\n";
 		density += 0.0005;
+		if (solverTime >= timeLimit)
+			break;
 	}
 	f.close();
 }
 int main(int argc, char** argv)
 {
-	increaseDensityTest(2500, 2500);
+	srand(time(NULL));
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+
+	increaseDensityTest(3000, 3000, rubyPath, "1");
+	increaseDensityTest(3000, 3000, rubyPath, "2");
+	increaseDensityTest(3000, 3000, rubyPath, "3");
+	increaseDensityTest(3000, 3000, rubyPath, "4");
+	increaseDensityTest(3000, 3000, rubyPath, "5");
+	increaseDensityTest(10000, 500, rubyPath, "1");
+	increaseDensityTest(10000, 500, rubyPath, "2");
+	increaseDensityTest(10000, 500, rubyPath, "3");
+	increaseDensityTest(10000, 500, rubyPath, "4");
+	increaseDensityTest(10000, 500, rubyPath, "5");
+	increaseDensityTest(2000, 4000, rubyPath, "1");
+	increaseDensityTest(2000, 4000, rubyPath, "2");
+	increaseDensityTest(2000, 4000, rubyPath, "3");
+	increaseDensityTest(2000, 4000, rubyPath, "4");
+	increaseDensityTest(2000, 4000, rubyPath, "5");
+
 	return 0;
 	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
 	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
@@ -682,7 +705,7 @@ int main(int argc, char** argv)
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);
 	{
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+
 	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
 	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
 
