@@ -255,18 +255,18 @@ string getResponse(string req, string rubyPath)
 //	string x = AutoPlanning::executeAutoPlan();
 	return "";
 }
-//int main(int argc, char** argv)
-//{
-//	string line, rubyPath, input="";
-//	getline(cin, rubyPath);
-//	while (getline(cin, line))
-//	{
-//		input += line+"\n";
-//	}
-//	string ret = getResponse(input,rubyPath );
-//	cout << ret;
-//
-//}
+int main(int argc, char** argv)
+{
+	string line, rubyPath, input="";
+	getline(cin, rubyPath);
+	while (getline(cin, line))
+	{
+		input += line+"\n";
+	}
+	string ret = getResponse(input,rubyPath );
+	cout << ret;
+
+}
 
 
 

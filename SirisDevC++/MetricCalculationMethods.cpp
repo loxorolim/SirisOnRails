@@ -6,16 +6,33 @@ double getNumberOfRetries(double quality)
 {
 	double compQuality = 1 - quality;
 	return (quality*(1 + 2 * compQuality + 3 * pow(compQuality, 2)) + 4 * pow(compQuality, 3));
-
 }
-
+double getBackoffTime(double quality, int technology)
+{
+	double ret = -1;
+	double compQuality = 1 - quality;
+	if (technology == t802_11_g)
+		ret = ((quality*(15.5 + 47 * compQuality + 110.5 * pow(compQuality, 2)) + 238 * pow(compQuality, 3)))*(9/1000);
+	if (technology == t802_15_4)
+		ret = ((quality*(3.5 + 11 * compQuality + 26.5 * pow(compQuality, 2)) + 42 * pow(compQuality, 3)))*(320 / 1000);
+	
+	return ret;
+}
 double calculateLinkDelay(double quality, int pckSize, double rate,int technology)
 {
 	double numOfRetries = getNumberOfRetries(quality);
+	double ret = -1;
 	if (technology == t802_11_g)
-		return ((pckSize / (rate*pow(2,20)))*(numOfRetries / round(numOfRetries)))*1000; //*1000 pra ser milisegundos
+	{
+		ret = ((pckSize / (rate*pow(2, 20)))*(numOfRetries / round(numOfRetries))) * 1000; //*1000 pra ser milisegundos
+		ret += getBackoffTime(quality, technology);
+	}
 	if (technology == t802_15_4)
-		return ((pckSize / (250*pow(2, 10)))*(numOfRetries / round(numOfRetries))) * 1000; //*1000 pra ser milisegundos
+	{
+		ret = ((pckSize / (250 * pow(2, 10)))*(numOfRetries / round(numOfRetries))) * 1000; //*1000 pra ser milisegundos
+		ret += getBackoffTime(quality, technology);
+	}
+	return ret;
 }
 
 
