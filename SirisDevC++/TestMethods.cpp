@@ -524,7 +524,7 @@ vector<vector<int> > geographicSCPGenerator(int mSize, int pSize, double density
 		for (int j = i%pSize; j < (i%pSize + range); j++)
 		{
 			if (find(ret[i%pSize].begin(), ret[i%pSize].end(), j) == ret[i%pSize].end())
-				options.push_back(j);
+				options.push_back(j%pSize);
 		}
 		int x = rand() % options.size();
 		ret[i%pSize].push_back(options[x]);
@@ -665,6 +665,11 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 	f << resp;
 	f.close();
 }
+void get_mip_gap(glp_tree *T, void *info)
+{
+	double gap = glp_ios_mip_gap(T);
+	info = &gap;
+}
 void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit)
 {
 	string filename = rubyPath + "/GlpkFile.txt";
@@ -672,7 +677,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 	
 	double density = 0.0005;
 	ofstream f(fileOutput.c_str());
-	//vector<vector<int> > scp = SCPGenerator(mSize, pSize, density)
+	//vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
 	vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
 	while (density <= 0.1)
 	{
@@ -712,6 +717,9 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		glp_mpl_build_prob(tran, lp);
 		glp_iocp parm;
 		glp_init_iocp(&parm);
+		parm.cb_func = get_mip_gap;
+		void* gap = NULL;
+		parm.cb_info = gap;
 		parm.presolve = GLP_ON;
 		parm.tm_lim = timeLimit*1000; //TEMPO LIMITE DE 60 SEGUNDOS
 
@@ -724,6 +732,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		totalInMb = ((double)total / (1024 * 1024));
 		tpeakInMb = ((double)tpeak / (1024 * 1024));
 		maxMem = totalInMb;
+		cout << gap;
 	skip: glp_mpl_free_wksp(tran);
 		glp_delete_prob(lp);
 		
@@ -739,13 +748,13 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	increaseDensityTest(5000, 500, rubyPath, "Geografico1range7", 60);
-	increaseDensityTest(5000, 500, rubyPath, "Geografico2range7", 60);
-	increaseDensityTest(5000, 500, rubyPath, "Geografico3range7", 60);
-	increaseDensityTest(5000, 500, rubyPath, "Geografico4range7", 60);
-	increaseDensityTest(5000, 500, rubyPath, "Geografico5range7", 60);
+	increaseDensityTest(3000,3000, rubyPath, "Geografico1Range7", 60);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental5", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "1");
 	//increaseDensityTest(3000, 3000, rubyPath, "2");
 	//increaseDensityTest(3000, 3000, rubyPath, "3");
