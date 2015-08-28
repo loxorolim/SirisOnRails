@@ -827,8 +827,8 @@ void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeL
 		glp_iocp parm;
 		glp_init_iocp(&parm);
 		parm.cb_func = get_mip_gap;
-		void* gap = NULL;
-		parm.cb_info = gap;
+		double gap = 0;
+		parm.cb_info = &gap;
 		parm.presolve = GLP_ON;
 		parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE DE 60 SEGUNDOS
 
@@ -859,11 +859,13 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 
-<<<<<<< HEAD
 	varyDensityTest(100,100, rubyPath, "Incremental1", 360, 0,+0.01);
-=======
-	increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
->>>>>>> origin/master
+	varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
+	varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
+	varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
+	varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
+
+	//increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
