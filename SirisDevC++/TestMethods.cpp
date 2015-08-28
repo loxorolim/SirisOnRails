@@ -541,9 +541,6 @@ void increaseSCPDensity(vector<vector<int> > &SCP,int mSize, double newDensity)
 	{
 		covNum += SCP[i].size();
 	}
-
-	
-
 	int newCovNum = ((mSize*SCP.size())*newDensity) - covNum;
 	int i = covNum % (SCP.size());
 	cout << i;
@@ -559,6 +556,40 @@ void increaseSCPDensity(vector<vector<int> > &SCP,int mSize, double newDensity)
 		SCP[i%SCP.size()].push_back(options[x]);
 		i++;
 		newCovNum--;
+	}
+
+}
+void varySCPDensity(vector<vector<int> > &SCP, int mSize, double newDensity)
+{
+	int covNum = 0;
+	for (int i = 0; i < SCP.size(); i++)
+	{
+		covNum += SCP[i].size();
+	}
+	int newCovNum = ((mSize*SCP.size())*newDensity) - covNum;
+	int i = covNum % (SCP.size());
+
+	cout << i;
+	while (newCovNum > 0)
+	{
+		vector<int> options;
+		for (int j = 0; j < mSize; j++)
+		{
+			if (find(SCP[i%SCP.size()].begin(), SCP[i%SCP.size()].end(), j) == SCP[i%SCP.size()].end())
+				options.push_back(j);
+		}
+		int x = rand() % options.size();
+		SCP[i%SCP.size()].push_back(options[x]);
+		i++;
+		newCovNum--;
+	}
+	while (newCovNum < 0)
+	{
+		SCP[i%SCP.size()].pop_back();
+		i--;
+		if (i < 0)
+			i = SCP.size();
+		newCovNum++;
 	}
 
 }
@@ -745,12 +776,87 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 	}
 	f.close();
 }
+void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit, double initDensity, double rate)
+{
+	string filename = rubyPath + "/GlpkFile.txt";
+	string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+
+	//double density = 0.0005;
+	ofstream f(fileOutput.c_str());
+	vector<vector<int> > scp = SCPGenerator(mSize, pSize, initDensity);
+	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
+	while (true)
+	{
+		double solverTime = -1, maxMem = -1;
+
+		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+		//system(access.c_str());
+		glp_term_out(GLP_ON);
+		double seconds;
+		clock_t begin_time = 0;
+		vector<int> answer;
+		glp_prob *lp;
+		glp_tran *tran;
+		int err;
+		int ret, count, cpeak;
+		size_t total, tpeak;
+		double totalInMb, tpeakInMb;
+		lp = glp_create_prob();
+		tran = glp_mpl_alloc_wksp();
+		ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+		glp_mem_limit(5800);
+
+		if (ret != 0)
+		{
+			fprintf(stderr, "Error on translating model\n");
+			goto skip;
+		}
+
+		ret = glp_mpl_generate(tran, NULL);
+		if (ret != 0)
+		{
+			fprintf(stderr, "Error on generating model\n");
+			goto skip;
+		}
+		glp_mpl_build_prob(tran, lp);
+		glp_iocp parm;
+		glp_init_iocp(&parm);
+		parm.cb_func = get_mip_gap;
+		void* gap = NULL;
+		parm.cb_info = gap;
+		parm.presolve = GLP_ON;
+		parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE DE 60 SEGUNDOS
+
+		begin_time = clock();
+		err = glp_intopt(lp, &parm);
+		seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
+		solverTime = seconds;
+		glp_mem_usage(&count, &cpeak, &total, &tpeak);
+		//printf("%d memory block(s) are still allocated\n", count);
+		totalInMb = ((double)total / (1024 * 1024));
+		tpeakInMb = ((double)tpeak / (1024 * 1024));
+		maxMem = totalInMb;
+		cout << gap;
+	skip: glp_mpl_free_wksp(tran);
+		glp_delete_prob(lp);
+
+
+		f << to_string(initDensity) << " " << solverTime << " " << maxMem << "\n";
+		initDensity += rate;
+		varySCPDensity(scp, mSize, initDensity);
+		if (solverTime >= timeLimit || initDensity > 1 || initDensity < 0)
+			break;
+	}
+	f.close();
+}
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	increaseDensityTest(3000,3000, rubyPath, "Geografico1Range7", 60);
+	varyDensityTest(100,100, rubyPath, "Incremental1", 360, 0,+0.01);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
