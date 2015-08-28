@@ -526,8 +526,11 @@ vector<vector<int> > geographicSCPGenerator(int mSize, int pSize, double density
 			if (find(ret[i%pSize].begin(), ret[i%pSize].end(), j) == ret[i%pSize].end())
 				options.push_back(j%pSize);
 		}
-		int x = rand() % options.size();
-		ret[i%pSize].push_back(options[x]);
+		if(options.size())
+		{
+			int x = rand() % options.size();
+			ret[i%pSize].push_back(options[x]);
+		}
 		covNum--;
 		i++;
 	}
@@ -699,17 +702,17 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 void get_mip_gap(glp_tree *T, void *info)
 {
 	double gap = glp_ios_mip_gap(T);
-	info = &gap;
+	*(double*)info = gap;
 }
 void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit)
 {
 	string filename = rubyPath + "/GlpkFile.txt";
 	string fileOutput = rubyPath +"/density_tests/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+"-"+id+".txt";
 	
-	double density = 0.0005;
+	double density = 0.005;
 	ofstream f(fileOutput.c_str());
-	//vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
-	vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
+	vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
+	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
 	while (density <= 0.1)
 	{
 		double solverTime = -1, maxMem = -1;
@@ -749,8 +752,8 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		glp_iocp parm;
 		glp_init_iocp(&parm);
 		parm.cb_func = get_mip_gap;
-		void* gap = NULL;
-		parm.cb_info = gap;
+		double gap = 0;
+		parm.cb_info = &gap;
 		parm.presolve = GLP_ON;
 		parm.tm_lim = timeLimit*1000; //TEMPO LIMITE DE 60 SEGUNDOS
 
@@ -854,9 +857,13 @@ void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeL
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 
+<<<<<<< HEAD
 	varyDensityTest(100,100, rubyPath, "Incremental1", 360, 0,+0.01);
+=======
+	increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
+>>>>>>> origin/master
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
