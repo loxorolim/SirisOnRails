@@ -565,9 +565,9 @@ void increaseSCPDensity(vector<vector<int> > &SCP,int mSize, double newDensity)
 void varySCPDensity(vector<vector<int> > &SCP, int mSize, double newDensity)
 {
 	int covNum = 0;
-	for (int i = 0; i < SCP.size(); i++)
+	for (int j = 0; j < SCP.size(); j++)
 	{
-		covNum += SCP[i].size();
+		covNum += SCP[j].size();
 	}
 	int newCovNum = ((mSize*SCP.size())*newDensity) - covNum;
 	int i = covNum % (SCP.size());
@@ -588,10 +588,11 @@ void varySCPDensity(vector<vector<int> > &SCP, int mSize, double newDensity)
 	}
 	while (newCovNum < 0)
 	{
-		SCP[i%SCP.size()].pop_back();
 		i--;
 		if (i < 0)
-			i = SCP.size();
+			i = SCP.size()-1;
+
+		SCP[i%SCP.size()].pop_back();
 		newCovNum++;
 	}
 
@@ -830,7 +831,7 @@ void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeL
 		double gap = 0;
 		parm.cb_info = &gap;
 		parm.presolve = GLP_ON;
-		parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE DE 60 SEGUNDOS
+		parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE EM SEGUNDOS
 
 		begin_time = clock();
 		err = glp_intopt(lp, &parm);
@@ -846,25 +847,50 @@ void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeL
 		glp_delete_prob(lp);
 
 
-		f << to_string(initDensity) << " " << solverTime << " " << maxMem << "\n";
+	
+
+
+
+		if (solverTime >= timeLimit)
+		{
+			initDensity -= rate;
+			if (initDensity < 0)
+				initDensity = 0;
+			varySCPDensity(scp, mSize, initDensity);
+			rate = rate / 10;
+			
+			if (rate <= 0.00001)
+				goto end;
+		}
+		else
+		{
+			f << to_string(initDensity) << " " << solverTime << " " << maxMem << "\n";
+		}
+
 		initDensity += rate;
+		if (initDensity > 1 || initDensity < 0)
+			goto end;
 		varySCPDensity(scp, mSize, initDensity);
-		if (solverTime >= timeLimit || initDensity > 1 || initDensity < 0)
-			break;
+		
 	}
+end:	
 	f.close();
+}
+void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity)
+{
+
 }
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	varyDensityTest(100,100, rubyPath, "Incremental1", 360, 0,+0.01);
-	varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
-	varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
-	varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
-	varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
-
+	varyDensityTest(5000,500, rubyPath, "Incremental1", 60, 0.00,+0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
+	return 0;
 	//increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
 	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
