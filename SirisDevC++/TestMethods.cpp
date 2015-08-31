@@ -486,6 +486,19 @@ vector<vector<int> > SCPGenerator(int mSize, int pSize, double density)
 	int covNum = (mSize*pSize)*density;
 	int i = 0;
 	vector<vector<int> > ret;
+	if (density == 1)
+	{
+		for (int i = 0; i < pSize; i++)
+		{
+			vector<int> toAdd;
+			for (int j = 0; j < mSize; j++)
+			{
+				toAdd.push_back(j);
+			}
+			ret.push_back(toAdd);
+		}
+		return ret;
+	}
 	for (int i = 0; i < pSize; i++)
 	{
 		vector<int> add;
@@ -780,17 +793,20 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 	}
 	f.close();
 }
-void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit, double initDensity, double rate)
+DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity, double rate)
 {
 	string filename = rubyPath + "/GlpkFile.txt";
-	string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
-
+	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	DensityTestResult* resultsRet = new DensityTestResult();
+	vector<vector<int> > aux;
 	//double density = 0.0005;
-	ofstream f(fileOutput.c_str());
+	//ofstream f(fileOutput.c_str());
 	vector<vector<int> > scp = SCPGenerator(mSize, pSize, initDensity);
+
 	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
 	while (true)
 	{
+		
 		double solverTime = -1, maxMem = -1;
 
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
@@ -856,7 +872,7 @@ void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeL
 			initDensity -= rate;
 			if (initDensity < 0)
 				initDensity = 0;
-			varySCPDensity(scp, mSize, initDensity);
+			scp = aux;
 			rate = rate / 10;
 			
 			if (rate <= 0.00001)
@@ -864,28 +880,89 @@ void varyDensityTest(int mSize, int pSize, string rubyPath, string id, int timeL
 		}
 		else
 		{
-			f << to_string(initDensity) << " " << solverTime << " " << maxMem << "\n";
+			vector<double> toAdd;
+			toAdd.push_back(initDensity);
+			toAdd.push_back(solverTime);
+			toAdd.push_back(maxMem);
+			resultsRet->results.push_back(toAdd);
+			//f << to_string(initDensity) << " " << solverTime << " " << maxMem << "\n";
 		}
 
 		initDensity += rate;
 		if (initDensity > 1 || initDensity < 0)
 			goto end;
+		aux = scp;
 		varySCPDensity(scp, mSize, initDensity);
 		
 	}
 end:	
-	f.close();
+	//f.close();
+	return resultsRet;
 }
-void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity)
+void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int numOfInst)
 {
+	vector<DensityTestResult*> incResults , decResults;
+	for (int i = 0; i < numOfInst; i++)
+	{
+		DensityTestResult * res = new DensityTestResult();
+		res->results.push_back({ 0.05, 1, 2 });
+		res->results.push_back({ 0.1, 2, 7 });
+		res->results.push_back({ 0.15, 3, 13 });
+		DensityTestResult * res2 = new DensityTestResult();
+		res2->results.push_back({ 0.05, 1, 1 });
+		res2->results.push_back({ 0.1, 4, 1 });
+		res2->results.push_back({ 0.15, 8, 1 });
+		res2->results.push_back({ 0.20, 16, 1 });
+		//DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01);
+		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
+		incResults.push_back(res);
+		incResults.push_back(res2);
+		//decResults.push_back(res2);
+	}
 
+	vector<double> incDensities;
+	for (int i = 0; i < incResults.size(); i++)
+	{
+		vector<double> aux = incResults[i]->getDensitiesVector();
+		incDensities.insert(incDensities.end(),aux.begin(),aux.end());
+	}
+	sort(incDensities.begin(), incDensities.end());
+	incDensities.erase(unique(incDensities.begin(), incDensities.end()), incDensities.end());
+	vector<vector<double>> timeResults;
+	vector<vector<double>> memResults;
+	for (int i = 0; i < incDensities.size(); i++)
+	{
+		vector<double> toAddTime,toAddMem;
+		toAddTime.push_back(incDensities[i]);
+		toAddMem.push_back(incDensities[i]);
+		for (int j = 0; j < incResults.size(); j++)
+		{
+			toAddTime.push_back(incResults[j]->getTimeAtDensity(incDensities[i]));
+			toAddMem.push_back(incResults[j]->getMemAtDensity(incDensities[i]));
+		}
+		timeResults.push_back(toAddTime);
+		memResults.push_back(toAddMem);
+	}
+	string teste = "";
+	for (int i = 0; i < timeResults.size(); i++)
+	{
+		for (int j = 0; j < timeResults[i].size(); j++)
+		{
+			teste += to_string(timeResults[i][j]) + " ";
+		}
+		teste += "\n";
+	}
+	cout << teste;
+
+
+	
 }
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	varyDensityTest(5000,500, rubyPath, "Incremental1", 60, 0.00,+0.01);
+	fullDensityTest(500,500, rubyPath, 60,1);
 	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);

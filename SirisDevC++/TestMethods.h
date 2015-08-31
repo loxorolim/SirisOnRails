@@ -20,4 +20,43 @@ extern "C"
 #include <vl/kdtree.h>
 }
 
+struct DensityTestResult
+{
+	vector<vector<double> > results;
+
+	vector<double> getDensitiesVector()
+	{
+		vector<double> ret;
+		for (int i = 0; i < results.size(); i++)
+		{
+			ret.push_back(results[i][0]);
+		}
+		return ret;
+	}
+	double getTimeAtDensity(double d)
+	{
+		for (int i = 0; i < results.size(); i++)
+		{
+			if (results[i][0] == d)
+				return results[i][1];
+		}
+		return -1;
+	}
+	double getMemAtDensity(double d)
+	{
+		for (int i = 0; i < results.size(); i++)
+		{
+			if (results[i][0] == d)
+				return results[i][2];
+		}
+		return -1;
+	}
+	~DensityTestResult()
+	{
+		
+	}
+
+
+};
+
 #endif
