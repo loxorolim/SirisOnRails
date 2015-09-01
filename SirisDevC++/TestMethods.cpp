@@ -495,6 +495,7 @@ vector<vector<int> > SCPGenerator(int mSize, int pSize, double density)
 			{
 				toAdd.push_back(j);
 			}
+			random_shuffle(toAdd.begin(), toAdd.end());
 			ret.push_back(toAdd);
 		}
 		return ret;
@@ -805,10 +806,8 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 
 	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
 	while (true)
-	{
-		
+	{		
 		double solverTime = -1, maxMem = -1;
-
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
 		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
@@ -899,12 +898,13 @@ end:
 	//f.close();
 	return resultsRet;
 }
+
 void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int numOfInst)
 {
-	vector<DensityTestResult*> incResults , decResults;
+	vector<DensityTestResult*> incResults;
 	for (int i = 0; i < numOfInst; i++)
 	{
-		DensityTestResult * res = new DensityTestResult();
+	/*	DensityTestResult * res = new DensityTestResult();
 		res->results.push_back({ 0.05, 1, 2 });
 		res->results.push_back({ 0.1, 2, 7 });
 		res->results.push_back({ 0.15, 3, 13 });
@@ -913,10 +913,21 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		res2->results.push_back({ 0.1, 4, 1 });
 		res2->results.push_back({ 0.15, 8, 1 });
 		res2->results.push_back({ 0.20, 16, 1 });
-		//DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01);
-		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
+		DensityTestResult * res3 = new DensityTestResult();
+		res3->results.push_back({ 1, 12, 12 });
+		res3->results.push_back({ 0.95, 41, 13 });
+		res3->results.push_back({ 0.90, 82, 14 });
+		res3->results.push_back({ 0.85, 161, 15 });
+		DensityTestResult * res4 = new DensityTestResult();
+		res4->results.push_back({ 1, 15, 15 });
+		res4->results.push_back({ 0.95, 45, 17 });
+		res4->results.push_back({ 0.90, 88, 19 });*/
+		DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01);
+		DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
 		incResults.push_back(res);
 		incResults.push_back(res2);
+		//incResults.push_back(res3);
+		//incResults.push_back(res4);
 		//decResults.push_back(res2);
 	}
 
@@ -926,6 +937,11 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		vector<double> aux = incResults[i]->getDensitiesVector();
 		incDensities.insert(incDensities.end(),aux.begin(),aux.end());
 	}
+	//for (int i = 0; i < decResults.size(); i++)
+	//{
+	//	vector<double> aux = decResults[i]->getDensitiesVector();
+	//	incDensities.insert(incDensities.end(), aux.begin(), aux.end());
+	//}
 	sort(incDensities.begin(), incDensities.end());
 	incDensities.erase(unique(incDensities.begin(), incDensities.end()), incDensities.end());
 	vector<vector<double>> timeResults;
@@ -943,26 +959,64 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		timeResults.push_back(toAddTime);
 		memResults.push_back(toAddMem);
 	}
-	string teste = "";
+	vector<double> avgTimeResults,avgMemResults,avgStdDeviation,avgMemStdDeviation;
+	for(int i = 0; i < timeResults.size(); i++)
+	{
+		double avg = 0, memAvg = 0, stdDeviation = 0, memStdDeviation = 0, numToDivide = 0;
+		for (int j = 1; j < timeResults[i].size(); j++)
+		{
+			if (timeResults[i][j] != -1)
+			{
+				avg += timeResults[i][j];
+				memAvg += memResults[i][j];
+				numToDivide++;
+			}
+		}
+		for (int j = 1; j < timeResults[i].size(); j++)
+		{
+			if (timeResults[i][j] != -1)
+			{
+				stdDeviation += pow(timeResults[i][j] - (avg / numToDivide), 2);
+				memStdDeviation += pow(memResults[i][j] - (memAvg / numToDivide), 2);
+			}
+		}
+		avgTimeResults.push_back(avg / numToDivide);
+		avgMemResults.push_back(memAvg / numToDivide);
+		stdDeviation = sqrt(stdDeviation / numToDivide);
+		memStdDeviation = sqrt(memStdDeviation / numToDivide);
+		avgStdDeviation.push_back(stdDeviation);
+		avgMemStdDeviation.push_back(memStdDeviation);		
+	}
+	string tmRes, memRes;
 	for (int i = 0; i < timeResults.size(); i++)
 	{
-		for (int j = 0; j < timeResults[i].size(); j++)
-		{
-			teste += to_string(timeResults[i][j]) + " ";
-		}
-		teste += "\n";
+		tmRes += to_string(timeResults[i][0]) + " " + to_string(avgTimeResults[i] - avgStdDeviation[i]) + " " + to_string(avgTimeResults[i] + avgStdDeviation[i]) + " " + to_string(avgTimeResults[i]) + "\n";
+		memRes += to_string(memResults[i][0]) + " " + to_string(avgMemResults[i] - avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i] + avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i]) + "\n";
+		//for (int j = 0; j < timeResults[i].size(); j++)
+		//{
+		//	teste += to_string(timeResults[i][j]) + " ";
+		//}
+		//teste += "\n";
 	}
-	cout << teste;
-
+	cout << tmRes;
+	cout << memRes;
+	string timeFileOutput = rubyPath + "/density_tests/DensityResultTime" + to_string(mSize) + "x" + to_string(pSize)+ ".txt";
+	string memFileOutput = rubyPath + "/density_tests/DensityResultMem" + to_string(mSize) + "x" + to_string(pSize) + ".txt";
+	ofstream f(timeFileOutput.c_str());
+	ofstream f2(memFileOutput.c_str());
+	f << tmRes;
+	f2 << memRes;
+	f.close();
+	f2.close();
 
 	
 }
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 
-	fullDensityTest(500,500, rubyPath, 60,1);
+	fullDensityTest(100,100, rubyPath, 60,3);
 	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
