@@ -888,7 +888,7 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 		}
 
 		initDensity += rate;
-		if (initDensity > 1 || initDensity < 0)
+		if ((rate > 0 && initDensity > 0.5) || (rate < 0 && initDensity <= 0.5))
 			goto end;
 		aux = scp;
 		varySCPDensity(scp, mSize, initDensity);
@@ -1014,9 +1014,9 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	fullDensityTest(100,100, rubyPath, 60,3);
+	fullDensityTest(500,500, rubyPath, 360,3);
 	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
