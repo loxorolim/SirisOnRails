@@ -507,14 +507,18 @@ vector<vector<int> > SCPGenerator(int mSize, int pSize, double density)
 	}
 	while (covNum)
 	{
+		start:
+		int poleToInsert = rand()%pSize;
 		vector<int> options;
 		for (int j = 0; j < mSize; j++)
 		{
-			if (find(ret[i%pSize].begin(), ret[i%pSize].end(), j) == ret[i%pSize].end())
+			if (find(ret[poleToInsert%pSize].begin(), ret[poleToInsert%pSize].end(), j) == ret[poleToInsert%pSize].end())
 				options.push_back(j);
 		}
+		if (options.size() == 0)
+			goto start;
 		int x = rand() % options.size();
-		ret[i%pSize].push_back(options[x]);
+		ret[poleToInsert].push_back(options[x]);
 		covNum--;
 		i++;
 	}
@@ -586,17 +590,21 @@ void varySCPDensity(vector<vector<int> > &SCP, int mSize, double newDensity)
 	int newCovNum = ((mSize*SCP.size())*newDensity) - covNum;
 	int i = covNum % (SCP.size());
 
-	cout << i;
+	//cout << i;
 	while (newCovNum > 0)
 	{
+		start:
 		vector<int> options;
+		int poleToInsert = rand()%SCP.size();
 		for (int j = 0; j < mSize; j++)
 		{
-			if (find(SCP[i%SCP.size()].begin(), SCP[i%SCP.size()].end(), j) == SCP[i%SCP.size()].end())
+			if (find(SCP[poleToInsert %SCP.size()].begin(), SCP[poleToInsert %SCP.size()].end(), j) == SCP[poleToInsert %SCP.size()].end())
 				options.push_back(j);
 		}
+		if (options.size() == 0)
+			goto start;
 		int x = rand() % options.size();
-		SCP[i%SCP.size()].push_back(options[x]);
+		SCP[poleToInsert].push_back(options[x]);
 		i++;
 		newCovNum--;
 	}
@@ -862,10 +870,6 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 		glp_delete_prob(lp);
 
 
-	
-
-
-
 		if (solverTime >= timeLimit)
 		{
 			initDensity -= rate;
@@ -1014,8 +1018,22 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
+
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//double val1 = 100, val2 = 100;
+	//for (int i = 0; i < 30; i++)
+	//{
+	//	int max = 2000, min = 1;
+	//	double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+
+	//	
+	//	double realmem = memoryTest(val1, val2, rubyPath);
+	//	double estMem = memEstimation(val1, val2);
+	//	cout << "Dimension: " << val1 << "x" << val2 << " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
+	//	//val1 += 100; val2 += 100;
+	//}
+	//scanf("%s");
 	fullDensityTest(500,500, rubyPath, 360,3);
 	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
@@ -1090,14 +1108,7 @@ int main(int argc, char** argv)
 	//	//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
 	//	//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
 	////string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-	//for (int i = 0; i < 100; i++)
-	//{
-	//	int max = 5000, min = 1;
-	//	double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-	//	double realmem = memoryTest(val1, val2, rubyPath);
-	//	double estMem = memEstimation(val1, val2);
-	//	cout << "Dimension: " << val1 << "x" << val2<< " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
-	//}
+
 
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
