@@ -17,10 +17,11 @@ using namespace std;
 double memEstimation(double val1, double val2)
 {
 	double x = min(val1, val2);
-	//double estimation = (2E-20)*pow(x, 6) - (1E-16)*pow(x, 5) + (4E-13)*pow(x, 4) - (6E-10)*pow(x, 3) + (0.0001) * pow(x, 2) + (0.0009)*x + 0.1056;
-	double estimation = 0.0001*pow(x, 2) + 0.0011*x + 0.0909;
-
-	//double estimation = 0.0001536814 * pow(x, 2) + 0.0016503684 * x - 0.0914468615;
+	double estimation;
+	if (IS_64)
+		estimation = 0.0001536814 * pow(x, 2) + 0.0016503684 * x - 0.0914468615;	
+	else
+		estimation = 0.0001072724* pow(x, 2) + 0.0010449755*x + 0.0923785966;
 	if (val1 == val2)
 		return estimation;
 	if (x == val1)

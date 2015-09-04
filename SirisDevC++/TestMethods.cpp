@@ -802,7 +802,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 	}
 	f.close();
 }
-DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity, double rate)
+DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity, double rate, bool adjustRate)
 {
 	string filename = rubyPath + "/GlpkFile.txt";
 	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
@@ -870,7 +870,7 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 		glp_delete_prob(lp);
 
 
-		if (solverTime >= timeLimit)
+		if (solverTime >= timeLimit && adjustRate)
 		{
 			initDensity -= rate;
 			if (initDensity < 0)
@@ -892,8 +892,13 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 		}
 
 		initDensity += rate;
-		if ((rate > 0 && initDensity > 0.5) || (rate < 0 && initDensity <= 0.5))
+		if (initDensity > 1 || initDensity < 0)
 			goto end;
+		//if ((rate > 0 && initDensity > 0.5) || (rate < 0 && initDensity <= 0.5))
+		//{
+		//	goto end;
+		//}
+			
 		aux = scp;
 		varySCPDensity(scp, mSize, initDensity);
 		
@@ -926,10 +931,10 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		res4->results.push_back({ 1, 15, 15 });
 		res4->results.push_back({ 0.95, 45, 17 });
 		res4->results.push_back({ 0.90, 88, 19 });*/
-		DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01);
-		DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
+		DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01,0);
+		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
 		incResults.push_back(res);
-		incResults.push_back(res2);
+		//incResults.push_back(res2);
 		//incResults.push_back(res3);
 		//incResults.push_back(res4);
 		//decResults.push_back(res2);
@@ -1012,8 +1017,47 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 	f2 << memRes;
 	f.close();
 	f2.close();
-
+	for (int i = 0; i < incResults.size(); i++)
+	{
+		string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
+		ofstream f(timeFileOutput.c_str());
+		for (int j = 0; j < incResults[i]->results.size(); j++)
+		{
+			f << incResults[i]->results[j][0] << " " << incResults[i]->results[j][1] << " " << incResults[i]->results[j][2] << "\n";
+		}
+		f.close();
+	}
 	
+}
+void memoryEstimationTest(string rubyPath)
+{
+	double val1 = 10, val2 = 10;
+	//ofstream f("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/density_tests/memconsumptiontest32bitscont.txt");
+	int i = 10;
+	while (i <= 4200)
+	{
+		//int max = 2000, min = 1;
+		//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+
+
+		double realmem = memoryTest(val1, val2, rubyPath);
+		double estMem = memEstimation(val1, val2);
+		cout << "Dimension: " << val1 << "x" << val2 << " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
+		//f << val1 << " " << realmem << "\n";
+		if (i < 100)
+		{
+			val1 += 10; val2 += 10;
+			i += 10;
+		}
+		else
+		{
+			val1 += 100; val2 += 100;
+			i += 100;
+		}
+
+		//val1 += 100; val2 += 100;
+	}
+	//f.close();
 }
 int main(int argc, char** argv)
 {
@@ -1021,20 +1065,9 @@ int main(int argc, char** argv)
 
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	//double val1 = 100, val2 = 100;
-	//for (int i = 0; i < 30; i++)
-	//{
-	//	int max = 2000, min = 1;
-	//	double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
 
-	//	
-	//	double realmem = memoryTest(val1, val2, rubyPath);
-	//	double estMem = memEstimation(val1, val2);
-	//	cout << "Dimension: " << val1 << "x" << val2 << " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
-	//	//val1 += 100; val2 += 100;
-	//}
-	//scanf("%s");
-	fullDensityTest(500,500, rubyPath, 360,3);
+	
+	fullDensityTest(150,150, rubyPath, 360,5);
 	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);

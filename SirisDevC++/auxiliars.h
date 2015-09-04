@@ -1,5 +1,24 @@
 #include <iostream>
 
+
+// Check windows
+#if _WIN32 || _WIN64
+#if _WIN64
+#define IS_64 1
+#else
+#define IS_64 0
+#endif
+#endif
+
+// Check GCC
+#if __GNUC__
+#if __x86_64__ || __ppc64__
+#define IS_64 1
+#else
+#define IS_64 0
+#endif
+#endif
+
 #ifndef _AUXILIARS_H
 #define _AUXILIARS_H
 
