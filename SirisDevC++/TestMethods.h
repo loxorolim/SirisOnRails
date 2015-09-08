@@ -51,6 +51,15 @@ struct DensityTestResult
 		}
 		return -1;
 	}
+	void saveToFile(string filename)
+	{
+		ofstream f(filename.c_str());
+		for (int j = 0; j < results.size(); j++)
+		{
+			f << results[j][0] << " " << results[j][1] << " " << results[j][2] << "\n";
+		}
+		f.close();
+	}
 	~DensityTestResult()
 	{
 		

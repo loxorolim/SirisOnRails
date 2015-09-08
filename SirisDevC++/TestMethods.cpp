@@ -933,6 +933,8 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		res4->results.push_back({ 0.90, 88, 19 });*/
 		DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01,0);
 		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
+		string filename = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
+		res->saveToFile(filename);
 		incResults.push_back(res);
 		//incResults.push_back(res2);
 		//incResults.push_back(res3);
@@ -1019,14 +1021,9 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 	f2.close();
 	for (int i = 0; i < incResults.size(); i++)
 	{
-		string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
-		ofstream f(timeFileOutput.c_str());
-		for (int j = 0; j < incResults[i]->results.size(); j++)
-		{
-			f << incResults[i]->results[j][0] << " " << incResults[i]->results[j][1] << " " << incResults[i]->results[j][2] << "\n";
-		}
-		f.close();
+		delete incResults[i];
 	}
+
 	
 }
 void memoryEstimationTest(string rubyPath)
@@ -1065,9 +1062,10 @@ int main(int argc, char** argv)
 
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-
-	
-	fullDensityTest(150,150, rubyPath, 360,5);
+	fullDensityTest(200, 100, rubyPath, 360, 5);
+	//fullDensityTest(150,150, rubyPath, 360,5);
+	//fullDensityTest(50, 150, rubyPath, 360, 5);
+	//fullDensityTest(150, 50, rubyPath, 360, 5);
 	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
 	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
