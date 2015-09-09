@@ -69,7 +69,7 @@ double memoryTest(int x, int y, string rubyPath)
 	int ret, count, cpeak;
 	size_t total, tpeak;
 	double totalInMb, tpeakInMb;
-	glp_term_out(GLP_OFF);
+	glp_term_out(GLP_ON);
 	lp = glp_create_prob();
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
@@ -1026,35 +1026,32 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 
 	
 }
-void memoryEstimationTest(string rubyPath)
+void memoryEstimationTest(int ini, int end, int variation, string rubyPath)
 {
-	double val1 = 10, val2 = 10;
-	//ofstream f("C:/Users/Guilherme/Documents/GitHub/SirisOnRails/density_tests/memconsumptiontest32bitscont.txt");
-	int i = 10;
-	while (i <= 4200)
+	int start = ini;
+	while (ini <= end)
 	{
 		//int max = 2000, min = 1;
 		//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-
-
-		double realmem = memoryTest(val1, val2, rubyPath);
-		double estMem = memEstimation(val1, val2);
-		cout << "Dimension: " << val1 << "x" << val2 << " Real: " << realmem << " Estimation: " << estMem << " Error: " << realmem / estMem << "\n";
-		//f << val1 << " " << realmem << "\n";
-		if (i < 100)
+		string toSave = rubyPath + "/mem_estimation_tests/memEstimation"+to_string(ini)+"metersfixed.txt";
+		string toSave2 = rubyPath + "/mem_estimation_tests/memEstimation" + to_string(ini) + "polesfixed.txt";
+		ofstream f(toSave.c_str());
+		ofstream f2(toSave2.c_str());
+		for (int i = start; i <= end; i+=variation)
 		{
-			val1 += 10; val2 += 10;
-			i += 10;
-		}
-		else
-		{
-			val1 += 100; val2 += 100;
-			i += 100;
-		}
+			double realmem = memoryTest(ini, i, rubyPath);
+			double estMem = memEstimation(ini, i);
+			f << i << " " << realmem << " " << estMem << "\n";
 
-		//val1 += 100; val2 += 100;
+			realmem = memoryTest(i, ini, rubyPath);
+			estMem = memEstimation(i, ini);
+			f2 << i << " " << realmem << " " << estMem << "\n";
+
+		}
+		f.close();
+		f2.close();
+		ini += variation;
 	}
-	//f.close();
 }
 int main(int argc, char** argv)
 {
@@ -1062,7 +1059,8 @@ int main(int argc, char** argv)
 
 
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	fullDensityTest(200, 100, rubyPath, 360, 5);
+	memoryEstimationTest(1000, 3000, 500, rubyPath);
+	//fullDensityTest(200, 100, rubyPath, 360, 5);
 	//fullDensityTest(150,150, rubyPath, 360,5);
 	//fullDensityTest(50, 150, rubyPath, 360, 5);
 	//fullDensityTest(150, 50, rubyPath, 360, 5);
