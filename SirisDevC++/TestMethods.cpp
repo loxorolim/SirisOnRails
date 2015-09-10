@@ -1053,14 +1053,57 @@ void memoryEstimationTest(int ini, int end, int variation, string rubyPath)
 		ini += variation;
 	}
 }
+void saveResults(string filesLocation, string metersFilename, string polesFilename, int scenario, int tech, int mesh, string rubyPath)
+{
+	string toSave = filesLocation + "\\ResultsT" + to_string(tech)+"S"+to_string(scenario)+"Mesh"+to_string(mesh);
+	metersFilename = filesLocation + "\\" + metersFilename;
+	polesFilename = filesLocation + "\\" + polesFilename;
+	AutoPlanning* AP;
+	if (tech == t802_15_4)
+		AP = setAutoPlanningFromFile(metersFilename.c_str(), polesFilename.c_str(), scenario,tech, 0.250, 0, 3, 5, 1, mesh, rubyPath);
+	else
+		AP = setAutoPlanningFromFile(metersFilename.c_str(), polesFilename.c_str(), scenario,tech, 6, 20, 3, 5, 1, mesh, rubyPath);
+
+	
+	TestResult* ret = AP->executeClusterAutoPlanTestMode(false, 1);
+	cout << ret->toString();
+	
+	ofstream f(toSave.c_str());
+	f << ret->toString();
+	f.close();
+	delete ret;
+	delete AP;
+}
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
 
-
+	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	memoryEstimationTest(1000, 3000, 500, rubyPath);
-	//fullDensityTest(200, 100, rubyPath, 360, 5);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
+
+	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
+	//string ret = "";
+	//for(int i = 0; i < teste[0].size();i++)
+	//{
+	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
+	//}
+	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridmeterurbanopscc.txt");
+	//f << ret;
+	//f.close();
+	//ret = "";
+	//for (int i = 0; i < teste[1].size(); i++)
+	//{
+	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
+	//}
+	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridpoleurbanopscc.txt");
+	//f2 << ret;
+	//f2.close();
+	//memoryEstimationTest(1000, 3000, 500, rubyPath);
+
+	fullDensityTest(150, 150, rubyPath, 500, 5);
 	//fullDensityTest(150,150, rubyPath, 360,5);
 	//fullDensityTest(50, 150, rubyPath, 360, 5);
 	//fullDensityTest(150, 50, rubyPath, 360, 5);
@@ -1093,7 +1136,7 @@ int main(int argc, char** argv)
 	//return 0;
 	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
 	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
-	string metersFile = "", polesFile = "";
+	
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);
 	{
