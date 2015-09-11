@@ -29,11 +29,12 @@ struct ClusterProblem
 struct subProblem
 {
 	int numOfMeters, numOfPoles;
-	double solverTime, memUsed, density, avgCoverage, coverageDeviation;
+	double solverTime, memUsed, density, avgCoverage, coverageDeviation, numOfCoverage;
 	string toString()
 	{
 		string ret = "";
 		ret += to_string(numOfMeters) + "x" + to_string(numOfPoles) + ":\n";
+		ret += "Número de 1's na Matriz de Cobertura" + to_string(numOfCoverage) + ":\n";
 		ret += "Densidade: " + to_string(density) + "\n";
 		ret += "Cobertura média por DAP: " + to_string(avgCoverage) + "\n";
 		ret += "Desvio padrão da cobertura: " + to_string(coverageDeviation) + "\n";

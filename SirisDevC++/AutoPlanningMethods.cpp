@@ -827,6 +827,7 @@ void evaluateSCP(vector<vector<int> > &SCP, int metersSize, subProblem* sp )
 	int numOfCov = 0;
 	for (int i = 0; i < SCP.size(); i++)
 		numOfCov += SCP[i].size();
+	sp->numOfCoverage = numOfCov;
 	sp->density = (double)numOfCov / (SCP.size()*metersSize);
 	sp->avgCoverage = (double)numOfCov / (SCP.size());
 	double variance = 0;
