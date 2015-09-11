@@ -619,6 +619,26 @@ void varySCPDensity(vector<vector<int> > &SCP, int mSize, double newDensity)
 	}
 
 }
+void varySCPCoverage(vector<vector<int> > &SCP, int mSize, int toAddNum)
+{
+
+	while (toAddNum > 0)
+	{
+	start:
+		vector<int> options;
+		int poleToInsert = rand() % SCP.size();
+		for (int j = 0; j < mSize; j++)
+		{
+			if (find(SCP[poleToInsert %SCP.size()].begin(), SCP[poleToInsert %SCP.size()].end(), j) == SCP[poleToInsert %SCP.size()].end())
+				options.push_back(j);
+		}
+		if (options.size() == 0)
+			goto start;
+		int x = rand() % options.size();
+		SCP[poleToInsert].push_back(options[x]);	
+		toAddNum--;
+	}
+}
 void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh,string rubyPath)
 {
 	
@@ -727,6 +747,57 @@ void get_mip_gap(glp_tree *T, void *info)
 	double gap = glp_ios_mip_gap(T);
 	*(double*)info = gap;
 }
+void executeGLPK(string filename,double timeLimit, double* solverTime, double* maxMem)
+{
+	glp_term_out(GLP_ON);
+	double seconds;
+	clock_t begin_time = 0;
+	vector<int> answer;
+	glp_prob *lp;
+	glp_tran *tran;
+	int err;
+	int ret, count, cpeak;
+	size_t total, tpeak;
+	double totalInMb, tpeakInMb;
+	lp = glp_create_prob();
+	tran = glp_mpl_alloc_wksp();
+	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+	glp_mem_limit(5800);
+
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on translating model\n");
+		goto skip;
+	}
+
+	ret = glp_mpl_generate(tran, NULL);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on generating model\n");
+		goto skip;
+	}
+	glp_mpl_build_prob(tran, lp);
+	glp_iocp parm;
+	glp_init_iocp(&parm);
+	parm.cb_func = get_mip_gap;
+	double gap = 0;
+	parm.cb_info = &gap;
+	parm.presolve = GLP_ON;
+	parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE EM SEGUNDOS
+
+	begin_time = clock();
+	err = glp_intopt(lp, &parm);
+	seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	*solverTime = seconds;
+	glp_mem_usage(&count, &cpeak, &total, &tpeak);
+	//printf("%d memory block(s) are still allocated\n", count);
+	totalInMb = ((double)total / (1024 * 1024));
+	tpeakInMb = ((double)tpeak / (1024 * 1024));
+	*maxMem = totalInMb;
+	cout << gap;
+skip: glp_mpl_free_wksp(tran);
+	glp_delete_prob(lp);
+}
 void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit)
 {
 	string filename = rubyPath + "/GlpkFile.txt";
@@ -820,56 +891,8 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
-		glp_term_out(GLP_ON);
-		double seconds;
-		clock_t begin_time = 0;
-		vector<int> answer;
-		glp_prob *lp;
-		glp_tran *tran;
-		int err;
-		int ret, count, cpeak;
-		size_t total, tpeak;
-		double totalInMb, tpeakInMb;
-		lp = glp_create_prob();
-		tran = glp_mpl_alloc_wksp();
-		ret = glp_mpl_read_model(tran, filename.c_str(), 0);
-		glp_mem_limit(5800);
-
-		if (ret != 0)
-		{
-			fprintf(stderr, "Error on translating model\n");
-			goto skip;
-		}
-
-		ret = glp_mpl_generate(tran, NULL);
-		if (ret != 0)
-		{
-			fprintf(stderr, "Error on generating model\n");
-			goto skip;
-		}
-		glp_mpl_build_prob(tran, lp);
-		glp_iocp parm;
-		glp_init_iocp(&parm);
-		parm.cb_func = get_mip_gap;
-		double gap = 0;
-		parm.cb_info = &gap;
-		parm.presolve = GLP_ON;
-		parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE EM SEGUNDOS
-
-		begin_time = clock();
-		err = glp_intopt(lp, &parm);
-		seconds = float(clock() - begin_time) / CLOCKS_PER_SEC;
-		solverTime = seconds;
-		glp_mem_usage(&count, &cpeak, &total, &tpeak);
-		//printf("%d memory block(s) are still allocated\n", count);
-		totalInMb = ((double)total / (1024 * 1024));
-		tpeakInMb = ((double)tpeak / (1024 * 1024));
-		maxMem = totalInMb;
-		cout << gap;
-	skip: glp_mpl_free_wksp(tran);
-		glp_delete_prob(lp);
-
-
+		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
+	
 		if (solverTime >= timeLimit && adjustRate)
 		{
 			initDensity -= rate;
@@ -907,39 +930,64 @@ end:
 	//f.close();
 	return resultsRet;
 }
+DensityTestResult* varySCPCoverageTest(int mSize, int pSize, string rubyPath, int timeLimit, int rate, int endVal)
+{
+	string filename = rubyPath + "/GlpkFile.txt";
+	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	DensityTestResult* resultsRet = new DensityTestResult();
+	vector<vector<int> > aux;
+	//double density = 0.0005;
+	//ofstream f(fileOutput.c_str());
+	vector<vector<int> > scp = SCPGenerator(mSize, pSize, 0);
+	int currentVal = 0;
 
-void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int numOfInst)
+	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
+	while (true)
+	{
+		double solverTime = -1, maxMem = -1;
+		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+		//system(access.c_str());
+		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
+
+
+		vector<double> toAdd;
+		toAdd.push_back(currentVal);
+		toAdd.push_back(solverTime);
+		toAdd.push_back(maxMem);
+		resultsRet->results.push_back(toAdd);
+			
+		
+
+		currentVal += rate;
+		
+		if (currentVal > endVal || currentVal>(mSize*pSize))
+			goto end;
+
+
+		varySCPCoverage(scp, mSize, rate);
+
+	}
+end:
+	//f.close();
+	return resultsRet;
+}
+
+void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int numOfInst, bool coverageIncrease)
 {
 	vector<DensityTestResult*> incResults;
 	for (int i = 0; i < numOfInst; i++)
 	{
-	/*	DensityTestResult * res = new DensityTestResult();
-		res->results.push_back({ 0.05, 1, 2 });
-		res->results.push_back({ 0.1, 2, 7 });
-		res->results.push_back({ 0.15, 3, 13 });
-		DensityTestResult * res2 = new DensityTestResult();
-		res2->results.push_back({ 0.05, 1, 1 });
-		res2->results.push_back({ 0.1, 4, 1 });
-		res2->results.push_back({ 0.15, 8, 1 });
-		res2->results.push_back({ 0.20, 16, 1 });
-		DensityTestResult * res3 = new DensityTestResult();
-		res3->results.push_back({ 1, 12, 12 });
-		res3->results.push_back({ 0.95, 41, 13 });
-		res3->results.push_back({ 0.90, 82, 14 });
-		res3->results.push_back({ 0.85, 161, 15 });
-		DensityTestResult * res4 = new DensityTestResult();
-		res4->results.push_back({ 1, 15, 15 });
-		res4->results.push_back({ 0.95, 45, 17 });
-		res4->results.push_back({ 0.90, 88, 19 });*/
-		DensityTestResult * res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01,0);
+		DensityTestResult * res;
+		if (coverageIncrease)
+			res = varySCPCoverageTest(mSize, pSize, rubyPath, timeLimit, 100,14400);
+		else
+			res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01,0);
 		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
 		string filename = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
 		res->saveToFile(filename);
 		incResults.push_back(res);
-		//incResults.push_back(res2);
-		//incResults.push_back(res3);
-		//incResults.push_back(res4);
-		//decResults.push_back(res2);
 	}
 
 	vector<double> incDensities;
@@ -1055,7 +1103,7 @@ void memoryEstimationTest(int ini, int end, int variation, string rubyPath)
 }
 void saveResults(string filesLocation, string metersFilename, string polesFilename, int scenario, int tech, int mesh, string rubyPath)
 {
-	string toSave = filesLocation + "\\ResultsT" + to_string(tech)+"S"+to_string(scenario)+"Mesh"+to_string(mesh);
+	string toSave = filesLocation + "\\ResultsT" + to_string(tech)+"S"+to_string(scenario)+"Mesh"+to_string(mesh)+".txt";
 	metersFilename = filesLocation + "\\" + metersFilename;
 	polesFilename = filesLocation + "\\" + polesFilename;
 	AutoPlanning* AP;
@@ -1080,9 +1128,19 @@ int main(int argc, char** argv)
 
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 3, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 3, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 3, rubyPath);
+
+	/*saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
+	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);*/
 
 	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
 	//string ret = "";
@@ -1103,7 +1161,7 @@ int main(int argc, char** argv)
 	//f2.close();
 	//memoryEstimationTest(1000, 3000, 500, rubyPath);
 
-	fullDensityTest(150, 150, rubyPath, 500, 5);
+	fullDensityTest(130, 130, rubyPath, 500, 1,true);
 	//fullDensityTest(150,150, rubyPath, 360,5);
 	//fullDensityTest(50, 150, rubyPath, 360, 5);
 	//fullDensityTest(150, 50, rubyPath, 360, 5);
