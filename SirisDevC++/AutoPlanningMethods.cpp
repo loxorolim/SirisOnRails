@@ -542,7 +542,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
-	glp_term_out(GLP_OFF);
+	glp_term_out(GLP_ON);
 	double seconds;
 	clock_t begin_time = 0;
 	vector<int> answer;

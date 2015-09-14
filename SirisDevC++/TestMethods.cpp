@@ -1101,6 +1101,24 @@ void memoryEstimationTest(int ini, int end, int variation, string rubyPath)
 		ini += variation;
 	}
 }
+void memoryEstimationTestWithFixedMeters(int fixedMeters,int ini, int end, int variation, string rubyPath)
+{
+	int start = ini;
+	//int max = 2000, min = 1;
+	//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+	string toSave = rubyPath + "/mem_estimation_tests/memEstimation" + to_string(fixedMeters) + "metersfixed.txt";
+	ofstream f(toSave.c_str());
+	for (int i = ini; i <= end; i += variation)
+	{
+		double realmem = memoryTest(fixedMeters, i, rubyPath);
+		double estMem = memEstimation(fixedMeters, i);
+		f << i << " " << realmem << " " << estMem << "\n";
+
+	}
+	f.close();
+	ini += variation;
+	
+}
 void saveResults(string filesLocation, string metersFilename, string polesFilename, int scenario, int tech, int mesh, string rubyPath)
 {
 	string toSave = filesLocation + "\\ResultsT" + to_string(tech)+"S"+to_string(scenario)+"Mesh"+to_string(mesh)+".txt";
@@ -1128,19 +1146,43 @@ int main(int argc, char** argv)
 
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//memoryEstimationTest(1, 5500, 500, rubyPath);
+	int ini = 0;
+	double sum = 0;
+	while (ini < 100)
+	{
+		int max = 5500, min = 100;
+		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+		double realmem = memoryTest(val1, val2, rubyPath);
+		double estMem = memEstimation(val1, val2);
+		cout << realmem << " " << estMem << "\n";
+		cout << abs(1-(realmem / estMem));
+		sum += abs(1-(realmem / estMem));
+		ini++;
+	}
+	double avg = sum / ini;
+	cout << avg;
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//double estMem = memEstimation(fixedMeters, i);
+	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);
+	//memoryEstimationTestWithFixedMeters(1000, 1, 35001, 5000, rubyPath);
+	//memoryEstimationTestWithFixedMeters(2000, 1, 15001, 5000, rubyPath);
+	//memoryEstimationTestWithFixedMeters(3000, 1, 10001, 5000, rubyPath);
+
 //	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 3, rubyPath);
 //	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 3, rubyPath);
 //	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 3, rubyPath);
-
-	/*saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
-	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);*/
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 3, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
 
 	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
 	//string ret = "";
@@ -1161,7 +1203,7 @@ int main(int argc, char** argv)
 	//f2.close();
 	//memoryEstimationTest(1000, 3000, 500, rubyPath);
 
-	fullDensityTest(130, 130, rubyPath, 500, 1,true);
+	//fullDensityTest(130, 130, rubyPath, 500, 1,true);
 	//fullDensityTest(150,150, rubyPath, 360,5);
 	//fullDensityTest(50, 150, rubyPath, 360, 5);
 	//fullDensityTest(150, 50, rubyPath, 360, 5);
