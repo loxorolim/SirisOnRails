@@ -1140,28 +1140,209 @@ void saveResults(string filesLocation, string metersFilename, string polesFilena
 	delete ret;
 	delete AP;
 }
+DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int variation, int timeLimit, double memLimit, string rubyPath, int mode)
+{
+	string filename = rubyPath + "/GlpkFile.txt";
+	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	DensityTestResult* resultsRet = new DensityTestResult();
+	vector<vector<int> > aux;
+	//double density = 0.0005;
+	//ofstream f(fileOutput.c_str());
+
+
+	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
+	while (true)
+	{
+		if (memEstimation(mSize, pSize)*MEM_EST_SAFETY > memLimit)
+			break;
+
+		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
+		double solverTime = -1, maxMem = -1;
+		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+		//system(access.c_str());
+		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
+
+		vector<double> toAdd;
+		if (mode == NO_FIX)
+		{
+			toAdd.push_back(mSize);
+			mSize += variation;
+			pSize += variation;
+		}
+		if (mode == FIXED_METERS)
+		{
+			toAdd.push_back(pSize);
+			pSize += variation;
+		}
+		if (mode == FIXED_POLES)
+		{
+			toAdd.push_back(mSize);
+			mSize += variation;
+		}
+		toAdd.push_back(solverTime);
+		toAdd.push_back(maxMem);
+		resultsRet->results.push_back(toAdd);
+		//f << to_string(initDensity) << " " << solverTime << " " << maxMem << "\n";
+		//cout << to_string(size) << " " << solverTime << " " << maxMem << "\n";
+		
+
+		if (solverTime > timeLimit)
+			break;
+
+	}
+	return resultsRet;
+}
+void fullFixedDensityTest(double density, int mSize,int pSize, int variation, int timeLimit, double memLimit,int numOfInst, string rubyPath, int mode)
+{
+	vector<DensityTestResult*> incResults;
+	for (int i = 0; i < numOfInst; i++)
+	{
+		DensityTestResult * res = fixedDensityTest(density, mSize,pSize, variation, timeLimit,memLimit, rubyPath, mode);
+		string filename = "";
+		if (mode == NO_FIX)
+			filename = rubyPath + "/density_tests/FixedDensityResultNoSizeFix" + to_string(density) + "Inst"+to_string(i)+".txt";
+		if (mode == FIXED_METERS)
+			filename = rubyPath + "/density_tests/FixedDensityResult"+to_string(mSize) +"FixedMeters" + to_string(density) + "Inst" + to_string(i) + ".txt";
+		if (mode == FIXED_POLES)
+			filename = rubyPath + "/density_tests/FixedDensityResult"+ to_string(pSize) + "FixedPoles" + to_string(density) + "Inst" + to_string(i) + ".txt";
+		res->saveToFile(filename);
+		incResults.push_back(res);
+	}
+
+	vector<double> incDensities;
+	for (int i = 0; i < incResults.size(); i++)
+	{
+		vector<double> aux = incResults[i]->getDensitiesVector();
+		incDensities.insert(incDensities.end(), aux.begin(), aux.end());
+	}
+	//for (int i = 0; i < decResults.size(); i++)
+	//{
+	//	vector<double> aux = decResults[i]->getDensitiesVector();
+	//	incDensities.insert(incDensities.end(), aux.begin(), aux.end());
+	//}
+	sort(incDensities.begin(), incDensities.end());
+	incDensities.erase(unique(incDensities.begin(), incDensities.end()), incDensities.end());
+	vector<vector<double>> timeResults;
+	vector<vector<double>> memResults;
+	for (int i = 0; i < incDensities.size(); i++)
+	{
+		vector<double> toAddTime, toAddMem;
+		toAddTime.push_back(incDensities[i]);
+		toAddMem.push_back(incDensities[i]);
+		for (int j = 0; j < incResults.size(); j++)
+		{
+			toAddTime.push_back(incResults[j]->getTimeAtDensity(incDensities[i]));
+			toAddMem.push_back(incResults[j]->getMemAtDensity(incDensities[i]));
+		}
+		timeResults.push_back(toAddTime);
+		memResults.push_back(toAddMem);
+	}
+	vector<double> avgTimeResults, avgMemResults, avgStdDeviation, avgMemStdDeviation;
+	for (int i = 0; i < timeResults.size(); i++)
+	{
+		double avg = 0, memAvg = 0, stdDeviation = 0, memStdDeviation = 0, numToDivide = 0;
+		for (int j = 1; j < timeResults[i].size(); j++)
+		{
+			if (timeResults[i][j] != -1)
+			{
+				avg += timeResults[i][j];
+				memAvg += memResults[i][j];
+				numToDivide++;
+			}
+		}
+		for (int j = 1; j < timeResults[i].size(); j++)
+		{
+			if (timeResults[i][j] != -1)
+			{
+				stdDeviation += pow(timeResults[i][j] - (avg / numToDivide), 2);
+				memStdDeviation += pow(memResults[i][j] - (memAvg / numToDivide), 2);
+			}
+		}
+		avgTimeResults.push_back(avg / numToDivide);
+		avgMemResults.push_back(memAvg / numToDivide);
+		stdDeviation = sqrt(stdDeviation / numToDivide);
+		memStdDeviation = sqrt(memStdDeviation / numToDivide);
+		avgStdDeviation.push_back(stdDeviation);
+		avgMemStdDeviation.push_back(memStdDeviation);
+	}
+	string tmRes, memRes;
+	for (int i = 0; i < timeResults.size(); i++)
+	{
+		tmRes += to_string(timeResults[i][0]) + " " + to_string(avgTimeResults[i] - avgStdDeviation[i]) + " " + to_string(avgTimeResults[i] + avgStdDeviation[i]) + " " + to_string(avgTimeResults[i]) + "\n";
+		memRes += to_string(memResults[i][0]) + " " + to_string(avgMemResults[i] - avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i] + avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i]) + "\n";
+		//for (int j = 0; j < timeResults[i].size(); j++)
+		//{
+		//	teste += to_string(timeResults[i][j]) + " ";
+		//}
+		//teste += "\n";
+	}
+	cout << tmRes;
+	cout << memRes;
+	string timeFileOutput = "";
+	string memFileOutput = "";
+	if (mode == NO_FIX)
+	{
+		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTimeNoSizeFix" + to_string(density) + ".txt";
+		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMemNoSizeFix" + to_string(density) + ".txt";
+	}
+	if (mode == FIXED_METERS)
+	{
+		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTime" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
+		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMem" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
+	}
+	if (mode == FIXED_POLES)
+	{
+		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTime" + to_string(pSize) + "FixedPoles" +to_string(density) + ".txt";
+		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMem" + to_string(pSize) + "FixedPoles" + to_string(density) + ".txt";
+	}
+	ofstream f(timeFileOutput.c_str());
+	ofstream f2(memFileOutput.c_str());
+	f << tmRes;
+	f2 << memRes;
+	f.close();
+	f2.close();
+	for (int i = 0; i < incResults.size(); i++)
+	{
+		delete incResults[i];
+	}
+}
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
 
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	fullFixedDensityTest(0.001, 500,500, 500, 3600, 5000, 5, rubyPath,NO_FIX);
+	fullFixedDensityTest(0.005, 500, 500, 500, 3600, 5000, 5, rubyPath, NO_FIX);
+	fullFixedDensityTest(0.01, 500, 500, 500, 3600, 5000, 5, rubyPath, NO_FIX);
+
+	fullFixedDensityTest(0.001, 1000, 500, 1000, 3600, 5000, 5, rubyPath, FIXED_METERS);
+	fullFixedDensityTest(0.005, 2500, 500, 1000, 3600, 5000, 5, rubyPath, FIXED_METERS);
+	fullFixedDensityTest(0.01, 5000, 500, 1000, 3600, 5000, 5, rubyPath, FIXED_METERS);
+
+	fullFixedDensityTest(0.001, 500, 1000, 1000, 3600, 5000, 5, rubyPath, FIXED_POLES);
+	fullFixedDensityTest(0.005, 500, 2500, 1000, 3600, 5000, 5, rubyPath, FIXED_POLES);
+	fullFixedDensityTest(0.01, 500, 5000, 1000, 3600, 5000, 5, rubyPath, FIXED_POLES);
+
+
 	//memoryEstimationTest(1, 5500, 500, rubyPath);
-	int ini = 0;
-	double sum = 0;
-	while (ini < 100)
-	{
-		int max = 5500, min = 100;
-		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-		double realmem = memoryTest(val1, val2, rubyPath);
-		double estMem = memEstimation(val1, val2);
-		cout << realmem << " " << estMem << "\n";
-		cout << abs(1-(realmem / estMem));
-		sum += abs(1-(realmem / estMem));
-		ini++;
-	}
-	double avg = sum / ini;
-	cout << avg;
+	//int ini = 0;
+	//double sum = 0;
+	//while (ini < 100)
+	//{
+	//	int max = 5500, min = 100;
+	//	double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+	//	double realmem = memoryTest(val1, val2, rubyPath);
+	//	double estMem = memEstimation(val1, val2);
+	//	cout << realmem << " " << estMem << "\n";
+	//	cout << abs(1-(realmem / estMem));
+	//	sum += abs(1-(realmem / estMem));
+	//	ini++;
+	//}
+	//double avg = sum / ini;
+	//cout << avg;
 	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
 	//double estMem = memEstimation(fixedMeters, i);
 	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);

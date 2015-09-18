@@ -1,6 +1,11 @@
 #ifndef _TEST_METHODS_H
 #define _TEST_METHODS_H
 
+#define NO_FIX 0
+#define FIXED_METERS 1
+#define FIXED_POLES 2
+
+
 #include <iostream>
 #include <sstream>
 #include "Grid.h"
