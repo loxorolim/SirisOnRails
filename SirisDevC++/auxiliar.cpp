@@ -22,13 +22,10 @@ double memEstimation(double val1, double val2)
 		estimation = 0.0001536814 * pow(x, 2) + 0.0016503684 * x - 0.0914468615;	
 	else
 		estimation = 0.0001072724* pow(x, 2) + 0.0010449755*x + 0.0923785966;
-	if (val1 == val2)
-		return estimation;
-	if (x == val1)
-		estimation *= val2 / val1;
-	else
-		estimation *= val1 / val2;
+	
+	estimation *= (max(val1,val2)/min(val1,val2));
 	return estimation;
+
 }
 double getLongOfDistance(double lat, double distance)
 {
