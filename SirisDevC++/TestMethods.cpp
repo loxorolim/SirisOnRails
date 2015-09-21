@@ -1018,14 +1018,19 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		timeResults.push_back(toAddTime);
 		memResults.push_back(toAddMem);
 	}
-	vector<double> avgTimeResults,avgMemResults,avgStdDeviation,avgMemStdDeviation;
+	vector<double> avgTimeResults, minTimeResults, maxTimeResults, avgMemResults,avgStdDeviation,avgMemStdDeviation;
 	for(int i = 0; i < timeResults.size(); i++)
 	{
-		double avg = 0, memAvg = 0, stdDeviation = 0, memStdDeviation = 0, numToDivide = 0;
+		double avg = 0, min = -1, max = -1, memAvg = 0, stdDeviation = 0, memStdDeviation = 0, numToDivide = 0;
 		for (int j = 1; j < timeResults[i].size(); j++)
 		{
 			if (timeResults[i][j] != -1)
 			{
+				if (min == -1 || timeResults[i][j] < min)
+					min = timeResults[i][j];
+				if (max == -1 || timeResults[i][j] > max)
+					max = timeResults[i][j];
+
 				avg += timeResults[i][j];
 				memAvg += memResults[i][j];
 				numToDivide++;
@@ -1041,6 +1046,8 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		}
 		avgTimeResults.push_back(avg / numToDivide);
 		avgMemResults.push_back(memAvg / numToDivide);
+		minTimeResults.push_back(min);
+		maxTimeResults.push_back(max);
 		stdDeviation = sqrt(stdDeviation / numToDivide);
 		memStdDeviation = sqrt(memStdDeviation / numToDivide);
 		avgStdDeviation.push_back(stdDeviation);
@@ -1049,7 +1056,7 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 	string tmRes, memRes;
 	for (int i = 0; i < timeResults.size(); i++)
 	{
-		tmRes += to_string(timeResults[i][0]) + " " + to_string(avgTimeResults[i] - avgStdDeviation[i]) + " " + to_string(avgTimeResults[i] + avgStdDeviation[i]) + " " + to_string(avgTimeResults[i]) + "\n";
+		tmRes += to_string(timeResults[i][0]) + " " + to_string(avgTimeResults[i] - avgStdDeviation[i]) + " " + to_string(avgTimeResults[i] + avgStdDeviation[i]) + " " + to_string(avgTimeResults[i]) + " " + to_string(minTimeResults[i]) + " " + to_string(maxTimeResults[i]) +   "\n";
 		memRes += to_string(memResults[i][0]) + " " + to_string(avgMemResults[i] - avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i] + avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i]) + "\n";
 		//for (int j = 0; j < timeResults[i].size(); j++)
 		//{
@@ -1153,7 +1160,7 @@ DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int var
 	//vector<vector<int> > scp = geographicSCPGenerator(mSize, pSize, density, 7);
 	while (true)
 	{
-		if (memEstimation(mSize, pSize)*MEM_EST_SAFETY > memLimit)
+		if (memEstimation(mSize, pSize) > memLimit)
 			break;
 
 		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
@@ -1239,12 +1246,16 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		timeResults.push_back(toAddTime);
 		memResults.push_back(toAddMem);
 	}
-	vector<double> avgTimeResults, avgMemResults, avgStdDeviation, avgMemStdDeviation;
+	vector<double> avgTimeResults, minTimeResults, maxTimeResults, avgMemResults, avgStdDeviation, avgMemStdDeviation;
 	for (int i = 0; i < timeResults.size(); i++)
 	{
-		double avg = 0, memAvg = 0, stdDeviation = 0, memStdDeviation = 0, numToDivide = 0;
+		double avg = 0, memAvg = 0,min=-1,max=-1, stdDeviation = 0, memStdDeviation = 0, numToDivide = 0;
 		for (int j = 1; j < timeResults[i].size(); j++)
 		{
+			if (min == -1 || timeResults[i][j] < min)
+				min = timeResults[i][j];
+			if (max == -1 || timeResults[i][j] > max)
+				max = timeResults[i][j];
 			if (timeResults[i][j] != -1)
 			{
 				avg += timeResults[i][j];
@@ -1263,6 +1274,8 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		avgTimeResults.push_back(avg / numToDivide);
 		avgMemResults.push_back(memAvg / numToDivide);
 		stdDeviation = sqrt(stdDeviation / numToDivide);
+		minTimeResults.push_back(min);
+		maxTimeResults.push_back(max);
 		memStdDeviation = sqrt(memStdDeviation / numToDivide);
 		avgStdDeviation.push_back(stdDeviation);
 		avgMemStdDeviation.push_back(memStdDeviation);
@@ -1270,7 +1283,7 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 	string tmRes, memRes;
 	for (int i = 0; i < timeResults.size(); i++)
 	{
-		tmRes += to_string(timeResults[i][0]) + " " + to_string(avgTimeResults[i] - avgStdDeviation[i]) + " " + to_string(avgTimeResults[i] + avgStdDeviation[i]) + " " + to_string(avgTimeResults[i]) + "\n";
+		tmRes += to_string(timeResults[i][0]) + " " + to_string(avgTimeResults[i] - avgStdDeviation[i]) + " " + to_string(avgTimeResults[i] + avgStdDeviation[i]) + " " + to_string(avgTimeResults[i]) + " " + to_string(minTimeResults[i]) + " " + to_string(maxTimeResults[i]) + "\n";;
 		memRes += to_string(memResults[i][0]) + " " + to_string(avgMemResults[i] - avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i] + avgMemStdDeviation[i]) + " " + to_string(avgMemResults[i]) + "\n";
 		//for (int j = 0; j < timeResults[i].size(); j++)
 		//{
@@ -1314,17 +1327,22 @@ int main(int argc, char** argv)
 
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-	fullFixedDensityTest(0.001, 500,500, 500, 3600, 5000, 5, rubyPath,NO_FIX);
-	fullFixedDensityTest(0.005, 500, 500, 500, 3600, 5000, 5, rubyPath, NO_FIX);
-	fullFixedDensityTest(0.01, 500, 500, 500, 3600, 5000, 5, rubyPath, NO_FIX);
 
-	fullFixedDensityTest(0.001, 1000, 500, 1000, 3600, 5000, 5, rubyPath, FIXED_METERS);
-	fullFixedDensityTest(0.005, 2500, 500, 1000, 3600, 5000, 5, rubyPath, FIXED_METERS);
-	fullFixedDensityTest(0.01, 5000, 500, 1000, 3600, 5000, 5, rubyPath, FIXED_METERS);
+	fullDensityTest(100, 100, rubyPath, 500, 5, false);
+	fullDensityTest(150, 150, rubyPath, 500, 5, false);
+	fullDensityTest(125, 125, rubyPath, 500, 5, false);
 
-	fullFixedDensityTest(0.001, 500, 1000, 1000, 3600, 5000, 5, rubyPath, FIXED_POLES);
-	fullFixedDensityTest(0.005, 500, 2500, 1000, 3600, 5000, 5, rubyPath, FIXED_POLES);
-	fullFixedDensityTest(0.01, 500, 5000, 1000, 3600, 5000, 5, rubyPath, FIXED_POLES);
+	fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
+	fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+	fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+
+	fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
+	fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
+	fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
+	
+	fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
 
 
 	//memoryEstimationTest(1, 5500, 500, rubyPath);
