@@ -1328,39 +1328,59 @@ int main(int argc, char** argv)
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	fullDensityTest(100, 100, rubyPath, 500, 5, false);
-	fullDensityTest(150, 150, rubyPath, 500, 5, false);
-	fullDensityTest(125, 125, rubyPath, 500, 5, false);
+	//fullDensityTest(100, 100, rubyPath, 500, 5, false);
+	//fullDensityTest(150, 150, rubyPath, 500, 5, false);
+	//fullDensityTest(125, 125, rubyPath, 500, 5, false);
 
-	fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
-	fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
-	fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+	//fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
+	//fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+	//fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
 
-	fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
-	fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
-	fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
-	
-	fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-	fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-	fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	//fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
+	//fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
+	//fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
+	//
+	//fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	//fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	//fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
 
 
 	//memoryEstimationTest(1, 5500, 500, rubyPath);
-	//int ini = 0;
-	//double sum = 0;
-	//while (ini < 100)
-	//{
-	//	int max = 5500, min = 100;
-	//	double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-	//	double realmem = memoryTest(val1, val2, rubyPath);
-	//	double estMem = memEstimation(val1, val2);
-	//	cout << realmem << " " << estMem << "\n";
-	//	cout << abs(1-(realmem / estMem));
-	//	sum += abs(1-(realmem / estMem));
-	//	ini++;
-	//}
-	//double avg = sum / ini;
-	//cout << avg;
+	int ini = 0;
+	double sum = 0;
+	double maxGap=-1, minGap=-1, maxGapVal=-1, minGapVal=-1;
+	double stdDeviation;
+	int repetitions = 100;
+	while (ini < repetitions)
+	{
+		cout << "---------------------/////" << ini << "/////---------------------\n";
+		int max = 5000, min = 500;
+		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+		double realmem = memoryTest(val1, val2, rubyPath);
+		double estMem = memEstimation(val1, val2);
+
+		double gapValDiff = abs(realmem - estMem);
+		if (maxGapVal == -1 || gapValDiff > maxGapVal)
+			maxGapVal = gapValDiff;
+		if (minGapVal == -1 || gapValDiff < minGapVal)
+			minGapVal = gapValDiff;
+		double gapDiff = abs(1 - (realmem / estMem));
+		if (maxGap == -1 || gapDiff > maxGap)
+			maxGap = gapDiff;
+		if (minGap == -1 || gapDiff < minGap)
+			minGap = gapDiff;
+
+		cout << realmem << " " << estMem << "\n";
+		cout << abs(1-(realmem / estMem));
+		sum += abs(1-(realmem / estMem));
+		ini++;
+	}
+	double avg = sum / ini;
+	cout << "\navg:" << avg;
+	cout << "\nmaxGapVal:" << maxGapVal;
+	cout << "\nminGapVal:" << minGapVal;
+	cout << "\nmaxGap:" << maxGap;
+	cout << "\nminGap:" << minGap;
 	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
 	//double estMem = memEstimation(fixedMeters, i);
 	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);
