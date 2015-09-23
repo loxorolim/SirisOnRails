@@ -98,12 +98,6 @@ function sendDataToServer(url,method,type) {
                     default:
                         break;
                 }
-                
-
-                
-                
-                //var d2 = new Date();
-                //alert(d2-d);
             }
         });
 }
@@ -202,9 +196,10 @@ function readPropagationResponse(data){
 
 
         var efficiency = parseFloat(split[3]);
-        var distance = parseFloat(split[4]);
-        var dashed = parseInt(split[5]);
-        drawLine(latlng1,latlng2,efficiency,distance,dashed);
+        var delay = parseFloat(split[4]);
+        var distance = parseFloat(split[5]);
+        var dashed = parseInt(split[6]);
+        drawLine(latlng1,latlng2,efficiency,delay,distance,dashed);
 
     }
 

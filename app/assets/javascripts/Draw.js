@@ -34,7 +34,7 @@ function colorInterpolation(efficiency)
 	return "#"+cR+cG+cB;
 	
 }
-function drawLine(latlng1,latlng2,efficiency,distance,dashed){
+function drawLine(latlng1,latlng2,efficiency,delay,distance,dashed){
     var markerPositions = [latlng1, latlng2];
     var c = colorInterpolation(efficiency);
 
@@ -61,10 +61,9 @@ function drawLine(latlng1,latlng2,efficiency,distance,dashed){
             strokeWeight: 2,
             distance: distance,
             efficiency: efficiency,
+            delay: delay
             
         });
- 
-
     }
     else{
         routerPath = new google.maps.Polyline(
@@ -75,7 +74,8 @@ function drawLine(latlng1,latlng2,efficiency,distance,dashed){
         strokeWeight: 2,
         clickable: true,
         distance: distance,
-        efficiency: efficiency
+        efficiency: efficiency,
+        delay: delay
         });
     }
            google.maps.event.addListener(routerPath, 'click', function (event) {

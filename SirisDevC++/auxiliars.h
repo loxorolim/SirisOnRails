@@ -49,6 +49,8 @@
 #define t802_11_g  2
 #define t802_11_b  3
 
+#define PCK_SIZE 400*8 //400 BYTES
+#define PER_HOP_DELAY 2 //2 MS
 #define EARTH_RADIUS 6378137
 #define MEM_LIMIT 99999
 #define TIME_LIMIT 2*60*60*1000
@@ -167,14 +169,14 @@ class DrawInfo2
 public:
 	int dashed;
 	int a,b,hopnumber;
-	double efficiency;
-	double distance;
-	DrawInfo2(int mainIndex, int toConnectIndex, int hn, double eff, double d, int da)
+	double efficiency, delay, distance;
+	DrawInfo2(int mainIndex, int toConnectIndex, int hn, double eff, double del, double d, int da)
 	{
 		a = mainIndex;
 		b = toConnectIndex;
 		hopnumber = hn;
 		efficiency = eff;
+		delay = del;
 		distance = d;
 		dashed = da;
 	};
@@ -188,6 +190,8 @@ public:
 		ret += to_string(hopnumber);
 		ret += "/";
 		ret += to_string(efficiency);
+		ret += "/";
+		ret += to_string(delay);
 		ret += "/";
 		ret += to_string(distance);
 		ret += "/";
@@ -239,6 +243,9 @@ vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position
 double getLongOfDistance(double lat, double distance);
 double getLatOfDistance(double distance);
 double memEstimation(double val1, double val2);
+double getNumberOfRetries(double quality);
+double getBackoffTime(double quality, int technology);
+double calculateLinkDelay(double quality, int pckSize, double rate, int technology);
 
 //bool compareByLatitude(Position* a, Position *b);
 

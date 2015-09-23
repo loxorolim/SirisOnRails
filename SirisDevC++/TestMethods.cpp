@@ -1321,276 +1321,276 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		delete incResults[i];
 	}
 }
-int main(int argc, char** argv)
-{
-	srand(time(NULL));
-
-	string metersFile = "", polesFile = "";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-
-	//fullDensityTest(100, 100, rubyPath, 500, 5, false);
-	//fullDensityTest(150, 150, rubyPath, 500, 5, false);
-	//fullDensityTest(125, 125, rubyPath, 500, 5, false);
-
-	//fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
-	//fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
-	//fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
-
-	//fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
-	//fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
-	//fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
-	//
-	//fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-	//fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-	//fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-
-
-	//memoryEstimationTest(1, 5500, 500, rubyPath);
-	int ini = 0;
-	double sum = 0;
-	double maxGap=-1, minGap=-1, maxGapVal=-1, minGapVal=-1;
-	double stdDeviation;
-	int repetitions = 100;
-	while (ini < repetitions)
-	{
-		cout << "---------------------/////" << ini << "/////---------------------\n";
-		int max = 5000, min = 500;
-		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-		double realmem = memoryTest(val1, val2, rubyPath);
-		double estMem = memEstimation(val1, val2);
-
-		double gapValDiff = abs(realmem - estMem);
-		if (maxGapVal == -1 || gapValDiff > maxGapVal)
-			maxGapVal = gapValDiff;
-		if (minGapVal == -1 || gapValDiff < minGapVal)
-			minGapVal = gapValDiff;
-		double gapDiff = abs(1 - (realmem / estMem));
-		if (maxGap == -1 || gapDiff > maxGap)
-			maxGap = gapDiff;
-		if (minGap == -1 || gapDiff < minGap)
-			minGap = gapDiff;
-
-		cout << realmem << " " << estMem << "\n";
-		cout << abs(1-(realmem / estMem));
-		sum += abs(1-(realmem / estMem));
-		ini++;
-	}
-	double avg = sum / ini;
-	cout << "\navg:" << avg;
-	cout << "\nmaxGapVal:" << maxGapVal;
-	cout << "\nminGapVal:" << minGapVal;
-	cout << "\nmaxGap:" << maxGap;
-	cout << "\nminGap:" << minGap;
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
-	//double estMem = memEstimation(fixedMeters, i);
-	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);
-	//memoryEstimationTestWithFixedMeters(1000, 1, 35001, 5000, rubyPath);
-	//memoryEstimationTestWithFixedMeters(2000, 1, 15001, 5000, rubyPath);
-	//memoryEstimationTestWithFixedMeters(3000, 1, 10001, 5000, rubyPath);
-
-//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 3, rubyPath);
-//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 3, rubyPath);
-//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 3, rubyPath);
-//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
-//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 3, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
-	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
-
-	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
-	//string ret = "";
-	//for(int i = 0; i < teste[0].size();i++)
-	//{
-	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
-	//}
-	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridmeterurbanopscc.txt");
-	//f << ret;
-	//f.close();
-	//ret = "";
-	//for (int i = 0; i < teste[1].size(); i++)
-	//{
-	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
-	//}
-	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridpoleurbanopscc.txt");
-	//f2 << ret;
-	//f2.close();
-	//memoryEstimationTest(1000, 3000, 500, rubyPath);
-
-	//fullDensityTest(130, 130, rubyPath, 500, 1,true);
-	//fullDensityTest(150,150, rubyPath, 360,5);
-	//fullDensityTest(50, 150, rubyPath, 360, 5);
-	//fullDensityTest(150, 50, rubyPath, 360, 5);
-	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
-	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
-	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
-	//varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
-	return 0;
-	//increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
-	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
-	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
-	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
-	//increaseDensityTest(3000, 3000, rubyPath, "Incremental5", 360);
-	//increaseDensityTest(3000, 3000, rubyPath, "1");
-	//increaseDensityTest(3000, 3000, rubyPath, "2");
-	//increaseDensityTest(3000, 3000, rubyPath, "3");
-	//increaseDensityTest(3000, 3000, rubyPath, "4");
-	//increaseDensityTest(3000, 3000, rubyPath, "5");
-	//increaseDensityTest(10000, 500, rubyPath, "1");
-	//increaseDensityTest(10000, 500, rubyPath, "2");
-	//increaseDensityTest(10000, 500, rubyPath, "3");
-	//increaseDensityTest(10000, 500, rubyPath, "4");
-	//increaseDensityTest(10000, 500, rubyPath, "5");
-	//increaseDensityTest(2000, 4000, rubyPath, "1");
-	//increaseDensityTest(2000, 4000, rubyPath, "2");
-	//increaseDensityTest(2000, 4000, rubyPath, "3");
-	//increaseDensityTest(2000, 4000, rubyPath, "4");
-	//increaseDensityTest(2000, 4000, rubyPath, "5");
-
-	//return 0;
-	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
-	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
-	
-	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(368619);
-	{
-
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-
-		metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters5000.txt";
-		polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles5000.txt";
-	increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0,rubyPath);
-	
-	//float aux = 0;
-	//string v = "";
-	//float mem=1;
-	//int i = 1, init = 100;
-	//while (mem > 0)
-	//{	
-	//	mem = memoryTest(i,i, rubyPath);
-	//	if (mem<0)
-	//		break;
-	//	cout << i << "x" << i << ": " << mem<< "\n";
-	//	v += to_string(i) + " " + to_string(mem) +"\n";
-	//	aux = mem;
-	//	if (i < 1001)
-	//		i += 10;
-	//	else 
-	//		i += 500;
-
-	//}
-	//string filename = rubyPath + "/arqsTeste/ix"+to_string(i)+"MemTest.txt";
-	//ofstream f(filename.c_str());
-	//f << v;
-	//f.close();
-
-
-	//srand(time(NULL));
-	//double x = 3501;
-	//double wow = -1E-19;
-
-	////for (int x = 1; x < 10002; x+=500)
-	//	//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
-	//	//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
-	////string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-
-
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
-	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
-	//kmeansTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaPequena1576.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaPequena453.txt";
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	//
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-
-
-	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Suburbano, 20, 100 - distFromHouseToStreet, 4, 3);
-	//string ret = "";
-	//for(int i = 0; i < teste[0].size();i++)
-	//{
-	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
-	//}
-	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridmetersSuburbano.txt");
-	//f << ret;
-	//f.close();
-	//ret = "";
-	//for (int i = 0; i < teste[1].size(); i++)
-	//{
-	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
-	//}
-	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridpolesSuburbano.txt");
-	//f2 << ret;
-	//f2.close();
-	//string rubyPath = "C:/Sites/first_app";
-	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters4000.txt", "filepoles4000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters5000.txt", "filepoles5000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters10000.txt", "filepoles10000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-	//testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
-	//testGraspFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
-	//	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath)//;
-	//testGraspFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
-	//testGraspFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
-	//	vector<Position*> teste;
-	//	Grid *g = new Grid(teste,10);
-
-	//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
-
-	//	string x = AutoPlanning::executeAutoPlan();
-	//	std::cout << val;
-	}
-
-	//_CrtDumpMemoryLeaks();
-	return 0;
-
-}
+//int main(int argc, char** argv)
+//{
+//	srand(time(NULL));
+//
+//	string metersFile = "", polesFile = "";
+//	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+//
+//	//fullDensityTest(100, 100, rubyPath, 500, 5, false);
+//	//fullDensityTest(150, 150, rubyPath, 500, 5, false);
+//	//fullDensityTest(125, 125, rubyPath, 500, 5, false);
+//
+//	//fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
+//	//fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+//	//fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+//
+//	//fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
+//	//fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
+//	//fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
+//	//
+//	//fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+//	//fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+//	//fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+//
+//
+//	//memoryEstimationTest(1, 5500, 500, rubyPath);
+//	int ini = 0;
+//	double sum = 0;
+//	double maxGap=-1, minGap=-1, maxGapVal=-1, minGapVal=-1;
+//	double stdDeviation;
+//	int repetitions = 100;
+//	while (ini < repetitions)
+//	{
+//		cout << "---------------------/////" << ini << "/////---------------------\n";
+//		int max = 5000, min = 500;
+//		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+//		double realmem = memoryTest(val1, val2, rubyPath);
+//		double estMem = memEstimation(val1, val2);
+//
+//		double gapValDiff = abs(realmem - estMem);
+//		if (maxGapVal == -1 || gapValDiff > maxGapVal)
+//			maxGapVal = gapValDiff;
+//		if (minGapVal == -1 || gapValDiff < minGapVal)
+//			minGapVal = gapValDiff;
+//		double gapDiff = abs(1 - (realmem / estMem));
+//		if (maxGap == -1 || gapDiff > maxGap)
+//			maxGap = gapDiff;
+//		if (minGap == -1 || gapDiff < minGap)
+//			minGap = gapDiff;
+//
+//		cout << realmem << " " << estMem << "\n";
+//		cout << abs(1-(realmem / estMem));
+//		sum += abs(1-(realmem / estMem));
+//		ini++;
+//	}
+//	double avg = sum / ini;
+//	cout << "\navg:" << avg;
+//	cout << "\nmaxGapVal:" << maxGapVal;
+//	cout << "\nminGapVal:" << minGapVal;
+//	cout << "\nmaxGap:" << maxGap;
+//	cout << "\nminGap:" << minGap;
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
+//	//double estMem = memEstimation(fixedMeters, i);
+//	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);
+//	//memoryEstimationTestWithFixedMeters(1000, 1, 35001, 5000, rubyPath);
+//	//memoryEstimationTestWithFixedMeters(2000, 1, 15001, 5000, rubyPath);
+//	//memoryEstimationTestWithFixedMeters(3000, 1, 10001, 5000, rubyPath);
+//
+////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 3, rubyPath);
+////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 3, rubyPath);
+////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 3, rubyPath);
+////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 3, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
+//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
+//
+//	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
+//	//string ret = "";
+//	//for(int i = 0; i < teste[0].size();i++)
+//	//{
+//	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
+//	//}
+//	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridmeterurbanopscc.txt");
+//	//f << ret;
+//	//f.close();
+//	//ret = "";
+//	//for (int i = 0; i < teste[1].size(); i++)
+//	//{
+//	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
+//	//}
+//	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridpoleurbanopscc.txt");
+//	//f2 << ret;
+//	//f2.close();
+//	//memoryEstimationTest(1000, 3000, 500, rubyPath);
+//
+//	//fullDensityTest(130, 130, rubyPath, 500, 1,true);
+//	//fullDensityTest(150,150, rubyPath, 360,5);
+//	//fullDensityTest(50, 150, rubyPath, 360, 5);
+//	//fullDensityTest(150, 50, rubyPath, 360, 5);
+//	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
+//	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
+//	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
+//	//varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
+//	return 0;
+//	//increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
+//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
+//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
+//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
+//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental5", 360);
+//	//increaseDensityTest(3000, 3000, rubyPath, "1");
+//	//increaseDensityTest(3000, 3000, rubyPath, "2");
+//	//increaseDensityTest(3000, 3000, rubyPath, "3");
+//	//increaseDensityTest(3000, 3000, rubyPath, "4");
+//	//increaseDensityTest(3000, 3000, rubyPath, "5");
+//	//increaseDensityTest(10000, 500, rubyPath, "1");
+//	//increaseDensityTest(10000, 500, rubyPath, "2");
+//	//increaseDensityTest(10000, 500, rubyPath, "3");
+//	//increaseDensityTest(10000, 500, rubyPath, "4");
+//	//increaseDensityTest(10000, 500, rubyPath, "5");
+//	//increaseDensityTest(2000, 4000, rubyPath, "1");
+//	//increaseDensityTest(2000, 4000, rubyPath, "2");
+//	//increaseDensityTest(2000, 4000, rubyPath, "3");
+//	//increaseDensityTest(2000, 4000, rubyPath, "4");
+//	//increaseDensityTest(2000, 4000, rubyPath, "5");
+//
+//	//return 0;
+//	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
+//	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
+//	
+//	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//	//_CrtSetBreakAlloc(368619);
+//	{
+//
+//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+//
+//		metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters5000.txt";
+//		polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles5000.txt";
+//	increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0,rubyPath);
+//	
+//	//float aux = 0;
+//	//string v = "";
+//	//float mem=1;
+//	//int i = 1, init = 100;
+//	//while (mem > 0)
+//	//{	
+//	//	mem = memoryTest(i,i, rubyPath);
+//	//	if (mem<0)
+//	//		break;
+//	//	cout << i << "x" << i << ": " << mem<< "\n";
+//	//	v += to_string(i) + " " + to_string(mem) +"\n";
+//	//	aux = mem;
+//	//	if (i < 1001)
+//	//		i += 10;
+//	//	else 
+//	//		i += 500;
+//
+//	//}
+//	//string filename = rubyPath + "/arqsTeste/ix"+to_string(i)+"MemTest.txt";
+//	//ofstream f(filename.c_str());
+//	//f << v;
+//	//f.close();
+//
+//
+//	//srand(time(NULL));
+//	//double x = 3501;
+//	//double wow = -1E-19;
+//
+//	////for (int x = 1; x < 10002; x+=500)
+//	//	//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
+//	//	//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
+//	////string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+//
+//
+//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
+//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
+//	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
+//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
+//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
+//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
+//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
+//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
+//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
+//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+//	//kmeansTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//
+//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
+//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaPequena1576.txt";
+//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaPequena453.txt";
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//	//
+//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+//
+//
+//	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Suburbano, 20, 100 - distFromHouseToStreet, 4, 3);
+//	//string ret = "";
+//	//for(int i = 0; i < teste[0].size();i++)
+//	//{
+//	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
+//	//}
+//	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridmetersSuburbano.txt");
+//	//f << ret;
+//	//f.close();
+//	//ret = "";
+//	//for (int i = 0; i < teste[1].size(); i++)
+//	//{
+//	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
+//	//}
+//	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridpolesSuburbano.txt");
+//	//f2 << ret;
+//	//f2.close();
+//	//string rubyPath = "C:/Sites/first_app";
+//	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters4000.txt", "filepoles4000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters5000.txt", "filepoles5000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters10000.txt", "filepoles10000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+//	//testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+//	//testGraspFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+//	//	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath)//;
+//	//testGraspFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+//	//testGraspFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+//	//	vector<Position*> teste;
+//	//	Grid *g = new Grid(teste,10);
+//
+//	//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
+//
+//	//	string x = AutoPlanning::executeAutoPlan();
+//	//	std::cout << val;
+//	}
+//
+//	//_CrtDumpMemoryLeaks();
+//	return 0;
+//
+//}

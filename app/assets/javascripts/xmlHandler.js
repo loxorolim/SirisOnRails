@@ -231,7 +231,7 @@ function formatKMLText(metrics) {
 	init+="<Folder><name>Enlaces</name>\n";
 	for(var i = 0;i<lines.length;i++){
 		var path = lines[i].getPath();
-		init+="<Placemark>\n<name>Enlace</name>\n<description>"+lines[i].efficiency+"</description>\n<LineString>\n<coordinates>\n"+path.getAt(0).lng()+","+path.getAt(0).lat()+",0\n"+path.getAt(1).lng()+","+path.getAt(1).lat()+",0\n</coordinates>\n</LineString>\n</Placemark>\n";
+		init+="<Placemark>\n<name>Enlace</name>\n<efficiency>"+lines[i].efficiency+"</efficiency>\n<delay>"+lines[i].delay+"</delay>\n<LineString>\n<coordinates>\n"+path.getAt(0).lng()+","+path.getAt(0).lat()+",0\n"+path.getAt(1).lng()+","+path.getAt(1).lat()+",0\n</coordinates>\n</LineString>\n</Placemark>\n";
 	}
 	init+="</Folder>\n";
 	init+="</Document>\n";

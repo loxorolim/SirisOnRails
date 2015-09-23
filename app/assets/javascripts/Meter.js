@@ -58,13 +58,18 @@ function createMeter() {
         },
         createGhost: function () {
             var pos = this.getPosition();
+            var color;
+            if(this.connected)
+                color = connectedColor;
+            else
+                color = disconnectedColor;
             this.ghost =  new google.maps.Circle({
                 position: pos,
                 center: pos,
                 map: map,
                 zIndex: 1,
                 draggable: false,
-                strokeColor: connectedColor,
+                strokeColor: color,
                 strokeOpacity: 0.6,
                 strokeWeight: 2,
                 fillColor: '#000000',

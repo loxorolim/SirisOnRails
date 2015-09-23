@@ -170,18 +170,20 @@ DrawInfo2* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Positi
 			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
 		else
 			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
+	
 		if (effs >= MARGIN_VALUE)
 		{
+			double linkDelay = calculateLinkDelay(effs, PCK_SIZE, BIT_RATE, technology) + hopNumber*PER_HOP_DELAY;
 			DrawInfo2* ret;
 			if(hopNumber == 0)
 			{
 				//ret = new DrawInfo(meter, deviceToConnect, effs, dist, 0);
-				ret = new DrawInfo2(meter->index, deviceToConnect->index,hopNumber, effs, dist, 0);
+				ret = new DrawInfo2(meter->index, deviceToConnect->index,hopNumber, effs, linkDelay, dist, 0);
 			}
 			else
 			{
 				//ret = new DrawInfo(meter, deviceToConnect, effs, dist, 1);
-				ret = new DrawInfo2(meter->index, deviceToConnect->index, hopNumber, effs, dist, 1);
+				ret = new DrawInfo2(meter->index, deviceToConnect->index, hopNumber, effs, linkDelay, dist, 1);
 			}
 			return ret;
 		}
