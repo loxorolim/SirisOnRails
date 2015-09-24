@@ -19,7 +19,7 @@ class LinkCalculation: public FatherMethods
 		vector<Position*>& daps = vec2; // alias para o vec2, daps é a mesma coisa que o vec2
 
 	public:
-		LinkCalculation(vector<Position*> &meters, vector<Position*> &daps, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh)
+		LinkCalculation(vector<Position*> &meters, vector<Position*> &daps, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, string rubyPath)
 		{
 			this->vec1 = meters;
 			this->vec2 = daps;
@@ -31,6 +31,7 @@ class LinkCalculation: public FatherMethods
 			this->h_rx = h_rx;
 			this->srd = srd;
 			this->mesh = mesh;
+			this->rubyPath = rubyPath;
 
 			
 			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.

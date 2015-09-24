@@ -10,6 +10,7 @@ class FatherMethods
 		int scenario, technology, srd, mesh;
 		double h_tx, h_rx, bit_rate, t_power;
 		double regionLimiter; // para criação do grid
+		string rubyPath;
 
 		double getLinkQuality(double distance);
 		double getLinkQualityBetweenMeters(double distance);

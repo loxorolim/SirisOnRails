@@ -257,61 +257,61 @@ vector<vector<Position*> > gridInstanceGenerator(double latStart, double lngStar
 	return pairRet;
 
 }
-void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
-{
-	string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
-	string completePolesFile = rubyPath + "/arqsTeste/" + polesFile;
-	FILE * file;
-	file = fopen(completeMetersFile.c_str(), "r");
-	FILE * file2;
-	file2 = fopen(completePolesFile.c_str(), "r");
-
-
-	vector<Position*> meters;
-	vector<Position*> poles;
-
-	while (true)
-	{
-		double lat = -1;
-		double lng = -1;
-		fscanf(file, "%lf %lf", &lat, &lng);
-		if (lat == -1)
-			break;
-		Position *toAdd = new Position(lat, lng, meters.size());
-		meters.push_back(toAdd);
-	}
-	while (true)
-	{
-		double lat = -1;
-		double lng = -1;
-		fscanf(file2, "%lf %lf", &lat, &lng);
-		if (lat == -1)
-			break;
-		Position *toAdd = new Position(lat, lng, poles.size());
-		poles.push_back(toAdd);
-	}
-
-	fclose(file);
-	fclose(file2);
-
-	string finalResult = "";
-	int gridSize = 500;
-	AutoPlanning* ap = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize);
-
-	//string gresult = "";
-	string ret = ap->graspAutoPlanning();
-	//string gresult = "";
-	//string ret = ap->gridAutoPlanning();
-	for (int i = 0; i < meters.size(); i++)
-	{
-		delete meters[i];
-	}
-	for (int i = 0; i < poles.size(); i++)
-	{
-		delete poles[i];
-	}
-	delete ap;
-}
+//void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
+//{
+//	string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
+//	string completePolesFile = rubyPath + "/arqsTeste/" + polesFile;
+//	FILE * file;
+//	file = fopen(completeMetersFile.c_str(), "r");
+//	FILE * file2;
+//	file2 = fopen(completePolesFile.c_str(), "r");
+//
+//
+//	vector<Position*> meters;
+//	vector<Position*> poles;
+//
+//	while (true)
+//	{
+//		double lat = -1;
+//		double lng = -1;
+//		fscanf(file, "%lf %lf", &lat, &lng);
+//		if (lat == -1)
+//			break;
+//		Position *toAdd = new Position(lat, lng, meters.size());
+//		meters.push_back(toAdd);
+//	}
+//	while (true)
+//	{
+//		double lat = -1;
+//		double lng = -1;
+//		fscanf(file2, "%lf %lf", &lat, &lng);
+//		if (lat == -1)
+//			break;
+//		Position *toAdd = new Position(lat, lng, poles.size());
+//		poles.push_back(toAdd);
+//	}
+//
+//	fclose(file);
+//	fclose(file2);
+//
+//	string finalResult = "";
+//	int gridSize = 500;
+//	AutoPlanning* ap = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize,rubyPath);
+//
+//	//string gresult = "";
+//	string ret = ap->graspAutoPlanning();
+//	//string gresult = "";
+//	//string ret = ap->gridAutoPlanning();
+//	for (int i = 0; i < meters.size(); i++)
+//	{
+//		delete meters[i];
+//	}
+//	for (int i = 0; i < poles.size(); i++)
+//	{
+//		delete poles[i];
+//	}
+//	delete ap;
+//}
 AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePath, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
 {
 
@@ -351,7 +351,7 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 	fclose(file2);
 
 	int gridSize = 500;
-	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,gridSize);
+	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize, rubyPath);
 	return res;
 
 
@@ -470,8 +470,8 @@ void executionTimeTest(int scenario, int tech, int bitrate, int power, int hx, i
 		}
 		string ret = "";
 		int gridSize = 500;
-		AutoPlanning* AP = new AutoPlanning(meters,poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, gridSize);
-		TestResult *res = AP->clusterAutoPlanning(false, 1);
+		AutoPlanning* AP = new AutoPlanning(meters, poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, gridSize, rubyPath);
+		TestResult *res = AP->clusterAutoPlanningTestMode(false, 1);
 		cout << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
 		f << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
 		delete res;

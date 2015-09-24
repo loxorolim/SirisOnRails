@@ -62,7 +62,7 @@
 #include <sstream>
 using namespace std;
 
-extern string rubyPath;
+
 
 template <typename T>
    std::string to_string(T value)
