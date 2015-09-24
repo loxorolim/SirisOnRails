@@ -1,3 +1,5 @@
+#ifndef _AUXILIARS_H
+#define _AUXILIARS_H
 #include <iostream>
 
 
@@ -19,8 +21,6 @@
 #endif
 #endif
 
-#ifndef _AUXILIARS_H
-#define _AUXILIARS_H
 
 #define MARGIN_VALUE 0.9
 #define GREEN_VALUE 0.98 
@@ -61,6 +61,8 @@
 #include <algorithm>
 #include <sstream>
 using namespace std;
+
+extern string rubyPath;
 
 template <typename T>
    std::string to_string(T value)
@@ -245,7 +247,7 @@ double getLatOfDistance(double distance);
 double memEstimation(double val1, double val2);
 double getNumberOfRetries(double quality);
 double getBackoffTime(double quality, int technology);
-double calculateLinkDelay(double quality, int pckSize, double rate, int technology);
+double calculateLinkDelay(double quality, double rate, int technology);
 
 //bool compareByLatitude(Position* a, Position *b);
 

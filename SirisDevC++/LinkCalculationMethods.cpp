@@ -1,75 +1,6 @@
 #include "LinkCalculationMethods.h"
 //Esses métodos aqui servem pra retornar ao cliente dados de onde criar o enlace, suas qualiades etc.
 
-//Ignore esse método, ele é o antigo.
-vector<DrawInfo*> LinkCalculation::calculateDrawingInfoOld()
-{
-	vector<DrawInfo*> toCover;
-	vector<Position*> coveredMeters;
-	vector<Position*> allMarkers;
-
-	//allMarkers.insert(allMarkers.end(), meters.begin(), meters.end());
-	for(int i = 0; i < meters.size();i++)
-	{
-		allMarkers.push_back(meters[i]);
-	}
-
-	Grid* g = new Grid(allMarkers,daps, regionLimiter);
-	g->putPositions(allMarkers);
-	g->putPositions(daps);
-
-	for (int d = 0; d < daps.size(); d++)
-	{
-		vector<Position*> markersReduced = g->getCell(daps[d]);
-		for (int i = 0; i < markersReduced.size(); i++)
-		{
-			double dist = getDistance(daps[d], markersReduced[i]);
-			double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-			if (effs >= MARGIN_VALUE)
-			{ //SE CONSIDERAR DAPS TEM Q ALTERA AKI PRA NAO CRIAR UMA LINHA COM ELE MESMO
-
-				DrawInfo* toAdd = new DrawInfo(daps[d], markersReduced[i], effs, dist, 0);
-				toCover.push_back(toAdd);
-				coveredMeters.push_back(markersReduced[i]);
-			}
-		}
-		//toCover = toCover.sort(function(a, b) { return a.value.distance - b.value.distance });
-		//for (int i = 0; i < toCover.size(); i++)
-		//	this.connect(toCover[i].marker, toCover[i].value);
-	}
-	if (meshEnabled)
-	{
-		sort(coveredMeters.begin(), coveredMeters.end());
-		coveredMeters.erase(unique(coveredMeters.begin(), coveredMeters.end()), coveredMeters.end());
-		vector<Position*> uncoveredMeters = removeVectorFromAnother(allMarkers, coveredMeters);
-		vector<Position*> aux = coveredMeters;
-
-		Grid* g2 = new Grid(aux,uncoveredMeters, regionLimiter);
-		g2->putPositions(aux);
-		for (int i = 0; i < meshEnabled; i++)
-		{
-			vector<Position*> newCovered;
-			for (int j = 0; j < uncoveredMeters.size(); j++)
-			{
-				vector<Position*> toCheck = g2->getCell(uncoveredMeters[j]);
-				DrawInfo* toAdd = chooseMeterToConnect(uncoveredMeters[j], aux);
-				if (toAdd)
-				{
-					toCover.push_back(toAdd);
-					newCovered.push_back(uncoveredMeters[j]);
-					g2->putPosition(uncoveredMeters[j]);
-				}
-			}
-			aux = newCovered;
-			uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
-		}
-		delete g2;
-
-	}
-	delete g;
-	return toCover;
-}
-
 vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
 {
 	vector<DrawInfo2*> toCover;
@@ -79,7 +10,7 @@ vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
 	vector<Position*> aux = connectedDevices;
 
 	//Isso é feito para cada salto, considerando os saltos mesh.
-	for (int i = 0; i < meshEnabled+1; i++)//esse +1 aqui é porque o meshEnabled diz a quantidade de saltos MESH, logo
+	for (int i = 0; i < mesh+1; i++)//esse +1 aqui é porque o meshEnabled diz a quantidade de saltos MESH, logo
 	//se são 3 saltos mehs, temos 4 saltos ao todo!
 	{
 		//A ideia aqui é a seguinte:
@@ -137,7 +68,7 @@ DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position
 	if (minDist != -1)
 	{
 		double dist = getDistance(meter, meterToConnect);
-		double effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
+		double effs = getLinkQuality(dist);
 		if (effs >= MARGIN_VALUE) {
 			DrawInfo* ret = new DrawInfo(meter, meterToConnect, effs, dist, 1);
 			return ret;
@@ -167,13 +98,13 @@ DrawInfo2* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Positi
 		double dist = getDistance(meter, deviceToConnect);
 		double effs = 0;
 		if(hopNumber==0)
-			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			effs = getLinkQuality(dist);
 		else
-			effs = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
+			effs = getLinkQualityBetweenMeters(dist);
 	
 		if (effs >= MARGIN_VALUE)
 		{
-			double linkDelay = calculateLinkDelay(effs, PCK_SIZE, BIT_RATE, technology) + hopNumber*PER_HOP_DELAY;
+			double linkDelay = calculateLinkDelay(effs, bit_rate, technology) + hopNumber*PER_HOP_DELAY;
 			DrawInfo2* ret;
 			if(hopNumber == 0)
 			{

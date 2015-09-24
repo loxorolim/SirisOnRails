@@ -114,7 +114,7 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 		for (int j = 0; j < meterRegion.size(); j++)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_TX, SRD);
+			double eff = getLinkQuality(dist);
 			if (i != j && eff >= MARGIN_VALUE) //Se a eficiencia for superior a 90%(MARGIN_VALUE) então é vizinho!
 				pointsCovered.push_back(meterRegion[j]->index);
 		}
@@ -139,19 +139,19 @@ vector<vector<int> > AutoPlanning::createScp()
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			double eff = getLinkQuality(dist);
 			if (eff >= MARGIN_VALUE)//Se a eficiencia for superior a 90%(MARGIN_VALUE) então o poste cobre esse medidor.
 				metersCovered.push_back(metersReduced[j]->index);
 		}
 		sM.push_back(metersCovered);
 	}
-	if (meshEnabled)
+	if (mesh)
 	{
 		vector<vector<int> > nM = createMeterNeighbourhood(g); //Cria a matriz de vizinhança para se analisar o mesh
 		for (int i = 0; i < sM.size(); i++)//Essa etapa incrementa a matriz de cobertura para considerar o mesh.
 		{
 			vector<int> neighbours = sM[i];//Conjunto de medidores que o poste "i" cobre.
-			for (int j = 0; j < meshEnabled; j++)//Para cada salto
+			for (int j = 0; j < mesh; j++)//Para cada salto
 			{
 				vector<int> newNeighbours;
 				for (int k = 0; k < neighbours.size(); k++)//Os vizinhos dos medidores que o poste cobre também serão
@@ -260,20 +260,20 @@ vector<vector<int> > AutoPlanning::createInvertedScp()
 		for (int j = 0; j < polesReduced.size(); j++)
 		{
 			double dist = getDistance(meters[i], polesReduced[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			double eff = getLinkQuality(dist);
 			if (eff >= MARGIN_VALUE)//Se a eficiencia for superior a 90%(MARGIN_VALUE) então o poste cobre esse medidor.
 				polesCovered.push_back(polesReduced[j]->index);
 		}
 		sM.push_back(polesCovered);
 	}
-	if (meshEnabled)
+	if (mesh)
 	{
 		vector<vector<int> > nM = createMeterNeighbourhood(gMeters); //Cria a matriz de vizinhança para se analisar o mesh
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> alreadyChecked;
 			vector<int> neighbours = nM[i];
-			for (int j = 0; j < meshEnabled; j++)
+			for (int j = 0; j < mesh; j++)
 			{
 				vector<int> newNeighbours;
 				for (int k = 0; k < neighbours.size(); k++)
@@ -976,7 +976,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 		daps.push_back(dapToInsert);
 	}
 	//Calcula métricas sem pos-opt
-	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power,h_tx,h_rx,srd, mesh);
 	MetricResult* metricResult = mc->executeMetricCalculationTest();
 	result->metersPerHop = metricResult->meterPerHop;
 	result->qualityPerHop = metricResult->linkQualityPerHop;
@@ -1001,7 +1001,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
 			daps.push_back(dapToInsert);
 		}
-		mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power,h_tx,h_rx,srd, mesh);
 		metricResult = mc->executeMetricCalculationTest();
 		result->poMetersPerHop = metricResult->meterPerHop;
 		result->poQualityPerHop = metricResult->linkQualityPerHop;
@@ -1218,7 +1218,7 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 		daps.push_back(dapToInsert);
 	}
 	//Calcula métricas sem pos-opt
-	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power,h_tx,h_rx,srd, mesh);
 	MetricResult* metricResult = mc->executeMetricCalculationTest();
 	result->metersPerHop = metricResult->meterPerHop;
 	result->qualityPerHop = metricResult->linkQualityPerHop;
@@ -1242,7 +1242,7 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
 			daps.push_back(dapToInsert);
 		}
-		mc = new MetricCalculation(metersCopy, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power,h_tx,h_rx,srd, mesh);
 		metricResult = mc->executeMetricCalculationTest();
 		result->poMetersPerHop = metricResult->meterPerHop;
 		result->poQualityPerHop = metricResult->linkQualityPerHop;

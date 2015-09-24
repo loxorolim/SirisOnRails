@@ -295,7 +295,8 @@ void testGraspFromFile(string metersFile, string polesFile, int scenario, int te
 	fclose(file2);
 
 	string finalResult = "";
-	AutoPlanning* ap = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+	int gridSize = 500;
+	AutoPlanning* ap = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize);
 
 	//string gresult = "";
 	string ret = ap->graspAutoPlanning();
@@ -349,8 +350,8 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 	fclose(file);
 	fclose(file2);
 
-
-	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+	int gridSize = 500;
+	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,gridSize);
 	return res;
 
 
@@ -468,7 +469,8 @@ void executionTimeTest(int scenario, int tech, int bitrate, int power, int hx, i
 			poles.push_back(toAdd);
 		}
 		string ret = "";
-		AutoPlanning* AP = new AutoPlanning(meters,poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, rubyPath);
+		int gridSize = 500;
+		AutoPlanning* AP = new AutoPlanning(meters,poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, gridSize);
 		TestResult *res = AP->clusterAutoPlanning(false, 1);
 		cout << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
 		f << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";

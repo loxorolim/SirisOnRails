@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "MetricCalculationMethods.h"
+#include "FatherMethods.h"
 #include "glpk.h"
 #include <thread>
 #include <future>
@@ -123,57 +124,49 @@ struct TestResult
 
 
 };
-class AutoPlanning
+class AutoPlanning: public FatherMethods
 {
 	private:
-			vector<Position*> meters;
-			vector<Position*> poles;
-			int scenario, technology, SRD, meshEnabled;
-			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
-			double regionLimiter, gridLimiter ;
-			string rubyPath;
+		double gridLimiter;
+		vector<Position*>& meters = vec1; // alias para o vec1, meters é a mesma coisa que o vec1
+		vector<Position*>& poles = vec2; // alias para o vec2, poles é a mesma coisa que o vec2
+			//vector<Position*> meters;
+			//vector<Position*> poles;
+			//int scenario, technology, SRD, meshEnabled;
+			//double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
+			//double regionLimiter, gridLimiter ;
+			//string rubyPath;
 	public:
-		AutoPlanning(vector<Position*> &m, vector<Position*> &p, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
+		AutoPlanning(vector<Position*> &meters, vector<Position*> &poles, int scenario, int technology, double bit_rate, double t_power,double h_tx, double h_rx, int srd, int mesh, double gridLimiter)
 		{
-			meters = m;
-			poles = p;
-			scenario = s;
-			technology = t;
-			BIT_RATE = B;
-			TRANSMITTER_POWER = T;
-			H_TX = h1;
-			H_RX = h2;
-			SRD = srd;
-			meshEnabled = me;
-			rubyPath = rp;
-			gridLimiter = 10000000;
+			this->vec1 = meters;
+			this->vec2 = poles;
+			this->scenario = scenario;
+			this->technology = technology;
+			this->bit_rate = bit_rate;
+			this->t_power = technology;
+			this->h_tx = h_tx;
+			this->h_rx = h_rx;
+			this->srd = srd;
+			this->mesh = mesh;
+			this->gridLimiter = gridLimiter;
 			
 			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
 			regionLimiter = 0;
-			while (getHataSRDSuccessRate(regionLimiter, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD) > MARGIN_VALUE)
+			while (getLinkQuality(regionLimiter) > MARGIN_VALUE)
 			{
 				regionLimiter++;
 			}
 			regionLimiter++;
 		
 		};
-		~AutoPlanning()
-		{
-			for(int i = 0; i < meters.size();i++)
-			{
-				delete meters[i];
-			}
-
-			for(int i = 0; i < poles.size();i++)
-			{
-				delete poles[i];
-			}
-		};
 		
-
+		//Funções de criação do SCP;
 		vector<vector<int> > createScpWithLimit(int limit);
 		vector<vector<int> > createScp();
 		vector<vector<int> > createInvertedScp();
+
+
 		void saveGLPKFile(vector<vector<int> > &scp);
 		void saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy);
 		void saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit);

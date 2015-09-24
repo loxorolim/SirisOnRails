@@ -99,8 +99,8 @@ string getResponse(string req, string rubyPath)
 			Position *toAdd = new Position(lat, lng,i);
 			poles.push_back(toAdd);
 		}
-
-		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+		int gridSize = 500;
+		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,gridSize);
 		string ret = res->executeAutoPlan(redundancy,limit);
 		//res->~AutoPlanning();
 		cout << ret;
@@ -143,7 +143,7 @@ string getResponse(string req, string rubyPath)
 			daps.push_back(toAdd);
 		}
 
-		LinkCalculation* res = new LinkCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+		LinkCalculation* res = new LinkCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled);
 		string ret = res->executeLinkCalculation();
 		//std::cout << ret;
 		//res->~AutoPlanning();
@@ -185,7 +185,7 @@ string getResponse(string req, string rubyPath)
 			daps.push_back(toAdd);
 		}
 
-		MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+		MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled);
 		string ret = res->executeMetricCalculation();
 		//std::cout << ret;
 		//res->~AutoPlanning();
@@ -257,12 +257,13 @@ string getResponse(string req, string rubyPath)
 }
 int main(int argc, char** argv)
 {
-	string line, rubyPath, input="";
-	getline(cin, rubyPath);
+	string line, rP, input="";
+	getline(cin, rP);
 	while (getline(cin, line))
 	{
 		input += line+"\n";
 	}
+	rubyPath = rP;
 	string ret = getResponse(input,rubyPath );
 	cout << ret;
 
