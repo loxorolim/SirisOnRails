@@ -9,26 +9,26 @@ int AutoPlanning::getPolesSize()
 	return poles.size();
 }
 //Une dois vetores de inteiros sem repetição, nada demais.
-vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
-{
-
-	vector<int> ret;
-	for (int i = 0; i < v1.size(); i++)
-		ret.push_back(v1[i]);
-	for (int i = 0; i < v2.size(); i++)
-	{
-		bool add = true;
-		for (int j = 0; j < v1.size(); j++)
-		if (v1[j] == v2[i])
-		{
-			add = false;
-			break;
-		}
-		if (add)
-			ret.push_back(v2[i]);
-	}
-	return ret;
-}
+//vector<int> AutoPlanning::concatVectors(vector<int> &v1, vector<int> &v2)
+//{
+//
+//	vector<int> ret;
+//	for (int i = 0; i < v1.size(); i++)
+//		ret.push_back(v1[i]);
+//	for (int i = 0; i < v2.size(); i++)
+//	{
+//		bool add = true;
+//		for (int j = 0; j < v1.size(); j++)
+//		if (v1[j] == v2[i])
+//		{
+//			add = false;
+//			break;
+//		}
+//		if (add)
+//			ret.push_back(v2[i]);
+//	}
+//	return ret;
+//}
 //Retorna um vetor com os índices dos medidores que não estão cobertos de acordo com a matriz de cobertura (SCP).
 //A matriz de cobertura relaciona os medidores e postes e quem cobre quem.
 //Por exemplo:
@@ -443,62 +443,62 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 //		f.close();
 //}
 
-////Esse método faz um system call ao GLPK
-//vector<int> AutoPlanning::executeGlpk(string filename)
-//{
-//	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
-//	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
-//	//system(access.c_str());
-//	vector<int> answer;
-//	glp_term_out(GLP_OFF);
-//	glp_prob *lp;
-//	glp_tran *tran;
-//	int ret, count, cpeak;
-//	size_t total, tpeak;
-//	int err;
-//	double totalInMb, tpeakInMb;
-//	lp = glp_create_prob();
-//	tran = glp_mpl_alloc_wksp();
-//	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
-//	glp_mem_limit(MEM_LIMIT);
-//
-//	if (ret != 0)
-//	{
-//		fprintf(stderr, "Error on translating model\n");
-//		goto skip;
-//	}
-//
-//	ret = glp_mpl_generate(tran, NULL);
-//	if (ret != 0)
-//	{
-//		fprintf(stderr, "Error on generating model\n");
-//		goto skip;
-//	}
-//
-//	glp_mpl_build_prob(tran, lp);
-//	glp_iocp parm;
-//	glp_init_iocp(&parm);
-//	parm.presolve = GLP_ON;
-//	err = glp_intopt(lp, &parm);
-//	for (int i = 1; i < poles.size() + 1; i++)
-//	{
-//		if (glp_mip_col_val(lp, i))
-//			answer.push_back(poles[i - 1]->index);
-//	}
-//	glp_mem_usage(&count, &cpeak, &total, &tpeak);
-//	printf("%d memory block(s) are still allocated\n", count);
-//	totalInMb = ((double)total / (1024 * 1024));
-//	tpeakInMb = ((double)tpeak / (1024 * 1024));
-//skip: glp_mpl_free_wksp(tran);
-//	glp_delete_prob(lp);
-//	return answer;
-//}
+//Esse método faz um system call ao GLPK
+vector<int> AutoPlanning::executeGlpk(string filename)
+{
+	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
+	//system(access.c_str());
+	vector<int> answer;
+	glp_term_out(GLP_OFF);
+	glp_prob *lp;
+	glp_tran *tran;
+	int ret, count, cpeak;
+	size_t total, tpeak;
+	int err;
+	double totalInMb, tpeakInMb;
+	lp = glp_create_prob();
+	tran = glp_mpl_alloc_wksp();
+	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
+	glp_mem_limit(MEM_LIMIT);
+
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on translating model\n");
+		goto skip;
+	}
+
+	ret = glp_mpl_generate(tran, NULL);
+	if (ret != 0)
+	{
+		fprintf(stderr, "Error on generating model\n");
+		goto skip;
+	}
+
+	glp_mpl_build_prob(tran, lp);
+	glp_iocp parm;
+	glp_init_iocp(&parm);
+	parm.presolve = GLP_ON;
+	err = glp_intopt(lp, &parm);
+	for (int i = 1; i < poles.size() + 1; i++)
+	{
+		if (glp_mip_col_val(lp, i))
+			answer.push_back(poles[i - 1]->index);
+	}
+	glp_mem_usage(&count, &cpeak, &total, &tpeak);
+	printf("%d memory block(s) are still allocated\n", count);
+	totalInMb = ((double)total / (1024 * 1024));
+	tpeakInMb = ((double)tpeak / (1024 * 1024));
+skip: glp_mpl_free_wksp(tran);
+	glp_delete_prob(lp);
+	return answer;
+}
 vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &solverTime)
 {
 	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
-	glp_term_out(GLP_ON);
+	glp_term_out(GLP_OFF);
 	double seconds;
 	clock_t begin_time = 0;
 	vector<int> answer;
@@ -743,12 +743,9 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 		poles = subProblems[i]->poles;
 		vector<vector<int> > cellSCP = createScp();
 		subProblem* sp = new subProblem();
-		evaluateSCP(cellSCP, meters.size(), sp);
 		saveGLPKFileReduced(cellSCP, redundancy);
 		double memUsageInCell = -1;
 		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
-		sp->solverTime = solverTime;
-		sp->memUsed = memUsageInCell;
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)

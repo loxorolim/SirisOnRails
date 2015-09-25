@@ -144,7 +144,7 @@ class AutoPlanning: public FatherMethods
 			this->scenario = scenario;
 			this->technology = technology;
 			this->bit_rate = bit_rate;
-			this->t_power = technology;
+			this->t_power = t_power;
 			this->h_tx = h_tx;
 			this->h_rx = h_rx;
 			this->srd = srd;
@@ -177,6 +177,7 @@ class AutoPlanning: public FatherMethods
 
 		//Planejamento com cluster (usa o K-MEANS)
 		string clusterAutoPlanning(bool usePostOptimization, int redundancy);
+
 		TestResult* clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy);
 		string gridAutoPlanning(int redundancy, int limit);
 		TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
@@ -193,23 +194,18 @@ class AutoPlanning: public FatherMethods
 
 		
 		//string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
-		vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
+		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 		//string graspAutoPlanning();
 
 		//Metodos Teste
-		void setGridSize(double gridSize);
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
-
-
-	
 		int getMetersSize();
 		int getPolesSize();
+		void setGridSize(double gridSize);
 		void setRegionLimiter(double rl);
 
 };
-
-
 
 //void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
 //void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> solution);

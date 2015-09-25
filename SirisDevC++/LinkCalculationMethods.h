@@ -26,7 +26,7 @@ class LinkCalculation: public FatherMethods
 			this->scenario = scenario;
 			this->technology = technology;
 			this->bit_rate = bit_rate;
-			this->t_power = technology;
+			this->t_power = t_power;
 			this->h_tx = h_tx;
 			this->h_rx = h_rx;
 			this->srd = srd;
