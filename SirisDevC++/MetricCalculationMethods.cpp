@@ -214,7 +214,14 @@ vector<sComponent*> MetricCalculation::statisticalList()
 			}
 		}
 		aux = newCovered;
-		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+		//uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+		for (int j = 0; j < newCovered.size(); j++)
+		{
+			vector<Position*>::iterator it;
+			it = find(uncoveredMeters.begin(), uncoveredMeters.end(), newCovered[j]);
+			if (it != uncoveredMeters.end())
+				uncoveredMeters.erase(it);
+		}
 	}
 	delete g;
 	return statisticalComponents;

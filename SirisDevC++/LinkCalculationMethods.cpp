@@ -1,9 +1,9 @@
 #include "LinkCalculationMethods.h"
 //Esses métodos aqui servem pra retornar ao cliente dados de onde criar o enlace, suas qualiades etc.
 
-vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
+vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 {
-	vector<DrawInfo2*> toCover;
+	vector<DrawInfo*> toCover;
 	vector<Position*> connectedDevices;
 	connectedDevices = daps;
 	vector<Position*> uncoveredMeters = meters;
@@ -21,7 +21,7 @@ vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
 		for (int j = 0; j < uncoveredMeters.size(); j++)
 		{
 			//vector<Position*> toCheck = g->getCell(uncoveredMeters[j]);
-			DrawInfo2* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);//Esse método que escolhe quem o medidor vai
+			DrawInfo* toAdd = chooseDeviceToConnect(uncoveredMeters[j], aux, i);//Esse método que escolhe quem o medidor vai
 			//se conectar. Ele sempre escolhe o cara mais próximo (isso é, com melhor qualidade). Então, no primeiro salto
 			//ele só vai considerar os agregadores, a partir do segundo ele vai considerar também os medidores cobertos a
 			//1 salto, depois a 2 e assim sucessivamente.
@@ -33,7 +33,15 @@ vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
 			}
 		}
 		aux = newCovered;
-		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+		for (int j = 0; j < newCovered.size(); j++)
+		{
+			vector<Position*>::iterator it;
+			it = find(uncoveredMeters.begin(), uncoveredMeters.end(), newCovered[j]);
+			if (it != uncoveredMeters.end())
+				uncoveredMeters.erase(it);			
+		}
+
+		//uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
 	}
 	//delete g;
 	return toCover;//retorna uma lista com dados DrawInfo (ve lá no auxiliars.h o que tem no DrawInfo)
@@ -43,7 +51,7 @@ vector<DrawInfo2*> LinkCalculation::calculateDrawingInfo()
 //o toString do DrawInfo
 string LinkCalculation::executeLinkCalculation()
 {
-	vector<DrawInfo2*> drawInfos = calculateDrawingInfo();
+	vector<DrawInfo*> drawInfos = calculateDrawingInfo();
 	string ret = "";
 	for (int i = 0; i < drawInfos.size(); i++)
 		ret += drawInfos[i]->toString() + " ";
@@ -51,36 +59,12 @@ string LinkCalculation::executeLinkCalculation()
 		delete drawInfos[i];
 	return ret;
 }
-//Ignora, isso era usado no método antigo.
-DrawInfo* LinkCalculation::chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters)
-{
-	double minDist = -1;
-	Position* meterToConnect = NULL;
-	for (int i = 0; i < connectedMeters.size(); i++)
-	{
-		double dist = getDistance(meter, connectedMeters[i]);
-		if (dist < minDist || minDist == -1)
-		{
-			minDist = dist;
-			meterToConnect = connectedMeters[i];
-		}
-	}
-	if (minDist != -1)
-	{
-		double dist = getDistance(meter, meterToConnect);
-		double effs = getLinkQuality(dist);
-		if (effs >= MARGIN_VALUE) {
-			DrawInfo* ret = new DrawInfo(meter, meterToConnect, effs, dist, 1);
-			return ret;
-		}
-	}
-	return NULL;
-}
+
 //Aqui é o método que determina a quem o medidor vai se conectar e retorna um DrawInfo com as informações dessa
 //conexão. Lembrando que ele se conecta sempre a um dispositivo já conectado com menor distância. De inicio, apenas
 //os DAPs são considerados como dispositivos conectados, depois os medidores ligados a esse DAP também são considerados
 //como conectados, depois os medidores que ligaram a outros medidores e assim por diante.
-DrawInfo2* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, int hopNumber)
+DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, int hopNumber)
 {
 	double minDist = -1;
 	Position* deviceToConnect = NULL;
@@ -105,17 +89,11 @@ DrawInfo2* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Positi
 		if (effs >= MARGIN_VALUE)
 		{
 			double linkDelay = calculateLinkDelay(effs, bit_rate, technology) + hopNumber*PER_HOP_DELAY;
-			DrawInfo2* ret;
+			DrawInfo* ret;
 			if(hopNumber == 0)
-			{
-				//ret = new DrawInfo(meter, deviceToConnect, effs, dist, 0);
-				ret = new DrawInfo2(meter->index, deviceToConnect->index,hopNumber, effs, linkDelay, dist, 0);
-			}
+				ret = new DrawInfo(meter->index, deviceToConnect->index,hopNumber, effs, linkDelay, dist, 0);
 			else
-			{
-				//ret = new DrawInfo(meter, deviceToConnect, effs, dist, 1);
-				ret = new DrawInfo2(meter->index, deviceToConnect->index, hopNumber, effs, linkDelay, dist, 1);
-			}
+				ret = new DrawInfo(meter->index, deviceToConnect->index, hopNumber, effs, linkDelay, dist, 1);
 			return ret;
 		}
 	}

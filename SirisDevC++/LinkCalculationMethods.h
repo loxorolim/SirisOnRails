@@ -44,10 +44,9 @@ class LinkCalculation: public FatherMethods
 			this->regionLimiter = regionLimiter;
 		};
 
-		vector<DrawInfo2*> calculateDrawingInfo();
+		vector<DrawInfo*> calculateDrawingInfo();
 		string executeLinkCalculation();
-		DrawInfo* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters);
-		DrawInfo2* chooseDeviceToConnect(Position* meter, vector<Position*> &devices,int isFirstHop);
+		DrawInfo* chooseDeviceToConnect(Position* meter, vector<Position*> &devices,int isFirstHop);
 
 };
 
