@@ -77,14 +77,13 @@ class MetricCalculation: public FatherMethods
 		vector<int> meterPerHop(vector<sComponent*> sL);
 		vector<double> linkQualityPerHop(vector<sComponent*> sL);
 		vector<double> linkDelayPerHop(vector<sComponent*> sL);
-		//vector<vector<sComponent*> > createStatisticalMeterNeighbourhood(Grid *g);
 		vector<vector<int> > createMeterNeighbourhood(Grid *g);
-		sComponent* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop);
+		//sComponent* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop);
 		sComponent* chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int meshHop);
 		string executeMetricCalculation();
 		MetricResult* executeMetricCalculationTest();
 		vector<vector<int> > coverageList();
-		vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
+		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 
 
 };

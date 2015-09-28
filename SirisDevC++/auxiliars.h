@@ -101,43 +101,6 @@ class Position
 		}
 
 };
-class DrawInfo
-{
-public:
-	int dashed;
-	int a,b,hopnumber;
-	double efficiency, delay, distance;
-	DrawInfo(int mainIndex, int toConnectIndex, int hn, double eff, double del, double d, int da)
-	{
-		a = mainIndex;
-		b = toConnectIndex;
-		hopnumber = hn;
-		efficiency = eff;
-		delay = del;
-		distance = d;
-		dashed = da;
-	};
-	string toString()
-	{
-		string ret;
-		ret += to_string(a);
-		ret += "/";
-		ret += to_string(b);
-		ret += "/";
-		ret += to_string(hopnumber);
-		ret += "/";
-		ret += to_string(efficiency);
-		ret += "/";
-		ret += to_string(delay);
-		ret += "/";
-		ret += to_string(distance);
-		ret += "/";
-		ret += to_string(dashed);
-		//ret += "/";
-		return ret;
-	}
-
-};
 
 double getDistance(Position * p1, Position * p2);
 

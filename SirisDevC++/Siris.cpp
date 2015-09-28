@@ -5,7 +5,6 @@
 #include "AutoPlanningMethods.h"
 #include "LinkCalculationMethods.h"
 #include "MetricCalculationMethods.h"
-#include "HeatgridMethods.h"
 #include "HataSRD.h"
 #include <stdio.h>
 ////
@@ -193,35 +192,35 @@ string getResponse(string req, string rubyPath)
 		return ret;
 
 	}
-	if (option == HEATGRID)
-	{
-		int pLength;
-		std::getline(f, line);
-		pLength = std::atoi(line.c_str());
-		if (pLength == 0) return "";
-		vector<Position*> points;
-		for (int i = 0; i < pLength; i++)
-		{
-			double lat;
-			double lng;
-			double weight;
-			std::getline(f, line);
-			vector<string> s = split(line, ' ');
-			lat = std::atof(s[0].c_str());
-			lng = std::atof(s[1].c_str());
-			weight = std::atof(s[2].c_str());
+	//if (option == HEATGRID)
+	//{
+	//	int pLength;
+	//	std::getline(f, line);
+	//	pLength = std::atoi(line.c_str());
+	//	if (pLength == 0) return "";
+	//	vector<Position*> points;
+	//	for (int i = 0; i < pLength; i++)
+	//	{
+	//		double lat;
+	//		double lng;
+	//		double weight;
+	//		std::getline(f, line);
+	//		vector<string> s = split(line, ' ');
+	//		lat = std::atof(s[0].c_str());
+	//		lng = std::atof(s[1].c_str());
+	//		weight = std::atof(s[2].c_str());
 
-			Position *toAdd = new Position(lat, lng, weight);
-			points.push_back(toAdd);
-		}
-		Heatgrid *res = new Heatgrid(points);
-		string ret = res->executeHeatgrid();
-		//std::cout << ret;
-		//res->~AutoPlanning();
-		delete res;
-		return ret;
+	//		Position *toAdd = new Position(lat, lng, weight);
+	//		points.push_back(toAdd);
+	//	}
+	//	Heatgrid *res = new Heatgrid(points);
+	//	string ret = res->executeHeatgrid();
+	//	//std::cout << ret;
+	//	//res->~AutoPlanning();
+	//	delete res;
+	//	return ret;
 
-	}
+	//}
 	if (option == GET_RANGE)
 	{
 		double dapdist = 0, step = 0.1, effs = 1;

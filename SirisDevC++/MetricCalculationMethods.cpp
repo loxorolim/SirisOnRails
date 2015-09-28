@@ -5,28 +5,28 @@
 
 
 
-//Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
-vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
-{
-	vector<int> ret;
-	for (int i = 0; i < v1.size(); i++)
-		ret.push_back(v1[i]);
-	for (int i = 0; i < v2.size(); i++)
-	{
-		bool add = true;
-		for (int j = 0; j < v1.size(); j++)
-		if (v1[j] == v2[i])
-		{
-			add = false;
-			break;
-		}
-		if (add)
-			ret.push_back(v2[i]);
-
-	}
-	return ret;
-
-}
+////Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
+//vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
+//{
+//	vector<int> ret;
+//	for (int i = 0; i < v1.size(); i++)
+//		ret.push_back(v1[i]);
+//	for (int i = 0; i < v2.size(); i++)
+//	{
+//		bool add = true;
+//		for (int j = 0; j < v1.size(); j++)
+//		if (v1[j] == v2[i])
+//		{
+//			add = false;
+//			break;
+//		}
+//		if (add)
+//			ret.push_back(v2[i]);
+//
+//	}
+//	return ret;
+//
+//}
 //A partir da lista de cobertura (Coverage List - cL) determina-se quantos medidores cada DAP cobre.
 // A lista de cobertura é simplesmente um vetor de vetores, que relaciona cada DAP com os medidores que ele alcança.
 // O método simplesmente percorre a lista e calcula a média e descobre o mínimo e o máximo.
@@ -269,8 +269,15 @@ vector<vector<int> > MetricCalculation::coverageList()
 					int pos = 0;
 					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
 
-					sM[i] = concatVectors(sM[i], nM[pos]);
-					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					//sM[i] = concatVectors(sM[i], nM[pos]);
+					sM[i].insert(sM[i].end(), nM[pos].begin(), nM[pos].end());
+					sort(sM[i].begin(), sM[i].end());
+					sM[i].erase(unique(sM[i].begin(), sM[i].end()), sM[i].end());
+
+					//newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					newNeighbours.insert(newNeighbours.end(), nM[pos].begin(), nM[pos].end());
+					sort(newNeighbours.begin(), newNeighbours.end());
+					newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
 				}
 				neighbours = newNeighbours;
 			}
@@ -327,35 +334,6 @@ vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 	}
 
 	return M;
-}
-//Mesmo coisa que no LinkCalculation. Não está sendo usado! O chooseDeviceToConnect que é usado!
-sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop)
-{
-	double minDist = -1;
-	Position* meterToConnect = NULL;
-	for (int i = 0; i < connectedMeters.size(); i++)
-	{
-		double dist = getDistance(meter, connectedMeters[i]);
-		if (dist < minDist || minDist == -1)
-		{
-			minDist = dist;
-			meterToConnect = connectedMeters[i];
-		}
-	}
-	if (minDist != -1)
-	{
-		double dist = getDistance(meter, meterToConnect);
-		double eff = getLinkQuality(dist);
-		if (eff >= MARGIN_VALUE)
-		{
-			sComponent* father = NULL;
-			for(int i = 0; i < sC.size();i++){ if(sC[i]->index == meterToConnect->index) father = sC[i]; break; }
-			double delay = calculateLinkDelay(eff, bit_rate, technology);
-			sComponent* ret = new sComponent(meter->index, dist, eff,delay, meshHop, father);
-			return ret;
-		}
-	}
-	return NULL;
 }
 //Mesmo coisa que no LinkCalculation
 sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int hop)

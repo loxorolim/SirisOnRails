@@ -71,21 +71,6 @@ vector<string> split(const string &s, char delim)
 	split(s, delim, elems);
 	return elems;
 }
-vector<Position*> removeVectorFromAnother(vector<Position*> &v1, vector<Position*> &v2)
-{
-	//remove v2 do v1
-	vector<Position*> ret;
-	for (int i = 0; i < v1.size(); i++)
-	{
-		std::vector<Position*>::iterator it;
-		it = find(v2.begin(), v2.end(), v1[i]);
-		if (it == v2.end())
-		{
-			ret.push_back(v1[i]);
-		}
-	}
-	return ret;
-}
 double rad(double x)
 {
 	return x * M_PI / 180;
