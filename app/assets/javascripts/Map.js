@@ -2,6 +2,15 @@
 function initialize() {
 
     var MY_MAPTYPE_ID = 'custom_style';
+    var disablePOI =[
+    {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [
+              { visibility: "off" }
+        ]
+    }
+];
     var mapOptions =
 	{
 	    zoom: 4,
@@ -10,6 +19,7 @@ function initialize() {
 	    mapTypeControl: true,
 	    panControl: false,
 	    zoomControl: true,    
+        styles: disablePOI,
 	    
 	    zoomControlOptions:
 		{
@@ -23,12 +33,8 @@ function initialize() {
     var input = (document.getElementById('pac-input'));
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
     var searchBox = new google.maps.places.SearchBox((input));
-	//$( document ).tooltip();
 
-    // google.maps.event.addListener(map, 'idle', showMarkers);
-    //google.maps.event.addListener(map,'dragend', drawGridElements);
-   // elevator = new google.maps.ElevationService();  
-   // directionsService = new google.maps.DirectionsService();
+    //directionsService = new google.maps.DirectionsService();
 
     drawingManager = new google.maps.drawing.DrawingManager({
     drawingMode: null,
@@ -89,19 +95,13 @@ function initialize() {
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(
 	document.getElementById('trapezoid'));
     markerCluster = new MarkerClusterer(map,[], {
-        maxZoom: 30,
-        minimumClusterSize: 50,
-        gridSize: 30
+        maxZoom: 16,
+        minimumClusterSize: 1,
+        gridSize: 10
     });
     
-    markerCluster = new MarkerClusterer(map);
-    //drawHeatMap();
-    insertListener = google.maps.event.addListener(map, 'click', function (event) {
-        //if (opMode == "Insertion") {
-        //    placeDAP(event.latLng.lat(), event.latLng.lng(), currentTech);
 
-        //}
-    });
+    insertListener = google.maps.event.addListener(map, 'click', function (event) { });
     google.maps.event.addListener(searchBox, 'places_changed', function() {
         var places = searchBox.getPlaces();
 
@@ -141,21 +141,5 @@ function unclusterMap() {
         allMarkers[i].setOptions({ map: map, visible: true });
     }
 }
-var pi_180 = Math.PI / 180.0;
-var pi_4 = Math.PI * 4;
 
-function LatLongToPixelXY(latitude, longitude) {
-
-    var sinLatitude = Math.sin(latitude * pi_180);
-    var pixelY = (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) /(pi_4)) * 256;
-    var pixelX = ((longitude + 180) / 360) * 256;
-
-    //var pixel = new Object();
-    //pixel.x = (0.5 + pixelX) | 0;
-    //pixel.y = (0.5 + pixelY) | 0;
-
-    var pixel =  { x: pixelX, y: pixelY};
-    
-    return pixel;
-}
 google.maps.event.addDomListener(window, 'load', initialize);

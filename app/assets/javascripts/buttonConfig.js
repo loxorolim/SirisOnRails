@@ -16,23 +16,15 @@ function setInsertionOptions(type)
     insertListener = google.maps.event.addListener(map, 'click', function (event) {
         if (opMode == "Insertion")
         {
-            if (type == "DAP") {
-                var dap = createDAP();
-                dap.placeOnMap(event.latLng.lat(), event.latLng.lng());
-                sendDrawRequest();
-            }
-              //  placeDAP(event.latLng.lat(), event.latLng.lng(), currentTech);           
-            if (type == "Meter") {
-                var meter = createMeter();
-                meter.placeOnMap(event.latLng.lat(), event.latLng.lng());
-                sendDrawRequest();
-            }
-                //placeMeter(event.latLng.lat(), event.latLng.lng());
-            if (type == "Pole") {
-                var pole = createPole();
-                pole.placeOnMap(event.latLng.lat(), event.latLng.lng());
-                sendDrawRequest();
-            }
+            var toInsert;
+            if (type == "DAP")
+                toInsert = createDAP();        
+            if (type == "Meter")
+                toInsert = createMeter();
+            if (type == "Pole") 
+                toInsert  = createPole();
+            toInsert .placeOnMap(event.latLng.lat(), event.latLng.lng());
+            sendDrawRequest();
               //  placePole(event.latLng.lat(), event.latLng.lng());
 
         }
