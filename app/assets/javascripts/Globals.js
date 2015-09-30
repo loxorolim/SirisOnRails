@@ -100,48 +100,7 @@ const dapGhostIconImage =
        size: new google.maps.Size(19, 19),
        anchor: new google.maps.Point(9.5, 9.5)
    };
-const meterGhostIconImage =
-{
-    url: '/assets/meterghost.png',
-    size: new google.maps.Size(10, 10),
-    anchor: new google.maps.Point(5,5)
-}
-const meterOffIconImage =
-    {
-        url: '/assets/blackSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5,5),
-        
-    }
-const meterBestIconImage =
-    {
-        url: '/assets/greenSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-const meterBetterIconImage =
-    {
-        url: '/assets/yellowSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-const meterGoodIconImage =
-    {
-        url: '/assets/redSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-const meterMeshIconImage =
-    {
-        url: '/assets/meshSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-
 const poleIcon = {
     url: document.URL+'/assets/pole.png'
 }
-        
-//////////
-
 var mouseInsertionIcon = new google.maps.Marker({});
