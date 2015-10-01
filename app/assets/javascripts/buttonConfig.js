@@ -39,136 +39,6 @@ function setInsertionOptions(type)
 
     });
 }
-function setRadio() {
-    
-    $("#radio").buttonset();
-    $("#Insertion").click(function () {
-
-    });
-    $("#eraserRadio").button({
-        icons: {
-            primary: "eraser",
-            secondary: null
-        },
-        text: false
-    });
-    $("#eraserRadio").click(function (event) {
-        setOpMode("Removal");
-        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/removecursor.cur), default" });
-        setInfoWindowNull();
-        drawingManager.setDrawingMode(null);
-    });
-    $("#eraserSelectionRadio").button({
-        icons: {
-            primary: "eraserSelection",
-            secondary: null
-        },
-        text: false
-    });
-    $("#eraserSelectionRadio").click(function (event) {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
-        removeSelectionMode = REMOVE_ALL;
-        setInfoWindowNull();
-
-    });
-    $("#dapEraserSelectionRadio").button({
-        icons: {
-            primary: "dapEraserSelection",
-            secondary: null
-        },
-        text: false
-    });
-    $("#dapEraserSelectionRadio").click(function (event) {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
-        removeSelectionMode = REMOVE_DAPS;
-        setInfoWindowNull();
-
-    });
-    $("#meterEraserSelectionRadio").button({
-        icons: {
-            primary: "meterEraserSelection",
-            secondary: null
-        },
-        text: false
-    });
-    $("#meterEraserSelectionRadio").click(function (event) {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
-        removeSelectionMode = REMOVE_METERS;
-        setInfoWindowNull();
-
-    });
-    $("#poleEraserSelectionRadio").button({
-        icons: {
-            primary: "poleEraserSelection",
-            secondary: null
-        },
-        text: false
-    });
-    $("#poleEraserSelectionRadio").click(function (event) {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.RECTANGLE);
-        removeSelectionMode = REMOVE_POLES;
-        setInfoWindowNull();
-
-    });
-    $("#viewRadio").button({
-        icons: {
-            primary: "view",
-            secondary: null
-        },
-        text: false
-    });
-    $("#viewRadio").click(function () {
-        setOpMode("View");
-        map.setOptions({ draggableCursor: "url(https://maps.gstatic.com/mapfiles/openhand_8_8.cur), auto" });
-        drawingManager.setDrawingMode(null);
-
-    });
-    $("#dapRadio").button({
-        icons: {
-            primary: "dap",
-            secondary: null
-        },
-        text: false
-    });
-    $("#dapRadio").click(function () {
-        setOpMode("Insertion");
-        setInfoWindowNull();
-        setInsertionOptions("DAP")
-        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/dapcursor.cur), auto" });
-        drawingManager.setDrawingMode(null);
-
-    });
-    $("#meterRadio").button({
-        icons: {
-            primary: "meter",
-            secondary: null
-        },
-        text: false
-    });
-    $("#meterRadio").click(function () {
-        setOpMode("Insertion");
-        setInfoWindowNull();
-        setInsertionOptions("Meter");
-        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/metercursor.cur), default" });
-        drawingManager.setDrawingMode(null);
-
-    });
-    $("#pole").button({
-        icons: {
-            primary: "pole",
-            secondary: null
-        },
-        text: false
-    });
-    $("#pole").click(function () {
-        setOpMode("Insertion");
-        setInfoWindowNull();
-        setInsertionOptions("Pole");
-        map.setOptions({ draggableCursor: "url("+document.URL+"/assets/cursors/polecursor.cur), default" });
-        drawingManager.setDrawingMode(null);
-
-    });
-}
 function setOption(opt){
    switch(opt){
     case "view":
@@ -241,8 +111,7 @@ function setButtons()
 	$('option[value=dapEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/dapremoveselectionicon.png);');
 	$('option[value=meterEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/meterremoveselectionicon.png);');
 	$('option[value=poleEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/poleremoveselectionicon.png);');
-
-    setRadio(); 
+ 
     $.widget("custom.TFOiconSelectImg", $.ui.selectmenu, {
             _renderItem: function (ul, item) {
                 var li = $("<li>", { html: item.element.html() });
@@ -407,47 +276,38 @@ function setButtons()
     //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
  
 	});
-	//$("#meshSliderDiv").hover(function(){ //Open on hover 
-    //},    
-    //function(){ //Close when not hovered
-	//	var isHovered = $('#meshButton').is(":hover");
-	//	if(!isHovered)
-    //     $('#meshSliderDiv').hide();
-    //});
 
 
 
-	   $("#choosePower").hover(function () {
-	       $("#slider").css({ opacity: 1.0 });
-	   }, function () {
-	       $("#slider").css({ opacity: 0.5 });
 
-	   });
+   $("#choosePower").hover(function () {
+	   $("#slider").css({ opacity: 1.0 });
+   }, function () {
+	   $("#slider").css({ opacity: 0.5 });
+
+   });
+   $("#selectScenario").css({ opacity: 0.5 });
+   $("#chooseScenario").hover(function () {
+	   $("#selectScenario").css({ opacity: 1.0 });
+   }, function () {
 	   $("#selectScenario").css({ opacity: 0.5 });
-	   $("#chooseScenario").hover(function () {
-	       $("#selectScenario").css({ opacity: 1.0 });
-	   }, function () {
-	       $("#selectScenario").css({ opacity: 0.5 });
-	       var menu = $("#scenario").parent().next().hide().position({
-	           my: "left top",
-	           at: "left bottom",
-	           of: this
-	       });
-
-
-	       
-	   });
+	   var menu = $("#scenario").parent().next().hide().position({
+		   my: "left top",
+		   at: "left bottom",
+		   of: this
+	   });   
+   });
+   $("#selectTechnology").css({ opacity: 0.5 });
+   $("#chooseTechnology").hover(function () {
+	   $("#selectTechnology").css({ opacity: 1.0 });
+   }, function () {
 	   $("#selectTechnology").css({ opacity: 0.5 });
-	   $("#chooseTechnology").hover(function () {
-	       $("#selectTechnology").css({ opacity: 1.0 });
-	   }, function () {
-	       $("#selectTechnology").css({ opacity: 0.5 });
-	       var menu = $("#technology").parent().next().hide().position({
-	           my: "left top",
-	           at: "left bottom",
-	           of: this
-	       });
+	   var menu = $("#technology").parent().next().hide().position({
+		   my: "left top",
+		   at: "left bottom",
+		   of: this
 	   });
+   });
 
     $('#checkHeatmap').button({
         icons: {
@@ -522,44 +382,15 @@ function setButtons()
          
 
     });
-	//$( "#speed" ).selectmenu();
     $('#autoPlanning').button().click(function () {
-        
-        //createMeshCoverageMatrix(poles);
         $(this).blur();
-        //$.blockUI({  message: '<h1><img src="/assets/siri2.gif" /> Enviando ao servidor... </h1>' });
-        // autoPlanningGrasp();
-        //d = new Date();
-        //setTimeout('applyPlanning()', 1000);
-        //var sp = sendDataToServer("http://localhost:3000/autoplan", 'POST', PROPAGATION_FILE_ID);
-        //sendDataToServer(serverAddress, 'POST', TEST_COLLECTION_FILE_ID);
         sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
-        //sendDataToServer(serverAddress, 'POST', 4);
-        
-        var s ="";
-        for(var i = 0; i < meters.length;i++)
-        {
-            var latlng = meters[i].getPosition();
-            s+= latlng.lat().toString() + " " + latlng.lng().toString() + "\n";
-
-        }
-        var s2 = "";
-        for(var i = 0; i < poles.length;i++)
-        {
-            var latlng = poles[i].getPosition();
-            s2+= latlng.lat().toString() + " " + latlng.lng().toString() + "\n";
-
-        }
-
-        var x = "wow";
     });
     $('#meshButton').button({
         icons: {
             primary: "mesh"
         },
- 
         text: true
-
     });
 	$('#meshButton').mouseenter(function(){
 		clearTimeout($(this).data('timeoutId'));
@@ -571,16 +402,7 @@ function setButtons()
         }, 100);
 		someElement.data('timeoutId', timeoutId);
 	});
-	
-	//$('#meshButton').hover(function(){ //Open on hover 
-    //    $('#meshSliderDiv').show();
-    //},    
-    //function(){ //Close when not hovered
-	//	var isHovered = $('#meshSliderDiv').is(":hover");
-	//	if(!isHovered)
-    //     $('#meshSliderDiv').hide();
-    //});
-	
+
 
 	$('#statistic').button({
 	icons: {
@@ -634,9 +456,6 @@ function setButtons()
 
     });
     $('#uploadFile').button();
-
-
-
 	$('#download').button({
 	icons: {
 		primary: "download"
