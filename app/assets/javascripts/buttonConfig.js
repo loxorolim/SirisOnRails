@@ -101,6 +101,34 @@ function setOption(opt){
 
 function setButtons()
 {
+//TEEEEEEEEEEEEESTE
+  $(function() {
+    $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+      _renderItem: function( ul, item ) {
+        var li = $( "<li>", { text: item.label } );
+ 
+        if ( item.disabled ) {
+          li.addClass( "ui-state-disabled" );
+        }
+ 
+        $( "<span>", {
+          style: item.element.attr( "data-style" ),
+          "class": "ui-icon " + item.element.attr( "data-class" )
+        })
+          .appendTo( li );
+ 
+        return li.appendTo( ul );
+      }
+    });
+ 
+    $( "#filesB" )
+      .iconselectmenu()
+      .iconselectmenu( "menuWidget" )
+        .addClass( "ui-menu-icons customicons" );
+ 
+  });
+
+
   $('#helpmenu').attr('src', document.URL+'/assets/helpmenu.png');
 	$('option[value=view]').attr('data-style', 'background-image: url('+document.URL+'/assets/viewicon.png);');
 	$('option[value=dap]').attr('data-style', 'background-image: url('+document.URL+'/assets/dapicon.png);');
@@ -111,7 +139,6 @@ function setButtons()
 	$('option[value=dapEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/dapremoveselectionicon.png);');
 	$('option[value=meterEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/meterremoveselectionicon.png);');
 	$('option[value=poleEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/poleremoveselectionicon.png);');
- 
     $.widget("custom.TFOiconSelectImg", $.ui.selectmenu, {
             _renderItem: function (ul, item) {
                 var li = $("<li>", { html: item.element.html() });
