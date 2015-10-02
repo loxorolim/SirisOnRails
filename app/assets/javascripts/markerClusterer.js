@@ -169,14 +169,16 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     zoom = Math.min(Math.max(zoom,minZoom),maxZoom);
 
     if (that.prevZoom_ != zoom) {
-      if(that.prevZoom_ <= that.maxZoom_ || zoom <= that.maxZoom_)
       that.resetViewport();
+      if(zoom <= that.maxZoom_ || ((that.prevZoom_ <= that.maxZoom_) && (zoom > that.maxZoom_)))
+        that.redraw();
       that.prevZoom_ = zoom;
     }
+
   });
 
   google.maps.event.addListener(this.map_, 'idle', function() {
-    that.redraw();
+    //that.redraw();
   });
 
   // Finally, add the markers
