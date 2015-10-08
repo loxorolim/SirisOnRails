@@ -171,7 +171,7 @@ class AutoPlanning: public FatherMethods
 			{
 				delete poles[i];
 			}
-		};
+		}
 		
 		//Funções de criação do SCP;
 		vector<vector<int> > createScpWithLimit(int limit);

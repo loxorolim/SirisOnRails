@@ -81,7 +81,7 @@ class MetricCalculation: public FatherMethods
 			{
 				delete daps[i];
 			}
-		};
+		}
 		vector<sComponent*> statisticalList();
 		vector<double> minMedMaxMetersPerDap(vector<vector<int> > cL);
 		vector<double> minMedMaxRedundancyPerMeter(vector<vector<int> > cL);

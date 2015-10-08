@@ -198,7 +198,6 @@ string getResponse(string req, string rubyPath)
 		int pLength;
 		std::getline(f, line);
 		pLength = std::atoi(line.c_str());
-		if (pLength == 0) return "";
 		vector<Position*> meters, daps, poles, coverageArea;
 		for (int i = 0; i < pLength; i++)
 		{
@@ -242,13 +241,13 @@ string getResponse(string req, string rubyPath)
 		pLength = std::atoi(line.c_str());
 		for (int i = 0; i < pLength; i++)
 		{
-			double lat;
-			double lng;
+			double lat, lng, val;
 			std::getline(f, line);
 			vector<string> s = split(line, ' ');
 			lat = std::atof(s[0].c_str());
 			lng = std::atof(s[1].c_str());
-			Position *toAdd = new Position(lat, lng, i);
+			val = std::atof(s[2].c_str());
+			Position *toAdd = new Position(lat, lng, val);
 			coverageArea.push_back(toAdd);
 		}
 

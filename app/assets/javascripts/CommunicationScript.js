@@ -596,10 +596,10 @@ function createKMLFileModel(){
         ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
         ret += "\n";
     }
-	ret += heatmap.length;
+	ret += heatmapPoints.length;
     ret += "\n";
     for(var i = 0; i <heatmap.length; i++){
-        ret += heatmap[i].getPosition().lat() + " " + heatmap[i].getPosition().lng();
+        ret += heatmap[i].getPosition().lat() + " " + heatmap[i].getPosition().lng() + " " + heatmap[i].weigth;
         ret += "\n";
     }
     return ret;

@@ -92,7 +92,7 @@ class LinkCalculation: public FatherMethods
 			{
 				delete daps[i];
 			}
-		};
+		}
 
 		vector<DrawInfo*> calculateDrawingInfo();
 		string executeLinkCalculation();
