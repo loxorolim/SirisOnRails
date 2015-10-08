@@ -4,7 +4,7 @@ string Heatgrid::calculateHeatgridInfo()
 {
 	string ret = "";
 	int size = 20; //20metros
-	Grid *g = new Grid(size); 
+	Grid *g = new Grid(points,points,size); 
 	g->putPositions(points);
 	map<pair<int, int>, vector<Position*> > cells = g->getCells();
 	for (map<pair<int, int>, vector<Position*> >::iterator it = cells.begin(); it != cells.end(); ++it)

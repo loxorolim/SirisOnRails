@@ -43,6 +43,7 @@ using namespace std;
 #define HEATGRID 3
 #define TEST 4
 #define GET_RANGE 6
+#define KML 7
 
 #define Urbano  0
 #define Suburbano  1

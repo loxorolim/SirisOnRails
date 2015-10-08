@@ -128,8 +128,8 @@ class AutoPlanning: public FatherMethods
 {
 	private:
 		double gridLimiter;
-		vector<Position*>& meters = vec1; // alias para o vec1, meters é a mesma coisa que o vec1
-		vector<Position*>& poles = vec2; // alias para o vec2, poles é a mesma coisa que o vec2
+		vector<Position*> meters; // alias para o vec1, meters é a mesma coisa que o vec1
+		vector<Position*> poles; // alias para o vec2, poles é a mesma coisa que o vec2
 			//vector<Position*> meters;
 			//vector<Position*> poles;
 			//int scenario, technology, SRD, meshEnabled;
@@ -139,8 +139,8 @@ class AutoPlanning: public FatherMethods
 	public:
 		AutoPlanning(vector<Position*> &meters, vector<Position*> &poles, int scenario, int technology, double bit_rate, double t_power,double h_tx, double h_rx, int srd, int mesh, double gridLimiter,string rubyPath)
 		{
-			this->vec1 = meters;
-			this->vec2 = poles;
+			this->meters = meters;
+			this->poles = poles;
 			this->scenario = scenario;
 			this->technology = technology;
 			this->bit_rate = bit_rate;
@@ -160,6 +160,17 @@ class AutoPlanning: public FatherMethods
 			}
 			regionLimiter++;
 		
+		};
+		~AutoPlanning()
+		{
+			for (int i = 0; i < meters.size(); i++)
+			{
+				delete meters[i];
+			}
+			for (int i = 0; i < poles.size(); i++)
+			{
+				delete poles[i];
+			}
 		};
 		
 		//Funções de criação do SCP;

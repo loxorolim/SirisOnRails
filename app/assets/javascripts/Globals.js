@@ -31,7 +31,7 @@ var LIMIT = 100;
 
 var drawHeatmap = false;
 var drawRangeView = false;
-var heatmap;
+var heatmap = [];
 var taxiData = [];
 var heatmapPoints = [];
 var heatGrids = [];

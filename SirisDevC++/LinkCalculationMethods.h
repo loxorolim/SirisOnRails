@@ -54,14 +54,14 @@ public:
 class LinkCalculation: public FatherMethods
 {
 	private:
-		vector<Position*>& meters = vec1; // alias para o vec1, meters é a mesma coisa que o vec1
-		vector<Position*>& daps = vec2; // alias para o vec2, daps é a mesma coisa que o vec2
+		vector<Position*> meters; // alias para o vec1, meters é a mesma coisa que o vec1
+		vector<Position*> daps; // alias para o vec2, daps é a mesma coisa que o vec2
 
 	public:
 		LinkCalculation(vector<Position*> &meters, vector<Position*> &daps, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, string rubyPath)
 		{
-			this->vec1 = meters;
-			this->vec2 = daps;
+			this->meters = meters;
+			this->daps = daps;
 			this->scenario = scenario;
 			this->technology = technology;
 			this->bit_rate = bit_rate;
@@ -81,6 +81,17 @@ class LinkCalculation: public FatherMethods
 			}
 			regionLimiter++;
 			this->regionLimiter = regionLimiter;
+		};
+		~LinkCalculation()
+		{
+			for (int i = 0; i < meters.size(); i++)
+			{
+				delete meters[i];
+			}
+			for (int i = 0; i < daps.size(); i++)
+			{
+				delete daps[i];
+			}
 		};
 
 		vector<DrawInfo*> calculateDrawingInfo();

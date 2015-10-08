@@ -5,6 +5,7 @@ const HEATGRID_FILE_ID = 3;
 const TEST_COLLECTION_FILE_ID = 4;
 const KML_CREATION_FILE_ID = 5;
 const GET_RANGE_FILE_ID = 6;
+const KML_FILE_ID = 7;
 
 function sendDrawRequest(){
     sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
@@ -59,6 +60,9 @@ function sendDataToServer(url,method,type) {
             data = GET_RANGE_FILE_ID + '\n';
             data += propagationValuesToSend();
             break;
+		case KML_FILE_ID:
+            data = createKMLFileModel();
+            break;
 
         default:
             data = -1;
@@ -94,6 +98,9 @@ function sendDataToServer(url,method,type) {
 						break;
                     case GET_RANGE_FILE_ID:
                         readGetRangeResponse(data,true);
+                        break;
+					case KML_FILE_ID:
+                        readKMLResponse(data);
                         break;
                     default:
                         break;
@@ -133,6 +140,13 @@ function readGetRangeResponse(data){
                  clickable: false
      });
      coveragePolygon.setMap(map);
+    
+}
+function readKMLResponse(data){
+
+	var kml = data;
+	var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
+	saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
     
 }
 function readAutoPlanResponse(data){
@@ -563,8 +577,37 @@ function createTestFileModel(){
     }
     return ret;
 }
+function createKMLFileModel(){
+
+    var ret = KML_FILE_ID + '\n';
+    ret += propagationValuesToSend();	
+    ret+= meters.length+"\n";
+    for(var i = 0; i < meters.length; i++){
+        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
+        ret += "\n";
+    }
+	ret += daps.length;
+    ret += "\n";
+    for(var i = 0; i <daps.length; i++){
+        ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
+        ret += "\n";
+    }
+    ret += poles.length;
+    ret += "\n";
+    for(var i = 0; i <poles.length; i++){
+        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
+        ret += "\n";
+    }
+	ret += heatmap.length;
+    ret += "\n";
+    for(var i = 0; i <heatmap.length; i++){
+        ret += heatmap[i].getPosition().lat() + " " + heatmap[i].getPosition().lng();
+        ret += "\n";
+    }
+    return ret;
+}
 function download() {
-	sendDataToServer(serverAddress, 'POST', KML_CREATION_FILE_ID);
+	sendDataToServer(serverAddress, 'POST', KML_FILE_ID);
    // var toSave = formatKMLText();
    // var blob = new Blob([toSave], {type: "text/plain;charset=utf-8"});
    // saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");

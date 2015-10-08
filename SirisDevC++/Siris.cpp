@@ -5,6 +5,7 @@
 #include "AutoPlanningMethods.h"
 #include "LinkCalculationMethods.h"
 #include "MetricCalculationMethods.h"
+#include "KMLMethods.h"
 #include "HataSRD.h"
 #include <stdio.h>
 ////
@@ -186,6 +187,73 @@ string getResponse(string req, string rubyPath)
 
 		MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
 		string ret = res->executeMetricCalculation();
+		//std::cout << ret;
+		//res->~AutoPlanning();
+		delete res;
+		return ret;
+
+	}
+	if (option == KML)
+	{
+		int pLength;
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		if (pLength == 0) return "";
+		vector<Position*> meters, daps, poles, coverageArea;
+		for (int i = 0; i < pLength; i++)
+		{
+			double lat;
+			double lng;
+			std::getline(f, line);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			Position *toAdd = new Position(lat, lng, i);
+
+			meters.push_back(toAdd);
+		}
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		for (int i = 0; i < pLength; i++)
+		{
+			double lat;
+			double lng;
+			std::getline(f, line);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			Position *toAdd = new Position(lat, lng, i);
+			daps.push_back(toAdd);
+		}
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		for (int i = 0; i < pLength; i++)
+		{
+			double lat;
+			double lng;
+			std::getline(f, line);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			Position *toAdd = new Position(lat, lng, i);
+			poles.push_back(toAdd);
+		}
+		std::getline(f, line);
+		pLength = std::atoi(line.c_str());
+		for (int i = 0; i < pLength; i++)
+		{
+			double lat;
+			double lng;
+			std::getline(f, line);
+			vector<string> s = split(line, ' ');
+			lat = std::atof(s[0].c_str());
+			lng = std::atof(s[1].c_str());
+			Position *toAdd = new Position(lat, lng, i);
+			coverageArea.push_back(toAdd);
+		}
+
+		KMLMethods* res = new KMLMethods(meters, daps, poles, coverageArea, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
+		string ret = res->generateKML();
 		//std::cout << ret;
 		//res->~AutoPlanning();
 		delete res;
