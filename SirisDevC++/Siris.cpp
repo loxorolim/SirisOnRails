@@ -103,7 +103,7 @@ string getResponse(string req, string rubyPath)
 		AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,gridSize,rubyPath);
 		string ret = res->executeAutoPlan(redundancy,limit);
 		//res->~AutoPlanning();
-		cout << ret;
+		//cout << ret;
 		delete res;
 		return ret;
 

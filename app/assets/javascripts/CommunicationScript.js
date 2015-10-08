@@ -155,10 +155,8 @@ function readAutoPlanResponse(data){
     data = data.substring(data.lastIndexOf("\n")+1, data.length );
     var split = data.split(" ");
 	
-	for(var i = 0; i < daps.length; i++){ //REMOVER DEPOIS! ESTÁ AQUI PARA NÃO BUGAR O PLANEJAMENTO!
-		daps[i].remove();
-		i--;
-	}
+	while(daps.length > 0)
+        daps[0].remove();
 	for(var i = 0 ; i < split.length-1; i ++){
 		var toAdd = parseInt(split[i]);
 		var latLng = poles[toAdd].position;
