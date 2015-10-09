@@ -255,7 +255,6 @@ vector<vector<int> > MetricCalculation::coverageList()
 	{
 
 		vector<vector<int> > nM = createMeterNeighbourhood(g);
-		int firstPos = meters[0]->index;
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> neighbours = sM[i];

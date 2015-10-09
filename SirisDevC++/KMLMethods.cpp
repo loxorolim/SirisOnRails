@@ -2,13 +2,12 @@
 
 string KMLMethods::generateKML()
 {
-
+	
 	MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
 	string metrics = res->executeMetricCalculation();
 	//delete res;
 	LinkCalculation* links = new LinkCalculation(meters, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
 	vector<DrawInfo*> lines = links->calculateDrawingInfo();
-
 	//delete links;
 
 
@@ -40,6 +39,7 @@ string KMLMethods::generateKML()
 		init += "<Placemark>\n<name>Agregador</name>\n<Point>\n<coordinates>" + to_string(daps[i]->longitude) + "," + to_string(daps[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
 	init += "</Folder>\n";
+	
 	init += "<Folder><name>Enlaces</name>\n";
 	for (int i = 0; i< lines.size(); i++){
 		string alat, alng, blat, blng;
@@ -57,6 +57,13 @@ string KMLMethods::generateKML()
 		}
 
 		init += "<Placemark>\n<name>Enlace</name>\n<efficiency>" + to_string(lines[i]->efficiency) + "</efficiency>\n<delay>" + to_string(lines[i]->delay) + "</delay>\n<LineString>\n<coordinates>\n" + alng + "," + alat + ",0\n" + blng + "," + blat + ",0\n</coordinates>\n</LineString>\n</Placemark>\n";
+	}
+	
+	init += "</Folder>\n";
+	init += "<Folder><name>Mapa de Calor</name>\n";
+	for (int i = 0; i < coverageArea.size(); i++)
+	{
+		init += "<Placemark>\n<name>Ponto de coleta</name>\n<value>" + to_string(coverageArea[i]->weight) + "</value>\n<Point>\n<coordinates>" + to_string(coverageArea[i]->longitude) + "," + to_string(coverageArea[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
 	init += "</Folder>\n";
 	init += "</Document>\n";

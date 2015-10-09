@@ -148,12 +148,16 @@ function loadFromKMLText(kml){
 
 	$(kml).find('Placemark').each(function(){
 		var type = $(this).find('name').text();
+		var weight = parseFloat($(this).find('value').text()); // PARA O MAPA DE CALOR SOMENTE
 		if($("#dapFormatRadio").is(':checked'))
 			type="Agregador";
 		if($("#meterFormatRadio").is(':checked'))
 			type="Medidor";
 		if($("#poleFormatRadio").is(':checked'))
 			type="Poste";
+		if($("#heatmapFormatRadio").is(':checked'))		
+			type="Ponto de coleta";
+				
 		$(this).find('Point').each(function(){
 			var coord =	$(this).find('coordinates').text();
 			var coords = coord.split(",");
@@ -182,6 +186,9 @@ function loadFromKMLText(kml){
 				case "Agregador":
 					var dap = createDAP();
 					dap.placeOnMap(latitude, longitude);
+				break;
+				case "Ponto de coleta":					
+					insertHeatmapPoint(latitude, longitude, weight);
 				break;
 				default:
 				break;

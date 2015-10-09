@@ -478,6 +478,10 @@ function setButtons()
 			while(poles.length > 0){
 				poles[0].remove();
 			}		
+      while(heatmapPoints.length > 0){
+        heatmapPoints.pop();
+      } 
+      setHeatmap();
 		}
 		upload($("#uploadFile").get(0));
 
@@ -556,7 +560,9 @@ function setTechnology(value){
 		case  t802_15_4:
 		   $("#technology").text("ZigBee");
 		   technology = t802_15_4;
-
+       $( "#slider" ).slider( "option", "min", -3 );
+       $( "#slider" ).slider( "option", "max",  3 );
+       setPower(0);
 		break;
 		case  t802_11_a:
 		 $("#technology").text("802.11a");
@@ -565,6 +571,10 @@ function setTechnology(value){
 		case  t802_11_g:
 		  $("#technology").text("802.11g");
 		  technology = t802_11_g;
+      $( "#slider" ).slider( "option", "min", 18 );
+      $( "#slider" ).slider( "option", "max",  25 );
+      setPower(20);
+
 		break;
 		default:
 	  }

@@ -97,45 +97,61 @@ map< pair < int, int >, vector < Position* > > Grid::getCells()
 }
 double getMinX(vector<Position*> v)
 {
-	double dx = v[0]->latitude;
-	for (int i = 1; i < v.size(); i++)
+	double dx = -1;
+	if (v.size() > 0)
 	{
-		if (v[i]->latitude < dx)
-			dx = v[i]->latitude;
+		dx = v[0]->latitude;
+		for (int i = 1; i < v.size(); i++)
+		{
+			if (v[i]->latitude < dx)
+				dx = v[i]->latitude;
+		}
 	}
 	return dx;
 
 }
 double getMinY(vector<Position*> v)
 {
-	double dy = v[0]->longitude;
-	for (int i = 1; i < v.size(); i++)
+	double dy = -1;
+	if (v.size() > 0)
 	{
-		if (v[i]->longitude < dy)
-			dy = v[i]->longitude;
+		dy = v[0]->longitude;
+		for (int i = 1; i < v.size(); i++)
+		{
+			if (v[i]->longitude < dy)
+				dy = v[i]->longitude;
+		}
 	}
 	return dy;
 }
 double getMaxX(vector<Position*> v)
 {
-	double dx = v[0]->latitude;
-	for (int i = 1; i < v.size(); i++)
+	double dx = -1;
+	if (v.size() > 0)
 	{
-		if (v[i]->latitude > dx)
-			dx = v[i]->latitude;
+		dx = v[0]->latitude;
+		for (int i = 1; i < v.size(); i++)
+		{
+			if (v[i]->latitude > dx)
+				dx = v[i]->latitude;
+		}
 	}
 	return dx;
 
 }
 double getMaxY(vector<Position*> v)
 {
-	double dy = v[0]->longitude;
-	for (int i = 1; i < v.size(); i++)
+	double dy=-1;
+	if (v.size() > 0)
 	{
-		if (v[i]->longitude > dy)
-			dy = v[i]->longitude;
+		dy = v[0]->longitude;
+		for (int i = 1; i < v.size(); i++)
+		{
+			if (v[i]->longitude > dy)
+				dy = v[i]->longitude;
+		}
+		return dy;
 	}
-	return dy;
 }
 
 string Grid::getCellsTeste()
