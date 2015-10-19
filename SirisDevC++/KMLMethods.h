@@ -65,6 +65,12 @@ public:
 
 	}
 	string generateKML();
+	string getMetersKMLFormat();
+	string getDAPsKMLFormat();
+	string getMetricKMLFormat();
+	string getPolesKMLFormat();
+	string getLinksKMLFormat();
+	string getHeatmapKMLFormat();
 
 
 

@@ -6,7 +6,28 @@ function generateUUID() {
         return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
     });
     return uuid;
-};
+}
+function getSignalInfo(latLng){
+    var ret = [];
+    //var latLng = new google.maps.LatLng(lat, lng);
+    for(var i = 0; i < heatmapPoints.length; i++){
+        var hmLatLng = heatmapPoints[i].position;
+        var dist = google.maps.geometry.spherical.computeDistanceBetween (latLng, hmLatLng);
+        if(dist <= heatmapRadio && heatmapPoints[i].weight > heatmapLimit )
+        {
+            var toAdd = true;
+            for(k in ret)
+                if(k == heatmapPoints[i].opId)
+                    toAdd = false;
+            if(toAdd)    
+                ret.push(heatmapPoints[i].opId)
+        }
+    }
+    return ret;
+    
+    
+
+}
 
 function createDAP() {
     var marker = new google.maps.Marker({
@@ -19,6 +40,7 @@ function createDAP() {
         icon: dapOnIconImage,   
         ghost: null,
         ID: null,
+        signalInfo: [],
         //meshMeters: [],
         labelContent: "0",
         labelAnchor: new google.maps.Point(22, 25),
@@ -32,6 +54,7 @@ function createDAP() {
             markerCluster.addMarker(this, true);
 			//elementsGrid.putPosition(this);
             this.ID = generateUUID();
+            signalInfo = getSignalInfo(event.latLng);
 
 
 
@@ -93,7 +116,8 @@ function createDAP() {
 
     google.maps.event.addListener(marker, 'dragend', function (event) {
         marker.setPosition(event.latLng);
-        sendDrawRequest()
+        signalInfo = getSignalInfo(event.latLng);
+        sendDrawRequest();
         marker.removeGhost();
 
     });

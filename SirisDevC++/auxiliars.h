@@ -82,6 +82,8 @@ class Position
 	public: 
 		double latitude, longitude, weight;
 		int index;
+		vector<int> signalInfo;
+	
 		
 		Position(double lat, double lng)
 		{
@@ -94,6 +96,14 @@ class Position
 			longitude = lng;
 			index = (int)w;
 			weight = w;
+		}
+		Position(double lat, double lng, double w,vector<int> sI)
+		{
+			latitude = lat;
+			longitude = lng;
+			index = (int)w;
+			weight = w;
+			signalInfo = sI;
 		}
 		
 		bool operator==(const Position& i) const

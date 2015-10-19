@@ -17,6 +17,13 @@ const REMOVE_DAPS = 1;
 const REMOVE_METERS = 2;
 const REMOVE_POLES = 3;
 
+const heatmapRadio =  10; //10metros
+const heatmapLimit = 0.8;
+const VIVO_ID = 0;
+const CLARO_ID= 1;
+const OI_ID = 2;
+const TIM_ID = 3;
+
 var directionsService;
 var markerCluster;
 var scenario = Urbano;
@@ -32,6 +39,7 @@ var LIMIT = 100;
 var drawHeatmap = false;
 var drawRangeView = false;
 var heatmap = [];
+
 var taxiData = [];
 var heatmapPoints = [];
 var heatGrids = [];
