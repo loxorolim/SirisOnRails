@@ -247,7 +247,12 @@ string getResponse(string req, string rubyPath)
 			lat = std::atof(s[0].c_str());
 			lng = std::atof(s[1].c_str());
 			val = std::atof(s[2].c_str());
-			Position *toAdd = new Position(lat, lng, val);
+			vector<int> opIds;
+			for (int j = 3; j < s.size(); j++)
+			{
+				opIds.push_back(std::atoi(s[j].c_str()));
+			}
+			Position *toAdd = new Position(lat, lng, i, opIds);
 			coverageArea.push_back(toAdd);
 		}
 
@@ -257,7 +262,6 @@ string getResponse(string req, string rubyPath)
 		//res->~AutoPlanning();
 		delete res;
 		return ret;
-
 	}
 	//if (option == HEATGRID)
 	//{
@@ -321,21 +325,21 @@ string getResponse(string req, string rubyPath)
 //	string x = AutoPlanning::executeAutoPlan();
 	return "";
 }
-int main(int argc, char** argv)
-{
-	string line, rP, input="";
-	getline(cin, rP);
-	while (getline(cin, line))
-	{
-		input += line+"\n";
-	}
-	//rP = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails";
-	//input = "0\n1\n2\n3\n5\n6\n20\n1\n2\n1\n-1\n8\n-20.301143436776947 -40.28205871582031\n-20.3012516073493 -40.28202384710312\n-20.301357262254005 -40.28199166059494\n-20.3014276988171 -40.28217673301697\n-20.301246576161564 -40.282251834869385\n-20.301279278878937 -40.28225988149643\n-20.301161045945054 -40.28227597475052\n-20.301319528367745 -40.28220355510712\n3\n-20.30116859273076 -40.28216063976288\n-20.30129437243846 -40.282104313373566\n-20.30141763645291 -40.28206139802933\n";
-	//rubyPath = rP;
-	string ret = getResponse(input,rP );
-	cout << ret;
-
-}
+//int main(int argc, char** argv)
+//{
+//	string line, rP, input="";
+//	getline(cin, rP);
+//	while (getline(cin, line))
+//	{
+//		input += line+"\n";
+//	}
+//	//rP = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails";
+//	//input = "0\n1\n2\n3\n5\n6\n20\n1\n2\n1\n-1\n8\n-20.301143436776947 -40.28205871582031\n-20.3012516073493 -40.28202384710312\n-20.301357262254005 -40.28199166059494\n-20.3014276988171 -40.28217673301697\n-20.301246576161564 -40.282251834869385\n-20.301279278878937 -40.28225988149643\n-20.301161045945054 -40.28227597475052\n-20.301319528367745 -40.28220355510712\n3\n-20.30116859273076 -40.28216063976288\n-20.30129437243846 -40.282104313373566\n-20.30141763645291 -40.28206139802933\n";
+//	//rubyPath = rP;
+//	string ret = getResponse(input,rP );
+//	cout << ret;
+//
+//}
 
 
 

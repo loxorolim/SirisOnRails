@@ -427,6 +427,13 @@ function createKMLFileModel(){
     ret += "\n";
     for(var i = 0; i <heatmapPoints.length; i++){
         ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() + " " + heatmapPoints[i].weight;
+        var opIds = "";
+        for(var j = 0; j < heatmapPoints[i].opIds.length; j++)
+        {
+            opIds += " ";
+            opIds+=heatmapPoints[i].opIds[j];
+        }
+        ret += opIds;
         ret += "\n";
     }
     return ret;

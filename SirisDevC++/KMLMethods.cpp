@@ -21,6 +21,7 @@ string KMLMethods::getDAPsKMLFormat()
 
 	}
 	init += "</Folder>\n";
+	return init;
 }
 string KMLMethods::getMetricKMLFormat()
 {
@@ -93,7 +94,15 @@ string KMLMethods::getHeatmapKMLFormat()
 	init += "<Folder><name>Mapa de Calor</name>\n";
 	for (int i = 0; i < coverageArea.size(); i++)
 	{
-		init += "<Placemark>\n<name>Ponto de coleta</name>\n<value>" + to_string(coverageArea[i]->weight) + "</value>\n<Point>\n<coordinates>" + to_string(coverageArea[i]->longitude) + "," + to_string(coverageArea[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
+		init += "<Placemark>\n<name>Ponto de coleta</name>\n<value>" + to_string(coverageArea[i]->weight) + "</value>\n";
+		init += "<Operators>\n";
+		for (int j = 0; j < coverageArea[i]->signalInfo.size(); j++)
+		{
+			init += "<value>" + to_string(coverageArea[i]->signalInfo[j]) + "</value>\n";
+		}
+		init += "</Operators>\n";
+			
+		init += "<Point>\n<coordinates>" + to_string(coverageArea[i]->longitude) + "," + to_string(coverageArea[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
 	init += "</Folder>\n";
 	return init;

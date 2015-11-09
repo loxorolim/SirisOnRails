@@ -15,14 +15,13 @@ function getSignalInfo(latLng){
         var dist = google.maps.geometry.spherical.computeDistanceBetween (latLng, hmLatLng);
         if(dist <= heatmapRadio && heatmapPoints[i].weight > heatmapLimit )
         {
-            var toAdd = true;
-            for(k in ret)
-                if(k == heatmapPoints[i].opId)
-                    toAdd = false;
-            if(toAdd)    
-                ret.push(heatmapPoints[i].opId)
+            for(k in heatmapPoints[i].opIds)
+                ret.push(heatmapPoints[i].opIds[k]);
         }
     }
+    ret = ret.filter(function(item, pos) {
+        return ret.indexOf(item) == pos;
+    })
     return ret;
     
     
@@ -54,7 +53,7 @@ function createDAP() {
             markerCluster.addMarker(this, true);
 			//elementsGrid.putPosition(this);
             this.ID = generateUUID();
-            signalInfo = getSignalInfo(event.latLng);
+            signalInfo = getSignalInfo(latLng);
 
 
 
@@ -75,7 +74,15 @@ function createDAP() {
         displayInfoWindow: function () {
             var content = 'ID: ' + this.ID +
                 '<br>Latitude: ' + this.position.lat() +
-                '<br>Longitude: ' + this.position.lng() ;
+                '<br>Longitude: ' + this.position.lng() +
+                '<br>Coberto por: ';
+            for(var i = 0; i < signalInfo.length;i++)
+            {
+                content+= signalInfo[i];
+                if(i != signalInfo.length-1)
+                    content += ", ";
+            }
+
 
             infowindow.setContent(content);
             infowindow.open(map, this);

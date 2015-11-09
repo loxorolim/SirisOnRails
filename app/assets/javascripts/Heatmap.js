@@ -20,12 +20,12 @@ function setHeatmap(){
      });
      //heatmapPolygon.setMap(map);
 }
-function insertHeatmapPoint(lat, lng, weight, operatorId){
+function insertHeatmapPoint(lat, lng, weight, operators){
     var loc = new google.maps.LatLng(lat, lng)
     var hmpoint = {
         position: loc,
         weight: weight,
-        opId: operatorId
+        opIds: operators
     }
     heatmapPoints.push(hmpoint);
     setHeatmap();

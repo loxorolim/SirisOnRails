@@ -61,6 +61,11 @@ using namespace std;
 #define TIME_LIMIT 2*60*60*1000
 #define MEM_EST_SAFETY 1.1
 
+#define VIVO_ID 0
+#define CLARO_ID 1
+#define OI_ID 2
+#define TIM_ID 3
+
 #include<string>
 #include <vector>
 #include <algorithm>
