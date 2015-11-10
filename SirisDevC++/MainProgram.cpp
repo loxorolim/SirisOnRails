@@ -9,6 +9,14 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
+const string INPUT_CMD = "-i -input -I";
+const string OUTPUT_CMD = "-o -output -O";
+const string SCENARIO_CMD = "-s -scenario -S";
+const string TECHNOLOGY_CMD = "-t -technology -T";
+const string POWER_CMD = "-p -power -P";
+const string MESH_HOPS_CMD = "-m -meshhops -M";
+const string HELP_CMD = "-h --h -help";
+
 const string helpMessage = "\n -i : Arquivo .kml de entrada. Ex: Input.kml \n -o : Arquivo .kml de saida. Ex: Output.kml \n -t : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n -s : Cenario considerado: \n \t0: Urbano \n \t1: Suburbano \n \t2: Rural \n -p : Potencia dos dispositivos \n -m : Numero de saltos mesh \n -h : Esta mensagem de ajuda";
 int tech = t802_11_g, scenario = Urbano, power = 20, meshHops = 0;
 string inputFile = "", outputFile = "";
@@ -19,169 +27,168 @@ bool is_number(const std::string& s)
 	while (it != s.end() && isdigit(*it)) ++it;
 	return !s.empty() && it == s.end();
 }
-int setTechnology(char* cmd, string& err)
+bool is_cmd(char* cmd, string str)
 {
-	if (is_number(cmd))
+	vector<string> possibilites = split(str, ' ');
+	for (int i = 0; i < possibilites.size(); i++)
 	{
-		int val = atoi(cmd);
-		if (val == t802_11_g || val == t802_15_4)
-			tech = val;
-		else
-		{
-			err = " ERRO: Valor de tecnologia desconhecida. ";
-			return 1;
-		}
+		if (cmd == possibilites[i])
+			return true;
 	}
-	else
-	{
-		err = " ERRO: Digite um numero no valor de tecnologia! ";
-		return 1;
-	}
+	return false;
 }
-int setScenario(char* cmd, string& err)
+int getInputFileOption(int argc, char* argv[])
 {
-	if (is_number(cmd))
-	{
-		int val = atoi(cmd);
-		if (val == Urbano || val == Suburbano || val == Rural)
-		{
-			scenario = val;
-			return 0;
-		}
-		else
-		{
-			err += " ERRO: Valor de cenario desconhecido. ";
-			return 1;
-		}
-	}
-	else
-	{
-		err += " ERRO: Digite um numero no valor de cenario!";
-		return 1;
-	}
-}
-int setPower(char* cmd, string& err)
-{
-	if (is_number(cmd))
-	{
-		int	val = atoi(cmd);
-		power = val;
-		if (val < -10 || val > 30)
-		{
-			err += " ALERTA: Valor de potencia esta muito alto ou muito baixo. ";
-		}
-		return 0;
-	}
-	else
-	{
-		err = " ERRO: Digite um numero no valor de potencia!";
-		return 1;
-	}
-}
-int setMeshHops(char* cmd, string& err)
-{
-	if (is_number(cmd))
-	{
-		int	val = atoi(cmd);
-		if (val < 0)
-		{
-			err += " ERRO: O valor de saltos mesh deve ser superior ou igual a 0! ";
-			return 1;
-		}
-		else
-		{
-			meshHops = val;
-			if (val > 4)
-				err += " ALERTA: Valores superiores a 4 saltos mesh podem comprometer a veracidade dos resultados!";
-			return 0;
-		}
-		
-	}
-	else
-	{
-		err = " ERRO: Digite um numero no valor de saltos mesh!";
-		return 1;
-	}
-}
-int setInputFile(char* cmd, string& err)
-{
-	if (cmd == "")
-	{
-		err = " Nome de arquivo de input vazio.";
-		return 1;
-	}
-	inputFile = cmd;
-	return 0;
-}
-int setOutputFile(char* cmd, string& err)
-{
-	if (cmd == "")
-	{
-		err = " Nome de arquivo de output vazio.";
-		return 1;
-	}
-	outputFile = cmd;
-	return 0;
-}
-
-int main(int argc, char* argv[])
-{
-	int e=0;
 	for (int i = 1; i < argc; i++)
 	{
-		string input = argv[i];
-		if (input == "-i")
+		if (is_cmd(argv[i],INPUT_CMD))
 		{
-			string err = "";
-			cout << argv[i + 1];
-			e = setInputFile(argv[i + 1],err);
-			cout << "\n" << err;
-			i++;
-		}
-		else if (input == "-o")
-		{
-			string err = "";
-			e = setOutputFile(argv[i + 1], err);
-			cout << "\n" << err;
-			i++;
-		}
-		else if (input == "-t")
-		{
-			string err = "";
-			e = setTechnology(argv[i + 1], err);
-			cout << "\n" << err;
-			i++;
-		}
-		else if (input == "-s")
-		{
-			string err = "";
-			e = setScenario(argv[i + 1], err);
-			cout << "\n" << err;
-			i++;
-		}
-		else if (input == "-p")
-		{
-			string err = "";
-			e = setPower(argv[i + 1], err);
-			cout << "\n" << err;
-			i++;
-		}
-		else if (input == "-m")
-		{
-			string err = "";
-			e = setMeshHops(argv[i + 1], err);
-			cout << "\n" << err;
-			i++;
-		}
-		else if (input == "-h")
-		{
-			cout << helpMessage;
-		}
-		else
-		{
-			cout << "\n Comando nao identificado: " << input;
+			inputFile = argv[i + 1];
+			return 0;
 		}
 	}
+	cerr << "\nInsira um arquivo de entrada!";
+	return 1;
+}
+int getOutputFileOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i],OUTPUT_CMD))
+		{
+			outputFile = argv[i + 1];
+			return 0;
+		}
+	}
+	cerr << "\nInsira um arquivo de saida!";
+	return 1;
+}
+int getScenarioOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], SCENARIO_CMD))
+		{
+			if (is_number(argv[i+1]))
+			{
+				int val = atoi(argv[i + 1]);
+				if (val == Urbano || val == Suburbano || val == Rural)
+				{
+					scenario = val;
+					return 0;
+				}
+				else
+				{
+					cerr << "\nERRO: Valor de cenario desconhecido. ";
+					return 1;
+				}
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de cenario!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getTechnologyOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], TECHNOLOGY_CMD))
+		{
+			if (is_number(argv[i+1]))
+			{
+				int val = atoi(argv[i + 1]);
+				if (val == t802_11_g || val == t802_15_4)
+					tech = val;
+				else
+				{
+					cerr << "\nERRO: Valor de tecnologia desconhecida. ";
+					return 1;
+				}
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de tecnologia! ";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getPowerOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], POWER_CMD))
+		{
+			if (is_number(argv[i+1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				power = val;
+				if (val < -10 || val > 30)
+				{
+					cerr << "\nALERTA: Valor de potencia esta muito alto ou muito baixo. ";
+				}
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de potencia!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getMeshHopsOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], MESH_HOPS_CMD))
+		{
+			if (is_number(argv[i+1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				if (val < 0)
+				{
+					cerr << "\nERRO: O valor de saltos mesh deve ser superior ou igual a 0! ";
+					return 1;
+				}
+				else
+				{
+					meshHops = val;
+					if (val > 4)
+						cerr << "\nALERTA: Valores superiores a 4 saltos mesh podem comprometer a veracidade dos resultados!";
+					return 0;
+				}
+
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de saltos mesh!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+void getHelpMessageOption(int argc, char* argv[])
+{
+	cout << helpMessage;
+}
+int main(int argc, char* argv[])
+{
+	int e = 0;
+	e += getInputFileOption(argc, argv);
+	e += getOutputFileOption(argc, argv);
+	e += getScenarioOption(argc, argv);
+	e += getTechnologyOption(argc, argv);
+	e += getPowerOption(argc, argv);
+	e += getMeshHopsOption(argc, argv);
+	getHelpMessageOption(argc, argv);
 	if (e)
 		return 0;
 	else
