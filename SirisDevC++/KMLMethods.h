@@ -10,6 +10,7 @@
 #include "FatherMethods.h"
 #include "MetricCalculationMethods.h"
 #include "LinkCalculationMethods.h"
+#include "pugixml/pugixml.hpp"
 
 
 
@@ -71,11 +72,12 @@ public:
 	string getPolesKMLFormat();
 	string getLinksKMLFormat();
 	string getHeatmapKMLFormat();
+	
 
 
 
 };
-
+void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles);
 
 
 #endif

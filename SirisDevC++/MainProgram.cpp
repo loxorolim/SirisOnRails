@@ -182,8 +182,8 @@ void getHelpMessageOption(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
 	int e = 0;
-	e += getInputFileOption(argc, argv);
-	e += getOutputFileOption(argc, argv);
+//	e += getInputFileOption(argc, argv);
+//	e += getOutputFileOption(argc, argv);
 	e += getScenarioOption(argc, argv);
 	e += getTechnologyOption(argc, argv);
 	e += getPowerOption(argc, argv);
@@ -193,7 +193,8 @@ int main(int argc, char* argv[])
 		return 0;
 	else
 	{
-		//executa;
+		vector<Position*> daps, meters, poles;
+		readKML("C:\\Users\\Guilherme\\Downloads\\viz29-0-10.kml", daps,meters,poles);
 	}
 		
 	

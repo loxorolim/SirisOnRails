@@ -135,3 +135,21 @@ string KMLMethods::generateKML()
 	
 	return init;
 }
+void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles )
+{
+	pugi::xml_document doc;
+
+	pugi::xml_parse_result result = doc.load_file(inputFilename.c_str());
+	pugi::xml_node	tools = doc.child("kml").child("Document").child("Folder");
+	for (pugi::xml_node tool = tools; tool; tool = tool.next_sibling())
+	{
+		string type = tool.first_child().child_value();
+		for (pugi::xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
+		{
+			string coordinates = placemark.child("Point").child("coordinates").child_value();
+		}
+		
+	}
+	std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("kml").child("Document").child("Folder").child("name").child_value() << std::endl;
+	std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("kml").child("Document").child("Folder").child("name").child_value() << std::endl;
+}
