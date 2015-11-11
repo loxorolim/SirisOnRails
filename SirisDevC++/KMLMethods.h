@@ -87,7 +87,7 @@ public:
 
 
 };
-void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles);
+int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea);
 
 
 #endif

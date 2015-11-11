@@ -247,10 +247,10 @@ string getResponse(string req, string rubyPath)
 			lat = std::atof(s[0].c_str());
 			lng = std::atof(s[1].c_str());
 			val = std::atof(s[2].c_str());
-			vector<int> opIds;
+			vector<string> opIds;
 			for (int j = 3; j < s.size(); j++)
 			{
-				opIds.push_back(std::atoi(s[j].c_str()));
+				opIds.push_back(s[j].c_str());
 			}
 			Position *toAdd = new Position(lat, lng, i, opIds);
 			coverageArea.push_back(toAdd);

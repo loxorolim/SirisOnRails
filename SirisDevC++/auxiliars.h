@@ -3,8 +3,11 @@
 #include <iostream>
 #include "math.h"
 #include <vector>
+#include <map>
 #include <string>
 #include <algorithm>
+#include <sstream>
+using namespace std;
 //#include <Windows.h>
 using namespace std;
 
@@ -54,6 +57,7 @@ using namespace std;
 #define t802_11_g  2
 #define t802_11_b  3
 
+
 #define PCK_SIZE 400*8 //400 BYTES
 #define PER_HOP_DELAY 2 //2 MS
 #define EARTH_RADIUS 6378137
@@ -66,11 +70,14 @@ using namespace std;
 #define OI_ID 2
 #define TIM_ID 3
 
-#include<string>
-#include <vector>
-#include <algorithm>
-#include <sstream>
-using namespace std;
+
+static const map<int, string> scenario_map = { { Urbano, "Urbano" },
+{ Suburbano, "Suburbano" },
+{ Rural, "Rural" } };
+
+static const map<int, string> technology_map = { { t802_15_4, "802.15.4 (ZigBee)" },
+{ t802_11_a, "802.11a" },
+{ t802_11_g, "802.11g" } };
 
 
 //to_string em que se delimita uma precisão de casas decimais
@@ -87,7 +94,7 @@ class Position
 	public: 
 		double latitude, longitude, weight;
 		int index;
-		vector<int> signalInfo;
+		vector<string> signalInfo;
 	
 		
 		Position(double lat, double lng)
@@ -102,7 +109,7 @@ class Position
 			index = (int)w;
 			weight = w;
 		}
-		Position(double lat, double lng, double w,vector<int> sI)
+		Position(double lat, double lng, double w,vector<string> sI)
 		{
 			latitude = lat;
 			longitude = lng;

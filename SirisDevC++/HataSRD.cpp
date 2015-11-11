@@ -144,8 +144,6 @@ double bit_error_probability(int env, int technology, int  bit_rate, int  transm
 	}
 	if (technology == t802_11_b)
 	{
-
-
 		frequency = 2400;
 		bandwidth = 22 * (pow(10.0, 6.0));
 

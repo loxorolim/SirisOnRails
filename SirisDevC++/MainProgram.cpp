@@ -16,6 +16,9 @@ const string TECHNOLOGY_CMD = "-t -technology -T";
 const string POWER_CMD = "-p -power -P";
 const string MESH_HOPS_CMD = "-m -meshhops -M";
 const string HELP_CMD = "-h --h -help";
+const string REDUNDANCY_CMD = "-r -redundancy -R";
+const string HTX_CMD = "-htx";
+const string HRX_CMD = "-hrx";
 
 const string helpMessage = "\n -i : Arquivo .kml de entrada. Ex: Input.kml \n -o : Arquivo .kml de saida. Ex: Output.kml \n -t : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n -s : Cenario considerado: \n \t0: Urbano \n \t1: Suburbano \n \t2: Rural \n -p : Potencia dos dispositivos \n -m : Numero de saltos mesh \n -h : Esta mensagem de ajuda";
 int tech = t802_11_g, scenario = Urbano, power = 20, meshHops = 0;
@@ -179,6 +182,19 @@ void getHelpMessageOption(int argc, char* argv[])
 {
 	cout << helpMessage;
 }
+void printPlanningResume(int mSize, int pSize, int sSize)
+{
+	cout << "\nIniciando planejamento com as seguintes configuracoes:";
+	cout << "\nNumero de medidores: " << to_string(mSize);
+	cout << "\nNumero de postes: " << to_string(pSize);
+	cout << "\nNumero de pontos de coleta de sinal: " << to_string(sSize);
+	cout << "\nTecnologia: " + technology_map.at(tech);
+	cout << "\nCenario: " + scenario_map.at(scenario);
+	cout << "\nPotencia dos dispositivos: " + to_string(power) ;
+	cout << "\nNumeros de saltos maximos: " + to_string(meshHops+1) + ",onde "+ to_string(meshHops)+" sao saltos Mesh";
+	cout << "\nResultado sera gravado em: " << outputFile;
+	
+}
 int main(int argc, char* argv[])
 {
 	int e = 0;
@@ -193,8 +209,14 @@ int main(int argc, char* argv[])
 		return 0;
 	else
 	{
-		vector<Position*> daps, meters, poles;
-		readKML("C:\\Users\\Guilherme\\Downloads\\viz29-0-10.kml", daps,meters,poles);
+		vector<Position*> daps, meters, poles, coverageArea;
+		int e_read = readKML("C:\\Users\\Guilherme\\Downloads\\viz29-0-10.kml", daps,meters,poles,coverageArea);
+		if (!e_read)
+		{
+			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
+			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, meshHops, rubyPath);
+			string ret = res->executeAutoPlan(redundancy, limit);
+		}
 	}
 		
 	

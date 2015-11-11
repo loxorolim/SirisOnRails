@@ -98,7 +98,7 @@ string KMLMethods::getHeatmapKMLFormat()
 		init += "<Operators>\n";
 		for (int j = 0; j < coverageArea[i]->signalInfo.size(); j++)
 		{
-			init += "<value>" + to_string(coverageArea[i]->signalInfo[j]) + "</value>\n";
+			init += "<value>" + coverageArea[i]->signalInfo[j] + "</value>\n";
 		}
 		init += "</Operators>\n";
 			
@@ -135,45 +135,55 @@ string KMLMethods::generateKML()
 	
 	return init;
 }
-void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*> coverageArea )
+int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea )
 {
 	pugi::xml_document doc;
-
 	pugi::xml_parse_result result = doc.load_file(inputFilename.c_str());
+	if (result.status)
+	{
+		cerr << "\nErro ao ler o arquivo. Verifique se o diretorio e o nome estao corretos.";
+		return 1;
+	}
 	pugi::xml_node	tools = doc.child("kml").child("Document").child("Folder");
 	for (pugi::xml_node tool = tools; tool; tool = tool.next_sibling())
 	{
 		string type = tool.first_child().child_value();
-		for (pugi::xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
+		if (type == MetersTag || type == DAPsTag || type == PolesTag || type == SignalsTag)
 		{
-			string coordinates = placemark.child("Point").child("coordinates").child_value();
-			vector<string> coordinatesVector = split(coordinates, ',');
-			double lat = stof(coordinatesVector[0]), lng = stof(coordinatesVector[1]);
-			if (type == MetersTag)
+			for (pugi::xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
 			{
-				Position* p = new Position(lat,lng, meters.size());
-				meters.push_back(p);
+				string coordinates = placemark.child("Point").child("coordinates").child_value();
+				vector<string> coordinatesVector = split(coordinates, ',');
+				double lat = stof(coordinatesVector[1]), lng = stof(coordinatesVector[0]);
+				if (type == MetersTag)
+				{
+					Position* p = new Position(lat, lng, meters.size());
+					meters.push_back(p);
+				}
+				if (type == DAPsTag)
+				{
+					Position* p = new Position(lat, lng, daps.size());
+					daps.push_back(p);
+				}
+				if (type == PolesTag)
+				{
+					Position* p = new Position(lat, lng, poles.size());
+					poles.push_back(p);
+				}
+				if (type == SignalsTag)
+				{
+					//COMPLETAR AQUI
+					vector<string> ids;
+					for (pugi::xml_node i = placemark.child("Operators").child("id"); i; i = i.next_sibling())
+					{
+						string signal_op = i.child_value();
+						ids.push_back(signal_op);
+					}
+					Position* p = new Position(lat, lng, coverageArea.size(), ids);
+					coverageArea.push_back(p);
+				}
 			}
-			if (type == DAPsTag)
-			{
-				Position* p = new Position(lat, lng, meters.size());
-				daps.push_back(p);
-			}
-			if (type == PolesTag)
-			{
-				Position* p = new Position(lat, lng, meters.size());
-				poles.push_back(p);
-			}
-			if (type == SignalsTag)
-			{
-				//COMPLETAR AQUI
-				Position* p = new Position(lat, lng, meters.size());
-				poles.push_back(p);
-			}
-			
-		}
-		
+		}		
 	}
-	std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("kml").child("Document").child("Folder").child("name").child_value() << std::endl;
-	std::cout << "Load result: " << result.description() << ", mesh name: " << doc.child("kml").child("Document").child("Folder").child("name").child_value() << std::endl;
+	return 0;
 }
