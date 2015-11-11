@@ -2,10 +2,10 @@
 
 string KMLMethods::getMetersKMLFormat()
 {
-	string init = "<Folder><name>Medidores</name>\n";
+	string init = "<Folder><name>"+MetersTag+"</name>\n";
 	for (int i = 0; i<meters.size(); i++)
 	{
-		init += "<Placemark>\n<name>Medidor</name>\n<Point>\n<coordinates>" +
+		init += "<Placemark>\n<name>"+meter_name +"</name>\n<Point>\n<coordinates>" +
 			to_string(meters[i]->longitude)
 			+ "," + to_string(meters[i]->latitude)
 			+ ",0</coordinates>\n</Point>\n</Placemark>\n";
@@ -15,9 +15,9 @@ string KMLMethods::getMetersKMLFormat()
 }
 string KMLMethods::getDAPsKMLFormat()
 {
-	string init = "<Folder><name>Agregadores</name>\n";
+	string init = "<Folder><name>"+DAPsTag +"</name>\n";
 	for (int i = 0; i<daps.size(); i++){
-		init += "<Placemark>\n<name>Agregador</name>\n<Point>\n<coordinates>" + to_string(daps[i]->longitude) + "," + to_string(daps[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
+		init += "<Placemark>\n<name>"+DAP_name +"</name>\n<Point>\n<coordinates>" + to_string(daps[i]->longitude) + "," + to_string(daps[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
 
 	}
 	init += "</Folder>\n";
@@ -43,9 +43,9 @@ string KMLMethods::getMetricKMLFormat()
 }
 string KMLMethods::getPolesKMLFormat()
 {
-	string init = "<Folder><name>Postes</name>\n";
+	string init = "<Folder><name>"+ PolesTag +"</name>\n";
 	for (int i = 0; i < poles.size(); i++){
-		init += "<Placemark>\n<name>Poste</name>\n<Point>\n<coordinates>" + to_string(poles[i]->longitude) + "," + to_string(poles[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
+		init += "<Placemark>\n<name>"+pole_name +"</name>\n<Point>\n<coordinates>" + to_string(poles[i]->longitude) + "," + to_string(poles[i]->latitude) + ",0</coordinates>\n</Point>\n</Placemark>\n";
 	}
 	init += "</Folder>\n";
 	return init;
@@ -66,7 +66,7 @@ string KMLMethods::getLinksKMLFormat()
 	LinkCalculation* links = new LinkCalculation(m, d, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
 	vector<DrawInfo*> lines = links->calculateDrawingInfo();
 	delete links;
-	string init = "<Folder><name>Enlaces</name>\n";
+	string init = "<Folder><name>"+ LinksTag +"</name>\n";
 	for (int i = 0; i< lines.size(); i++){
 		string alat, alng, blat, blng;
 		alat = to_string(meters[lines[i]->a]->longitude);
@@ -82,7 +82,7 @@ string KMLMethods::getLinksKMLFormat()
 			blat = to_string(meters[lines[i]->b]->latitude);
 		}
 
-		init += "<Placemark>\n<name>Enlace</name>\n<efficiency>" + to_string(lines[i]->efficiency) + "</efficiency>\n<delay>" + to_string(lines[i]->delay) + "</delay>\n<LineString>\n<coordinates>\n" + alng + "," + alat + ",0\n" + blng + "," + blat + ",0\n</coordinates>\n</LineString>\n</Placemark>\n";
+		init += "<Placemark>\n<name>"+link_name +"</name>\n<efficiency>" + to_string(lines[i]->efficiency) + "</efficiency>\n<delay>" + to_string(lines[i]->delay) + "</delay>\n<LineString>\n<coordinates>\n" + alng + "," + alat + ",0\n" + blng + "," + blat + ",0\n</coordinates>\n</LineString>\n</Placemark>\n";
 	}
 
 	init += "</Folder>\n";
@@ -91,10 +91,10 @@ string KMLMethods::getLinksKMLFormat()
 string KMLMethods::getHeatmapKMLFormat()
 {
 	string init = "</Folder>\n";
-	init += "<Folder><name>Mapa de Calor</name>\n";
+	init += "<Folder><name>"+SignalsTag+"</name>\n";
 	for (int i = 0; i < coverageArea.size(); i++)
 	{
-		init += "<Placemark>\n<name>Ponto de coleta</name>\n<value>" + to_string(coverageArea[i]->weight) + "</value>\n";
+		init += "<Placemark>\n<name>"+signal_name +"</name>\n<value>" + to_string(coverageArea[i]->weight) + "</value>\n";
 		init += "<Operators>\n";
 		for (int j = 0; j < coverageArea[i]->signalInfo.size(); j++)
 		{
@@ -135,7 +135,7 @@ string KMLMethods::generateKML()
 	
 	return init;
 }
-void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles )
+void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*> coverageArea )
 {
 	pugi::xml_document doc;
 
@@ -147,6 +147,30 @@ void readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& m
 		for (pugi::xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
 		{
 			string coordinates = placemark.child("Point").child("coordinates").child_value();
+			vector<string> coordinatesVector = split(coordinates, ',');
+			double lat = stof(coordinatesVector[0]), lng = stof(coordinatesVector[1]);
+			if (type == MetersTag)
+			{
+				Position* p = new Position(lat,lng, meters.size());
+				meters.push_back(p);
+			}
+			if (type == DAPsTag)
+			{
+				Position* p = new Position(lat, lng, meters.size());
+				daps.push_back(p);
+			}
+			if (type == PolesTag)
+			{
+				Position* p = new Position(lat, lng, meters.size());
+				poles.push_back(p);
+			}
+			if (type == SignalsTag)
+			{
+				//COMPLETAR AQUI
+				Position* p = new Position(lat, lng, meters.size());
+				poles.push_back(p);
+			}
+			
 		}
 		
 	}

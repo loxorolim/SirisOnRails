@@ -12,7 +12,17 @@
 #include "LinkCalculationMethods.h"
 #include "pugixml/pugixml.hpp"
 
+const string MetersTag = "Medidores";
+const string DAPsTag = "Agregadores";
+const string PolesTag = "Postes";
+const string SignalsTag = "Mapa de Calor";
+const string LinksTag = "Enlaces";
 
+const string meter_name = "Medidor";
+const string DAP_name = "Agregador";
+const string pole_name = "Poste";
+const string signal_name = "Ponto de Coleta";
+const string link_name = "Enlace";
 
 class KMLMethods : public FatherMethods
 {
