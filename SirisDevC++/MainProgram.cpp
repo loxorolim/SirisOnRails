@@ -9,6 +9,18 @@
 #include "HataSRD.h"
 #include <stdio.h>
 
+#define TECHNOLOGY_DEFAULT t802_11_g
+#define T80211G_BIT_RATE_DEFAULT 6
+#define T80211G_POWER_DEFAULT 20
+#define T802154_BIT_RATE_DEFAULT 0.250
+#define T802154_POWER_DEFAULT 0
+#define SCENARIO_DEFAULT Urbano
+#define MESH_HOPS_DEFAULT 0
+#define H_TX_DEFAULT 3
+#define H_RX_DEFAULT 5
+#define REDUNDANCY_DEFAULT 1
+
+
 const string INPUT_CMD = "-i -input -I";
 const string OUTPUT_CMD = "-o -output -O";
 const string SCENARIO_CMD = "-s -scenario -S";
@@ -19,9 +31,11 @@ const string HELP_CMD = "-h --h -help";
 const string REDUNDANCY_CMD = "-r -redundancy -R";
 const string HTX_CMD = "-htx";
 const string HRX_CMD = "-hrx";
+const string BIT_RATE_CMD = "-b -bitrate";
 
-const string helpMessage = "\n -i : Arquivo .kml de entrada. Ex: Input.kml \n -o : Arquivo .kml de saida. Ex: Output.kml \n -t : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n -s : Cenario considerado: \n \t0: Urbano \n \t1: Suburbano \n \t2: Rural \n -p : Potencia dos dispositivos \n -m : Numero de saltos mesh \n -h : Esta mensagem de ajuda";
-int tech = t802_11_g, scenario = Urbano, power = 20, meshHops = 0;
+const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + HELP_CMD + " : Esta mensagem de ajuda";
+int tech = TECHNOLOGY_DEFAULT, scenario = SCENARIO_DEFAULT, power = T80211G_POWER_DEFAULT, meshHops = MESH_HOPS_DEFAULT, redundancy = REDUNDANCY_DEFAULT;
+double h_tx = H_TX_DEFAULT, h_rx = H_RX_DEFAULT, bit_rate = T802154_BIT_RATE_DEFAULT;
 string inputFile = "", outputFile = "";
 
 bool is_number(const std::string& s)
@@ -40,6 +54,7 @@ bool is_cmd(char* cmd, string str)
 	}
 	return false;
 }
+
 int getInputFileOption(int argc, char* argv[])
 {
 	for (int i = 1; i < argc; i++)
@@ -146,6 +161,118 @@ int getPowerOption(int argc, char* argv[])
 	}
 	return 0;
 }
+int getRedundancyOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], REDUNDANCY_CMD))
+		{
+			if (is_number(argv[i + 1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				if (val > 1)
+					redundancy = val;
+				else
+				{
+					cerr << "\nERRO: Valor deve ser maior ou igual a 1. ";
+					return 1;
+				}
+				if (val > 3)
+				{
+					cerr << "\nALERTA: Este valor de redundancia e alto e pode comprometer o resultado. ";
+				}
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de redundancia!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getHTXOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], HTX_CMD))
+		{
+			if (is_number(argv[i + 1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				if (val >= 0)
+					h_tx = val;
+				else
+				{
+					cerr << "\nERRO: Valor deve ser maior ou igual a 0. ";
+					return 1;
+				}
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de altura dos medidores!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getHRXOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], HRX_CMD))
+		{
+			if (is_number(argv[i + 1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				if (val >= 0)
+					h_rx = val;
+				else
+				{
+					cerr << "\nERRO: Valor deve ser maior ou igual a 0. ";
+					return 1;
+				}
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de altura dos medidores!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getBitRateOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], BIT_RATE_CMD))
+		{
+			if (is_number(argv[i + 1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				if (val >= 0)
+					bit_rate = val;
+				else
+				{
+					cerr << "\nERRO: Valor deve ser maior ou igual a 0. ";
+					return 1;
+				}
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de altura dos medidores!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
 int getMeshHopsOption(int argc, char* argv[])
 {
 	for (int i = 1; i < argc; i++)
@@ -180,7 +307,13 @@ int getMeshHopsOption(int argc, char* argv[])
 }
 void getHelpMessageOption(int argc, char* argv[])
 {
-	cout << helpMessage;
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], HELP_CMD))
+		{
+			cout << helpMessage;
+		}
+	}
 }
 void printPlanningResume(int mSize, int pSize, int sSize)
 {
@@ -188,20 +321,37 @@ void printPlanningResume(int mSize, int pSize, int sSize)
 	cout << "\nNumero de medidores: " << to_string(mSize);
 	cout << "\nNumero de postes: " << to_string(pSize);
 	cout << "\nNumero de pontos de coleta de sinal: " << to_string(sSize);
-	cout << "\nTecnologia: " + technology_map.at(tech);
 	cout << "\nCenario: " + scenario_map.at(scenario);
+	cout << "\nTecnologia: " + technology_map.at(tech);
 	cout << "\nPotencia dos dispositivos: " + to_string(power) ;
-	cout << "\nNumeros de saltos maximos: " + to_string(meshHops+1) + ",onde "+ to_string(meshHops)+" sao saltos Mesh";
+	cout << "\nTaxa de transmissao: " + to_string(bit_rate) + " mbps";
+	cout << "\nAltura dos medidores: " + to_string(h_tx) + " m";
+	cout << "\nAltura dos agregadores: " + to_string(h_rx)+" m";
+	cout << "\nNumeros de saltos maximos: " + to_string(meshHops+1) + ", onde "+ to_string(meshHops)+" sao saltos Mesh";
 	cout << "\nResultado sera gravado em: " << outputFile;
 	
 }
 int main(int argc, char* argv[])
 {
 	int e = 0;
-//	e += getInputFileOption(argc, argv);
-//	e += getOutputFileOption(argc, argv);
-	e += getScenarioOption(argc, argv);
+	e += getInputFileOption(argc, argv);
+	e += getOutputFileOption(argc, argv);
 	e += getTechnologyOption(argc, argv);
+	switch (tech)
+	{
+		case t802_11_g:
+			power = T80211G_POWER_DEFAULT;
+			bit_rate = T80211G_BIT_RATE_DEFAULT;
+			break;
+		case t802_15_4:
+			power = T802154_POWER_DEFAULT;
+			bit_rate = T802154_BIT_RATE_DEFAULT;
+			break;
+		default:
+			break;
+
+	}
+	e += getScenarioOption(argc, argv);
 	e += getPowerOption(argc, argv);
 	e += getMeshHopsOption(argc, argv);
 	getHelpMessageOption(argc, argv);
@@ -210,12 +360,12 @@ int main(int argc, char* argv[])
 	else
 	{
 		vector<Position*> daps, meters, poles, coverageArea;
-		int e_read = readKML("C:\\Users\\Guilherme\\Downloads\\viz29-0-10.kml", daps,meters,poles,coverageArea);
+		int e_read = readKML(inputFile.c_str(), daps,meters,poles,coverageArea);
 		if (!e_read)
 		{
 			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
-			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, meshHops, rubyPath);
-			string ret = res->executeAutoPlan(redundancy, limit);
+		//	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, 1, meshEnabled, meshHops, rubyPath);
+		//	string ret = res->executeAutoPlan(redundancy, limit);
 		}
 	}
 		
