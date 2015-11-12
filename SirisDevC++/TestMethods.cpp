@@ -35,7 +35,7 @@ double memoryTest(int x, int y, string rubyPath)
 {
 	
 	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(1) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(1) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < x; i++)
 	{
@@ -56,11 +56,11 @@ double memoryTest(int x, int y, string rubyPath)
 	resp += "\n";
 	resp += "\n;\nend;\n";
 
-	string filename = rubyPath + "/GlpkFile.txt";
+	string filename = rubyPath + "GlpkFile.txt";
 	ofstream f(filename.c_str());
 	f << resp;
 	f.close();
-	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "/wow.txt";
+	//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "wow.txt";
 	//system(access.c_str());
 
 	glp_prob *lp;
@@ -101,7 +101,7 @@ double memoryTest(int x, int y, string rubyPath)
 skip: glp_mpl_free_wksp(tran);
 	glp_delete_prob(lp);
 
-	//ifstream fi(rubyPath + "/wow.txt");
+	//ifstream fi(rubyPath + "wow.txt");
 	//string str;
 	//float mem = -1;
 	//while (getline(fi, str))
@@ -259,8 +259,8 @@ vector<vector<Position*> > gridInstanceGenerator(double latStart, double lngStar
 }
 //void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
 //{
-//	string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
-//	string completePolesFile = rubyPath + "/arqsTeste/" + polesFile;
+//	string completeMetersFile = rubyPath + "arqsTeste/" + metersFile;
+//	string completePolesFile = rubyPath + "arqsTeste/" + polesFile;
 //	FILE * file;
 //	file = fopen(completeMetersFile.c_str(), "r");
 //	FILE * file2;
@@ -315,8 +315,8 @@ vector<vector<Position*> > gridInstanceGenerator(double latStart, double lngStar
 AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePath, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
 {
 
-	//string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
-	//string completePolesFile = rubyPath + "/arqsTeste/" + polesFile;
+	//string completeMetersFile = rubyPath + "arqsTeste/" + metersFile;
+	//string completePolesFile = rubyPath + "arqsTeste/" + polesFile;
 	FILE * file;
 	file = fopen(metersFilePath.c_str(), "r");
 	FILE * file2;
@@ -674,7 +674,7 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 	delete ret;
 	delete AP;
 
-	string filename = rubyPath + "/arqsTeste/RangeTest.txt";
+	string filename = rubyPath + "arqsTeste/RangeTest.txt";
 	ofstream f(filename.c_str());
 	f << toSave;
 	f.close();
@@ -687,7 +687,7 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 
 	
 	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(redundancy) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(redundancy) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < mSize; i++)
 	{
@@ -738,7 +738,7 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 	
 	resp += "\n;\nend;\n";
 
-	string filename = rubyPath + "/GlpkFile.txt";
+	string filename = rubyPath + "GlpkFile.txt";
 	ofstream f(filename.c_str());
 
 	f << resp;
@@ -802,8 +802,8 @@ skip: glp_mpl_free_wksp(tran);
 }
 void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	string fileOutput = rubyPath +"/density_tests/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+"-"+id+".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	string fileOutput = rubyPath +"density_tests/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+"-"+id+".txt";
 	
 	double density = 0.005;
 	ofstream f(fileOutput.c_str());
@@ -814,7 +814,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		double solverTime = -1, maxMem = -1;
 		
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		glp_term_out(GLP_ON);
@@ -877,8 +877,8 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 }
 DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity, double rate, bool adjustRate)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	//string fileOutput = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
 	DensityTestResult* resultsRet = new DensityTestResult();
 	vector<vector<int> > aux;
 	//double density = 0.0005;
@@ -890,7 +890,7 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 	{		
 		double solverTime = -1, maxMem = -1;
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
@@ -934,8 +934,8 @@ end:
 }
 DensityTestResult* varySCPCoverageTest(int mSize, int pSize, string rubyPath, int timeLimit, int rate, int endVal)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	//string fileOutput = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
 	DensityTestResult* resultsRet = new DensityTestResult();
 	vector<vector<int> > aux;
 	//double density = 0.0005;
@@ -948,7 +948,7 @@ DensityTestResult* varySCPCoverageTest(int mSize, int pSize, string rubyPath, in
 	{
 		double solverTime = -1, maxMem = -1;
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
@@ -987,7 +987,7 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		else
 			res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01,0);
 		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
-		string filename = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
+		string filename = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
 		res->saveToFile(filename);
 		incResults.push_back(res);
 	}
@@ -1068,8 +1068,8 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 	}
 	cout << tmRes;
 	cout << memRes;
-	string timeFileOutput = rubyPath + "/density_tests/DensityResultTime" + to_string(mSize) + "x" + to_string(pSize)+ ".txt";
-	string memFileOutput = rubyPath + "/density_tests/DensityResultMem" + to_string(mSize) + "x" + to_string(pSize) + ".txt";
+	string timeFileOutput = rubyPath + "density_tests/DensityResultTime" + to_string(mSize) + "x" + to_string(pSize)+ ".txt";
+	string memFileOutput = rubyPath + "density_tests/DensityResultMem" + to_string(mSize) + "x" + to_string(pSize) + ".txt";
 	ofstream f(timeFileOutput.c_str());
 	ofstream f2(memFileOutput.c_str());
 	f << tmRes;
@@ -1090,8 +1090,8 @@ void memoryEstimationTest(int ini, int end, int variation, string rubyPath)
 	{
 		//int max = 2000, min = 1;
 		//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-		string toSave = rubyPath + "/mem_estimation_tests/memEstimation"+to_string(ini)+"metersfixed.txt";
-		string toSave2 = rubyPath + "/mem_estimation_tests/memEstimation" + to_string(ini) + "polesfixed.txt";
+		string toSave = rubyPath + "mem_estimation_tests/memEstimation"+to_string(ini)+"metersfixed.txt";
+		string toSave2 = rubyPath + "mem_estimation_tests/memEstimation" + to_string(ini) + "polesfixed.txt";
 		ofstream f(toSave.c_str());
 		ofstream f2(toSave2.c_str());
 		for (int i = start; i <= end; i+=variation)
@@ -1115,7 +1115,7 @@ void memoryEstimationTestWithFixedMeters(int fixedMeters,int ini, int end, int v
 	int start = ini;
 	//int max = 2000, min = 1;
 	//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-	string toSave = rubyPath + "/mem_estimation_tests/memEstimation" + to_string(fixedMeters) + "metersfixed.txt";
+	string toSave = rubyPath + "mem_estimation_tests/memEstimation" + to_string(fixedMeters) + "metersfixed.txt";
 	ofstream f(toSave.c_str());
 	for (int i = ini; i <= end; i += variation)
 	{
@@ -1151,8 +1151,8 @@ void saveResults(string filesLocation, string metersFilename, string polesFilena
 }
 DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int variation, int timeLimit, double memLimit, string rubyPath, int mode)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	//string fileOutput = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
 	DensityTestResult* resultsRet = new DensityTestResult();
 	vector<vector<int> > aux;
 	//double density = 0.0005;
@@ -1168,7 +1168,7 @@ DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int var
 		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
 		double solverTime = -1, maxMem = -1;
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
@@ -1211,11 +1211,11 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		DensityTestResult * res = fixedDensityTest(density, mSize,pSize, variation, timeLimit,memLimit, rubyPath, mode);
 		string filename = "";
 		if (mode == NO_FIX)
-			filename = rubyPath + "/density_tests/FixedDensityResultNoSizeFix" + to_string(density) + "Inst"+to_string(i)+".txt";
+			filename = rubyPath + "density_tests/FixedDensityResultNoSizeFix" + to_string(density) + "Inst"+to_string(i)+".txt";
 		if (mode == FIXED_METERS)
-			filename = rubyPath + "/density_tests/FixedDensityResult"+to_string(mSize) +"FixedMeters" + to_string(density) + "Inst" + to_string(i) + ".txt";
+			filename = rubyPath + "density_tests/FixedDensityResult"+to_string(mSize) +"FixedMeters" + to_string(density) + "Inst" + to_string(i) + ".txt";
 		if (mode == FIXED_POLES)
-			filename = rubyPath + "/density_tests/FixedDensityResult"+ to_string(pSize) + "FixedPoles" + to_string(density) + "Inst" + to_string(i) + ".txt";
+			filename = rubyPath + "density_tests/FixedDensityResult"+ to_string(pSize) + "FixedPoles" + to_string(density) + "Inst" + to_string(i) + ".txt";
 		res->saveToFile(filename);
 		incResults.push_back(res);
 	}
@@ -1299,18 +1299,18 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 	string memFileOutput = "";
 	if (mode == NO_FIX)
 	{
-		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTimeNoSizeFix" + to_string(density) + ".txt";
-		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMemNoSizeFix" + to_string(density) + ".txt";
+		timeFileOutput = rubyPath + "density_tests/FixedDensityResultTimeNoSizeFix" + to_string(density) + ".txt";
+		memFileOutput = rubyPath + "density_tests/FixedDensityResultMemNoSizeFix" + to_string(density) + ".txt";
 	}
 	if (mode == FIXED_METERS)
 	{
-		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTime" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
-		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMem" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
+		timeFileOutput = rubyPath + "density_tests/FixedDensityResultTime" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
+		memFileOutput = rubyPath + "density_tests/FixedDensityResultMem" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
 	}
 	if (mode == FIXED_POLES)
 	{
-		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTime" + to_string(pSize) + "FixedPoles" +to_string(density) + ".txt";
-		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMem" + to_string(pSize) + "FixedPoles" + to_string(density) + ".txt";
+		timeFileOutput = rubyPath + "density_tests/FixedDensityResultTime" + to_string(pSize) + "FixedPoles" +to_string(density) + ".txt";
+		memFileOutput = rubyPath + "density_tests/FixedDensityResultMem" + to_string(pSize) + "FixedPoles" + to_string(density) + ".txt";
 	}
 	ofstream f(timeFileOutput.c_str());
 	ofstream f2(memFileOutput.c_str());
@@ -1487,7 +1487,7 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 //	//		i += 500;
 //
 //	//}
-//	//string filename = rubyPath + "/arqsTeste/ix"+to_string(i)+"MemTest.txt";
+//	//string filename = rubyPath + "arqsTeste/ix"+to_string(i)+"MemTest.txt";
 //	//ofstream f(filename.c_str());
 //	//f << v;
 //	//f.close();

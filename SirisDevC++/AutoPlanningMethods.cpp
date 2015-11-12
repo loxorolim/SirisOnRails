@@ -273,7 +273,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 		}
 	}
 	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default "+to_string(redundancy)+", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default "+to_string(redundancy)+", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < meters.size(); i++)
 	{
@@ -313,7 +313,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	}
 	resp += "\n;\nend;\n";
 
-	string filename = rubyPath + "/GlpkFile.txt";
+	string filename = rubyPath + "GlpkFile.txt";
 	ofstream f(filename.c_str());
 
 	f << resp;
@@ -348,7 +348,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += "subject to linked{ m in Y }: sum{ r in Z } Link[r, m] <= "+to_string(limit)+";\n";
 	resp += "subject to decis{ r in Z, m in Y }: Link[r, m] <= A[r, m] * Route[m];\n";
 	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] <= 1;\n ";
-	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < meters.size(); i++)
 	{
@@ -389,7 +389,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += "\n;\nend;\n";
 	delete covInfo;
 
-	string filename = rubyPath + "/GlpkFile.txt";
+	string filename = rubyPath + "GlpkFile.txt";
 	ofstream f(filename.c_str());
 
 	f << resp;
@@ -402,7 +402,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 //		//Pois se não, o método retornaria que a solução é impossível!
 //		//A formatação você ve no arquivo GlpkFile.txt
 //		string resp;
-//		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>="+to_string(redundancy)+";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath +"/Results.txt\";\n data;\n";
+//		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>="+to_string(redundancy)+";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath +"Results.txt\";\n data;\n";
 //		resp += "set Z:= ";
 //		for (int i = 0; i < metersToConsider.size(); i++)
 //		{
@@ -436,7 +436,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 //		resp += ";";
 //		resp += "end;\n";
 //		
-//		string filename = rubyPath + "/GlpkFile.txt";
+//		string filename = rubyPath + "GlpkFile.txt";
 //		ofstream f(filename.c_str());
 //
 //		f << resp;
@@ -446,7 +446,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 //Esse método faz um system call ao GLPK
 vector<int> AutoPlanning::executeGlpk(string filename)
 {
-	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+	//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
 	vector<int> answer;
@@ -495,7 +495,7 @@ skip: glp_mpl_free_wksp(tran);
 }
 vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &solverTime)
 {
-	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+	//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 	//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 	//system(access.c_str());
 	glp_term_out(GLP_OFF);
@@ -745,7 +745,7 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 		subProblem* sp = new subProblem();
 		saveGLPKFileReduced(cellSCP, redundancy);
 		double memUsageInCell = -1;
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)
@@ -852,7 +852,7 @@ TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, 
 		evaluateSCP(cellSCP, meters.size(), sp);
 		saveGLPKFileReduced(cellSCP, redundancy);
 		double memUsageInCell = -1;
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
 		sp->solverTime = solverTime;
 		sp->memUsed = memUsageInCell;
 		result->subProblemStats.push_back(sp);
@@ -997,8 +997,8 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 			saveGLPKFileReduced(cellSCP, redundancy);
 		else
 			saveGLPKFileReducedWithLimit(cellSCP, redundancy, limit);
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt");
-		ifstream f((rubyPath + "/Results.txt").c_str());
+		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt");
+		ifstream f((rubyPath + "Results.txt").c_str());
 		string gridAnswer;
 		getline(f, gridAnswer);
 
@@ -1061,7 +1061,7 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 		vector<vector<int> > cellSCP = createScp();
 		saveGLPKFileReduced(cellSCP,redundancy);
 		double memUsageInCell= -1;
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)

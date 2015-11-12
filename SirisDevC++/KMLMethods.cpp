@@ -118,7 +118,6 @@ string KMLMethods::generateKML()
 
 
 	string init = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://earth.google.com/kml/2.2\">\n";
-	init += "<Document>\n";
 	init += "<Scenario>" + to_string(scenario) + "</Scenario>\n";
 	init += "<Technology>" + to_string(technology) + "</Technology>\n";
 	init += "<Power>" + to_string(t_power) + "</Power>\n";
@@ -130,10 +129,16 @@ string KMLMethods::generateKML()
 	init += getDAPsKMLFormat();
 	init += getLinksKMLFormat();
 	init += getHeatmapKMLFormat();
-	init += "</Document>\n";
 	init += "</kml>";
 	
 	return init;
+}
+void KMLMethods::saveKmlToFile(string filename)
+{
+	ofstream f(filename.c_str());
+	string resp = generateKML();
+	f << resp;
+	f.close();
 }
 int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea )
 {
@@ -144,7 +149,7 @@ int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& me
 		cerr << "\nErro ao ler o arquivo. Verifique se o diretorio e o nome estao corretos.";
 		return 1;
 	}
-	pugi::xml_node	tools = doc.child("kml").child("Document").child("Folder");
+	pugi::xml_node	tools = doc.child("kml").child("Folder");
 	for (pugi::xml_node tool = tools; tool; tool = tool.next_sibling())
 	{
 		string type = tool.first_child().child_value();
@@ -186,4 +191,44 @@ int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& me
 		}		
 	}
 	return 0;
+}
+void convertMeterAndPolesToKml(string metersFilePath, string polesFilePath, string toSave)
+{
+	FILE * file;
+	file = fopen(metersFilePath.c_str(), "r");
+	FILE * file2;
+	file2 = fopen(polesFilePath.c_str(), "r");
+
+
+	vector<Position*> meters;
+	vector<Position*> poles;
+
+	while (true)
+	{
+		double lat = -1;
+		double lng = -1;
+		fscanf(file, "%lf %lf", &lng, &lat);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, meters.size());
+		meters.push_back(toAdd);
+	}
+	while (true)
+	{
+		double lat = -1;
+		double lng = -1;
+		fscanf(file2, "%lf %lf", &lng, &lat);
+		if (lat == -1)
+			break;
+		Position *toAdd = new Position(lat, lng, poles.size());
+		poles.push_back(toAdd);
+	}
+
+	fclose(file);
+	fclose(file2);
+
+	vector<Position*> nullVec;
+	KMLMethods* kmethods = new KMLMethods(meters, nullVec, poles, nullVec, 0, 0, 0, 0, 0, 0, 0, 0, "");
+	kmethods->saveKmlToFile(toSave);
+	delete kmethods;
 }

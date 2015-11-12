@@ -333,6 +333,8 @@ void printPlanningResume(int mSize, int pSize, int sSize)
 }
 int main(int argc, char* argv[])
 {
+	convertMeterAndPolesToKml("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\filemeters9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\filepoles9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\Floripa.kml");
+
 	int e = 0;
 	e += getInputFileOption(argc, argv);
 	e += getOutputFileOption(argc, argv);
@@ -364,8 +366,20 @@ int main(int argc, char* argv[])
 		if (!e_read)
 		{
 			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
-		//	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, 1, meshEnabled, meshHops, rubyPath);
-		//	string ret = res->executeAutoPlan(redundancy, limit);
+			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, 500, "");
+			string ret = res->clusterAutoPlanning(true, redundancy);
+			vector<string> chosenDaps = split(ret, ' ');
+			for (int i = 0; i < chosenDaps.size(); i++)
+			{
+				int pos = stoi(chosenDaps[i]);
+				double lat = poles[pos]->latitude;
+				double lng = poles[pos]->longitude;
+				Position *newDap = new Position(lat, lng, daps.size());
+				daps.push_back(newDap);
+			}
+			KMLMethods* kmethods = new KMLMethods(meters, daps, poles, coverageArea,scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, "");
+			kmethods->saveKmlToFile(outputFile);
+			delete kmethods;
 		}
 	}
 		

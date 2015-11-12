@@ -82,12 +82,14 @@ public:
 	string getPolesKMLFormat();
 	string getLinksKMLFormat();
 	string getHeatmapKMLFormat();
+	void saveKmlToFile(string filename);
+	
 	
 
 
 
 };
 int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea);
-
+void convertMeterAndPolesToKml(string metersFilePath, string polesFilePath, string toSave);
 
 #endif
