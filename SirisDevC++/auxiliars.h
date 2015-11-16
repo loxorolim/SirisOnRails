@@ -61,8 +61,8 @@ using namespace std;
 #define PCK_SIZE 400*8 //400 BYTES
 #define PER_HOP_DELAY 2 //2 MS
 #define EARTH_RADIUS 6378137
-#define MEM_LIMIT 99999
-#define TIME_LIMIT 2*60*60*1000
+//#define MEM_LIMIT 99999
+//#define TIME_LIMIT 2*60*60*1000
 #define MEM_EST_SAFETY 1.1
 
 #define VIVO_ID 0
@@ -70,6 +70,8 @@ using namespace std;
 #define OI_ID 2
 #define TIM_ID 3
 
+extern double TIME_LIMIT;
+extern double MEM_LIMIT;
 
 static const map<int, string> scenario_map = { { Urbano, "Urbano" },
 { Suburbano, "Suburbano" },

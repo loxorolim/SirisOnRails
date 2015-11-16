@@ -137,7 +137,7 @@ class AutoPlanning: public FatherMethods
 			//double regionLimiter, gridLimiter ;
 			//string rubyPath;
 	public:
-		AutoPlanning(vector<Position*> &meters, vector<Position*> &poles, int scenario, int technology, double bit_rate, double t_power,double h_tx, double h_rx, int srd, int mesh, double gridLimiter,string rubyPath)
+		AutoPlanning(vector<Position*> &meters, vector<Position*> &poles, int scenario, int technology, double bit_rate, double t_power,double h_tx, double h_rx, int srd, int mesh, double gridLimiter,string rubyPath, bool verbose = false)
 		{
 			this->meters = meters;
 			this->poles = poles;
@@ -151,6 +151,7 @@ class AutoPlanning: public FatherMethods
 			this->mesh = mesh;
 			this->gridLimiter = gridLimiter;
 			this->rubyPath = rubyPath;
+			this->verbose = verbose;
 			
 			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
 			regionLimiter = 0;

@@ -32,6 +32,8 @@ const string REDUNDANCY_CMD = "-r -redundancy -R";
 const string HTX_CMD = "-htx";
 const string HRX_CMD = "-hrx";
 const string BIT_RATE_CMD = "-b -bitrate";
+const string TIME_LIMIT_CMD = "-tmlim";
+const string MEM_LIMIT_CMD = "-memlim";
 
 const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + HELP_CMD + " : Esta mensagem de ajuda";
 int tech = TECHNOLOGY_DEFAULT, scenario = SCENARIO_DEFAULT, power = T80211G_POWER_DEFAULT, meshHops = MESH_HOPS_DEFAULT, redundancy = REDUNDANCY_DEFAULT;
@@ -150,6 +152,48 @@ int getPowerOption(int argc, char* argv[])
 				{
 					cerr << "\nALERTA: Valor de potencia esta muito alto ou muito baixo. ";
 				}
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de potencia!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getTimeLimitOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], TIME_LIMIT_CMD))
+		{
+			if (is_number(argv[i + 1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				TIME_LIMIT = val;
+				return 0;
+			}
+			else
+			{
+				cerr << "\nERRO: Digite um numero no valor de potencia!";
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+int getMemLimitOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], MEM_LIMIT_CMD))
+		{
+			if (is_number(argv[i + 1]))
+			{
+				int	val = atoi(argv[i + 1]);
+				MEM_LIMIT = val;
 				return 0;
 			}
 			else
@@ -333,7 +377,7 @@ void printPlanningResume(int mSize, int pSize, int sSize)
 }
 int main(int argc, char* argv[])
 {
-	convertMeterAndPolesToKml("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\filemeters9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\filepoles9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\Floripa.kml");
+	//convertMeterAndPolesToKml("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\filemeters9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\filepoles9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\SirisOnRails\\arqsTeste\\Floripa.kml");
 
 	int e = 0;
 	e += getInputFileOption(argc, argv);
@@ -356,6 +400,8 @@ int main(int argc, char* argv[])
 	e += getScenarioOption(argc, argv);
 	e += getPowerOption(argc, argv);
 	e += getMeshHopsOption(argc, argv);
+	e += getTimeLimitOption(argc, argv);
+	e += getMemLimitOption(argc, argv);
 	getHelpMessageOption(argc, argv);
 	if (e)
 		return 0;
