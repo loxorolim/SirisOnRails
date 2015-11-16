@@ -127,7 +127,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 		sComponent* s = sL[i];
 		while(hop >= 0)
 		{
-			//cout << s->efficiency << "\n";
+			//CALCULO DA EFICIENCIA DO CAMINHO PODE SER CALCULDA DE UMA FORMA MAIS EFICIENTE
 			eff *= s->efficiency;
 
 			hop--;

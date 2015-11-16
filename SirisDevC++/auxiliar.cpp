@@ -2,7 +2,7 @@
 
 
 double TIME_LIMIT = 3600;
-double MEM_LIMIT = 99999;
+double MEM_LIMIT = MEM_LIM_DEFAULT;
 //Essa classe tem umas funçõezinhas auxiliares.
 double getNumberOfRetries(double quality)
 {

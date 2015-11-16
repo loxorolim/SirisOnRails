@@ -29,7 +29,7 @@ class KMLMethods : public FatherMethods
 private:
 	vector<Position*> meters, daps, poles, coverageArea;
 public:
-	KMLMethods(vector<Position*> &meters, vector<Position*> &daps, vector<Position*> &poles, vector<Position*> &coverageArea, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, string rubyPath)
+	KMLMethods(vector<Position*> &meters, vector<Position*> &daps, vector<Position*> &poles, vector<Position*> &coverageArea, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, string rubyPath, bool verbose = 0)
 	{
 		this->meters = meters;
 		this->daps = daps;
@@ -44,6 +44,7 @@ public:
 		this->srd = srd;
 		this->mesh = mesh;
 		this->rubyPath = rubyPath;
+		this->verbose = verbose;
 
 		//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
 		regionLimiter = 0;

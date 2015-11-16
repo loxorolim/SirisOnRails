@@ -500,7 +500,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	//system(access.c_str());
 
 	glp_term_out(GLP_OFF);
-	if (verbose) glp_term_out(GLP_ON);
+	if (verbose) { cout << "\n"; glp_term_out(GLP_ON); }
 	double seconds;
 	clock_t begin_time = 0;
 	vector<int> answer;
@@ -690,9 +690,16 @@ void evaluateSCP(vector<vector<int> > &SCP, int metersSize, subProblem* sp )
 }
 string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
 {
+	if (verbose) cout << "\n Iniciando planejamento por clusters";
 	const clock_t begin_time = clock();
 	double solverTime;
+	if (verbose) cout << "\n Criando matriz de cobertura";
 	vector<vector<int> > scp = createScp();
+	if (verbose)
+	{
+		cout << "\n Matriz de cobertura criada";
+		cout << "\n Criando matriz de cobertura invertida";
+	}
 	vector<vector<int> > invertedSCP;
 	invertedSCP.resize(meters.size());
 	for (int i = 0; i < scp.size(); i++)
@@ -702,6 +709,7 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 			invertedSCP[scp[i][j]].push_back(i);
 		}
 	}
+	if (verbose) cout << "\n Matriz de cobertura invertida criada";
 	vector<ClusterProblem*> subProblems;
 	ClusterProblem* init = new ClusterProblem;
 	init->meters = meters; init->poles = poles;
@@ -717,6 +725,7 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 			double memEst = memEstimation(subProblems[i]->meters.size(), subProblems[i]->poles.size());
 			if (memEst*MEM_EST_SAFETY >= MEM_LIMIT)
 			{
+				if (verbose) cout << "\n Instancia " + to_string(i + 1) + " pode estourar o limite de memoria.\n Dividindo-a em duas. ";
 				vector<ClusterProblem*> clusterized = clusterizeProblem(subProblems[i]->meters, poles, invertedSCP);
 				toConcat.insert(toConcat.end(), clusterized.begin(), clusterized.end());
 				//subProblems.erase(subProblems.begin() + i);
@@ -738,16 +747,24 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 	double maxMem = -1;
 	vector<int> chosenDaps;
 	vector<Position*> metersAux = meters, polesAux = poles;
-
+	if (verbose) cout << "\n A instancia inicial foi dividida em  " + to_string(subProblems.size()) + " sub-instancias ";
 	for (int i = 0; i < subProblems.size(); i++)
 	{
+		if (verbose) cout << "\n Iniciando planejamento para sub-instancia de numero " + to_string(i + 1);
 		meters = subProblems[i]->meters;
 		poles = subProblems[i]->poles;
+		if (verbose) cout << "\n Criando matriz de cobertura para a sub-instancia de numero " + to_string(i + 1);
 		vector<vector<int> > cellSCP = createScp();
+		if (verbose) cout << "\n Matriz de cobertura para sub-instancia de numero " + to_string(i + 1) + " criada";
 		subProblem* sp = new subProblem();
+		evaluateSCP(cellSCP, meters.size(), sp);
+		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
 		saveGLPKFileReduced(cellSCP, redundancy);
+		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
 		double memUsageInCell = -1;
+		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
 		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
+		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)
@@ -762,7 +779,7 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 
 	if (usePostOptimization && subProblems.size() > 1)//PÓS OTIMIZAÇÃO
 	{
-		cout << "Iniciando pós otimização\n";
+		if(verbose) cout << "\n Iniciando pós otimização\n";
 		vector<int> chosen;
 		for (int i = 0; i < poles.size(); i++)
 			chosen.push_back(0);
@@ -790,6 +807,7 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 	{
 		str += to_string(chosenDaps[i]) + " ";
 	}
+	if (verbose) cout << "\n Planejamento concluido";
 	return str;
 	
 }
@@ -949,40 +967,40 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 		daps.push_back(dapToInsert);
 	}
 	////Calcula métricas sem pos-opt
-	//MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
-	//MetricResult* metricResult = mc->executeMetricCalculationTest();
-	//result->metersPerHop = metricResult->meterPerHop;
-	//result->qualityPerHop = metricResult->linkQualityPerHop;
-	//result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
-	//result->metersPerDap = metricResult->minMedMaxMetersPerDap;
-	//result->uncoveredMeters = metricResult->uncoveredMeters;
-	//delete metricResult;
-	//delete mc;
-	////Calcula métricas com pos-opt
-	//metersCopy.clear();
-	//daps.clear();
-	//if (usePostOptimization)
-	//{
-	//	xgp = result->poChosenPoles;
-	//	for (int i = 0; i < meters.size(); i++)
-	//	{
-	//		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
-	//		metersCopy.push_back(copy);
-	//	}
-	//	for (int i = 0; i < xgp.size(); i++)
-	//	{
-	//		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
-	//		daps.push_back(dapToInsert);
-	//	}
-	//	mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
-	//	metricResult = mc->executeMetricCalculationTest();
-	//	result->poMetersPerHop = metricResult->meterPerHop;
-	//	result->poQualityPerHop = metricResult->linkQualityPerHop;
-	//	result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
-	//	result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
-	//	delete metricResult;
-	//	delete mc;
-	//}
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+	MetricResult* metricResult = mc->executeMetricCalculationTest();
+	result->metersPerHop = metricResult->meterPerHop;
+	result->qualityPerHop = metricResult->linkQualityPerHop;
+	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
+	result->uncoveredMeters = metricResult->uncoveredMeters;
+	delete metricResult;
+	delete mc;
+	//Calcula métricas com pos-opt
+	metersCopy.clear();
+	daps.clear();
+	if (usePostOptimization)
+	{
+		xgp = result->poChosenPoles;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+			metersCopy.push_back(copy);
+		}
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+			daps.push_back(dapToInsert);
+		}
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+		metricResult = mc->executeMetricCalculationTest();
+		result->poMetersPerHop = metricResult->meterPerHop;
+		result->poQualityPerHop = metricResult->linkQualityPerHop;
+		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
+		delete metricResult;
+		delete mc;
+	}
 	//cout << result->toString();
 	if (verbose) cout << "\n Planejamento por clusters finalizado";
 	return result;

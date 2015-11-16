@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.2">
-<Document>
 <Scenario>1</Scenario>
 <Technology>2</Technology>
 <Power>20.000000</Power>
@@ -592,5 +591,4 @@
 </Point>
 </Placemark>
 </Folder>
-</Document>
 </kml>

@@ -15,8 +15,10 @@ using namespace std;
 #if _WIN32 || _WIN64
 #if _WIN64
 #define IS_64 1
+#define MEM_LIM_DEFAULT 6000
 #else
 #define IS_64 0
+#define MEM_LIM_DEFAULT 3000
 #endif
 #endif
 
@@ -24,8 +26,10 @@ using namespace std;
 #if __GNUC__
 #if __x86_64__ || __ppc64__
 #define IS_64 1
+#define MEM_LIM_DEFAULT 6000
 #else
 #define IS_64 0
+#define MEM_LIM_DEFAULT 3000
 #endif
 #endif
 

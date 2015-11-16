@@ -88,7 +88,7 @@ DrawInfo* LinkCalculation::chooseDeviceToConnect(Position* meter, vector<Positio
 	
 		if (effs >= MARGIN_VALUE)
 		{
-			double linkDelay = calculateLinkDelay(effs, bit_rate, technology) + hopNumber*PER_HOP_DELAY;
+			double linkDelay = calculateLinkDelay(effs, bit_rate, technology);//+hopNumber*PER_HOP_DELAY;
 			DrawInfo* ret;
 			if(hopNumber == 0)
 				ret = new DrawInfo(meter->index, deviceToConnect->index,hopNumber, effs, linkDelay, dist, 0);

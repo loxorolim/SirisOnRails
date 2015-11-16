@@ -2,10 +2,43 @@
 
 string KMLMethods::getMetersKMLFormat()
 {
+	vector<Position*> m, d;
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* p = new Position(meters[i]->latitude, meters[i]->longitude, i);
+		m.push_back(p);
+	}
+	for (int i = 0; i <daps.size(); i++)
+	{
+		Position* p = new Position(daps[i]->latitude, daps[i]->longitude, i);
+		d.push_back(p);
+	}
+	MetricCalculation* mc = new MetricCalculation(m, d, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+	vector<sComponent*> sComponents = mc->statisticalList();
+
 	string init = "<Folder><name>"+MetersTag+"</name>\n";
 	for (int i = 0; i<meters.size(); i++)
 	{
-		init += "<Placemark>\n<name>"+meter_name +"</name>\n<Point>\n<coordinates>" +
+		double meterSDR = 1, meterDelay = 0;
+		int hop = -1;
+		if (i < sComponents.size()) // OU SEJA, SE O MEDIDOR ESTIVER COBERTO
+		{
+			sComponent* aux = sComponents[i];
+			meterDelay += aux->hop*PER_HOP_DELAY;
+			hop = aux->hop;
+			while (aux != NULL)
+			{
+				meterSDR *= aux->efficiency;
+				meterDelay += aux->delay;
+				aux = aux->meshFather;
+			}
+		}
+		init += "<Placemark>\n<name>" + meter_name + "</name>";
+		if (i < sComponents.size())
+		{
+			init += "\n<efficiency>" + to_string(meterSDR) + "</efficiency>\n<delay>" + to_string(meterDelay) + "<delay>\n<meshHop>" + to_string(hop) + "</meshHop>";
+		}
+		init += "\n<Point>\n<coordinates>"+
 			to_string(meters[i]->longitude)
 			+ "," + to_string(meters[i]->latitude)
 			+ ",0</coordinates>\n</Point>\n</Placemark>\n";
@@ -90,7 +123,7 @@ string KMLMethods::getLinksKMLFormat()
 }
 string KMLMethods::getHeatmapKMLFormat()
 {
-	string init = "</Folder>\n";
+	string init = "";
 	init += "<Folder><name>"+SignalsTag+"</name>\n";
 	for (int i = 0; i < coverageArea.size(); i++)
 	{
@@ -110,13 +143,18 @@ string KMLMethods::getHeatmapKMLFormat()
 
 string KMLMethods::generateKML()
 {
-	
+	if(verbose)
+	{
+		 cout << "\n Gerando arquivo KML";
+		 cout << "\n Calculando estatisticas";
+	}
 	MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
 	string metrics = res->executeMetricCalculation();
+	if (verbose) cout << "\n Estatisticas calculadas";
 	//delete res;
 
 
-
+	if (verbose) cout << "\n Escrevendo elementos do KML";
 	string init = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml xmlns=\"http://earth.google.com/kml/2.2\">\n";
 	init += "<Scenario>" + to_string(scenario) + "</Scenario>\n";
 	init += "<Technology>" + to_string(technology) + "</Technology>\n";
@@ -130,7 +168,7 @@ string KMLMethods::generateKML()
 	init += getLinksKMLFormat();
 	init += getHeatmapKMLFormat();
 	init += "</kml>";
-	
+	if (verbose) cout << "\n KML gerado";
 	return init;
 }
 void KMLMethods::saveKmlToFile(string filename)
@@ -139,6 +177,7 @@ void KMLMethods::saveKmlToFile(string filename)
 	string resp = generateKML();
 	f << resp;
 	f.close();
+	if (verbose) cout << "\n Arquivo KML salvo em: " + filename;
 }
 int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea )
 {
@@ -177,7 +216,6 @@ int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& me
 				}
 				if (type == SignalsTag)
 				{
-					//COMPLETAR AQUI
 					vector<string> ids;
 					for (pugi::xml_node i = placemark.child("Operators").child("id"); i; i = i.next_sibling())
 					{

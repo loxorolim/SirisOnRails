@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.2">
-<Document>
 <Scenario>0</Scenario>
 <Technology>2</Technology>
 <Power>20.000000</Power>
@@ -22,24 +21,36 @@
 <Folder><name>Medidores</name>
 <Placemark>
 <name>Medidor</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626<delay>
+<meshHop>0</meshHop>
 <Point>
 <coordinates>-43.064892,-22.956459,0</coordinates>
 </Point>
 </Placemark>
 <Placemark>
 <name>Medidor</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626<delay>
+<meshHop>0</meshHop>
 <Point>
 <coordinates>-43.064762,-22.956476,0</coordinates>
 </Point>
 </Placemark>
 <Placemark>
 <name>Medidor</name>
+<efficiency>0.999746</efficiency>
+<delay>0.508756<delay>
+<meshHop>0</meshHop>
 <Point>
 <coordinates>-43.064667,-22.956373,0</coordinates>
 </Point>
 </Placemark>
 <Placemark>
 <name>Medidor</name>
+<efficiency>0.998858</efficiency>
+<delay>0.509208<delay>
+<meshHop>0</meshHop>
 <Point>
 <coordinates>-43.064571,-22.956621,0</coordinates>
 </Point>
@@ -142,7 +153,6 @@
 </coordinates>
 </LineString>
 </Placemark>
-</Folder>
 </Folder>
 <Folder><name>Mapa de Calor</name>
 <Placemark>
@@ -601,5 +611,4 @@
 </Point>
 </Placemark>
 </Folder>
-</Document>
 </kml>
