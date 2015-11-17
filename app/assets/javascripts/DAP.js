@@ -13,7 +13,7 @@ function getSignalInfo(latLng){
     for(var i = 0; i < heatmapPoints.length; i++){
         var hmLatLng = heatmapPoints[i].position;
         var dist = google.maps.geometry.spherical.computeDistanceBetween (latLng, hmLatLng);
-        if(dist <= heatmapRadio && heatmapPoints[i].weight > heatmapLimit )
+        if(dist <= heatmapRadio)
         {
             for(k in heatmapPoints[i].opIds)
                 ret.push(heatmapPoints[i].opIds[k]);

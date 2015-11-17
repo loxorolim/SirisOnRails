@@ -325,7 +325,7 @@ vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
 			double eff = getLinkQuality(dist);
-			if (i != j && eff >= MARGIN_VALUE)
+			if (meters[i]->index != meterRegion[j]->index && eff >= MARGIN_VALUE)
 				pointsCovered.push_back(meterRegion[j]->index);
 
 		}

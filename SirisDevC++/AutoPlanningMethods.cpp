@@ -116,7 +116,7 @@ vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
 			double eff = getLinkQuality(dist);
-			if (i != j && eff >= MARGIN_VALUE) //Se a eficiencia for superior a 90%(MARGIN_VALUE) então é vizinho!
+			if (meters[i]->index != meterRegion[j]->index && eff >= MARGIN_VALUE) //Se a eficiencia for superior a 90%(MARGIN_VALUE) então é vizinho!
 				pointsCovered.push_back(meterRegion[j]->index);
 		}
 		M.push_back(pointsCovered);

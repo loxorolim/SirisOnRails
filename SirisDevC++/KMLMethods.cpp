@@ -127,11 +127,11 @@ string KMLMethods::getHeatmapKMLFormat()
 	init += "<Folder><name>"+SignalsTag+"</name>\n";
 	for (int i = 0; i < coverageArea.size(); i++)
 	{
-		init += "<Placemark>\n<name>"+signal_name +"</name>\n<value>" + to_string(coverageArea[i]->weight) + "</value>\n";
+		init += "<Placemark>\n<name>" + signal_name + "</name>\n";//<value>" + to_string(coverageArea[i]->weight) + "</value>\n";
 		init += "<Operators>\n";
 		for (int j = 0; j < coverageArea[i]->signalInfo.size(); j++)
 		{
-			init += "<value>" + coverageArea[i]->signalInfo[j] + "</value>\n";
+			init += "<id>" + coverageArea[i]->signalInfo[j] + "</id>\n";
 		}
 		init += "</Operators>\n";
 			

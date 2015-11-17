@@ -241,16 +241,17 @@ string getResponse(string req, string rubyPath)
 		pLength = std::atoi(line.c_str());
 		for (int i = 0; i < pLength; i++)
 		{
-			double lat, lng, val;
+			double lat, lng;
 			std::getline(f, line);
 			vector<string> s = split(line, ' ');
 			lat = std::atof(s[0].c_str());
 			lng = std::atof(s[1].c_str());
-			val = std::atof(s[2].c_str());
+			//val = std::atof(s[2].c_str());
 			vector<string> opIds;
-			for (int j = 3; j < s.size(); j++)
+			for (int j = 2; j < s.size(); j++)
 			{
-				opIds.push_back(s[j].c_str());
+				if (s[j] != " " && s[j] != "")
+					opIds.push_back(s[j].c_str());
 			}
 			Position *toAdd = new Position(lat, lng, i, opIds);
 			coverageArea.push_back(toAdd);

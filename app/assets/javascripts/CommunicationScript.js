@@ -378,7 +378,7 @@ function createHeatgridFileModel(){
     var ret = HEATGRID_FILE_ID + '\n';
     ret+= heatmapPoints.length+"\n";
     for(var i = 0; i <heatmapPoints.length; i++){
-        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() + " " + heatmapPoints[i].weight;
+        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() ;//+ " " + heatmapPoints[i].weight;
         ret += "\n";
     }
     return ret;
@@ -426,12 +426,13 @@ function createKMLFileModel(){
 	ret += heatmapPoints.length;
     ret += "\n";
     for(var i = 0; i <heatmapPoints.length; i++){
-        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() + " " + heatmapPoints[i].weight;
+        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng();// + " " + heatmapPoints[i].weight;
         var opIds = "";
         for(var j = 0; j < heatmapPoints[i].opIds.length; j++)
         {
-            opIds += " ";
             opIds+=heatmapPoints[i].opIds[j];
+           // if(j!= heatmapPoints[i].opIds.length-1)
+           // opIds+="/";
         }
         ret += opIds;
         ret += "\n";

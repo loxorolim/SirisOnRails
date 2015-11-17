@@ -155,7 +155,7 @@ class AutoPlanning: public FatherMethods
 			
 			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
 			regionLimiter = 0;
-			while (getLinkQuality(regionLimiter) > MARGIN_VALUE || getLinkQualityBetweenMeters(regionLimiter) > MARGIN_VALUE)
+			while (getLinkQuality(regionLimiter) >= MARGIN_VALUE || getLinkQualityBetweenMeters(regionLimiter) >= MARGIN_VALUE)
 			{
 				regionLimiter++;
 			}

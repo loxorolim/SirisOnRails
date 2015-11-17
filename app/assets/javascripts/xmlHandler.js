@@ -201,7 +201,7 @@ function loadFromKMLText(kml){
 	var bounds = new google.maps.LatLngBounds(pos2,pos1);
 	map.fitBounds(bounds);
 	for(var i = 0; i < daps.length; i++){
-		daps[i].signalInfo = daps[i].getSignalInfo(daps[i].position);
+		daps[i].signalInfo = getSignalInfo(daps[i].position);
 	}
 	sendDrawRequest();
 
