@@ -31,7 +31,7 @@ var technology = t802_15_4;
 var H_TX = 3;
 var H_RX = 5;
 var BIT_RATE;
-var TRANSMITTER_POWER = -20;
+var TRANSMITTER_POWER = 20;
 var SRD = true;
 var REDUNDANCY = 1;
 var LIMIT = 100;

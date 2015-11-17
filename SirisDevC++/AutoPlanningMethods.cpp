@@ -160,7 +160,7 @@ vector<vector<int> > AutoPlanning::createScp()
 				{
 					int toFind = neighbours[k];
 					int pos = 0;
-					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; }}
+					for (int l = 0; l < meters.size(); l++){ if (meters[l]->index == toFind){ pos = l; break; }}
 					//Esse for aí em cima serve para localizar a posição do medidor com o respectivo index, pois
 					// a matriz de vizinhança dos medidores não é organizada por index, mas sim 0,1,2...n.
 					//sM[i] = concatVectors(sM[i], nM[pos]);//Os vizinhos agora fazem parte da cobertura do poste!

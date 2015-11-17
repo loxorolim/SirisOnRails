@@ -266,7 +266,7 @@ vector<vector<int> > MetricCalculation::coverageList()
 
 					int toFind = neighbours[k];
 					int pos = 0;
-					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
+					for (int l = 0; l < meters.size(); l++){ if (meters[l]->index == toFind){ pos = l; break; } }
 
 					//sM[i] = concatVectors(sM[i], nM[pos]);
 					sM[i].insert(sM[i].end(), nM[pos].begin(), nM[pos].end());

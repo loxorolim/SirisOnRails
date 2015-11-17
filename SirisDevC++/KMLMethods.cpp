@@ -36,7 +36,7 @@ string KMLMethods::getMetersKMLFormat()
 		init += "<Placemark>\n<name>" + meter_name + "</name>";
 		if (i < sComponents.size())
 		{
-			init += "\n<efficiency>" + to_string(meterSDR) + "</efficiency>\n<delay>" + to_string(meterDelay) + "<delay>\n<meshHop>" + to_string(hop) + "</meshHop>";
+			init += "\n<efficiency>" + to_string(meterSDR) + "</efficiency>\n<delay>" + to_string(meterDelay) + "</delay>\n<meshHop>" + to_string(hop) + "</meshHop>";
 		}
 		init += "\n<Point>\n<coordinates>"+
 			to_string(meters[i]->longitude)
@@ -102,8 +102,8 @@ string KMLMethods::getLinksKMLFormat()
 	string init = "<Folder><name>"+ LinksTag +"</name>\n";
 	for (int i = 0; i< lines.size(); i++){
 		string alat, alng, blat, blng;
-		alat = to_string(meters[lines[i]->a]->longitude);
-		alng = to_string(meters[lines[i]->a]->latitude);
+		alat = to_string(meters[lines[i]->a]->latitude);
+		alng = to_string(meters[lines[i]->a]->longitude);
 		if (lines[i]->hopnumber == 0)
 		{
 			blng = to_string(daps[lines[i]->b]->longitude);
