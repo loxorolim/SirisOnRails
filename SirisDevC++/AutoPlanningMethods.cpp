@@ -1247,10 +1247,10 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 	return result;
 }
 //////////////////////////////////////////MÉTODOS PRO GRASP////////////////////////////////////////////////
-int iterations = 500;
+//int iterations = 500;
 double p = 0.5;
-double alpha = 0.9;
-vector<int> generateRCL(vector<vector<int> > &scp, int* solution)
+//double alpha = 0.9;
+vector<int> generateRCL(vector<vector<int> > &scp, int* solution, double alpha)
 {
 	vector<pair<int,int> > numSatisfied;
 	int max = 0;
@@ -1280,7 +1280,7 @@ vector<int> generateRCL(vector<vector<int> > &scp, int* solution)
 	return RCL;
 }
 
-int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, int* solution)
+int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, int* solution,double alpha)
 {
 	//vector<vector<int>> scpCopy = copyScp(scp);
 	//vector<vector<int>> cMatrix = coverageMatrix(scp, size);
@@ -1288,7 +1288,7 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 
 	while (true)
 	{
-		vector<int> RCL = generateRCL(scp, solution);
+		vector<int> RCL = generateRCL(scp, solution,alpha);
 		if (RCL.size() == 0)
 			break;
 		int cand = RCL[rand() % RCL.size()];
@@ -1866,77 +1866,77 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 //	//	return solution;
 //}
 
-//string AutoPlanning::graspAutoPlanning()
-//{
+string AutoPlanning::graspAutoPlanning(int iterations,double alpha)
+{
+
+	vector<vector<int> > SCP = createScp();
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for(int i = 0; i < SCP.size(); i++)
+	{
+		for(int j = 0; j < SCP[i].size(); j++)
+		{
+			invertedSCP[SCP[i][j]].push_back(i);
+		}
+	}
+	int* solution = new int[poles.size()];
+	int* newSolution;
+	//double bestSolutionTime;
+	//double totalTime;
+	int winner = -1;
+	for (int i = 0; i < iterations; i++)
+	{
+		newSolution = new int[poles.size()];
+		for (int z = 0; z < poles.size(); z++)
+			newSolution[z] = 0;
+		newSolution = constructPhase(SCP,invertedSCP, newSolution,alpha);
+		int count = 0;
+		for (int z = 0; z < poles.size(); z++)
+		{
+			if (newSolution[z] == 1) count++;
+		}
+		cout << count << "\n";
+		if (count < winner || winner == -1)
+			winner = count;
+	
+		//RolimLocalSearch(SCP, newSolution);
+		////WalkSat(SCP, newSolution);
+
+		//count = 0;
+		//for (int z = 0; z < poles.size(); z++)
+		//{
+		//	if (newSolution[z] == 1) count++;
+		//}
+		//cout << "Melhorado:" << count << "\n";
+
+
 //
-//	vector<vector<int> > SCP = createScp();
-//	vector<vector<int> > invertedSCP;
-//	invertedSCP.resize(meters.size());
-//	for(int i = 0; i < SCP.size(); i++)
-//	{
-//		for(int j = 0; j < SCP[i].size(); j++)
+//		if (isBetterSolution(scp, newSolution, solution, size) == 1) //MUDAAAAAAAR
 //		{
-//			invertedSCP[SCP[i][j]].push_back(i);
+//
+//			delete[] solution;
+//			solution = newSolution;
+//			int cS = 0, nC = 0;
+//			evaluateSolution(scp, solution, size, &cS, &nC);
+//			//printf("%f \n", bestSolutionTime);
+//			//printf("%d \n", cS);
+//			//printf("%d \n", nC);
 //		}
-//	}
-//	int* solution = new int[poles.size()];
-//	int* newSolution;
-//	//double bestSolutionTime;
-//	//double totalTime;
-//	int winner = -1;
-//	for (int i = 0; i < iterations; i++)
-//	{
-//		newSolution = new int[poles.size()];
-//		for (int z = 0; z < poles.size(); z++)
-//			newSolution[z] = 0;
-//		newSolution = constructPhase(SCP,invertedSCP, newSolution);
-//		int count = 0;
-//		for (int z = 0; z < poles.size(); z++)
+//		else
 //		{
-//			if (newSolution[z] == 1) count++;
+//			delete[] newSolution;
 //		}
-//		cout << count << "\n";
-//		if (count < winner || winner == -1)
-//			winner = count;
-//	
-//		//RolimLocalSearch(SCP, newSolution);
-//		////WalkSat(SCP, newSolution);
-//
-//		//count = 0;
-//		//for (int z = 0; z < poles.size(); z++)
-//		//{
-//		//	if (newSolution[z] == 1) count++;
-//		//}
-//		//cout << "Melhorado:" << count << "\n";
-//
-//
-////
-////		if (isBetterSolution(scp, newSolution, solution, size) == 1) //MUDAAAAAAAR
-////		{
-////
-////			delete[] solution;
-////			solution = newSolution;
-////			int cS = 0, nC = 0;
-////			evaluateSolution(scp, solution, size, &cS, &nC);
-////			//printf("%f \n", bestSolutionTime);
-////			//printf("%d \n", cS);
-////			//printf("%d \n", nC);
-////		}
-////		else
-////		{
-////			delete[] newSolution;
-////		}
-//
-//
-//	}
-//	cout << "VENCEDOR: " << winner;
-//	//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
-//	//return solution;
-//
-//	return "wow";
-//
-//
-//}
+
+
+	}
+	cout << "VENCEDOR: " << winner;
+	//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
+	//return solution;
+
+	return "wow";
+
+
+}
 void AutoPlanning::setGridSize(double gridSize)
 {
 	gridLimiter = gridSize;

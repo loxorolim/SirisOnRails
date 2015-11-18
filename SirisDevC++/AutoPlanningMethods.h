@@ -207,7 +207,7 @@ class AutoPlanning: public FatherMethods
 		
 		//string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
 		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
-		//string graspAutoPlanning();
+		string graspAutoPlanning(int iterations, double alpha);
 
 		//Metodos Teste
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
