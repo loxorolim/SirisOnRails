@@ -1868,7 +1868,7 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 
 string AutoPlanning::graspAutoPlanning(int iterations,double alpha)
 {
-
+	string ret = "";
 	vector<vector<int> > SCP = createScp();
 	vector<vector<int> > invertedSCP;
 	invertedSCP.resize(meters.size());
@@ -1890,14 +1890,16 @@ string AutoPlanning::graspAutoPlanning(int iterations,double alpha)
 		for (int z = 0; z < poles.size(); z++)
 			newSolution[z] = 0;
 		newSolution = constructPhase(SCP,invertedSCP, newSolution,alpha);
-		int count = 0;
+		//int count = 0;
 		for (int z = 0; z < poles.size(); z++)
 		{
-			if (newSolution[z] == 1) count++;
+			if (newSolution[z] == 1)
+				ret += to_string(z);
+				//count++;
 		}
-		cout << count << "\n";
-		if (count < winner || winner == -1)
-			winner = count;
+		//cout << count << "\n";
+		//if (count < winner || winner == -1)
+		//	winner = count;
 	
 		//RolimLocalSearch(SCP, newSolution);
 		////WalkSat(SCP, newSolution);

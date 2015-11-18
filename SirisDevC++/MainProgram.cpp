@@ -448,7 +448,7 @@ int main(int argc, char* argv[])
 			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
 			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, 500, "",verbose);
 			//string ret = res->clusterAutoPlanning(true, redundancy);
-			string ret = res->graspAutoPlanning(500, 0.9);
+			string ret = res->graspAutoPlanning(1, 1);
 			cout << "\n"+ret;
 			vector<string> chosenDaps = split(ret, ' ');
 			for (int i = 0; i < chosenDaps.size(); i++)
