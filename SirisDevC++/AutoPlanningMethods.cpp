@@ -1866,15 +1866,16 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 //	//	return solution;
 //}
 
-string AutoPlanning::graspAutoPlanning(int iterations,double alpha)
+string AutoPlanning::graspAutoPlanning(int iterations, double alpha)
 {
 	string ret = "";
+	int retCount = -1;
 	vector<vector<int> > SCP = createScp();
 	vector<vector<int> > invertedSCP;
 	invertedSCP.resize(meters.size());
-	for(int i = 0; i < SCP.size(); i++)
+	for (int i = 0; i < SCP.size(); i++)
 	{
-		for(int j = 0; j < SCP[i].size(); j++)
+		for (int j = 0; j < SCP[i].size(); j++)
 		{
 			invertedSCP[SCP[i][j]].push_back(i);
 		}
@@ -1886,16 +1887,25 @@ string AutoPlanning::graspAutoPlanning(int iterations,double alpha)
 	int winner = -1;
 	for (int i = 0; i < iterations; i++)
 	{
+		if (verbose) cout << "\n Iteracao " + to_string(i);
 		newSolution = new int[poles.size()];
 		for (int z = 0; z < poles.size(); z++)
 			newSolution[z] = 0;
-		newSolution = constructPhase(SCP,invertedSCP, newSolution,alpha);
-		//int count = 0;
+		newSolution = constructPhase(SCP, invertedSCP, newSolution, alpha);
+		int count = 0;
+		string currentSol = "";
 		for (int z = 0; z < poles.size(); z++)
 		{
 			if (newSolution[z] == 1)
-				ret += to_string(z);
-				//count++;
+			{
+				currentSol += to_string(z) + " ";
+				count++;
+			}
+		}
+		if (retCount == -1 || count < retCount)
+		{
+			ret = currentSol;
+			retCount = count;
 		}
 		//cout << count << "\n";
 		//if (count < winner || winner == -1)
@@ -1931,11 +1941,11 @@ string AutoPlanning::graspAutoPlanning(int iterations,double alpha)
 
 
 	}
-	cout << "VENCEDOR: " << winner;
+	//cout << "VENCEDOR: " << winner;
 	//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
 	//return solution;
 
-	return "wow";
+	return ret;
 
 
 }
