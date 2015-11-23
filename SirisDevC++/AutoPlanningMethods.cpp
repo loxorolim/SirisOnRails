@@ -796,6 +796,7 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 			if (chosen[i] == 1)
 				resultPosOpt.push_back(i);
 		}
+		chosenDaps = resultPosOpt;
 
 	}
 	for (int i = 0; i < subProblems.size(); i++)
@@ -1865,7 +1866,67 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 //
 //	//	return solution;
 //}
+TestResult* AutoPlanning::executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy, int usePostOptimization)
+{
+	TestResult* result;
+	//cout << "Iniciando planejamento\n";
+	result = graspAutoPlanningTestMode(iterations, alpha, redundancy, usePostOptimization);
+	result->gridSize = gridLimiter;
+	result->numMeters = meters.size();
+	result->numPoles = poles.size();
+	vector<int> xgp = result->chosenPoles;
+	vector<Position*> daps;
+	vector<Position*> metersCopy;
 
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+		metersCopy.push_back(copy);
+	}
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+		daps.push_back(dapToInsert);
+	}
+	////Calcula métricas sem pos-opt
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+	MetricResult* metricResult = mc->executeMetricCalculationTest();
+	result->metersPerHop = metricResult->meterPerHop;
+	result->qualityPerHop = metricResult->linkQualityPerHop;
+	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
+	result->uncoveredMeters = metricResult->uncoveredMeters;
+	delete metricResult;
+	delete mc;
+	//Calcula métricas com pos-opt
+	metersCopy.clear();
+	daps.clear();
+	if (usePostOptimization)
+	{
+		xgp = result->poChosenPoles;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+			metersCopy.push_back(copy);
+		}
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+			daps.push_back(dapToInsert);
+		}
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+		metricResult = mc->executeMetricCalculationTest();
+		result->poMetersPerHop = metricResult->meterPerHop;
+		result->poQualityPerHop = metricResult->linkQualityPerHop;
+		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
+		delete metricResult;
+		delete mc;
+	}
+	//cout << result->toString();
+	if (verbose) cout << "\n Planejamento por clusters finalizado";
+	return result;
+}
 string AutoPlanning::graspAutoPlanning(int iterations, double alpha)
 {
 	string ret = "";
@@ -1948,6 +2009,83 @@ string AutoPlanning::graspAutoPlanning(int iterations, double alpha)
 	return ret;
 
 
+}
+TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization)
+{
+	TestResult* tresult = new TestResult();
+	const clock_t begin_time = clock();
+	double secondsgp = 0;
+	vector<int> ret;
+	int retCount = -1;
+	vector<vector<int> > SCP = createScp();
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for (int i = 0; i < SCP.size(); i++)
+	{
+		for (int j = 0; j < SCP[i].size(); j++)
+		{
+			invertedSCP[SCP[i][j]].push_back(i);
+		}
+	}
+	int* solution = new int[poles.size()];
+	int* newSolution;
+	//double bestSolutionTime;
+	//double totalTime;
+	int winner = -1;
+	for (int i = 0; i < iterations; i++)
+	{
+		cout << "\n Iteracao " + to_string(i);
+		newSolution = new int[poles.size()];
+		for (int z = 0; z < poles.size(); z++)
+			newSolution[z] = 0;
+		newSolution = constructPhase(SCP, invertedSCP, newSolution, alpha);
+		int count = 0;
+		vector<int> currentSol;
+		for (int z = 0; z < poles.size(); z++)
+		{
+			if (newSolution[z] == 1)
+			{
+				currentSol.push_back(z);
+			}
+		}
+		if (retCount == -1 || count < retCount)
+		{
+			ret = currentSol;
+			retCount = count;
+		}
+	}
+	sort(ret.begin(), ret.end());
+	ret.erase(unique(ret.begin(), ret.end()), ret.end());
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	tresult->solutionQuality = ret.size();
+	tresult->chosenPoles = ret;
+	tresult->time = secondsgp;
+	if (usePostOptimization)//PÓS OTIMIZAÇÃO
+	{
+		cout << "\n Iniciando pós otimização\n";
+		vector<int> chosen;
+		for (int i = 0; i < poles.size(); i++)
+			chosen.push_back(0);
+		for (int i = 0; i < ret.size(); i++)
+		{
+			chosen[ret[i]] = 1;
+		}
+
+		RolimEGuerraLocalSearchWithRedundancy(SCP, invertedSCP, chosen, redundancy);
+
+		vector<int> resultPosOpt;
+		for (int i = 0; i < poles.size(); i++)
+		{
+			if (chosen[i] == 1)
+				resultPosOpt.push_back(i);
+		}
+		ret = resultPosOpt;
+		secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+		tresult->poSolutionQuality = resultPosOpt.size();
+		tresult->poChosenPoles = resultPosOpt;
+		tresult->poTime = secondsgp;
+	}
+	return tresult;
 }
 void AutoPlanning::setGridSize(double gridSize)
 {

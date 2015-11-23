@@ -1,0 +1,21 @@
+Dimension: 14991 x 1872
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 1383
+Time: 121.588997
+Hop1Quantity: 14991
+Hop1Quality: 0.999774
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 12.385394
+Max Meters per DAP: 226.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.142619
+Max Redundancy: 4.000000
+14991x1872:
+Número de 1's na Matriz de Cobertura28268.000000:
+Densidade: 0.001007
+Cobertura média por DAP: 15.100427
+Desvio padrão da cobertura: 23.440768
+Memória utilizada: 4326.903287
+Tempo utilizado: 0.139000
