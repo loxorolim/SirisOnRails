@@ -1281,12 +1281,25 @@ vector<int> generateRCL(vector<vector<int> > &scp, int* solution, double alpha)
 	return RCL;
 }
 
-int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, int* solution,double alpha)
+int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, int* solution,double alpha, int redundancy = 1)
 {
 	//vector<vector<int>> scpCopy = copyScp(scp);
 	//vector<vector<int>> cMatrix = coverageMatrix(scp, size);
 	int tam = invertedSCP.size();
+	vector<int> redundancyInfo;
 
+	for (int i = 0; i < invertedSCP.size(); i++)
+	{
+		redundancyInfo.push_back(0);
+	}
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			if (redundancyInfo[scp[i][j]] < redundancy)
+				redundancyInfo[scp[i][j]]++;
+		}
+	}
 	while (true)
 	{
 		vector<int> RCL = generateRCL(scp, solution,alpha);
@@ -1294,22 +1307,31 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 			break;
 		int cand = RCL[rand() % RCL.size()];
 		solution[cand] = 1;
-		tam -= scp[cand].size();
+		int sizeToReduce = 0;
+		for (int i = 0; i < scp[cand].size(); i++)
+		{
+			redundancyInfo[scp[cand][i]]--;
+			if (redundancyInfo[scp[cand][i]] == 0)
+				sizeToReduce++;
+		}
+		tam -= sizeToReduce;
+		//tam -= scp[cand].size();
+
 //		vector<vector<int>> scpCopy = scp;
 		int fSize = scp[cand].size();
 		for(int i = 0; i < scp[cand].size();i++)
 		{
-			vector<int> aaa = scp[cand];
+			//vector<int> aaa = scp[cand];
 			int sSize = invertedSCP[scp[cand][i]].size();
 			for(int j = 0; j < sSize; j++)
 			{
-				vector<int> bbb = invertedSCP[scp[cand][i]];
+				//vector<int> bbb = invertedSCP[scp[cand][i]];
 				int tSize = scp[invertedSCP[scp[cand][i]][j]].size();
 				if (invertedSCP[scp[cand][i]][j] != cand)
 				{
 					for (int k = 0; k < tSize; k++)
 					{
-						vector<int> ccc = scp[invertedSCP[scp[cand][i]][j]];
+						//vector<int> ccc = scp[invertedSCP[scp[cand][i]][j]];
 						if (scp[invertedSCP[scp[cand][i]][j]][k] == scp[cand][i])
 						{
 							scp[invertedSCP[scp[cand][i]][j]].erase(scp[invertedSCP[scp[cand][i]][j]].begin() + k);
@@ -2005,10 +2027,7 @@ string AutoPlanning::graspAutoPlanning(int iterations, double alpha)
 	//cout << "VENCEDOR: " << winner;
 	//	evaluateSolution(scp, solution, size, cSatisfied, nColumns);
 	//return solution;
-
 	return ret;
-
-
 }
 TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization)
 {
@@ -2038,7 +2057,7 @@ TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha
 		newSolution = new int[poles.size()];
 		for (int z = 0; z < poles.size(); z++)
 			newSolution[z] = 0;
-		newSolution = constructPhase(SCP, invertedSCP, newSolution, alpha);
+		newSolution = constructPhase(SCP, invertedSCP, newSolution, alpha,redundancy);
 		int count = 0;
 		vector<int> currentSol;
 		for (int z = 0; z < poles.size(); z++)
