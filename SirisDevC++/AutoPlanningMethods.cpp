@@ -1321,21 +1321,24 @@ int* constructPhase(vector<vector<int> > scp,vector<vector<int> >& invertedSCP, 
 		int fSize = scp[cand].size();
 		for(int i = 0; i < scp[cand].size();i++)
 		{
-			//vector<int> aaa = scp[cand];
+			vector<int> aaa = scp[cand];
 			int sSize = invertedSCP[scp[cand][i]].size();
 			for(int j = 0; j < sSize; j++)
 			{
-				//vector<int> bbb = invertedSCP[scp[cand][i]];
+				vector<int> bbb = invertedSCP[scp[cand][i]];
 				int tSize = scp[invertedSCP[scp[cand][i]][j]].size();
 				if (invertedSCP[scp[cand][i]][j] != cand)
 				{
 					for (int k = 0; k < tSize; k++)
 					{
-						//vector<int> ccc = scp[invertedSCP[scp[cand][i]][j]];
+						vector<int> ccc = scp[invertedSCP[scp[cand][i]][j]];
 						if (scp[invertedSCP[scp[cand][i]][j]][k] == scp[cand][i])
 						{
-							scp[invertedSCP[scp[cand][i]][j]].erase(scp[invertedSCP[scp[cand][i]][j]].begin() + k);
-							break;
+							if (redundancyInfo[scp[invertedSCP[scp[cand][i]][j]][k]] == 0)
+							{
+								scp[invertedSCP[scp[cand][i]][j]].erase(scp[invertedSCP[scp[cand][i]][j]].begin() + k);
+								break;
+							}
 						}
 					}
 				}
