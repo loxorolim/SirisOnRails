@@ -3,7 +3,7 @@ Grid Size: 500
 Uncovered meters: 0
 
 Solution Quality: 5252
-Time: 4.195000
+Time: 1.759000
 Hop1Quantity: 29002
 Hop1Quality: 0.999920
 Min Meters per DAP: 1.000000
@@ -14,7 +14,7 @@ Med Redundancy: 2.624784
 Max Redundancy: 8.000000
 
 P.O Solution Quality: 5132
-P.O Time: 14.906000
+P.O Time: 12.263000
 Hop1Quantity: 29002
 Hop1Quality: 0.999903
 Min Meters per DAP: 1.000000
