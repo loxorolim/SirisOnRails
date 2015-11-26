@@ -419,9 +419,9 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 
 }
 //0 cluster 1 guloso 2 grasp
-void executePlanningTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, int redundancy, int type, int iterations = 500, double alpha = 0.9)
+void executePlanningTest(string rubyPath,string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, int redundancy, int type, int iterations = 500, double alpha = 0.9)
 {
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
 
@@ -429,7 +429,7 @@ void executePlanningTest(string meterFile, string poleFile, string pathToSave, i
 
 	string result = "";
 
-	string fileToSave = to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + ".txt";
+	string fileToSave = to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + "Redundancy"+to_string(redundancy)+ ".txt";
 
 	TestResult* ret;
 	switch (type)
@@ -1352,28 +1352,34 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 
 	string metersFile = "", polesFile = "";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
-	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-//	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 0);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 1);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 2,1000, 0.8);
+	for (int i = 1; i < 4; i++)
+	{
+		metersFile = rubyPath+"/Instances/NikitiMeters3666.txt";
+		polesFile =	rubyPath + "/Instances/NikitiPoles1030.txt";
+		executePlanningTest(rubyPath,metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 0);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 1);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 2, 1000, 0.9);
 
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-//	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 0);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 1);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 2, 1000, 0.8);
-	
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
-	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
-//	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 0);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 1);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 2, 1000, 0.8);
-	
+		metersFile = rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt";
+		polesFile = rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt";
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 0);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 1);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 2, 1000, 0.9);
+
+		metersFile = rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt";
+		polesFile = rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt";
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 0);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 1);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath+"/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 2, 1000, 0.8);
+
+		metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
+		polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 0);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 1);
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, i, 2, 1000, 0.8);
+	}
 	
 	return 0;
 
@@ -1553,11 +1559,11 @@ int main(int argc, char** argv)
 	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
 	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
 	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
+	/*metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
 	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
 	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0,1,0);
 	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 1);
-	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 2);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 2);*/
 	/*metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
 	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
 	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
