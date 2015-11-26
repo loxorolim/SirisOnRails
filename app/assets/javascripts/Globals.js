@@ -17,6 +17,13 @@ const REMOVE_DAPS = 1;
 const REMOVE_METERS = 2;
 const REMOVE_POLES = 3;
 
+const heatmapRadio =  10; //10metros
+const heatmapLimit = 0.8;
+const VIVO_ID = 0;
+const CLARO_ID= 1;
+const OI_ID = 2;
+const TIM_ID = 3;
+
 var directionsService;
 var markerCluster;
 var scenario = Urbano;
@@ -24,14 +31,15 @@ var technology = t802_15_4;
 var H_TX = 3;
 var H_RX = 5;
 var BIT_RATE;
-var TRANSMITTER_POWER = -20;
+var TRANSMITTER_POWER = 20;
 var SRD = true;
 var REDUNDANCY = 1;
 var LIMIT = 100;
 
 var drawHeatmap = false;
 var drawRangeView = false;
-var heatmap;
+var heatmap = [];
+
 var taxiData = [];
 var heatmapPoints = [];
 var heatGrids = [];
@@ -100,48 +108,7 @@ const dapGhostIconImage =
        size: new google.maps.Size(19, 19),
        anchor: new google.maps.Point(9.5, 9.5)
    };
-const meterGhostIconImage =
-{
-    url: '/assets/meterghost.png',
-    size: new google.maps.Size(10, 10),
-    anchor: new google.maps.Point(5,5)
-}
-const meterOffIconImage =
-    {
-        url: '/assets/blackSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5,5),
-        
-    }
-const meterBestIconImage =
-    {
-        url: '/assets/greenSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-const meterBetterIconImage =
-    {
-        url: '/assets/yellowSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-const meterGoodIconImage =
-    {
-        url: '/assets/redSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-const meterMeshIconImage =
-    {
-        url: '/assets/meshSquare.png',
-        size: new google.maps.Size(10, 10),
-        anchor: new google.maps.Point(5, 5)
-    }
-
 const poleIcon = {
     url: document.URL+'/assets/pole.png'
 }
-        
-//////////
-
 var mouseInsertionIcon = new google.maps.Marker({});

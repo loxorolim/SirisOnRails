@@ -169,13 +169,16 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     zoom = Math.min(Math.max(zoom,minZoom),maxZoom);
 
     if (that.prevZoom_ != zoom) {
-      that.prevZoom_ = zoom;
       that.resetViewport();
+      if(zoom <= that.maxZoom_ || ((that.prevZoom_ <= that.maxZoom_) && (zoom > that.maxZoom_)))
+        that.redraw();
+      that.prevZoom_ = zoom;
     }
+
   });
 
   google.maps.event.addListener(this.map_, 'idle', function() {
-    that.redraw();
+    //that.redraw();
   });
 
   // Finally, add the markers
@@ -445,6 +448,7 @@ MarkerClusterer.prototype.addMarker = function(marker, opt_nodraw) {
   if (!opt_nodraw) {
     this.redraw();
   }
+  this.repaint();
 };
 
 
@@ -691,18 +695,22 @@ MarkerClusterer.prototype.resetViewport = function(opt_hide) {
  *
  */
 MarkerClusterer.prototype.repaint = function() {
-  var oldClusters = this.clusters_.slice();
-  this.clusters_.length = 0;
-  this.resetViewport();
-  this.redraw();
+  var zoom = this.map_.getZoom();
+  var mz = this.maxZoom_;
+  if(zoom <= mz){
+    var oldClusters = this.clusters_.slice();
+    this.clusters_.length = 0;
+    this.resetViewport();
+    this.redraw();
 
-  // Remove the old clusters.
-  // Do it in a timeout so the other clusters have been drawn first.
-  window.setTimeout(function() {
-    for (var i = 0, cluster; cluster = oldClusters[i]; i++) {
-      cluster.remove();
-    }
-  }, 0);
+    // Remove the old clusters.
+    // Do it in a timeout so the other clusters have been drawn first.
+    window.setTimeout(function() {
+      for (var i = 0, cluster; cluster = oldClusters[i]; i++) {
+        cluster.remove();
+      }
+    }, 0);
+  }
 };
 
 

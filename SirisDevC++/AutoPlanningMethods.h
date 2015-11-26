@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdio.h>
 #include "MetricCalculationMethods.h"
+#include "FatherMethods.h"
 #include "glpk.h"
 #include <thread>
 #include <future>
@@ -123,34 +124,38 @@ struct TestResult
 
 
 };
-class AutoPlanning
+class AutoPlanning: public FatherMethods
 {
 	private:
-			vector<Position*> meters;
-			vector<Position*> poles;
-			int scenario, technology, SRD, meshEnabled;
-			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
-			double regionLimiter, gridLimiter ;
-			string rubyPath;
+		double gridLimiter;
+		vector<Position*> meters; // alias para o vec1, meters é a mesma coisa que o vec1
+		vector<Position*> poles; // alias para o vec2, poles é a mesma coisa que o vec2
+			//vector<Position*> meters;
+			//vector<Position*> poles;
+			//int scenario, technology, SRD, meshEnabled;
+			//double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
+			//double regionLimiter, gridLimiter ;
+			//string rubyPath;
 	public:
-		AutoPlanning(vector<Position*> &m, vector<Position*> &p, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
+		AutoPlanning(vector<Position*> &meters, vector<Position*> &poles, int scenario, int technology, double bit_rate, double t_power,double h_tx, double h_rx, int srd, int mesh, double gridLimiter,string rubyPath, bool verbose = false)
 		{
-			meters = m;
-			poles = p;
-			scenario = s;
-			technology = t;
-			BIT_RATE = B;
-			TRANSMITTER_POWER = T;
-			H_TX = h1;
-			H_RX = h2;
-			SRD = srd;
-			meshEnabled = me;
-			rubyPath = rp;
-			gridLimiter = 10000000;
+			this->meters = meters;
+			this->poles = poles;
+			this->scenario = scenario;
+			this->technology = technology;
+			this->bit_rate = bit_rate;
+			this->t_power = t_power;
+			this->h_tx = h_tx;
+			this->h_rx = h_rx;
+			this->srd = srd;
+			this->mesh = mesh;
+			this->gridLimiter = gridLimiter;
+			this->rubyPath = rubyPath;
+			this->verbose = verbose;
 			
 			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
 			regionLimiter = 0;
-			while (getHataSRDSuccessRate(regionLimiter, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD) > MARGIN_VALUE)
+			while (getLinkQuality(regionLimiter) >= MARGIN_VALUE || getLinkQualityBetweenMeters(regionLimiter) >= MARGIN_VALUE)
 			{
 				regionLimiter++;
 			}
@@ -159,56 +164,68 @@ class AutoPlanning
 		};
 		~AutoPlanning()
 		{
-			for(int i = 0; i < meters.size();i++)
+			for (int i = 0; i < meters.size(); i++)
 			{
 				delete meters[i];
 			}
-
-			for(int i = 0; i < poles.size();i++)
+			for (int i = 0; i < poles.size(); i++)
 			{
 				delete poles[i];
 			}
-		};
+		}
 		
-
+		//Funções de criação do SCP;
 		vector<vector<int> > createScpWithLimit(int limit);
 		vector<vector<int> > createScp();
 		vector<vector<int> > createInvertedScp();
-		void saveGLPKFile(vector<vector<int> > &scp);
+
+		//Funções planejamento básico
+		//void saveGLPKFile(vector<vector<int> > &scp);
 		void saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy);
+		//void saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToConsider, int redundancy);
+		
+		//Funções planejamento com limite (provavelmente não será utilizado)
 		void saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit);
-		void saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToConsider, int redundancy);
-		vector<vector<int> > createMeterNeighbourhood(Grid *g);
-		string executeAutoPlan();
-		string executeAutoPlan(int redundancy, int limit);
-		vector<Position*> getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP);
-		vector<int> uncoverableMeters(vector<vector<int> > &SCP, int redundancy);
-		vector<int> coverableMeters(vector<vector<int> > &SCP, int redundancy);
-		vector<int> executeGlpk(string filename);
+
+		//Planejamento com cluster (usa o K-MEANS)
+		string clusterAutoPlanning(bool usePostOptimization, int redundancy);
+
+		TestResult* clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy);
 		string gridAutoPlanning(int redundancy, int limit);
-		string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
-		TestResult* clusterAutoPlanning(bool usePostOptimization, int redundancy);
-		vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
-		string graspAutoPlanning();
+		TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
+
+		vector<vector<int> > createMeterNeighbourhood(Grid *g);
+
+		string executeAutoPlan(int redundancy, int limit);
+		//vector<Position*> getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP);
+	
+		//vector<int> uncoverableMeters(vector<vector<int> > &SCP, int redundancy);
+		//vector<int> coverableMeters(vector<vector<int> > &SCP, int redundancy);
+		vector<int> executeGlpk(string filename);
+		vector<int> executeGlpk(string filename, double &maxmem, double &solverTime);
+
+		
+		//string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
+		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
+		string graspAutoPlanning(int iterations, double alpha);
+		TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha);
 
 		//Metodos Teste
-		void setGridSize(double gridSize);
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
-		TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
-		vector<int> executeGlpk(string filename, double &maxmem, double &solverTime);
+		TestResult* AutoPlanning::executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
+		TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
 		int getMetersSize();
 		int getPolesSize();
+		void setGridSize(double gridSize);
 		void setRegionLimiter(double rl);
 
 };
 
-
-
-void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
-void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> solution);
+//void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
+//void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> solution);
 void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> &solution,int redundancy);
-void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * &solution, int redundancy);
-void WalkSat(vector<vector<int> > &scp, int * solution);
+//void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * &solution, int redundancy);
+//void WalkSat(vector<vector<int> > &scp, int * solution);
 
 #endif

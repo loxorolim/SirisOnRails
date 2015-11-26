@@ -5,28 +5,28 @@
 
 
 
-//Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
-vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
-{
-	vector<int> ret;
-	for (int i = 0; i < v1.size(); i++)
-		ret.push_back(v1[i]);
-	for (int i = 0; i < v2.size(); i++)
-	{
-		bool add = true;
-		for (int j = 0; j < v1.size(); j++)
-		if (v1[j] == v2[i])
-		{
-			add = false;
-			break;
-		}
-		if (add)
-			ret.push_back(v2[i]);
-
-	}
-	return ret;
-
-}
+////Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
+//vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
+//{
+//	vector<int> ret;
+//	for (int i = 0; i < v1.size(); i++)
+//		ret.push_back(v1[i]);
+//	for (int i = 0; i < v2.size(); i++)
+//	{
+//		bool add = true;
+//		for (int j = 0; j < v1.size(); j++)
+//		if (v1[j] == v2[i])
+//		{
+//			add = false;
+//			break;
+//		}
+//		if (add)
+//			ret.push_back(v2[i]);
+//
+//	}
+//	return ret;
+//
+//}
 //A partir da lista de cobertura (Coverage List - cL) determina-se quantos medidores cada DAP cobre.
 // A lista de cobertura é simplesmente um vetor de vetores, que relaciona cada DAP com os medidores que ele alcança.
 // O método simplesmente percorre a lista e calcula a média e descobre o mínimo e o máximo.
@@ -97,7 +97,7 @@ vector<double> MetricCalculation::minMedMaxRedundancyPerMeter(vector<vector<int>
 vector<int> MetricCalculation::meterPerHop(vector<sComponent*> sL)
 {
 	vector<int> ret;
-	for(int i = 0; i < meshEnabled+1; i++)
+	for(int i = 0; i < mesh+1; i++)
 	{
 		ret.push_back(0);
 	}
@@ -115,7 +115,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 {
 	vector<double> ret;
 	vector<int> hopQnt;
-	for(int i = 0; i < meshEnabled+1; i++)
+	for(int i = 0; i < mesh+1; i++)
 	{
 		ret.push_back(0);
 		hopQnt.push_back(0);
@@ -127,7 +127,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 		sComponent* s = sL[i];
 		while(hop >= 0)
 		{
-			//cout << s->efficiency << "\n";
+			//CALCULO DA EFICIENCIA DO CAMINHO PODE SER CALCULDA DE UMA FORMA MAIS EFICIENTE
 			eff *= s->efficiency;
 
 			hop--;
@@ -138,7 +138,7 @@ vector<double> MetricCalculation::linkQualityPerHop(vector<sComponent*> sL)
 		hopQnt[sL[i]->hop]++;
 
 	}
-	for(int i = 0; i < meshEnabled+1; i++)
+	for(int i = 0; i < mesh+1; i++)
 	{
 		if(hopQnt[i] != 0)
 			ret[i] = ret[i]/hopQnt[i];
@@ -150,7 +150,7 @@ vector<double> MetricCalculation::linkDelayPerHop(vector<sComponent*> sL)
 {
 	vector<double> ret;
 	vector<int> hopQnt;
-	for (int i = 0; i < meshEnabled + 1; i++)
+	for (int i = 0; i < mesh + 1; i++)
 	{
 		ret.push_back(0);
 		hopQnt.push_back(0);
@@ -174,7 +174,7 @@ vector<double> MetricCalculation::linkDelayPerHop(vector<sComponent*> sL)
 		hopQnt[sL[i]->hop]++;
 
 	}
-	for (int i = 0; i < meshEnabled + 1; i++)
+	for (int i = 0; i < mesh + 1; i++)
 	{
 		if (hopQnt[i] != 0)
 			ret[i] = ret[i] / hopQnt[i];
@@ -199,7 +199,7 @@ vector<sComponent*> MetricCalculation::statisticalList()
 	vector<Position*> aux = connectedDevices;
 	Grid* g = new Grid(aux,uncoveredMeters, regionLimiter);
 	g->putPositions(aux);
-	for (int i = 0; i < meshEnabled+1; i++)
+	for (int i = 0; i < mesh+1; i++)
 	{
 		vector<Position*> newCovered;
 		for (int j = 0; j < uncoveredMeters.size(); j++)
@@ -214,7 +214,14 @@ vector<sComponent*> MetricCalculation::statisticalList()
 			}
 		}
 		aux = newCovered;
-		uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+		//uncoveredMeters = removeVectorFromAnother(uncoveredMeters, newCovered);
+		for (int j = 0; j < newCovered.size(); j++)
+		{
+			vector<Position*>::iterator it;
+			it = find(uncoveredMeters.begin(), uncoveredMeters.end(), newCovered[j]);
+			if (it != uncoveredMeters.end())
+				uncoveredMeters.erase(it);
+		}
 	}
 	delete g;
 	return statisticalComponents;
@@ -237,22 +244,21 @@ vector<vector<int> > MetricCalculation::coverageList()
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(daps[i], metersReduced[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			double eff = getLinkQuality(dist);
 
 			if (eff >= MARGIN_VALUE)
 				metersCovered.push_back(metersReduced[j]->index);
 		}
 		sM.push_back(metersCovered);
 	}
-	if (meshEnabled)
+	if (mesh)
 	{
 
 		vector<vector<int> > nM = createMeterNeighbourhood(g);
-		int firstPos = meters[0]->index;
 		for (int i = 0; i < sM.size(); i++)
 		{
 			vector<int> neighbours = sM[i];
-			for (int j = 0; j < meshEnabled; j++)
+			for (int j = 0; j < mesh; j++)
 			{
 				vector<int> newNeighbours;
 				for (int k = 0; k < neighbours.size(); k++)
@@ -260,10 +266,17 @@ vector<vector<int> > MetricCalculation::coverageList()
 
 					int toFind = neighbours[k];
 					int pos = 0;
-					for (int i = 0; i < meters.size(); i++){ if (meters[i]->index == toFind){ pos = i; break; } }
+					for (int l = 0; l < meters.size(); l++){ if (meters[l]->index == toFind){ pos = l; break; } }
 
-					sM[i] = concatVectors(sM[i], nM[pos]);
-					newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					//sM[i] = concatVectors(sM[i], nM[pos]);
+					sM[i].insert(sM[i].end(), nM[pos].begin(), nM[pos].end());
+					sort(sM[i].begin(), sM[i].end());
+					sM[i].erase(unique(sM[i].begin(), sM[i].end()), sM[i].end());
+
+					//newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					newNeighbours.insert(newNeighbours.end(), nM[pos].begin(), nM[pos].end());
+					sort(newNeighbours.begin(), newNeighbours.end());
+					newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
 				}
 				neighbours = newNeighbours;
 			}
@@ -311,8 +324,8 @@ vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 		for (int j = 0; j < meterRegion.size(); j++)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
-			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD);
-			if (i != j && eff >= MARGIN_VALUE)
+			double eff = getLinkQuality(dist);
+			if (meters[i]->index != meterRegion[j]->index && eff >= MARGIN_VALUE)
 				pointsCovered.push_back(meterRegion[j]->index);
 
 		}
@@ -320,35 +333,6 @@ vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 	}
 
 	return M;
-}
-//Mesmo coisa que no LinkCalculation. Não está sendo usado! O chooseDeviceToConnect que é usado!
-sComponent* MetricCalculation::chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters, vector<sComponent*> sC, int meshHop)
-{
-	double minDist = -1;
-	Position* meterToConnect = NULL;
-	for (int i = 0; i < connectedMeters.size(); i++)
-	{
-		double dist = getDistance(meter, connectedMeters[i]);
-		if (dist < minDist || minDist == -1)
-		{
-			minDist = dist;
-			meterToConnect = connectedMeters[i];
-		}
-	}
-	if (minDist != -1)
-	{
-		double dist = getDistance(meter, meterToConnect);
-		double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
-		if (eff >= MARGIN_VALUE)
-		{
-			sComponent* father = NULL;
-			for(int i = 0; i < sC.size();i++){ if(sC[i]->index == meterToConnect->index) father = sC[i]; break; }
-			double delay = calculateLinkDelay(eff, PCK_SIZE, BIT_RATE, technology);
-			sComponent* ret = new sComponent(meter->index, dist, eff,delay, meshHop, father);
-			return ret;
-		}
-	}
-	return NULL;
 }
 //Mesmo coisa que no LinkCalculation
 sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int hop)
@@ -369,16 +353,16 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 		double dist = getDistance(meter, deviceToConnect);
 		double eff = 0;
 		if (hop == 0)
-			eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD);
+			eff = getLinkQuality(dist);
 		else
-			eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_TX, SRD);
+			eff = getLinkQualityBetweenMeters(dist);
 
 		if (eff >= MARGIN_VALUE)
 		{
 			sComponent* ret;
 			if(hop == 0)
 			{
-				double delay = calculateLinkDelay(eff, PCK_SIZE, BIT_RATE,technology);
+				double delay = calculateLinkDelay(eff, bit_rate,technology);
 				ret = new sComponent(meter->index, dist, eff,delay, hop, NULL);
 			}
 			else
@@ -392,7 +376,7 @@ sComponent* MetricCalculation::chooseDeviceToConnect(Position* meter, vector<Pos
 						break;
 					}
 				}
-				double delay = calculateLinkDelay(eff, PCK_SIZE, BIT_RATE,technology);
+				double delay = calculateLinkDelay(eff, bit_rate,technology);
 				ret = new sComponent(meter->index, dist, eff,delay, hop, father);
 			}
 			return ret;
@@ -458,7 +442,7 @@ string MetricCalculation::executeMetricCalculation()
 	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
 	vector<double > v5 = linkDelayPerHop(sL);
 	int coveredMeters = 0;
-	for(int i = 0; i < meshEnabled+1; i++)
+	for(int i = 0; i < mesh+1; i++)
 	{
 		coveredMeters += v2[i];
 	}
@@ -476,14 +460,14 @@ string MetricCalculation::executeMetricCalculation()
 	//ret += "UM<>" + to_string(meters.size() - coveredMeters) + "\n";
 	ret += statisticFormat("UncoveredMeters", to_string(meters.size() - coveredMeters));
 
-	for(int i = 0; i < meshEnabled+1; i++)
+	for(int i = 0; i < mesh+1; i++)
 	{
 		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
 		//ret+=  "Qualidade media do salto " + to_string(i+1) + "<>" + to_string(v[i],3) + "\n";
 		//ret += "QPH" + to_string(i + 1) + "<>" + to_string(v[i], 3) + "\n";
 		ret += statisticFormat("QualityPerHop", to_string(v[i], 3),i+1);
 	}
-	for (int i = 0; i < meshEnabled + 1; i++)
+	for (int i = 0; i < mesh + 1; i++)
 	{
 		//ret+=  "Mesh hop quality " + to_string(i+1) + ": " + to_string(v[i],3) + "\n";
 		//ret += "Atraso medio do salto " + to_string(i + 1) + "<>" + to_string(v5[i], 3) + "ms \n";
@@ -492,7 +476,7 @@ string MetricCalculation::executeMetricCalculation()
 	
 	}
 
-	for(int i = 0; i < meshEnabled+1; i++)
+	for(int i = 0; i < mesh+1; i++)
 	{
 		//ret += "Meter per hop " + to_string(i+1) + ": " + to_string(v2[i]) + "\n";
 		//ret += "Medidores a " + to_string(i+1) + " salto<>" + to_string(v2[i]) + "\n";
@@ -547,7 +531,7 @@ MetricResult* MetricCalculation::executeMetricCalculationTest()
 	result->numOfDaps = daps.size();
 	result->numOfMeters = meters.size();
 	int coveredMeters = 0;
-	for (int i = 0; i < meshEnabled + 1; i++)
+	for (int i = 0; i < mesh + 1; i++)
 	{
 		coveredMeters += result->meterPerHop[i];
 	}

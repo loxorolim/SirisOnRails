@@ -10,14 +10,11 @@ class Grid
 {
 	private:
 		map<pair<int, int>, vector<Position*> > cells;
-		//vector<vector<vector<Position*>>> cells;
 		double cellSize,cellSizeMeters,minX,minY;
 		
 
 	public:
 		Grid(vector<Position*> v,vector<Position*> v2, double size);
-		Grid(vector<Position*> v, double size);
-		Grid(double size);
 		void putPosition(Position* p);
 		void putPositions(vector<Position*> ps);
 		vector<Position*> getCell(Position* reference);

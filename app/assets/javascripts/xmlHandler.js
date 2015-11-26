@@ -120,14 +120,7 @@ function loadPolesTeste(file) {
 }
 function loadFromKMLText(kml){
 	
-	//var teste = kml.split("\n");
-	//for(var i = 0; i < teste.length; i++)
-	//{
-	//	var wow = teste[i].split(" ");
-	//	var meter = createMeter();
-	//	meter.placeOnMap(wow[1], wow[0]);
-	//}
-	
+
 	var sce = $(kml).find('Scenario').text();
 	sce = parseInt(sce);
 	setScenario(sce);
@@ -148,12 +141,23 @@ function loadFromKMLText(kml){
 
 	$(kml).find('Placemark').each(function(){
 		var type = $(this).find('name').text();
+		var weight = parseFloat($(this).find('value').text()); // PARA O MAPA DE CALOR SOMENTE
+		var operators = [];
+		$(this).find('Operators').each(function(){
+			$(this).find('id').each(function(){
+				var operatorId = $(this).text();
+				operators.push(operatorId);
+			});
+		});
 		if($("#dapFormatRadio").is(':checked'))
 			type="Agregador";
 		if($("#meterFormatRadio").is(':checked'))
 			type="Medidor";
 		if($("#poleFormatRadio").is(':checked'))
 			type="Poste";
+		if($("#heatmapFormatRadio").is(':checked'))		
+			type="Ponto de coleta";
+				
 		$(this).find('Point').each(function(){
 			var coord =	$(this).find('coordinates').text();
 			var coords = coord.split(",");
@@ -183,6 +187,9 @@ function loadFromKMLText(kml){
 					var dap = createDAP();
 					dap.placeOnMap(latitude, longitude);
 				break;
+				case "Ponto de coleta":					
+					insertHeatmapPoint(latitude, longitude, weight, operators);
+				break;
 				default:
 				break;
 			}
@@ -193,7 +200,9 @@ function loadFromKMLText(kml){
 	var pos2 = new google.maps.LatLng(ne_lat,ne_lng);
 	var bounds = new google.maps.LatLngBounds(pos2,pos1);
 	map.fitBounds(bounds);
-
+	for(var i = 0; i < daps.length; i++){
+		daps[i].signalInfo = getSignalInfo(daps[i].position);
+	}
 	sendDrawRequest();
 
 }

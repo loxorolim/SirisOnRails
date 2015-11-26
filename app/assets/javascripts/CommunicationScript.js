@@ -1,10 +1,11 @@
 ﻿const AUTO_PLAN_FILE_ID = 0;
 const DRAW_FILE_ID = 1;
 const METRIC_FILE_ID = 2;
-const HEATGRID_FILE_ID = 3;
+//const HEATGRID_FILE_ID = 3;
 const TEST_COLLECTION_FILE_ID = 4;
 const KML_CREATION_FILE_ID = 5;
 const GET_RANGE_FILE_ID = 6;
+const KML_FILE_ID = 7;
 
 function sendDrawRequest(){
     sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
@@ -18,19 +19,6 @@ function sendSCPToServer() {
    sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
 }
 
-function prepareNetworkToSend(){
-    var reach = getDapMaximumReach();
-    var uncMeters = meters.filter(function (item) {
-            return (item.connected == false);
-        });
-    var toSend ={
-        "uncoveredMeters": uncMeters,
-        "polesPositions": poles,
-        "reach": reach 
-    };
-    return toSend;
-
-}
 function sendDataToServer(url,method,type) {
     var uncoveredMeters = meters.filter(function (item) {
             return (item.connected != true);
@@ -46,18 +34,15 @@ function sendDataToServer(url,method,type) {
         case METRIC_FILE_ID:
             data = createMetricsFileModel();
             break;
-        case HEATGRID_FILE_ID:
-            data = createHeatgridFileModel();
-            break;
-        case 4: //SÓ PRO TESTE DO GRID, PODE IGNORAR
-            data = createGridTestFileModel();
-            break;
 		case KML_CREATION_FILE_ID:
             data = createMetricsFileModel();
             break;
         case GET_RANGE_FILE_ID:
             data = GET_RANGE_FILE_ID + '\n';
             data += propagationValuesToSend();
+            break;
+		case KML_FILE_ID:
+            data = createKMLFileModel();
             break;
 
         default:
@@ -86,14 +71,11 @@ function sendDataToServer(url,method,type) {
                     case METRIC_FILE_ID:
                         readMetricResponse(data,false);
                         break;
-                    case HEATGRID_FILE_ID: //SÓ UM TESTE DO GRID, PODE IGNORAR
-                        readHeatgridResponse(data);
-                        break;
-					case KML_CREATION_FILE_ID:
-						readMetricResponse(data,true);
-						break;
                     case GET_RANGE_FILE_ID:
                         readGetRangeResponse(data,true);
+                        break;
+					case KML_FILE_ID:
+                        readKMLResponse(data);
                         break;
                     default:
                         break;
@@ -135,16 +117,21 @@ function readGetRangeResponse(data){
      coveragePolygon.setMap(map);
     
 }
+function readKMLResponse(data){
+
+	var kml = data;
+	var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
+	saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
+    
+}
 function readAutoPlanResponse(data){
 	if(data == "")
 		return;
     data = data.substring(data.lastIndexOf("\n")+1, data.length );
     var split = data.split(" ");
 	
-	for(var i = 0; i < daps.length; i++){ //REMOVER DEPOIS! ESTÁ AQUI PARA NÃO BUGAR O PLANEJAMENTO!
-		daps[i].remove();
-		i--;
-	}
+	while(daps.length > 0)
+        daps[0].remove();
 	for(var i = 0 ; i < split.length-1; i ++){
 		var toAdd = parseInt(split[i]);
 		var latLng = poles[toAdd].position;
@@ -206,103 +193,6 @@ function readPropagationResponse(data){
     if(drawRangeView)
         sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
    
-
-}
-function heatgridColorInterpolation(efficiency)
-{
-
-	var yellowvalR = 0x00;	var yellowvalG = 0xff;	var yellowvalB = 0x00;
-	var bluevalR = 0xff; var bluevalG = 0xff; var bluevalB = 0x00;
-
-	var val = (yellowvalR - bluevalR);
-	var cDec =  Math.floor(bluevalR + (efficiency)*val);
-	var cR = cDec.toString(16);	
-	if(cDec < 16)
-		cR = "0" + cR;;
-
-	var val = (yellowvalG - bluevalG);
-	var cDec =  Math.floor(bluevalG + (efficiency)*val);
-	var cG = cDec.toString(16);	
-	if(cDec < 16)
-		cG = "0" + cG;;
-	var val = (yellowvalB - bluevalB);
-	var cDec =  Math.floor(bluevalB + (efficiency)*val);
-	var cB = cDec.toString(16);	
-	if(cDec < 16)
-		cB = "0" + cB;;	
-	return "#"+cR+cG+cB;
-	
-}
-function readHeatgridResponse(data){
-    
-   var hg = [];	
-   var geoms = data.split("/n");
-   if(geoms.length > 0){
-		for(var i = 0; i < heatGrids.length; i++)
-			heatGrids[i].setMap(null);
-   }
-   for(var i = 0; i < geoms.length-1; i++){
-        var poss = geoms[i].split("<>");
-
-        var pos1 = poss[0].split(";");
-        var pos1lat = pos1[0];
-        var pos1lng = pos1[1];
-
-        var pos2 = poss[1].split(";");
-        var pos2lat = pos2[0];
-        var pos2lng = pos2[1];
-
-        var weight = poss[2];
-        var color = heatgridColorInterpolation(weight);
-		var set = null;
-		if(drawHeatmap)
-			set = map;
-        var rectangle = new google.maps.Rectangle({
-            strokeColor: color,
-            strokeOpacity: 0.8,
-            strokeWeight: 0.1,
-            fillColor: color,
-            fillOpacity: 0.35,
-            clickable:false,
-            map: set,
-            geodesic: true,
-            bounds: new google.maps.LatLngBounds(
-              new google.maps.LatLng(pos1lat, pos1lng),
-              new google.maps.LatLng(pos2lat,pos2lng))
-      });
-	  hg.push(rectangle);
-   }
-   	heatGrids = hg;
-}
-function readGridTestResponse(data){
-    
-   var geoms = data.split("/n");
-   for(var i = 0; i < geoms.length-1; i++){
-        var poss = geoms[i].split("<>");
-
-        var pos1 = poss[0].split(";");
-        var pos1lat = pos1[0];
-        var pos1lng = pos1[1];
-
-        var pos2 = poss[1].split(";");
-        var pos2lat = pos2[0];
-        var pos2lng = pos2[1];
-
-        var rectangle = new google.maps.Rectangle({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 0.1,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            clickable:false,
-            map: map,
-            geodesic: true,
-            bounds: new google.maps.LatLngBounds(
-              new google.maps.LatLng(pos1lat, pos1lng),
-              new google.maps.LatLng(pos2lat,pos2lng))
-      });
-
-   }
 
 }
 //Função que lê o código recebido e retorna o que se deve escrever para o usuário na tabela de estatísticas.
@@ -375,57 +265,6 @@ function readMetricResponse(data,kml){
 		var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
 		saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
 	}
-
-  /* if(!kml){
-		$("#metricsTable tr").remove();
-		if(data != ""){
-			var split = data.split("\n");
-			var text = "";		
-			for(var i = 0; i < split.length;i++){
-				var aux = split[i].split("<>");
-				$( "#metricsTable tbody" ).append( 
-				"<tr>" +
-				  "<th class=\"ui-widget-header \">" + statisticsDecode(aux[0]) + "</th>" +
-				  "<td>" + aux[1] + "</td>" +
-				   +"</tr>" );	
-			}
-		}
-		else{
-				$( "#metricsTable tbody" ).append( 
-				"<tr>" +
-				  "<th class=\"ui-widget-header \">" + "Nao há medidores e/ou agregadores" + "</th>" 
-				   +"</tr>" );
-		}		
-		$(function() {
-			$( "#statisticDialog" ).dialog({
-				show: {
-					effect: "drop",
-					duration: 500
-				},
-				hide: {
-					effect: "drop",
-					duration: 500
-				},
-				resizable: false,
-			});
-		});
-		
-	}
-	else{
-		var text = "\n";
-		if(data != ""){
-			var split = data.split("\n");	
-			for(var i = 0; i < split.length;i++){
-				var aux = split[i].split("<>");
-				text += aux[0]+": "+aux[1] + "\n";
-			}
-		}
-		var kml = formatKMLText(text);
-		var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
-		saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
-		
-	}
-    */
 }
 
 function propagationValuesToSend(){
@@ -539,7 +378,7 @@ function createHeatgridFileModel(){
     var ret = HEATGRID_FILE_ID + '\n';
     ret+= heatmapPoints.length+"\n";
     for(var i = 0; i <heatmapPoints.length; i++){
-        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() + " " + heatmapPoints[i].weight;
+        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() ;//+ " " + heatmapPoints[i].weight;
         ret += "\n";
     }
     return ret;
@@ -563,8 +402,45 @@ function createTestFileModel(){
     }
     return ret;
 }
+function createKMLFileModel(){
+
+    var ret = KML_FILE_ID + '\n';
+    ret += propagationValuesToSend();	
+    ret+= meters.length+"\n";
+    for(var i = 0; i < meters.length; i++){
+        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
+        ret += "\n";
+    }
+	ret += daps.length;
+    ret += "\n";
+    for(var i = 0; i <daps.length; i++){
+        ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
+        ret += "\n";
+    }
+    ret += poles.length;
+    ret += "\n";
+    for(var i = 0; i <poles.length; i++){
+        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
+        ret += "\n";
+    }
+	ret += heatmapPoints.length;
+    ret += "\n";
+    for(var i = 0; i <heatmapPoints.length; i++){
+        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng();// + " " + heatmapPoints[i].weight;
+        var opIds = "";
+        for(var j = 0; j < heatmapPoints[i].opIds.length; j++)
+        {
+            opIds+=heatmapPoints[i].opIds[j];
+           // if(j!= heatmapPoints[i].opIds.length-1)
+           // opIds+="/";
+        }
+        ret += opIds;
+        ret += "\n";
+    }
+    return ret;
+}
 function download() {
-	sendDataToServer(serverAddress, 'POST', KML_CREATION_FILE_ID);
+	sendDataToServer(serverAddress, 'POST', KML_FILE_ID);
    // var toSave = formatKMLText();
    // var blob = new Blob([toSave], {type: "text/plain;charset=utf-8"});
    // saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
@@ -578,23 +454,17 @@ function upload(fileInput) {
         var reader = new FileReader();
         reader.onload = function(e) {
             var fileText = reader.result;
-			if($("#heatmapFormatRadio").is(':checked'))	
+            if(extension == "txt")
             {
-				loadHeatmap(fileText);
-                //loadMetersTeste(fileText);
+                if($("#heatmapFormatRadio").is(':checked'))
+                    loadHeatmap(fileText);
+                if($("#meterFormatRadio").is(':checked'))
+                    loadMetersTeste(fileText);
+                if($("#poleFormatRadio").is(':checked'))
+                    loadPolesTeste(fileText);
             }
-			else
-            {
-                if(extension == "txt")
-                {
-                    if($("#meterFormatRadio").is(':checked'))
-                        loadMetersTeste(fileText);
-                    if($("#poleFormatRadio").is(':checked'))
-                        loadPolesTeste(fileText);
-                }
-                else                   
-				    loadFromKMLText(fileText);
-            }
+            else                   
+			    loadFromKMLText(fileText);
             $("#uploadDialog").dialog("close");
 			$("#resetOnUpload").prop('checked', false);
             

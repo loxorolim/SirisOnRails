@@ -16,7 +16,6 @@
 #include "HeatgridMethods.h"
 #include "HataSRD.h"
 #include <stdio.h>
-#include "global.h"
 extern "C"
 {
 #include <vl/kmeans.h>

@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Scenario>1</Scenario>
+<Technology>2</Technology>
+<Power>20.000000</Power>
+<MeshHops>1</MeshHops>
+<Statistics>
+<metric type = "DAPQnt">1</metric>
+<metric type = "MeterQnt">5</metric>
+<metric type = "UncoveredMeters">1</metric>
+<metric type = "QualityPerHop" hop = "1">1</metric>
+<metric type = "QualityPerHop" hop = "2">1</metric>
+<metric type = "DelayPerHop" hop = "1">0.509</metric>
+<metric type = "DelayPerHop" hop = "2">3.02</metric>
+<metric type = "MetersPerHop" hop = "1">3</metric>
+<metric type = "MetersPerHop" hop = "2">1</metric>
+<metric type = "MetersPerDap" range = "min">4.000000</metric>
+<metric type = "MetersPerDap" range = "med">4.000000</metric>
+<metric type = "MetersPerDap" range = "max">4.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">0.800000</metric>
+<metric type = "Redundancy" range = "max">1.000000</metric>
+</Statistics>
+<Folder><name>Medidores</name>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064891,-22.956459,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064762,-22.956477,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064665,-22.956373,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064572,-22.956622,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064513,-22.956758,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+<Folder><name>Postes</name>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064810,-22.956556,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064733,-22.956652,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064931,-22.956588,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064926,-22.956403,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+<Folder><name>Agregadores</name>
+<Placemark>
+<name>Agregador</name>
+<Point>
+<coordinates>-43.064824,-22.956366,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+<Folder><name>Enlaces</name>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-22.956459,-43.064891,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-22.956477,-43.064762,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-22.956373,-43.064665,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>0.999823</efficiency>
+<delay>2.508716</delay>
+<LineString>
+<coordinates>
+-22.956622,-43.064572,0
+-43.064762,-22.956477,0
+</coordinates>
+</LineString>
+</Placemark>
+</Folder>
+<Folder><name>Mapa de Calor</name>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<value>1.000000</value> 
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>
+	<id>Tim</id>
+	<id>Vivo</id>	
+</Operators>
+
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de coleta</name>
+<Operators>
+	<id>Claro</id>
+	<id>Oi</id>	
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</kml>

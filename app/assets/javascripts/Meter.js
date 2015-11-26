@@ -23,9 +23,6 @@ function createMeter() {
         hop: null,
 
 
-        //        meshConnectionLines: [],
-        icon: meterOffIconImage,
-        //        dapsConnected: [],
         getPosition: function () {
             return this.position;
         },
@@ -36,11 +33,8 @@ function createMeter() {
 			this.center = latLng;
             meters.push(this);
             markerCluster.addMarker(this, true);
-			elementsGrid.putPosition2(this);
             this.ID = generateUUID();
             this.setVisible(true);
-            //this.map = map;
-        //    sendDrawRequest();
 
         },
 

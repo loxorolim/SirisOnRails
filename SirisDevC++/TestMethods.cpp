@@ -35,7 +35,7 @@ double memoryTest(int x, int y, string rubyPath)
 {
 	
 	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(1) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(1) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < x; i++)
 	{
@@ -56,11 +56,11 @@ double memoryTest(int x, int y, string rubyPath)
 	resp += "\n";
 	resp += "\n;\nend;\n";
 
-	string filename = rubyPath + "/GlpkFile.txt";
+	string filename = rubyPath + "GlpkFile.txt";
 	ofstream f(filename.c_str());
 	f << resp;
 	f.close();
-	//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "/wow.txt";
+	//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800  > " + rubyPath + "wow.txt";
 	//system(access.c_str());
 
 	glp_prob *lp;
@@ -101,7 +101,7 @@ double memoryTest(int x, int y, string rubyPath)
 skip: glp_mpl_free_wksp(tran);
 	glp_delete_prob(lp);
 
-	//ifstream fi(rubyPath + "/wow.txt");
+	//ifstream fi(rubyPath + "wow.txt");
 	//string str;
 	//float mem = -1;
 	//while (getline(fi, str))
@@ -257,65 +257,66 @@ vector<vector<Position*> > gridInstanceGenerator(double latStart, double lngStar
 	return pairRet;
 
 }
-void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
-{
-	string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
-	string completePolesFile = rubyPath + "/arqsTeste/" + polesFile;
-	FILE * file;
-	file = fopen(completeMetersFile.c_str(), "r");
-	FILE * file2;
-	file2 = fopen(completePolesFile.c_str(), "r");
-
-
-	vector<Position*> meters;
-	vector<Position*> poles;
-
-	while (true)
-	{
-		double lat = -1;
-		double lng = -1;
-		fscanf(file, "%lf %lf", &lat, &lng);
-		if (lat == -1)
-			break;
-		Position *toAdd = new Position(lat, lng, meters.size());
-		meters.push_back(toAdd);
-	}
-	while (true)
-	{
-		double lat = -1;
-		double lng = -1;
-		fscanf(file2, "%lf %lf", &lat, &lng);
-		if (lat == -1)
-			break;
-		Position *toAdd = new Position(lat, lng, poles.size());
-		poles.push_back(toAdd);
-	}
-
-	fclose(file);
-	fclose(file2);
-
-	string finalResult = "";
-	AutoPlanning* ap = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, rubyPath);
-
-	//string gresult = "";
-	string ret = ap->graspAutoPlanning();
-	//string gresult = "";
-	//string ret = ap->gridAutoPlanning();
-	for (int i = 0; i < meters.size(); i++)
-	{
-		delete meters[i];
-	}
-	for (int i = 0; i < poles.size(); i++)
-	{
-		delete poles[i];
-	}
-	delete ap;
-}
+//void testGraspFromFile(string metersFile, string polesFile, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
+//{
+//	string completeMetersFile = rubyPath + "arqsTeste/" + metersFile;
+//	string completePolesFile = rubyPath + "arqsTeste/" + polesFile;
+//	FILE * file;
+//	file = fopen(completeMetersFile.c_str(), "r");
+//	FILE * file2;
+//	file2 = fopen(completePolesFile.c_str(), "r");
+//
+//
+//	vector<Position*> meters;
+//	vector<Position*> poles;
+//
+//	while (true)
+//	{
+//		double lat = -1;
+//		double lng = -1;
+//		fscanf(file, "%lf %lf", &lat, &lng);
+//		if (lat == -1)
+//			break;
+//		Position *toAdd = new Position(lat, lng, meters.size());
+//		meters.push_back(toAdd);
+//	}
+//	while (true)
+//	{
+//		double lat = -1;
+//		double lng = -1;
+//		fscanf(file2, "%lf %lf", &lat, &lng);
+//		if (lat == -1)
+//			break;
+//		Position *toAdd = new Position(lat, lng, poles.size());
+//		poles.push_back(toAdd);
+//	}
+//
+//	fclose(file);
+//	fclose(file2);
+//
+//	string finalResult = "";
+//	int gridSize = 500;
+//	AutoPlanning* ap = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize,rubyPath);
+//
+//	//string gresult = "";
+//	string ret = ap->graspAutoPlanning();
+//	//string gresult = "";
+//	//string ret = ap->gridAutoPlanning();
+//	for (int i = 0; i < meters.size(); i++)
+//	{
+//		delete meters[i];
+//	}
+//	for (int i = 0; i < poles.size(); i++)
+//	{
+//		delete poles[i];
+//	}
+//	delete ap;
+//}
 AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePath, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, string rubyPath)
 {
 
-	//string completeMetersFile = rubyPath + "/arqsTeste/" + metersFile;
-	//string completePolesFile = rubyPath + "/arqsTeste/" + polesFile;
+	//string completeMetersFile = rubyPath + "arqsTeste/" + metersFile;
+	//string completePolesFile = rubyPath + "arqsTeste/" + polesFile;
 	FILE * file;
 	file = fopen(metersFilePath.c_str(), "r");
 	FILE * file2;
@@ -349,8 +350,8 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 	fclose(file);
 	fclose(file2);
 
-
-	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD, meshEnabled,rubyPath);
+	int gridSize = 500;
+	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize, rubyPath);
 	return res;
 
 
@@ -417,7 +418,8 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 
 
 }
-void executeClusterTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh)
+//0 cluster 1 guloso 2 grasp
+void executePlanningTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, int redundancy, int type, int iterations = 500, double alpha = 0.9)
 {
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
@@ -427,12 +429,35 @@ void executeClusterTest(string meterFile, string poleFile, string pathToSave, in
 
 	string result = "";
 
-	string fileToSave = pathToSave + "ClusterPlanningMeters" + to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + ".txt";
-	ofstream f(fileToSave.c_str());
-	TestResult* ret = AP->executeClusterAutoPlanTestMode(true, 1);
-	result = ret->toString();
-	delete(ret);
+	string fileToSave = to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + ".txt";
 
+	TestResult* ret;
+	switch (type)
+	{
+	case 0:
+		fileToSave = pathToSave + "Cluster" + fileToSave;
+		ret = AP->executeClusterAutoPlanTestMode(true, redundancy);
+		result = ret->toString();
+		delete(ret);
+		break;
+	case 1:
+		fileToSave = pathToSave + "Guloso" + fileToSave;
+		ret = AP->executeGraspAutoPlanTestMode(1, 1, redundancy, true);
+		result = ret->toString();
+		delete(ret);
+		break;
+	case 2:
+		fileToSave = pathToSave + "Grasp" + fileToSave;
+		ret = AP->executeGraspAutoPlanTestMode(iterations, alpha, redundancy, true);
+		result = ret->toString();
+		delete(ret);
+		break;
+	default:
+		break;
+	}
+	 
+
+	ofstream f(fileToSave.c_str());
 	f << result;
 	f.close();
 
@@ -468,8 +493,9 @@ void executionTimeTest(int scenario, int tech, int bitrate, int power, int hx, i
 			poles.push_back(toAdd);
 		}
 		string ret = "";
-		AutoPlanning* AP = new AutoPlanning(meters,poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, rubyPath);
-		TestResult *res = AP->clusterAutoPlanning(false, 1);
+		int gridSize = 500;
+		AutoPlanning* AP = new AutoPlanning(meters, poles, Suburbano, tech, bitrate, power, hx, rx, SRD, 3, gridSize, rubyPath);
+		TestResult *res = AP->clusterAutoPlanningTestMode(false, 1);
 		cout << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
 		f << to_string(AP->getMetersSize()) << "x" << to_string(AP->getPolesSize()) << " " << res->solverTime << "\n";
 		delete res;
@@ -672,7 +698,7 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 	delete ret;
 	delete AP;
 
-	string filename = rubyPath + "/arqsTeste/RangeTest.txt";
+	string filename = rubyPath + "arqsTeste/RangeTest.txt";
 	ofstream f(filename.c_str());
 	f << toSave;
 	f.close();
@@ -685,7 +711,7 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 
 	
 	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(redundancy) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default " + to_string(redundancy) + ", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < mSize; i++)
 	{
@@ -736,7 +762,7 @@ void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int re
 	
 	resp += "\n;\nend;\n";
 
-	string filename = rubyPath + "/GlpkFile.txt";
+	string filename = rubyPath + "GlpkFile.txt";
 	ofstream f(filename.c_str());
 
 	f << resp;
@@ -800,8 +826,8 @@ skip: glp_mpl_free_wksp(tran);
 }
 void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int timeLimit)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	string fileOutput = rubyPath +"/density_tests/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+"-"+id+".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	string fileOutput = rubyPath +"density_tests/DensityResult"+to_string(mSize)+"x"+to_string(pSize)+"-"+id+".txt";
 	
 	double density = 0.005;
 	ofstream f(fileOutput.c_str());
@@ -812,7 +838,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		double solverTime = -1, maxMem = -1;
 		
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		glp_term_out(GLP_ON);
@@ -875,8 +901,8 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 }
 DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, double initDensity, double rate, bool adjustRate)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	//string fileOutput = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
 	DensityTestResult* resultsRet = new DensityTestResult();
 	vector<vector<int> > aux;
 	//double density = 0.0005;
@@ -888,7 +914,7 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 	{		
 		double solverTime = -1, maxMem = -1;
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
@@ -932,8 +958,8 @@ end:
 }
 DensityTestResult* varySCPCoverageTest(int mSize, int pSize, string rubyPath, int timeLimit, int rate, int endVal)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	//string fileOutput = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
 	DensityTestResult* resultsRet = new DensityTestResult();
 	vector<vector<int> > aux;
 	//double density = 0.0005;
@@ -946,7 +972,7 @@ DensityTestResult* varySCPCoverageTest(int mSize, int pSize, string rubyPath, in
 	{
 		double solverTime = -1, maxMem = -1;
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
@@ -985,7 +1011,7 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 		else
 			res = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 0.00, +0.01,0);
 		//DensityTestResult * res2 = varyDensityTest(mSize, pSize, rubyPath, timeLimit, 1, -0.01);
-		string filename = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
+		string filename = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + to_string(i) + ".txt";
 		res->saveToFile(filename);
 		incResults.push_back(res);
 	}
@@ -1066,8 +1092,8 @@ void fullDensityTest(int mSize, int pSize, string rubyPath, int timeLimit, int n
 	}
 	cout << tmRes;
 	cout << memRes;
-	string timeFileOutput = rubyPath + "/density_tests/DensityResultTime" + to_string(mSize) + "x" + to_string(pSize)+ ".txt";
-	string memFileOutput = rubyPath + "/density_tests/DensityResultMem" + to_string(mSize) + "x" + to_string(pSize) + ".txt";
+	string timeFileOutput = rubyPath + "density_tests/DensityResultTime" + to_string(mSize) + "x" + to_string(pSize)+ ".txt";
+	string memFileOutput = rubyPath + "density_tests/DensityResultMem" + to_string(mSize) + "x" + to_string(pSize) + ".txt";
 	ofstream f(timeFileOutput.c_str());
 	ofstream f2(memFileOutput.c_str());
 	f << tmRes;
@@ -1088,8 +1114,8 @@ void memoryEstimationTest(int ini, int end, int variation, string rubyPath)
 	{
 		//int max = 2000, min = 1;
 		//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-		string toSave = rubyPath + "/mem_estimation_tests/memEstimation"+to_string(ini)+"metersfixed.txt";
-		string toSave2 = rubyPath + "/mem_estimation_tests/memEstimation" + to_string(ini) + "polesfixed.txt";
+		string toSave = rubyPath + "mem_estimation_tests/memEstimation"+to_string(ini)+"metersfixed.txt";
+		string toSave2 = rubyPath + "mem_estimation_tests/memEstimation" + to_string(ini) + "polesfixed.txt";
 		ofstream f(toSave.c_str());
 		ofstream f2(toSave2.c_str());
 		for (int i = start; i <= end; i+=variation)
@@ -1113,7 +1139,7 @@ void memoryEstimationTestWithFixedMeters(int fixedMeters,int ini, int end, int v
 	int start = ini;
 	//int max = 2000, min = 1;
 	//double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-	string toSave = rubyPath + "/mem_estimation_tests/memEstimation" + to_string(fixedMeters) + "metersfixed.txt";
+	string toSave = rubyPath + "mem_estimation_tests/memEstimation" + to_string(fixedMeters) + "metersfixed.txt";
 	ofstream f(toSave.c_str());
 	for (int i = ini; i <= end; i += variation)
 	{
@@ -1149,8 +1175,8 @@ void saveResults(string filesLocation, string metersFilename, string polesFilena
 }
 DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int variation, int timeLimit, double memLimit, string rubyPath, int mode)
 {
-	string filename = rubyPath + "/GlpkFile.txt";
-	//string fileOutput = rubyPath + "/density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
+	string filename = rubyPath + "GlpkFile.txt";
+	//string fileOutput = rubyPath + "density_tests/DensityResult" + to_string(mSize) + "x" + to_string(pSize) + "-" + id + ".txt";
 	DensityTestResult* resultsRet = new DensityTestResult();
 	vector<vector<int> > aux;
 	//double density = 0.0005;
@@ -1166,7 +1192,7 @@ DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int var
 		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
 		double solverTime = -1, maxMem = -1;
 		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
-		//string access = rubyPath + "/glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"/wow.txt";
+		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
 		executeGLPK(filename, timeLimit, &solverTime, &maxMem);
@@ -1209,11 +1235,11 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		DensityTestResult * res = fixedDensityTest(density, mSize,pSize, variation, timeLimit,memLimit, rubyPath, mode);
 		string filename = "";
 		if (mode == NO_FIX)
-			filename = rubyPath + "/density_tests/FixedDensityResultNoSizeFix" + to_string(density) + "Inst"+to_string(i)+".txt";
+			filename = rubyPath + "density_tests/FixedDensityResultNoSizeFix" + to_string(density) + "Inst"+to_string(i)+".txt";
 		if (mode == FIXED_METERS)
-			filename = rubyPath + "/density_tests/FixedDensityResult"+to_string(mSize) +"FixedMeters" + to_string(density) + "Inst" + to_string(i) + ".txt";
+			filename = rubyPath + "density_tests/FixedDensityResult"+to_string(mSize) +"FixedMeters" + to_string(density) + "Inst" + to_string(i) + ".txt";
 		if (mode == FIXED_POLES)
-			filename = rubyPath + "/density_tests/FixedDensityResult"+ to_string(pSize) + "FixedPoles" + to_string(density) + "Inst" + to_string(i) + ".txt";
+			filename = rubyPath + "density_tests/FixedDensityResult"+ to_string(pSize) + "FixedPoles" + to_string(density) + "Inst" + to_string(i) + ".txt";
 		res->saveToFile(filename);
 		incResults.push_back(res);
 	}
@@ -1297,18 +1323,18 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 	string memFileOutput = "";
 	if (mode == NO_FIX)
 	{
-		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTimeNoSizeFix" + to_string(density) + ".txt";
-		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMemNoSizeFix" + to_string(density) + ".txt";
+		timeFileOutput = rubyPath + "density_tests/FixedDensityResultTimeNoSizeFix" + to_string(density) + ".txt";
+		memFileOutput = rubyPath + "density_tests/FixedDensityResultMemNoSizeFix" + to_string(density) + ".txt";
 	}
 	if (mode == FIXED_METERS)
 	{
-		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTime" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
-		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMem" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
+		timeFileOutput = rubyPath + "density_tests/FixedDensityResultTime" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
+		memFileOutput = rubyPath + "density_tests/FixedDensityResultMem" + to_string(mSize) + "FixedMeters" + to_string(density) + ".txt";
 	}
 	if (mode == FIXED_POLES)
 	{
-		timeFileOutput = rubyPath + "/density_tests/FixedDensityResultTime" + to_string(pSize) + "FixedPoles" +to_string(density) + ".txt";
-		memFileOutput = rubyPath + "/density_tests/FixedDensityResultMem" + to_string(pSize) + "FixedPoles" + to_string(density) + ".txt";
+		timeFileOutput = rubyPath + "density_tests/FixedDensityResultTime" + to_string(pSize) + "FixedPoles" +to_string(density) + ".txt";
+		memFileOutput = rubyPath + "density_tests/FixedDensityResultMem" + to_string(pSize) + "FixedPoles" + to_string(density) + ".txt";
 	}
 	ofstream f(timeFileOutput.c_str());
 	ofstream f2(memFileOutput.c_str());
@@ -1321,276 +1347,300 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		delete incResults[i];
 	}
 }
-//int main(int argc, char** argv)
-//{
-//	srand(time(NULL));
-//
-//	string metersFile = "", polesFile = "";
-//	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
-//
-//	//fullDensityTest(100, 100, rubyPath, 500, 5, false);
-//	//fullDensityTest(150, 150, rubyPath, 500, 5, false);
-//	//fullDensityTest(125, 125, rubyPath, 500, 5, false);
-//
-//	//fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
-//	//fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
-//	//fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
-//
-//	//fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
-//	//fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
-//	//fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
-//	//
-//	//fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-//	//fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-//	//fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
-//
-//
-//	//memoryEstimationTest(1, 5500, 500, rubyPath);
-//	int ini = 0;
-//	double sum = 0;
-//	double maxGap=-1, minGap=-1, maxGapVal=-1, minGapVal=-1;
-//	double stdDeviation;
-//	int repetitions = 100;
-//	while (ini < repetitions)
-//	{
-//		cout << "---------------------/////" << ini << "/////---------------------\n";
-//		int max = 5000, min = 500;
-//		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
-//		double realmem = memoryTest(val1, val2, rubyPath);
-//		double estMem = memEstimation(val1, val2);
-//
-//		double gapValDiff = abs(realmem - estMem);
-//		if (maxGapVal == -1 || gapValDiff > maxGapVal)
-//			maxGapVal = gapValDiff;
-//		if (minGapVal == -1 || gapValDiff < minGapVal)
-//			minGapVal = gapValDiff;
-//		double gapDiff = abs(1 - (realmem / estMem));
-//		if (maxGap == -1 || gapDiff > maxGap)
-//			maxGap = gapDiff;
-//		if (minGap == -1 || gapDiff < minGap)
-//			minGap = gapDiff;
-//
-//		cout << realmem << " " << estMem << "\n";
-//		cout << abs(1-(realmem / estMem));
-//		sum += abs(1-(realmem / estMem));
-//		ini++;
-//	}
-//	double avg = sum / ini;
-//	cout << "\navg:" << avg;
-//	cout << "\nmaxGapVal:" << maxGapVal;
-//	cout << "\nminGapVal:" << minGapVal;
-//	cout << "\nmaxGap:" << maxGap;
-//	cout << "\nminGap:" << minGap;
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
-//	//double estMem = memEstimation(fixedMeters, i);
-//	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);
-//	//memoryEstimationTestWithFixedMeters(1000, 1, 35001, 5000, rubyPath);
-//	//memoryEstimationTestWithFixedMeters(2000, 1, 15001, 5000, rubyPath);
-//	//memoryEstimationTestWithFixedMeters(3000, 1, 10001, 5000, rubyPath);
-//
-////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 3, rubyPath);
-////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 3, rubyPath);
-////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 3, rubyPath);
-////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
-////	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 3, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
-//	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
-//
-//	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
-//	//string ret = "";
-//	//for(int i = 0; i < teste[0].size();i++)
-//	//{
-//	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
-//	//}
-//	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridmeterurbanopscc.txt");
-//	//f << ret;
-//	//f.close();
-//	//ret = "";
-//	//for (int i = 0; i < teste[1].size(); i++)
-//	//{
-//	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
-//	//}
-//	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridpoleurbanopscc.txt");
-//	//f2 << ret;
-//	//f2.close();
-//	//memoryEstimationTest(1000, 3000, 500, rubyPath);
-//
-//	//fullDensityTest(130, 130, rubyPath, 500, 1,true);
-//	//fullDensityTest(150,150, rubyPath, 360,5);
-//	//fullDensityTest(50, 150, rubyPath, 360, 5);
-//	//fullDensityTest(150, 50, rubyPath, 360, 5);
-//	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
-//	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
-//	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
-//	//varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
-//	return 0;
-//	//increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
-//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
-//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
-//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
-//	//increaseDensityTest(3000, 3000, rubyPath, "Incremental5", 360);
-//	//increaseDensityTest(3000, 3000, rubyPath, "1");
-//	//increaseDensityTest(3000, 3000, rubyPath, "2");
-//	//increaseDensityTest(3000, 3000, rubyPath, "3");
-//	//increaseDensityTest(3000, 3000, rubyPath, "4");
-//	//increaseDensityTest(3000, 3000, rubyPath, "5");
-//	//increaseDensityTest(10000, 500, rubyPath, "1");
-//	//increaseDensityTest(10000, 500, rubyPath, "2");
-//	//increaseDensityTest(10000, 500, rubyPath, "3");
-//	//increaseDensityTest(10000, 500, rubyPath, "4");
-//	//increaseDensityTest(10000, 500, rubyPath, "5");
-//	//increaseDensityTest(2000, 4000, rubyPath, "1");
-//	//increaseDensityTest(2000, 4000, rubyPath, "2");
-//	//increaseDensityTest(2000, 4000, rubyPath, "3");
-//	//increaseDensityTest(2000, 4000, rubyPath, "4");
-//	//increaseDensityTest(2000, 4000, rubyPath, "5");
-//
-//	//return 0;
-//	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
-//	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
-//	
-//	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-//	//_CrtSetBreakAlloc(368619);
-//	{
-//
-//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-//
-//		metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters5000.txt";
-//		polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles5000.txt";
-//	increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0,rubyPath);
-//	
-//	//float aux = 0;
-//	//string v = "";
-//	//float mem=1;
-//	//int i = 1, init = 100;
-//	//while (mem > 0)
-//	//{	
-//	//	mem = memoryTest(i,i, rubyPath);
-//	//	if (mem<0)
-//	//		break;
-//	//	cout << i << "x" << i << ": " << mem<< "\n";
-//	//	v += to_string(i) + " " + to_string(mem) +"\n";
-//	//	aux = mem;
-//	//	if (i < 1001)
-//	//		i += 10;
-//	//	else 
-//	//		i += 500;
-//
-//	//}
-//	//string filename = rubyPath + "/arqsTeste/ix"+to_string(i)+"MemTest.txt";
-//	//ofstream f(filename.c_str());
-//	//f << v;
-//	//f.close();
-//
-//
-//	//srand(time(NULL));
-//	//double x = 3501;
-//	//double wow = -1E-19;
-//
-//	////for (int x = 1; x < 10002; x+=500)
-//	//	//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
-//	//	//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
-//	////string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
-//
-//
-//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
-//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
-//	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
-//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
-//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
-//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
-//	//kmeansTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaPequena1576.txt";
-//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaPequena453.txt";
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//	//
-//	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
-//	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
-//	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
-//
-//
-//	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Suburbano, 20, 100 - distFromHouseToStreet, 4, 3);
-//	//string ret = "";
-//	//for(int i = 0; i < teste[0].size();i++)
-//	//{
-//	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
-//	//}
-//	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridmetersSuburbano.txt");
-//	//f << ret;
-//	//f.close();
-//	//ret = "";
-//	//for (int i = 0; i < teste[1].size(); i++)
-//	//{
-//	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
-//	//}
-//	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridpolesSuburbano.txt");
-//	//f2 << ret;
-//	//f2.close();
-//	//string rubyPath = "C:/Sites/first_app";
-//	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters4000.txt", "filepoles4000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters5000.txt", "filepoles5000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters10000.txt", "filepoles10000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
-//	//testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
-//	//testGraspFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
-//	//	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath)//;
-//	//testGraspFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
-//	//testGraspFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
-//	//	vector<Position*> teste;
-//	//	Grid *g = new Grid(teste,10);
-//
-//	//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
-//
-//	//	string x = AutoPlanning::executeAutoPlan();
-//	//	std::cout << val;
-//	}
-//
-//	//_CrtDumpMemoryLeaks();
-//	return 0;
-//
-//}
+int main(int argc, char** argv)
+{
+	srand(time(NULL));
+
+	string metersFile = "", polesFile = "";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/";
+
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+//	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 0);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 1);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 2,1000, 0.8);
+
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+//	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 0);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 1);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 2, 1000, 0.8);
+	
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+//	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 0);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 1);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0, 2, 2, 1000, 0.8);
+	
+	
+	return 0;
+
+	//fullDensityTest(100, 100, rubyPath, 500, 5, false);
+	//fullDensityTest(150, 150, rubyPath, 500, 5, false);
+	//fullDensityTest(125, 125, rubyPath, 500, 5, false);
+
+	//fullFixedDensityTest(0.001, 500,500, 500, 360, 5000, 5, rubyPath,NO_FIX);
+	//fullFixedDensityTest(0.005, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+	//fullFixedDensityTest(0.01, 500, 500, 500, 360, 5000, 5, rubyPath, NO_FIX);
+
+	//fullFixedDensityTest(0.001, 1000, 500, 5000, 360, 5000, 5, rubyPath, FIXED_METERS);
+	//fullFixedDensityTest(0.005, 2500, 500, 2500, 360, 5000, 5, rubyPath, FIXED_METERS);
+	//fullFixedDensityTest(0.01, 5000, 500, 1000, 360, 5000, 5, rubyPath, FIXED_METERS);
+	//
+	//fullFixedDensityTest(0.001, 500, 1000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	//fullFixedDensityTest(0.005, 500, 2500, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+	//fullFixedDensityTest(0.01, 500, 5000, 1000, 360, 5000, 5, rubyPath, FIXED_POLES);
+
+
+	//memoryEstimationTest(1, 5500, 500, rubyPath);
+	int ini = 0;
+	double sum = 0;
+	double maxGap=-1, minGap=-1, maxGapVal=-1, minGapVal=-1;
+	double stdDeviation;
+	int repetitions = 100;
+	while (ini < repetitions)
+	{
+		cout << "---------------------/////" << ini << "/////---------------------\n";
+		int max = 5000, min = 500;
+		double val1 = (rand() % (max - min)) + min, val2 = (rand() % (max - min));
+		double realmem = memoryTest(val1, val2, rubyPath);
+		double estMem = memEstimation(val1, val2);
+
+		double gapValDiff = abs(realmem - estMem);
+		if (maxGapVal == -1 || gapValDiff > maxGapVal)
+			maxGapVal = gapValDiff;
+		if (minGapVal == -1 || gapValDiff < minGapVal)
+			minGapVal = gapValDiff;
+		double gapDiff = abs(1 - (realmem / estMem));
+		if (maxGap == -1 || gapDiff > maxGap)
+			maxGap = gapDiff;
+		if (minGap == -1 || gapDiff < minGap)
+			minGap = gapDiff;
+
+		cout << realmem << " " << estMem << "\n";
+		cout << abs(1-(realmem / estMem));
+		sum += abs(1-(realmem / estMem));
+		ini++;
+	}
+	double avg = sum / ini;
+	cout << "\navg:" << avg;
+	cout << "\nmaxGapVal:" << maxGapVal;
+	cout << "\nminGapVal:" << minGapVal;
+	cout << "\nmaxGap:" << maxGap;
+	cout << "\nminGap:" << minGap;
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//double estMem = memEstimation(fixedMeters, i);
+	//memoryEstimationTestWithFixedMeters(500, 3000, 3000, 5000, rubyPath);
+	//memoryEstimationTestWithFixedMeters(1000, 1, 35001, 5000, rubyPath);
+	//memoryEstimationTestWithFixedMeters(2000, 1, 15001, 5000, rubyPath);
+	//memoryEstimationTestWithFixedMeters(3000, 1, 10001, 5000, rubyPath);
+
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 3, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 3, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 3, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+//	saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 3, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Rural, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Rural, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Rural, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Urbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Nikiti", "metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\Floripa", "filemeters15000.txt", "filepoles15000.txt", Suburbano, t802_11_g, 0, rubyPath);
+	//saveResults("C:\\Users\\Guilherme\\SkyDrive\\PSCC\\Instancias\\UrbanGrid", "gridmeterurbanopscc.txt", "gridpoleurbanopscc.txt", Suburbano, t802_11_g, 0, rubyPath);
+
+	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Urbano, 10, 100 - distFromHouseToStreet, 6, 6);
+	//string ret = "";
+	//for(int i = 0; i < teste[0].size();i++)
+	//{
+	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
+	//}
+	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridmeterurbanopscc.txt");
+	//f << ret;
+	//f.close();
+	//ret = "";
+	//for (int i = 0; i < teste[1].size(); i++)
+	//{
+	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
+	//}
+	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\gridpoleurbanopscc.txt");
+	//f2 << ret;
+	//f2.close();
+	//memoryEstimationTest(1000, 3000, 500, rubyPath);
+
+	//fullDensityTest(130, 130, rubyPath, 500, 1,true);
+	//fullDensityTest(150,150, rubyPath, 360,5);
+	//fullDensityTest(50, 150, rubyPath, 360, 5);
+	//fullDensityTest(150, 50, rubyPath, 360, 5);
+	//varyDensityTest(100, 100, rubyPath, "Incremental2", 360, 0, +0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental3", 360, 0, +0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental4", 360, 0, +0.01);
+	//varyDensityTest(100, 100, rubyPath, "Incremental5", 360, 0, +0.01);
+	return 0;
+	//increaseDensityTest(1000,1000, rubyPath, "TesteGap", 60);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental2", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental3", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental4", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "Incremental5", 360);
+	//increaseDensityTest(3000, 3000, rubyPath, "1");
+	//increaseDensityTest(3000, 3000, rubyPath, "2");
+	//increaseDensityTest(3000, 3000, rubyPath, "3");
+	//increaseDensityTest(3000, 3000, rubyPath, "4");
+	//increaseDensityTest(3000, 3000, rubyPath, "5");
+	//increaseDensityTest(10000, 500, rubyPath, "1");
+	//increaseDensityTest(10000, 500, rubyPath, "2");
+	//increaseDensityTest(10000, 500, rubyPath, "3");
+	//increaseDensityTest(10000, 500, rubyPath, "4");
+	//increaseDensityTest(10000, 500, rubyPath, "5");
+	//increaseDensityTest(2000, 4000, rubyPath, "1");
+	//increaseDensityTest(2000, 4000, rubyPath, "2");
+	//increaseDensityTest(2000, 4000, rubyPath, "3");
+	//increaseDensityTest(2000, 4000, rubyPath, "4");
+	//increaseDensityTest(2000, 4000, rubyPath, "5");
+
+	//return 0;
+	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
+	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
+	
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetBreakAlloc(368619);
+	{
+
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+
+	//	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filemeters5000.txt";
+	//	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/arqsTeste/filepoles5000.txt";
+	//increaseRangeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0,rubyPath);
+	//
+	//float aux = 0;
+	//string v = "";
+	//float mem=1;
+	//int i = 1, init = 100;
+	//while (mem > 0)
+	//{	
+	//	mem = memoryTest(i,i, rubyPath);
+	//	if (mem<0)
+	//		break;
+	//	cout << i << "x" << i << ": " << mem<< "\n";
+	//	v += to_string(i) + " " + to_string(mem) +"\n";
+	//	aux = mem;
+	//	if (i < 1001)
+	//		i += 10;
+	//	else 
+	//		i += 500;
+
+	//}
+	//string filename = rubyPath + "arqsTeste/ix"+to_string(i)+"MemTest.txt";
+	//ofstream f(filename.c_str());
+	//f << v;
+	//f.close();
+
+
+	//srand(time(NULL));
+	//double x = 3501;
+	//double wow = -1E-19;
+
+	////for (int x = 1; x < 10002; x+=500)
+	//	//cout << x << " : " << 5.77032E-13*pow(x, 4) + 8.52842E-09*pow(x, 3) + 0.000109763 * pow(x, 2) + 0.092964718*x - 62.48144596 << "\n";
+	//	//cout << x << " : " << 0.0001530206*pow(x,2) + 0.0072606821*x - 10.7817256808 << "\n";
+	////string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+
+
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters1000.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles1000.txt";
+	//executeTest(metersFile.c_str(), polesFile.c_str() , "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters5000.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles5000.txt";
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0,1,0);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 1);
+	executePlanningTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 2);
+	/*metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
+	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
+	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
+	polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);*/
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters10000.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles10000.txt";
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters15000.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles15000.txt";
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filemeters9999999.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/filepoles9999999.txt";
+	//kmeansTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaMédia3666.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaMédia1030.txt";
+	//executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/metersInstanciaPequena1576.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/polesInstanciaPequena453.txt";
+	//executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//executeClusterTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+	//
+	//metersFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridmetersSuburbano.txt";
+	//polesFile = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/arqsTeste/instanciagridpolesSuburbano.txt";
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3);
+	//executeTest(metersFile.c_str(), polesFile.c_str(), "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 0);
+
+
+	//vector<vector<Position*> > teste = gridInstanceGenerator(0, 0, 10 + distFromHouseToStreet, Suburbano, 20, 100 - distFromHouseToStreet, 4, 3);
+	//string ret = "";
+	//for(int i = 0; i < teste[0].size();i++)
+	//{
+	//	ret += to_string(teste[0][i]->latitude) + " " + to_string(teste[0][i]->longitude) + "\n";
+	//}
+	//ofstream f("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridmetersSuburbano.txt");
+	//f << ret;
+	//f.close();
+	//ret = "";
+	//for (int i = 0; i < teste[1].size(); i++)
+	//{
+	//	ret += to_string(teste[1][i]->latitude) + " " + to_string(teste[1][i]->longitude) + "\n";
+	//}
+	//ofstream f2("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\instanciagridpolesSuburbano.txt");
+	//f2 << ret;
+	//f2.close();
+	//string rubyPath = "C:/Sites/first_app";
+	//testFromFile("filemeters1000.txt", "filepoles1000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters2000.txt", "filepoles2000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters3000.txt", "filepoles3000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters4000.txt", "filepoles4000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters5000.txt", "filepoles5000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters10000.txt", "filepoles10000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters15000.txt", "filepoles15000.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 3, rubyPath);
+	//testFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	//testGraspFromFile("filemeters9999999.txt", "filepoles9999999.txt", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, rubyPath);
+	//	testFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath)//;
+	//testGraspFromFile("metersInstanciaPequena1576.txt", "polesInstanciaPequena453.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+	//testGraspFromFile("metersInstanciaMédia3666.txt", "polesInstanciaMédia1030.txt", Urbano, t802_11_g, 6,  20, 3,  5, 1, 0, rubyPath);
+	//	vector<Position*> teste;
+	//	Grid *g = new Grid(teste,10);
+
+	//	double val = getHataSRDSuccessRate(5, Rural, t802_11_g, 6, 20, 3, 5, 1);
+
+	//	string x = AutoPlanning::executeAutoPlan();
+	//	std::cout << val;
+	}
+
+	//_CrtDumpMemoryLeaks();
+	return 0;
+
+}

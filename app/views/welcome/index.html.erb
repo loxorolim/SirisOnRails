@@ -6,14 +6,14 @@
 		
 		<div id="controller">
 			
-            <div id="trapezoid">
+            <div id="trapezoid" >
 
                 <div id="insideTrapezoid">
 
                     <div id="chooseScenario" class="insideOptions">
                         <div style=" display: table; margin: 0 auto;">
                             <div id="scenario" class="selections">Urbano</div>
-                            <button id="selectScenario" style="float:left; height: 30px"></button>
+                            <button id="selectScenario" class = "trapezoidButton"></button>
                         </div>
                         <ul style=" z-index: 1000">
                             <li id="urbanRadio">Urbano</li>
@@ -42,28 +42,17 @@
                     
                 </div>
 				<div id="menu" >
-		<!-- 			<div id="radio">
-						<input type="radio" id="viewRadio" name="radio" checked="checked"><label for="viewRadio">Visualização</label>
-						<input type="radio" id="dapRadio" name="radio"><label for="dapRadio">DAP</label>
-						<input type="radio" id="meterRadio" name="radio" ><label for="meterRadio">Medidor</label>
-						<input type="radio" id="pole" name="radio"><label for="pole">Poste</label>
-						<input type="radio" id="eraserRadio" name="radio"><label for="eraserRadio">Remoção</label>
-						<input type="radio" id="eraserSelectionRadio" name="radio"><label for="eraserSelectionRadio">Remoção por seleção</label>
-						<input type="radio" id="dapEraserSelectionRadio" name="radio"><label for="dapEraserSelectionRadio">Remoção de DAPs por seleção</label>
-						<input type="radio" id="meterEraserSelectionRadio" name="radio"><label for="meterEraserSelectionRadio">Remoção de medidores por seleção</label>
-						<input type="radio" id="poleEraserSelectionRadio" name="radio"><label for="poleEraserSelectionRadio">Remoção de postes por seleção</label>	
-					</div>   -->  
-						<div>
+						<div id="testee">
 							<select name="mouseOptions" id="mouseOptions" class="TFOlstFiltreImg"  >
-								<option value="view" selected="selected"></option>
-								<option value="dap"  ></option>
-								<option value="meter"  ></option>
-								<option value="pole" ></option>
-								<option value="eraser"></option>
-								<option value="eraserSelection"  ></option>
-								<option value="dapEraserSelection" ></option>
-								<option value="meterEraserSelection" ></option>
-								<option value="poleEraserSelection"></option>
+								<option value="view" selected="selected"> Visualização</option>
+								<option value="dap"> DAP </option>
+								<option value="meter"  > Medidor </option>
+								<option value="pole" > Poste </option>
+								<option value="eraser"> Apagar </option>
+								<option value="eraserSelection"  > Apagar por Seleção </option>
+								<option value="dapEraserSelection" > Apagar por Seleção (DAP) </option>
+								<option value="meterEraserSelection" > Apagar por Seleção (Medidor) </option>
+								<option value="poleEraserSelection"> Apagar por Seleção (Poste)</option>
 							</select>
 						</div>
 						<button id="autoPlanning" style="margin-left: 5px">Auto Planning</button>
@@ -77,12 +66,11 @@
 						<button id="download">Download de planejamento</button>
 						<!--<button id ="settings"> Configurações Avançadas</button>-->
 						<button id="help">Botão de Ajuda</button>
-						<div id="meshSliderDiv" class = "hidden" style="height: 26px; width: 300px;" >
+						<div id="meshSliderDiv" class = "hidden" style="height: 26px; width: 305px;" >
 							<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>						
 							<div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
 							<span id="mesh" style="margin-left: 5%" class="selections">0 Saltos</span>
 						</div>
-
 						<!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
 						
 					</div>

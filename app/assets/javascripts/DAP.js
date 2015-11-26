@@ -6,7 +6,27 @@ function generateUUID() {
         return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
     });
     return uuid;
-};
+}
+function getSignalInfo(latLng){
+    var ret = [];
+    //var latLng = new google.maps.LatLng(lat, lng);
+    for(var i = 0; i < heatmapPoints.length; i++){
+        var hmLatLng = heatmapPoints[i].position;
+        var dist = google.maps.geometry.spherical.computeDistanceBetween (latLng, hmLatLng);
+        if(dist <= heatmapRadio)
+        {
+            for(k in heatmapPoints[i].opIds)
+                ret.push(heatmapPoints[i].opIds[k]);
+        }
+    }
+    ret = ret.filter(function(item, pos) {
+        return ret.indexOf(item) == pos;
+    })
+    return ret;
+    
+    
+
+}
 
 function createDAP() {
     var marker = new google.maps.Marker({
@@ -19,6 +39,7 @@ function createDAP() {
         icon: dapOnIconImage,   
         ghost: null,
         ID: null,
+        signalInfo: [],
         //meshMeters: [],
         labelContent: "0",
         labelAnchor: new google.maps.Point(22, 25),
@@ -32,6 +53,7 @@ function createDAP() {
             markerCluster.addMarker(this, true);
 			//elementsGrid.putPosition(this);
             this.ID = generateUUID();
+            signalInfo = getSignalInfo(latLng);
 
 
 
@@ -52,7 +74,15 @@ function createDAP() {
         displayInfoWindow: function () {
             var content = 'ID: ' + this.ID +
                 '<br>Latitude: ' + this.position.lat() +
-                '<br>Longitude: ' + this.position.lng() ;
+                '<br>Longitude: ' + this.position.lng() +
+                '<br>Coberto por: ';
+            for(var i = 0; i < signalInfo.length;i++)
+            {
+                content+= signalInfo[i];
+                if(i != signalInfo.length-1)
+                    content += ", ";
+            }
+
 
             infowindow.setContent(content);
             infowindow.open(map, this);
@@ -93,7 +123,8 @@ function createDAP() {
 
     google.maps.event.addListener(marker, 'dragend', function (event) {
         marker.setPosition(event.latLng);
-        sendDrawRequest()
+        signalInfo = getSignalInfo(event.latLng);
+        sendDrawRequest();
         marker.removeGhost();
 
     });

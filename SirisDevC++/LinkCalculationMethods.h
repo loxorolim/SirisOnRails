@@ -6,51 +6,101 @@
 #include <fstream>
 #include <string>
 #include "auxiliars.h"
-#include "HataSRD.h"
+
+#include "FatherMethods.h"
 #include "Grid.h"
 
-//DA PRA USAR O GRID AQUI PROVAVELMENTE!!!!!!!!!!!!!
 
-class LinkCalculation
+
+class DrawInfo
+{
+public:
+	int dashed;
+	int a, b, hopnumber;
+	double efficiency, delay, distance;
+	DrawInfo(int mainIndex, int toConnectIndex, int hn, double eff, double del, double d, int da)
+	{
+		a = mainIndex;
+		b = toConnectIndex;
+		hopnumber = hn;
+		efficiency = eff;
+		delay = del;
+		distance = d;
+		dashed = da;
+	};
+	string toString()
+	{
+		string ret;
+		ret += to_string(a);
+		ret += "/";
+		ret += to_string(b);
+		ret += "/";
+		ret += to_string(hopnumber);
+		ret += "/";
+		ret += to_string(efficiency);
+		ret += "/";
+		ret += to_string(delay);
+		ret += "/";
+		ret += to_string(distance);
+		ret += "/";
+		ret += to_string(dashed);
+		//ret += "/";
+		return ret;
+	}
+
+};
+
+
+class LinkCalculation: public FatherMethods
 {
 	private:
-			vector<Position*> meters;
-			vector<Position*> daps;
-			int scenario, technology, SRD, meshEnabled;
-			double H_TX, H_RX, BIT_RATE, TRANSMITTER_POWER;
-			double regionLimiter ;
-			string rubyPath;
+		vector<Position*> meters; // alias para o vec1, meters é a mesma coisa que o vec1
+		vector<Position*> daps; // alias para o vec2, daps é a mesma coisa que o vec2
+
 	public:
-		LinkCalculation(vector<Position*> &m, vector<Position*> &d, int s, int t, double B, double T,double h1, double h2, int srd, int me, string rp)
+		LinkCalculation(vector<Position*> &meters, vector<Position*> &daps, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, string rubyPath)
 		{
-			meters = m;
-			daps = d;
-			scenario = s;
-			technology = t;
-			BIT_RATE = B;
-			TRANSMITTER_POWER = T;
-			H_TX = h1;
-			H_RX = h2;
-			SRD = srd;
-			meshEnabled = me;
-			rubyPath = rp;
-			regionLimiter = 0.001;
+			this->meters = meters;
+			this->daps = daps;
+			this->scenario = scenario;
+			this->technology = technology;
+			this->bit_rate = bit_rate;
+			this->t_power = t_power;
+			this->h_tx = h_tx;
+			this->h_rx = h_rx;
+			this->srd = srd;
+			this->mesh = mesh;
+			this->rubyPath = rubyPath;
+
+			
+			//Delimitar o tamanho do grid para criação do SCP, esse tamanho deve ser maior ou igual que o alcance que estamos considerando. O tamanho ótimo é igual ao tamanho do alcance.
+			regionLimiter = 0;
+			while (getLinkQuality(regionLimiter) > MARGIN_VALUE)
+			{
+				regionLimiter++;
+			}
+			regionLimiter++;
+			this->regionLimiter = regionLimiter;
 		};
 		~LinkCalculation()
 		{
-			for(int i = 0; i < meters.size();i++)
+			for (int i = 0; i < meters.size(); i++)
+			{
 				delete meters[i];
-
-			for(int i = 0; i <daps.size();i++)
+			}
+			for (int i = 0; i < daps.size(); i++)
+			{
 				delete daps[i];
-		};
-		vector<DrawInfo2*> calculateDrawingInfo();
-		vector<DrawInfo*> calculateDrawingInfoOld();
+			}
+		}
+
+		vector<DrawInfo*> calculateDrawingInfo();
 		string executeLinkCalculation();
-		DrawInfo* chooseMeterToConnect(Position* meter, vector<Position*> &connectedMeters);
-		DrawInfo2* chooseDeviceToConnect(Position* meter, vector<Position*> &devices,int isFirstHop);
+		DrawInfo* chooseDeviceToConnect(Position* meter, vector<Position*> &devices,int isFirstHop);
 
 };
+
+
 
 
 

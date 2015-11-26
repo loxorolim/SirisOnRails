@@ -12,7 +12,7 @@
 #include <time.h>
 #include <stdio.h>
 
-
+//NÃO ESTOU USANDO MAIS ESSA CLASSE!
 class Heatgrid
 {
 private:
