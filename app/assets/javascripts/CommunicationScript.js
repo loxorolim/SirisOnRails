@@ -26,7 +26,8 @@ function sendDataToServer(url,method,type) {
     var data ;
     switch(type){
         case AUTO_PLAN_FILE_ID:
-            data = createAutoPlanningFileModel();
+            data = createObjectToSend(type);
+            //data = createAutoPlanningFileModel();
             break;
         case DRAW_FILE_ID:
             data = createDrawFileModel();
@@ -55,9 +56,9 @@ function sendDataToServer(url,method,type) {
             url: url,
             type: method,
             data: {
-                'data': data,
+                'data': JSON.stringify(data),
             },
-            dataType: "text",
+            dataType: "json",
             success: function (data) {
 
                 
@@ -295,6 +296,61 @@ function propagationValuesToSend(){
     //    ret+="0"+"\n";
     return ret;
 
+}
+function propagationValuesToSendObject(){
+    
+    var rate;
+    if(technology == t802_11_g)
+        rate = BIT_RATE;
+    if(technology == t802_15_4)
+        rate = 0.25;
+
+    var ret = { "scenario": scenario,
+                "technology": technology,
+                "power": TRANSMITTER_POWER,
+                "mesh_hops": meshMaxJumps-1, 
+                "rate": rate,
+                "h_tx": H_TX,
+                "h_rx": H_RX,
+                "redundancy": REDUNDANCY };
+
+    return ret;
+}
+function getLatLngObject(array){
+    var aux = [];
+    for(var i = 0; i < array.length; i++){
+        var aux_obj = { "lat": array[i].getPosition().lat(),
+                        "lng": array[i].getPosition().lng() 
+                   };
+        aux.push(aux_obj);
+    }
+    return aux;
+}
+function createObjectToSend(type){
+    var obj_to_send = propagationValuesToSendObject();
+    obj_to_send["action_id"] = type;
+    switch(type){
+        case KML_FILE_ID:
+            obj_to_send["signal_info"] = getLatLngObject(heatmapPoints);
+            obj_to_send["meters"] = getLatLngObject(meters);
+            obj_to_send["poles"] = getLatLngObject(poles);
+            obj_to_send["DAPs"] = getLatLngObject(daps);
+            break;
+        case AUTO_PLAN_FILE_ID:
+            obj_to_send["meters"] = getLatLngObject(meters);
+            obj_to_send["poles"] = getLatLngObject(poles);
+            break;
+        case DRAW_FILE_ID:
+        case METRIC_FILE_ID:
+            obj_to_send["meters"] = getLatLngObject(meters);
+            obj_to_send["DAPs"] = getLatLngObject(daps);
+            break;
+        case GET_RANGE_FILE_ID:
+            break;
+        default:
+            break;
+    }
+    return obj_to_send;
 }
 function createAutoPlanningFileModel(){
     //var uncoveredMeters = meters.filter(function (item) {

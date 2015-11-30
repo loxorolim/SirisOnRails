@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-
+	#print toPass["action_id"]
 	#answer = Siris.new.getResponse(toPass, path);
 	#teste = RiceTest.new.pathteste(path);
 	#print execPath
