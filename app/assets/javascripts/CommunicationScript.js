@@ -23,34 +23,7 @@ function sendDataToServer(url,method,type) {
     var uncoveredMeters = meters.filter(function (item) {
             return (item.connected != true);
     });
-    var data ;
-    switch(type){
-        case AUTO_PLAN_FILE_ID:
-            data = createObjectToSend(type);
-            //data = createAutoPlanningFileModel();
-            break;
-        case DRAW_FILE_ID:
-            data = createDrawFileModel();
-            break;
-        case METRIC_FILE_ID:
-            data = createMetricsFileModel();
-            break;
-		case KML_CREATION_FILE_ID:
-            data = createMetricsFileModel();
-            break;
-        case GET_RANGE_FILE_ID:
-            data = GET_RANGE_FILE_ID + '\n';
-            data += propagationValuesToSend();
-            break;
-		case KML_FILE_ID:
-            data = createKMLFileModel();
-            break;
-
-        default:
-            data = -1;
-            break;
-
-    }
+    var data = createObjectToSend(type);
 
     $.ajax({
             url: url,
@@ -59,9 +32,7 @@ function sendDataToServer(url,method,type) {
                 'data': JSON.stringify(data),
             },
             dataType: "json",
-            success: function (data) {
-
-                
+            success: function (data) { 
                 switch(type){
                     case AUTO_PLAN_FILE_ID:
                         readAutoPlanResponse(data);
@@ -126,27 +97,19 @@ function readKMLResponse(data){
     
 }
 function readAutoPlanResponse(data){
-	if(data == "")
-		return;
-    data = data.substring(data.lastIndexOf("\n")+1, data.length );
-    var split = data.split(" ");
-	
-	while(daps.length > 0)
-        daps[0].remove();
-	for(var i = 0 ; i < split.length-1; i ++){
-		var toAdd = parseInt(split[i]);
+
+	for(var i = 0 ; i < data.ChosenDAPs.length; i++){
+		var toAdd = data.ChosenDAPs[i];
 		var latLng = poles[toAdd].position;
 		var newDap = createDAP();
 		newDap.placeOnMap(latLng.lat(),latLng.lng());
-		
 	}
-	
     sendDrawRequest();
 	
 }
 function readPropagationResponse(data){
     resetDraw();
-    var drawInfo = data.split(" ");
+    //var drawInfo = data.split(" ");
    /* for(var i = 0; i < drawInfo.length-1; i++){
         var split = drawInfo[i].split("/");
         var latlng1 = split[0].split("<>");
@@ -169,28 +132,27 @@ function readPropagationResponse(data){
     for(var i = 0; i < meters.length; i++)
         meters[i].setOptions(circOptions2);
     var connectedMeters = [];
-    for(var i = 0; i < drawInfo.length-1; i++){
-        var split = drawInfo[i].split("/");
-        var latlng1 = meters[parseInt(split[0])].getPosition();
+	
+    for(var i = 0; i < data.DrawInfos.length; i++){
+		var a = data.DrawInfos[i].a;
+		var b = data.DrawInfos[i].b;
+		var hopnumber = data.DrawInfos[i].hopnumber;
+        var latlng1 = meters[a].getPosition();
         
-        meters[parseInt(split[0])].setOptions(circOptions);
-        var latlng2;
-        var hopnumber = parseInt(split[2]);
-        meters[parseInt(split[0])].hop = hopnumber+1;//+1 pq ta vindo do servidor que 0 = 1 salto
+        meters[a].setOptions(circOptions);
+        var latlng2;     
+        meters[a].hop = hopnumber+1;//+1 pq ta vindo do servidor que 0 = 1 salto
         if(hopnumber==0)
-            latlng2 = daps[parseInt(split[1])].getPosition();
+            latlng2 = daps[b].getPosition();
         else
-            latlng2 = meters[parseInt(split[1])].getPosition();
-
-
-        var efficiency = parseFloat(split[3]);
-        var delay = parseFloat(split[4]);
-        var distance = parseFloat(split[5]);
-        var dashed = parseInt(split[6]);
+            latlng2 = meters[b].getPosition();
+        var efficiency = data.DrawInfos[i].efficiency;
+        var delay = data.DrawInfos[i].delay;
+        var distance = data.DrawInfos[i].distance;
+        var dashed = data.DrawInfos[i].dashed;
         drawLine(latlng1,latlng2,efficiency,delay,distance,dashed);
 
     }
-
     if(drawRangeView)
         sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
    

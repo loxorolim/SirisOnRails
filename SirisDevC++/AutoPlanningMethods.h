@@ -188,7 +188,7 @@ class AutoPlanning: public FatherMethods
 		void saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit);
 
 		//Planejamento com cluster (usa o K-MEANS)
-		string clusterAutoPlanning(bool usePostOptimization, int redundancy);
+		vector<int> clusterAutoPlanning(bool usePostOptimization, int redundancy);
 
 		TestResult* clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy);
 		string gridAutoPlanning(int redundancy, int limit);

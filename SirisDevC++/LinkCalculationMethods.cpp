@@ -52,6 +52,31 @@ vector<DrawInfo*> LinkCalculation::calculateDrawingInfo()
 string LinkCalculation::executeLinkCalculation()
 {
 	vector<DrawInfo*> drawInfos = calculateDrawingInfo();
+
+	Document document;
+	document.SetObject();
+	Value array(rapidjson::kArrayType);
+	Document::AllocatorType& allocator = document.GetAllocator();
+
+	for (int i = 0; i < drawInfos.size(); i++)
+	{
+		rapidjson::Value object(rapidjson::kObjectType);
+		object.SetObject();
+		object.AddMember("a", drawInfos[i]->a, allocator);
+		object.AddMember("b", drawInfos[i]->b, allocator);
+		object.AddMember("hopnumber", drawInfos[i]->hopnumber, allocator);
+		object.AddMember("efficiency", drawInfos[i]->efficiency, allocator);
+		object.AddMember("delay", drawInfos[i]->delay, allocator);
+		object.AddMember("distance", drawInfos[i]->distance, allocator);
+		object.AddMember("dashed", drawInfos[i]->dashed, allocator);
+		array.PushBack(object,allocator);
+	}
+	document.AddMember("DrawInfos", array, allocator);
+	StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	document.Accept(writer);
+	return strbuf.GetString();
+
 	string ret = "";
 	for (int i = 0; i < drawInfos.size(); i++)
 		ret += drawInfos[i]->toString() + " ";

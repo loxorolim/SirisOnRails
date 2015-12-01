@@ -688,7 +688,7 @@ void evaluateSCP(vector<vector<int> > &SCP, int metersSize, subProblem* sp )
 	variance = variance / SCP.size();
 	sp->coverageDeviation = sqrt(variance);
 }
-string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
+vector<int> AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundancy)
 {
 	if (verbose) cout << "\n Iniciando planejamento por clusters";
 	const clock_t begin_time = clock();
@@ -803,13 +803,8 @@ string AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redundanc
 	{
 		delete(subProblems[i]);
 	}
-	string str = "";
-	for (int i = 0; i < chosenDaps.size(); i++)
-	{
-		str += to_string(chosenDaps[i]) + " ";
-	}
 	if (verbose) cout << "\n Planejamento concluido";
-	return str;
+	return chosenDaps;
 	
 }
 TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy)
@@ -1183,8 +1178,22 @@ string AutoPlanning::executeAutoPlan(int redundancy,int limit)
 {
 
 	//return gridAutoPlanning(redundancy,limit);
-	return clusterAutoPlanning(true, redundancy);
-
+	vector<int> chosenDaps = clusterAutoPlanning(true, redundancy);
+	Document document;
+	document.SetObject();
+	Value array(rapidjson::kArrayType);
+	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	for (int i = 0; i < chosenDaps.size(); i++)
+	{
+		Value v;
+		v.SetInt(chosenDaps[i]);
+		array.PushBack(v, allocator);
+	}
+	document.AddMember("ChosenDAPs", array, allocator);
+	StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	document.Accept(writer);
+	return strbuf.GetString();
 }
 //Coisa de teste
 TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int redundancy)

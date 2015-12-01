@@ -7,10 +7,13 @@
 #include <string>
 #include <algorithm>
 #include <sstream>
-using namespace std;
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 //#include <Windows.h>
 using namespace std;
-
+using namespace rapidjson;
 // Check windows
 #if _WIN32 || _WIN64
 #if _WIN64
