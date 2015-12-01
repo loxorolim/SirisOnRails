@@ -169,7 +169,17 @@ string KMLMethods::generateKML()
 	init += getHeatmapKMLFormat();
 	init += "</kml>";
 	if (verbose) cout << "\n KML gerado";
-	return init;
+
+	Document document;
+	document.SetObject();
+	Value v;
+	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	v.SetString(init.c_str(),allocator);
+	document.AddMember("KML", v, allocator);
+	StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	document.Accept(writer);
+	return strbuf.GetString();
 }
 void KMLMethods::saveKmlToFile(string filename)
 {

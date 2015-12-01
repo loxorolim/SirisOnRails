@@ -98,10 +98,4 @@ class LinkCalculation: public FatherMethods
 		DrawInfo* chooseDeviceToConnect(Position* meter, vector<Position*> &devices,int isFirstHop);
 
 };
-
-
-
-
-
-
 #endif

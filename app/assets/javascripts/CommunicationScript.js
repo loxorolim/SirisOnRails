@@ -91,7 +91,7 @@ function readGetRangeResponse(data){
 }
 function readKMLResponse(data){
 
-	var kml = data;
+	var kml = data.KML;
 	var blob = new Blob([kml], {type: "text/plain;charset=utf-8"});
 	saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
     
@@ -134,9 +134,10 @@ function readPropagationResponse(data){
     var connectedMeters = [];
 	
     for(var i = 0; i < data.DrawInfos.length; i++){
-		var a = data.DrawInfos[i].a;
-		var b = data.DrawInfos[i].b;
-		var hopnumber = data.DrawInfos[i].hopnumber;
+		var split = data.DrawInfos[i].split('/');
+        var a = split[0];
+		var b = split[1];
+		var hopnumber = parseInt(split[2]);
         var latlng1 = meters[a].getPosition();
         
         meters[a].setOptions(circOptions);
@@ -146,10 +147,10 @@ function readPropagationResponse(data){
             latlng2 = daps[b].getPosition();
         else
             latlng2 = meters[b].getPosition();
-        var efficiency = data.DrawInfos[i].efficiency;
-        var delay = data.DrawInfos[i].delay;
-        var distance = data.DrawInfos[i].distance;
-        var dashed = data.DrawInfos[i].dashed;
+        var efficiency = parseFloat(split[3]);
+        var delay = parseFloat(split[4]);
+        var distance = parseInt(split[5]);
+        var dashed = parseInt(split[6]);
         drawLine(latlng1,latlng2,efficiency,delay,distance,dashed);
 
     }
@@ -159,7 +160,7 @@ function readPropagationResponse(data){
 
 }
 //Função que lê o código recebido e retorna o que se deve escrever para o usuário na tabela de estatísticas.
-function statisticsDecode(type,hop,range){
+function statisticsDecode(type,val){
     var ret = "";
 	switch(type){
 		case "DAPQnt":
@@ -169,15 +170,23 @@ function statisticsDecode(type,hop,range){
 		case "UncoveredMeters":
 			return "Medidores decobertos";
         case "QualityPerHop":
-            return "Qualidade do salto "+hop;
+            return "Qualidade do salto "+val;
         case "DelayPerHop":
-            return "Delay do salto "+hop;
+            return "Delay do salto "+val;
         case "MetersPerHop":
-            return "Medidores a "+hop+" salto(s)";
-		case "MetersPerDap":
-			return "Medidores por DAP ("+range+")";
-		case "Redundancy":
-			return " Redundância ("+range+")";
+            return "Min Medidores a "+val+" salto(s)";
+		case "MinMetersPerDAP":
+			return "Medidores por DAP (Min)";
+        case "MedMetersPerDAP":
+            return "Medidores por DAP (Med)";
+        case "MaxMetersPerDAP":
+            return "Medidores por DAP (Max)";
+		case "MinRedundancy":
+			return "Redundância (Min)";
+        case "MedRedundancy":
+            return "Redundância (Med)";
+        case "MaxRedundancy":
+            return "Redundância (Max)";
 		default:		
 		break;
 	}
@@ -187,21 +196,27 @@ function statisticsDecode(type,hop,range){
 function readMetricResponse(data,kml){
  if(!kml){
     $("#metricsTable tr").remove();
-    if(data != ""){
-        var split = data.split("\n");
-        var text = "";
-        $(data).find('metric').each(function(){
-            var type = $(this).attr('type');
-            var hop = $(this).attr('hop');
-			var range = $(this).attr('range');
-			var value = $(this).text();
-            $( "#metricsTable tbody" ).append( 
-            "<tr>" +
-              "<th class=\"ui-widget-header \" style=\"width: 170px;\">" + statisticsDecode(type,hop,range) + "</th>" +
-              "<td>" + value + "</td>" +
-               +"</tr>" );  
 
-        });
+    if(data != ""){
+            for(var property in data){
+                var type = property;
+                if(data[type] instanceof Array)
+                    aux = data[type].length;
+                else
+                    aux = 1;
+                for(var i = 0; i < aux; i++){
+                    var value;
+                    if(data[type] instanceof Array)
+                        value = data[type][i];
+                    else
+                        value = data[type];
+                    $( "#metricsTable tbody" ).append( 
+                        "<tr>" +
+                        "<th class=\"ui-widget-header \" style=\"width: 170px;\">" + statisticsDecode(type,i) + "</th>" +
+                        "<td>" + value + "</td>" +
+                        +"</tr>" ); 
+                }
+            }
     }
     else{
 			$( "#metricsTable tbody" ).append( 
@@ -360,8 +375,6 @@ function createDrawFileModel(){
     return ret;
 }
 function createGridTestFileModel(){
-    
-    
     var ret = 4 + '\n';
     ret += propagationValuesToSend();
     

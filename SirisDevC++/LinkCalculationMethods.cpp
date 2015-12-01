@@ -60,16 +60,9 @@ string LinkCalculation::executeLinkCalculation()
 
 	for (int i = 0; i < drawInfos.size(); i++)
 	{
-		rapidjson::Value object(rapidjson::kObjectType);
-		object.SetObject();
-		object.AddMember("a", drawInfos[i]->a, allocator);
-		object.AddMember("b", drawInfos[i]->b, allocator);
-		object.AddMember("hopnumber", drawInfos[i]->hopnumber, allocator);
-		object.AddMember("efficiency", drawInfos[i]->efficiency, allocator);
-		object.AddMember("delay", drawInfos[i]->delay, allocator);
-		object.AddMember("distance", drawInfos[i]->distance, allocator);
-		object.AddMember("dashed", drawInfos[i]->dashed, allocator);
-		array.PushBack(object,allocator);
+		Value v;
+		v.SetString(drawInfos[i]->toString().c_str(),allocator);
+		array.PushBack(v, allocator);
 	}
 	document.AddMember("DrawInfos", array, allocator);
 	StringBuffer strbuf;
