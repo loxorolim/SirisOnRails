@@ -169,6 +169,14 @@ float: left;
     margin-top: 15px;
     float: left;
 }
+
+.belowButtonDiv{
+    background-color: white;
+    border-radius: 10px;
+    height: 26px;
+
+}
+
 div#metricsTableDiv table { border-collapse: collapse; width: 100%; }
 div#metricsTableDiv table td, div#metricsTableDiv table th {text-align: center; padding: .3em; }
 div#metricsTableDiv tr{border: solid; border-width: 1px ;}

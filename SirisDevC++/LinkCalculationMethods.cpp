@@ -68,14 +68,11 @@ string LinkCalculation::executeLinkCalculation()
 	StringBuffer strbuf;
 	Writer<StringBuffer> writer(strbuf);
 	document.Accept(writer);
-	return strbuf.GetString();
 
-	string ret = "";
-	for (int i = 0; i < drawInfos.size(); i++)
-		ret += drawInfos[i]->toString() + " ";
 	for (int i = 0; i < drawInfos.size(); i++)
 		delete drawInfos[i];
-	return ret;
+
+	return strbuf.GetString();
 }
 
 //Aqui é o método que determina a quem o medidor vai se conectar e retorna um DrawInfo com as informações dessa

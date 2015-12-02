@@ -8,10 +8,10 @@ param B{r in Z} default 1, integer;
  solve; 
  printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/Results.txt";
  data;
-set Z:= Z0 Z1 Z2 ;
-set Y:= Y0 ;
+set Z:= ;
+set Y:= ;
 param A := 
-[Z0,Y0] 1[Z1,Y0] 1[Z2,Y0] 1
+
 ;
 param B := 
 

@@ -277,35 +277,21 @@ function setButtons()
             sendDrawRequest();
          }
      });
-	 	$("#meshSliderDiv").slider({
-         value: 0,
-         min: 1,
-         max: 5,
-         step: 1,
-         slide: function (event, ui) {
-              $("#mesh").text(ui.value + " Saltos");
-         }
-     }); 
-     $("#meshSliderDiv").slider({
-         stop: function (event, ui) {
-            setMeshHops(ui.value);
-            sendDrawRequest();
-         }
-     });
-	$('#meshSliderDiv').mouseenter(function(){
-		clearTimeout($('#meshButton').data('timeoutId'));
-	}).mouseleave(function(){
-		var someElement = $('#meshButton'),
-        timeoutId = setTimeout(function(){
-           $('#meshSliderDiv').hide();
-    }, 100);
-	someElement.data('timeoutId', timeoutId); 
-    //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
- 
-	});
-
-
-
+	 //	$("#meshSliderDiv").slider({
+     //    value: 0,
+     //    min: 1,
+     //    max: 5,
+     //    step: 1,
+     //    slide: function (event, ui) {
+     //         $("#mesh").text(ui.value + " Saltos");
+     //    }
+     //}); 
+     //$("#meshSliderDiv").slider({
+     //    stop: function (event, ui) {
+     //       setMeshHops(ui.value);
+     //       sendDrawRequest();
+     //    }
+     //});
 
    $("#choosePower").hover(function () {
 	   $("#slider").css({ opacity: 1.0 });
@@ -413,6 +399,25 @@ function setButtons()
         $(this).blur();
         sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
     });
+    $('#autoPlanning').mouseenter(function () {
+        clearTimeout($(this).data('timeoutId'));
+        $('#autoPlanningCheckboxDiv').show();
+    }).mouseleave(function () {
+        var someElement = $(this),
+        timeoutId = setTimeout(function () {
+            $('#autoPlanningCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+    $('#autoPlanningCheckboxDiv').mouseenter(function () {
+        clearTimeout($('#autoPlanning').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#autoPlanning'),
+        timeoutId = setTimeout(function () {
+            $('#autoPlanningCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
     $('#meshButton').button({
         icons: {
             primary: "mesh"
@@ -426,10 +431,20 @@ function setButtons()
 		var someElement = $(this),
         timeoutId = setTimeout(function(){
              $('#meshSliderDiv').hide();
-        }, 100);
+        }, 1);
 		someElement.data('timeoutId', timeoutId);
 	});
+	$('#meshSliderDiv').mouseenter(function () {
+	    clearTimeout($('#meshButton').data('timeoutId'));
+	}).mouseleave(function () {
+	    var someElement = $('#meshButton'),
+        timeoutId = setTimeout(function () {
+            $('#meshSliderDiv').hide();
+        }, 1);
+	    someElement.data('timeoutId', timeoutId);
+	    //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
 
+	});
 
 	$('#statistic').button({
 	icons: {

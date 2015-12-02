@@ -66,11 +66,16 @@
 						<button id="download">Download de planejamento</button>
 						<!--<button id ="settings"> Configurações Avançadas</button>-->
 						<button id="help">Botão de Ajuda</button>
-						<div id="meshSliderDiv" class = "hidden" style="height: 26px; width: 305px;" >
+						<div id="meshSliderDiv" class = "hidden belowButtonDiv" style="width: 305px;" >
 							<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>						
 							<div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
 							<span id="mesh" style="margin-left: 5%" class="selections">0 Saltos</span>
 						</div>
+            <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px;" >
+              <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
+              <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%">
+                <label for="check"></label>
+            </div>
 						<!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
 						
 					</div>

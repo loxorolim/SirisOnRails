@@ -97,7 +97,8 @@ function readKMLResponse(data){
     
 }
 function readAutoPlanResponse(data){
-
+	while(daps.length > 0)
+        daps[0].remove();
 	for(var i = 0 ; i < data.ChosenDAPs.length; i++){
 		var toAdd = data.ChosenDAPs[i];
 		var latLng = poles[toAdd].position;
@@ -244,36 +245,6 @@ function readMetricResponse(data,kml){
 		saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
 	}
 }
-
-function propagationValuesToSend(){
-    var s = scenario;
-    var t = technology;
-    var srdv;
-    if(SRD)
-        srdv = 1;
-    else
-        srdv = 0;
-
-    var rate;
-	if(technology == t802_11_g)
-		rate = BIT_RATE;
-	if(technology == t802_15_4)
-		rate = 0.25;
-    var ret = "";
-    ret+= s + "\n";
-    ret+= t + "\n";
-    ret+= H_TX + "\n";
-    ret+= H_RX + "\n";
-    ret+= rate + "\n";
-    ret+= TRANSMITTER_POWER + "\n";
-    ret+= srdv + "\n";
-    //if(meshEnabled)
-        ret+=(meshMaxJumps-1)+"\n";
-    //else
-    //    ret+="0"+"\n";
-    return ret;
-
-}
 function propagationValuesToSendObject(){
     
     var rate;
@@ -329,152 +300,8 @@ function createObjectToSend(type){
     }
     return obj_to_send;
 }
-function createAutoPlanningFileModel(){
-    //var uncoveredMeters = meters.filter(function (item) {
-    //        return (item.connected != true);
-    //});
-    var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
-    var ret = AUTO_PLAN_FILE_ID + '\n';
-    ret += propagationValuesToSend();
-    ret += REDUNDANCY+'\n';
-	if($("#considerLimit").is(':checked'))	
-		ret+= LIMIT+'\n';
-	else
-		ret+= -1+'\n';
-	
-    ret+= uncoveredMeters.length+"\n";
-    for(var i = 0; i <uncoveredMeters.length; i++){
-        ret += uncoveredMeters[i].getPosition().lat() + " " + uncoveredMeters[i].getPosition().lng();
-        ret += "\n";
-    }
-    ret += poles.length;
-    ret += "\n";
-    for(var i = 0; i <poles.length; i++){
-        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
-        ret += "\n";
-    }
-    return ret;
-}
-function createDrawFileModel(){
-    
-    
-    var ret = DRAW_FILE_ID + '\n';
-    ret += propagationValuesToSend();
-    
-    ret+= meters.length+"\n";
-    for(var i = 0; i <meters.length; i++){
-        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
-        ret += "\n";
-    }
-    ret += daps.length;
-    ret += "\n";
-    for(var i = 0; i <daps.length; i++){
-        ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
-        ret += "\n";
-    }
-    return ret;
-}
-function createGridTestFileModel(){
-    var ret = 4 + '\n';
-    ret += propagationValuesToSend();
-    
-    ret+= meters.length+"\n";
-    for(var i = 0; i <meters.length; i++){
-        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
-        ret += "\n";
-    }
-
-    return ret;
-}
-function createMetricsFileModel(){
-    
-    var ret = METRIC_FILE_ID + '\n';
-    ret += propagationValuesToSend();
-    
-    ret+= meters.length+"\n";
-    for(var i = 0; i <meters.length; i++){
-        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
-        ret += "\n";
-    }
-    ret += daps.length;
-    ret += "\n";
-    for(var i = 0; i <daps.length; i++){
-        ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
-        ret += "\n";
-    }
-    return ret;
-}
-function createHeatgridFileModel(){
-    
-    var ret = HEATGRID_FILE_ID + '\n';
-    ret+= heatmapPoints.length+"\n";
-    for(var i = 0; i <heatmapPoints.length; i++){
-        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng() ;//+ " " + heatmapPoints[i].weight;
-        ret += "\n";
-    }
-    return ret;
-}
-function createTestFileModel(){
-    
-    var uncoveredMeters = meters; //POR ENQUANTO VOU DEIXAR ISSO AQUI PRA NÃO CONFUNDIR AS POSIÇÕES DO SERVDOR COM OS MEDIODRES DAQUI 
-    var ret = TEST_COLLECTION_FILE_ID + '\n';
-    ret += propagationValuesToSend();
-
-    ret+= uncoveredMeters.length+"\n";
-    for(var i = 0; i <uncoveredMeters.length; i++){
-        ret += uncoveredMeters[i].getPosition().lat() + " " + uncoveredMeters[i].getPosition().lng();
-        ret += "\n";
-    }
-    ret += poles.length;
-    ret += "\n";
-    for(var i = 0; i <poles.length; i++){
-        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
-        ret += "\n";
-    }
-    return ret;
-}
-function createKMLFileModel(){
-
-    var ret = KML_FILE_ID + '\n';
-    ret += propagationValuesToSend();	
-    ret+= meters.length+"\n";
-    for(var i = 0; i < meters.length; i++){
-        ret += meters[i].getPosition().lat() + " " + meters[i].getPosition().lng();
-        ret += "\n";
-    }
-	ret += daps.length;
-    ret += "\n";
-    for(var i = 0; i <daps.length; i++){
-        ret += daps[i].getPosition().lat() + " " + daps[i].getPosition().lng();
-        ret += "\n";
-    }
-    ret += poles.length;
-    ret += "\n";
-    for(var i = 0; i <poles.length; i++){
-        ret += poles[i].getPosition().lat() + " " + poles[i].getPosition().lng();
-        ret += "\n";
-    }
-	ret += heatmapPoints.length;
-    ret += "\n";
-    for(var i = 0; i <heatmapPoints.length; i++){
-        ret += heatmapPoints[i].position.lat() + " " + heatmapPoints[i].position.lng();// + " " + heatmapPoints[i].weight;
-        var opIds = "";
-        for(var j = 0; j < heatmapPoints[i].opIds.length; j++)
-        {
-            opIds+=heatmapPoints[i].opIds[j];
-           // if(j!= heatmapPoints[i].opIds.length-1)
-           // opIds+="/";
-        }
-        ret += opIds;
-        ret += "\n";
-    }
-    return ret;
-}
 function download() {
 	sendDataToServer(serverAddress, 'POST', KML_FILE_ID);
-   // var toSave = formatKMLText();
-   // var blob = new Blob([toSave], {type: "text/plain;charset=utf-8"});
-   // saveAs(blob, "viz"+meters.length+"-"+poles.length+"-"+daps.length+".kml");
 }
 
 function upload(fileInput) {
