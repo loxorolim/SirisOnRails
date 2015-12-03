@@ -128,8 +128,7 @@ class AutoPlanning: public FatherMethods
 {
 	private:
 		double gridLimiter;
-		vector<Position*> meters; // alias para o vec1, meters é a mesma coisa que o vec1
-		vector<Position*> poles; // alias para o vec2, poles é a mesma coisa que o vec2
+		vector<Position*> meters, poles; //DAPs é apenas se o 
 			//vector<Position*> meters;
 			//vector<Position*> poles;
 			//int scenario, technology, SRD, meshEnabled;
@@ -164,20 +163,17 @@ class AutoPlanning: public FatherMethods
 		};
 		~AutoPlanning()
 		{
-			for (int i = 0; i < meters.size(); i++)
-			{
-				delete meters[i];
-			}
-			for (int i = 0; i < poles.size(); i++)
-			{
-				delete poles[i];
-			}
+			for (int i = 0; i < meters.size(); i++)			
+				delete meters[i];			
+			for (int i = 0; i < poles.size(); i++)			
+				delete poles[i];						
 		}
 		
 		//Funções de criação do SCP;
 		vector<vector<int> > createScpWithLimit(int limit);
 		vector<vector<int> > createScp();
 		vector<vector<int> > createInvertedScp();
+		vector<vector<int> > coverageList(vector<Position*> &daps);
 
 		//Funções planejamento básico
 		//void saveGLPKFile(vector<vector<int> > &scp);
@@ -219,7 +215,7 @@ class AutoPlanning: public FatherMethods
 		int getPolesSize();
 		void setGridSize(double gridSize);
 		void setRegionLimiter(double rl);
-
+		void removeAlreadyCoveredMeters(vector<Position*> &daps);
 };
 
 //void RolimLocalSearch(vector<vector<int> > &scp, int * solution);

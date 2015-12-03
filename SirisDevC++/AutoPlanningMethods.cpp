@@ -1256,6 +1256,91 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 	cout << result->toString();
 	return result;
 }
+vector<vector<int> > AutoPlanning::coverageList(vector<Position*> &daps)
+{
+	Grid* g = new Grid(meters, daps, regionLimiter);
+	//Grid* g = new Grid(regionLimiter);
+	g->putPositions(meters);
+	vector<int> aux;
+	vector<vector<int> > sM;
+	//sM.reserve(meters.size());
+
+	for (int i = 0; i < daps.size(); i++)
+	{
+		vector<int> metersCovered;
+		vector<Position*> metersReduced = g->getCell(daps[i]);
+		for (int j = 0; j < metersReduced.size(); j++)
+		{
+			double dist = getDistance(daps[i], metersReduced[j]);
+			double eff = getLinkQuality(dist);
+
+			if (eff >= MARGIN_VALUE)
+				metersCovered.push_back(metersReduced[j]->index);
+		}
+		sM.push_back(metersCovered);
+	}
+	if (mesh)
+	{
+
+		vector<vector<int> > nM = createMeterNeighbourhood(g);
+		for (int i = 0; i < sM.size(); i++)
+		{
+			vector<int> neighbours = sM[i];
+			for (int j = 0; j < mesh; j++)
+			{
+				vector<int> newNeighbours;
+				for (int k = 0; k < neighbours.size(); k++)
+				{
+
+					int toFind = neighbours[k];
+					int pos = 0;
+					for (int l = 0; l < meters.size(); l++){ if (meters[l]->index == toFind){ pos = l; break; } }
+
+					//sM[i] = concatVectors(sM[i], nM[pos]);
+					sM[i].insert(sM[i].end(), nM[pos].begin(), nM[pos].end());
+					sort(sM[i].begin(), sM[i].end());
+					sM[i].erase(unique(sM[i].begin(), sM[i].end()), sM[i].end());
+
+					//newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI É PASSÍVEL DE OTIMIZAÇÃO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					newNeighbours.insert(newNeighbours.end(), nM[pos].begin(), nM[pos].end());
+					sort(newNeighbours.begin(), newNeighbours.end());
+					newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
+				}
+				neighbours = newNeighbours;
+			}
+		}
+
+	}
+	delete g;
+	return sM;
+}
+void AutoPlanning::removeAlreadyCoveredMeters(vector<Position*> &DAPs)
+{
+	vector<vector<int>> covList = coverageList(DAPs);
+	vector<int> toRemove;
+	for (int i = 0; i < covList.size(); i++)
+	{
+		for (int j = 0; j < covList[i].size(); j++)
+		{
+			toRemove.push_back(meters[covList[i][j]]->index);
+		}
+	}
+	sort(toRemove.begin(), toRemove.end());
+	toRemove.erase(unique(toRemove.begin(), toRemove.end()), toRemove.end());
+	for (int i = 0; i < toRemove.size(); i++)
+	{
+		for (int j = 0; j < meters.size(); j++)
+		{ 
+			if (meters[j]->index == toRemove[i])
+			{ 
+				meters.erase(meters.begin()+j); 
+				break;
+			} 
+		}
+	}
+}
+
+
 //////////////////////////////////////////MÉTODOS PRO GRASP////////////////////////////////////////////////
 //int iterations = 500;
 double p = 0.5;

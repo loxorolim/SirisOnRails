@@ -288,7 +288,7 @@ function createObjectToSend(type){
             obj_to_send["meters"] = getLatLngObject(meters);
             obj_to_send["poles"] = getLatLngObject(poles);
             if (autoPlanOverwrite) {
-                obj_to_send["DAPs"] = getLatLngObject(poles);
+                obj_to_send["DAPs"] = getLatLngObject(daps);
                 obj_to_send["overwrite"] = true;
             }
             break;

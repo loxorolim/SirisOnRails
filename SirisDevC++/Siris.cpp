@@ -78,12 +78,16 @@ string getResponse(string input, string rP)
 	{
 		Value& s = d["overwrite"];
 		bool overwrite = s.GetBool();
-		if (overwrite)
-			daps = getPositionArrayFromJson(input, "DAPs");
+
 		meters = getPositionArrayFromJson(input, "meters");
 		poles = getPositionArrayFromJson(input, "poles");
 		int gridSize = 500;
 		AutoPlanning* autoplan = new AutoPlanning(meters, poles, scenario, technology, bit_rate, power, h_tx, h_rx, 1, mesh, gridSize, rP);
+		if (overwrite)
+		{
+			daps = getPositionArrayFromJson(input, "DAPs");
+			autoplan->removeAlreadyCoveredMeters(daps);
+		}
 		ret = autoplan->executeAutoPlan(redundancy, 0);
 		delete autoplan;
 		break;

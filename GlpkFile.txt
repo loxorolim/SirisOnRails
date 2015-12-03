@@ -6,12 +6,12 @@ param B{r in Z} default 1, integer;
  minimize cost: sum{m in Y} Route[m];
  subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];
  solve; 
- printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails/Results.txt";
+ printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/Results.txt";
  data;
-set Z:= ;
-set Y:= ;
+set Z:= Z0 ;
+set Y:= Y0 ;
 param A := 
-
+[Z0,Y0] 1
 ;
 param B := 
 
