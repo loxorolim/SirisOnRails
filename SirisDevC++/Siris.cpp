@@ -76,6 +76,10 @@ string getResponse(string input, string rP)
 	}
 	case AUTOPLAN:
 	{
+		Value& s = d["overwrite"];
+		bool overwrite = s.GetBool();
+		if (overwrite)
+			daps = getPositionArrayFromJson(input, "DAPs");
 		meters = getPositionArrayFromJson(input, "meters");
 		poles = getPositionArrayFromJson(input, "poles");
 		int gridSize = 500;

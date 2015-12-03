@@ -332,6 +332,9 @@ function setButtons()
         $(this).blur();
 		toggleHeatgrid();	       
     });
+    $('#autoPlanningCheckbox').click(function () {
+        toggleAutoPlanningOverwrite();
+    });
 
     $('#settings').button({
         icons: {
@@ -678,7 +681,11 @@ function toggleHeatgrid(){
 	
 
 
-} 
+}
+function toggleAutoPlanningOverwrite()
+{
+    autoPlanOverwrite = !autoPlanOverwrite;
+}
 function toggleRangeView(){
   drawRangeView = !drawRangeView;
 

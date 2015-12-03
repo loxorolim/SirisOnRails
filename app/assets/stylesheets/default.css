@@ -18,6 +18,12 @@ border-style: none;
 {
 	height:14px;
 }
+.menuButton {
+    margin: 0px 2.5px 0px 2.5px;
+}
+.squareButton {
+    width: 30px;
+}
 /*Affichage des options*/
 .ui-selectmenu-menu .ui-menu.customicons .ui-menu-item
 {
@@ -110,7 +116,6 @@ background-repeat:no-repeat;
 #menu {
   position: absolute;
   margin-top: 64px;
-  margin-left:52px;
 }
 
 #menu div {

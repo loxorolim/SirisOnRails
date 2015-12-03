@@ -287,6 +287,10 @@ function createObjectToSend(type){
         case AUTO_PLAN_FILE_ID:
             obj_to_send["meters"] = getLatLngObject(meters);
             obj_to_send["poles"] = getLatLngObject(poles);
+            if (autoPlanOverwrite) {
+                obj_to_send["DAPs"] = getLatLngObject(poles);
+                obj_to_send["overwrite"] = true;
+            }
             break;
         case DRAW_FILE_ID:
         case METRIC_FILE_ID:

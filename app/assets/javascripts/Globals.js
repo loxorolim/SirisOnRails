@@ -38,6 +38,7 @@ var LIMIT = 100;
 
 var drawHeatmap = false;
 var drawRangeView = false;
+var autoPlanOverwrite = false;
 var heatmap = [];
 
 var taxiData = [];

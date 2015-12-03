@@ -42,7 +42,7 @@
                     
                 </div>
 				<div id="menu" >
-						<div id="testee">
+          <div class="menuButton">
 							<select name="mouseOptions" id="mouseOptions" class="TFOlstFiltreImg"  >
 								<option value="view" selected="selected"> Visualização</option>
 								<option value="dap"> DAP </option>
@@ -55,28 +55,48 @@
 								<option value="poleEraserSelection"> Apagar por Seleção (Poste)</option>
 							</select>
 						</div>
-						<button id="autoPlanning" style="margin-left: 5px">Auto Planning</button>
-						<!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
-						<!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
-						<button id="meshButton">RF-Mesh</label>
-						<button id="statistic">Coletar Métricas</button>
-						<input type="checkbox" id="rangeview"><label for="rangeview">Visão por alcance</label>
-						<input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Mapa de Calor</label>
-						<button id="upload">Upload de arquivo</button>
-						<button id="download">Download de planejamento</button>
-						<!--<button id ="settings"> Configurações Avançadas</button>-->
-						<button id="help">Botão de Ajuda</button>
-						<div id="meshSliderDiv" class = "hidden belowButtonDiv" style="width: 305px;" >
-							<span class="selections" style="margin-left: 5%">Saltos Mesh: </span>						
-							<div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
-							<span id="mesh" style="margin-left: 5%" class="selections">0 Saltos</span>
-						</div>
-            <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px;" >
-              <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
-              <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%">
-                <label for="check"></label>
+            <div style="width:107px;" class="menuButton">
+                <button id="autoPlanning" >Auto Planning</button>
+                <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px; left: -21.5px; position:relative;" >
+                <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
+                <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%">
+                  <label for="check"></label>
+                </div>
             </div>
-						<!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
+            <div style="width:87px;" class="menuButton">          
+              <button id="meshButton">RF-Mesh</button>
+              <div id="meshSliderDiv" class = "hidden belowButtonDiv" style="width: 305px; left:-109px; position:relative" >
+                <span class="selections" style="margin-left: 5%">Saltos Mesh: </span>
+                <div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
+                <span id="mesh" style="margin-left: 5%" class="selections">0 Saltos</span>
+              </div>
+            </div>
+            <!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
+						<!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
+
+            <div class="menuButton squareButton">
+              <button id="statistic" >Coletar Métricas</button>
+            </div>
+            <div class="menuButton squareButton">
+						  <input type="checkbox" id="rangeview"><label for="rangeview">Visão por alcance</label>
+            </div>
+            <div class="menuButton squareButton">
+						  <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Mapa de Calor</label>
+            </div>
+            <div class="menuButton squareButton">
+						  <button id="upload">Upload de arquivo</button>
+            </div>
+            <div class="menuButton squareButton">
+						  <button id="download">Download de planejamento</button>
+            </div>
+						<!--<button id ="settings"> Configurações Avançadas</button>-->
+            <div class="menuButton squareButton">
+						  <button id="help">Botão de Ajuda</button>
+            </div>
+ 
+
+
+            <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
 						
 					</div>
 				</div>
