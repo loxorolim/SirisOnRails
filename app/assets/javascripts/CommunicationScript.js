@@ -85,7 +85,7 @@ function readGetRangeResponse(data){
                  fillOpacity: 0.35,
                  clickable: false
      });
-     coveragePolygon.setMap(map);
+    DrawRangeView();
     
 }
 function readKMLResponse(data){

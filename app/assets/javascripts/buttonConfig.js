@@ -653,34 +653,18 @@ function setBitRate(value){
   }
 }
 function toggleHeatgrid(){
-	drawHeatmap = !drawHeatmap;	
-	
-	
-	if(drawHeatmap){
-		$("#rangeview").removeAttr('checked');
-		$("#rangeview").button("refresh");
+	drawHeatmap = !drawHeatmap;		
+	if (drawHeatmap) {
+	    $("#rangeview").removeAttr('checked');
+	    $("#rangeview").button("refresh");
+	    DrawHeatmap();
+	    EraseRangeView();
+	    drawRangeView = false;
+	    DrawLines();
 
-		if(heatmapPolygon){
-			heatmapPolygon.setMap(map);
-			if(drawRangeView && coveragePolygon != null){
-				drawRangeView = !drawRangeView;
-				coveragePolygon.setMap(null);
-				
-			}
-		}
-    if(coveragePolygon != null)
-      coveragePolygon.setMap(null);
-		drawRangeView = false;
-    for(var i = 0; i < lines.length; i++){
-      lines[i].setMap(map);
-    }
 	}
 	else
-		if(heatmapPolygon)
-			heatmapPolygon.setMap(null);
-	
-
-
+	    EraseHeatmap();
 }
 function toggleAutoPlanningOverwrite()
 {
@@ -693,25 +677,60 @@ function toggleRangeView(){
   	$("#checkHeatmap").removeAttr('checked');
   	$("#checkHeatmap").button("refresh");
     sendDataToServer(serverAddress, 'POST', GET_RANGE_FILE_ID);  
-  	if(drawHeatmap && heatmapPolygon != null){
-  		drawHeatmap = !drawHeatmap;
-  		heatmapPolygon.setMap(null);
-  		
-  	}
-  	drawHeatmap = false;
-    for(var i = 0; i < lines.length; i++){
-      lines[i].setMap(null);
-    }
+    EraseHeatmap();
+    EraseLines();
+  	drawHeatmap = false; 
   }
-  else
-  {
-    for(var i = 0; i < lines.length; i++){
-      lines[i].setMap(map);
+  else{
+      DrawLines();
+      EraseRangeView();
+  }
+}
+var drawEnabled = true;
+function setDrawOption(option) {
+    drawEnabled = option;
+    if (!option) {
+        EraseLines();
+        EraseHeatmap();
+        EraseRangeView();
     }
-    if(coveragePolygon)
-      coveragePolygon.setMap(null);
+    else {
+        DrawLines();
+        DrawHeatmap();
+        DrawRangeView();
+    }
 
-  }
-} 
+}
+function DrawLines(){
+    if (drawEnabled && !drawRangeView) {
+        for (var i = 0; i < lines.length; i++)
+            lines[i].setMap(map);
+    }
+}
+function EraseLines(){
+    for (var i = 0; i < lines.length; i++)
+        lines[i].setMap(null);
+}
+function DrawHeatmap() {
+    if (drawEnabled && drawHeatmap) {
+        if (heatmapPolygon != null)
+            heatmapPolygon.setMap(map);
+    }
+}
+function EraseHeatmap() {
+    if (heatmapPolygon != null)
+        heatmapPolygon.setMap(null);
+}
+function DrawRangeView() {
+    if (drawEnabled && drawRangeView) {
+        if (coveragePolygon != null)
+            coveragePolygon.setMap(map);
+    }
+}
+function EraseRangeView() {
+    if (coveragePolygon != null)
+        coveragePolygon.setMap(null);
+}
+
 
   

@@ -171,7 +171,12 @@ function MarkerClusterer(map, opt_markers, opt_options) {
     if (that.prevZoom_ != zoom) {
       that.resetViewport();
       if(zoom <= that.maxZoom_ || ((that.prevZoom_ <= that.maxZoom_) && (zoom > that.maxZoom_)))
-        that.redraw();
+          that.redraw();
+      if (zoom <= that.maxZoom_)
+          setDrawOption(false);
+      else
+          setDrawOption(true);
+
       that.prevZoom_ = zoom;
     }
 
