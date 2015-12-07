@@ -147,6 +147,7 @@ double getNumberOfRetries(double quality);
 double getBackoffTime(double quality, int technology);
 double calculateLinkDelay(double quality, double rate, int technology);
 
+
 //bool compareByLatitude(Position* a, Position *b);
 
 #endif

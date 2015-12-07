@@ -66,9 +66,8 @@ function readGetRangeResponse(data){
 
     if(coveragePolygon)
         coveragePolygon.setMap(null);
-    var split = data.split("\n");
-    var dapRange = parseFloat(split[0]);
-    var meterRange = parseFloat(split[1]);
+    var dapRange = data.DAPtoMeterDistance;
+    var meterRange = data.MeterToMeterDistance;
     var circles = [];
     for(var i = 0; i < daps.length; i++){
         circles.push(drawCircle(daps[i].getPosition(),dapRange/1609.344,1)) ;

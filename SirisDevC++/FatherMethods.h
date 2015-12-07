@@ -15,7 +15,7 @@ class FatherMethods
 
 		double getLinkQuality(double distance);
 		double getLinkQualityBetweenMeters(double distance);
-
+		double getRegionLimiter();
 
 	/*virtual ~FatherMethods()
 	{

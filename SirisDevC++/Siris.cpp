@@ -123,9 +123,20 @@ string getResponse(string input, string rP)
 		while (effs > MARGIN_VALUE)
 		{
 			meterdist += step;
-			effs = getHataSRDSuccessRate(meterdist, scenario, technology, bit_rate, power, h_tx, h_rx, 1);
+			effs = getHataSRDSuccessRate(meterdist, scenario, technology, bit_rate, power, h_tx, h_tx, 1);
 		}
-		ret = to_string(dapdist - step) + "\n" + to_string(meterdist - step);
+		Document document;
+		document.SetObject();
+		rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+		Value v;
+		v.SetDouble(dapdist - step);
+		document.AddMember("DAPtoMeterDistance", v,allocator);
+		v.SetDouble(meterdist - step);
+		document.AddMember("MeterToMeterDistance", v, allocator);
+		StringBuffer strbuf;
+		Writer<StringBuffer> writer(strbuf);
+		document.Accept(writer);
+		ret = strbuf.GetString();
 		break;
 	}
 	default:
