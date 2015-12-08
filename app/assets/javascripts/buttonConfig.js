@@ -424,9 +424,8 @@ function setButtons()
 			while(poles.length > 0){
 				poles[0].remove();
 			}		
-        while(heatmapPoints.length > 0){
-        heatmapPoints.pop();
-        } 
+        while(heatmapPoints.length > 0)
+            heatmapPoints[0].remove();       
         setHeatmap();
 		}
 		upload($("#uploadFile").get(0));
@@ -589,10 +588,14 @@ function toggleHeatgrid(){
 	    EraseRangeView();
 	    drawRangeView = false;
 	    DrawLines();
+	    makeHeatmapPointsVisible();
 
 	}
-	else
+	else {
 	    EraseHeatmap();
+	    makeHeatmapPointsInvisible();
+	}
+	    
 }
 function toggleAutoPlanningOverwrite()
 {
@@ -621,11 +624,13 @@ function setDrawOption(option) {
         EraseLines();
         EraseHeatmap();
         EraseRangeView();
+        makeHeatmapPointsInvisible();
     }
     else {
         DrawLines();
         DrawHeatmap();
         DrawRangeView();
+        makeHeatmapPointsVisible()
     }
 
 }
@@ -658,6 +663,25 @@ function DrawRangeView() {
 function EraseRangeView() {
     if (coveragePolygon != null)
         coveragePolygon.setMap(null);
+}
+function makeHeatmapPointsVisible() {
+    if (drawEnabled && drawHeatmapPoints && drawHeatmap) {
+        for (var i = 0; i < heatmapPoints.length; i++) {
+            heatmapPoints[i].setMap(map);
+        }
+    }
+}
+function makeHeatmapPointsInvisible() {
+        for (var i = 0; i < heatmapPoints.length; i++) {
+            heatmapPoints[i].setMap(null);
+        }
+}
+function toggleHeatmapPointVisibility(){
+    drawHeatmapPoints = !drawHeatmapPoints;
+    if (drawHeatmapPoints)
+        makeHeatmapPointsVisible();
+    else
+        makeHeatmapPointsInvisible();
 }
 function setAutoplanningButton() {
     $('#autoPlanning').button().click(function () {
@@ -764,6 +788,10 @@ function setHeatmapButton() {
         //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
 
     });
+    $('#heatmapCheckbox').click(function () {
+        toggleHeatmapPointVisibility();
+    });
 }
+
 
   

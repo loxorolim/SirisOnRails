@@ -706,7 +706,9 @@ vector<int> AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 	{
 		for (int j = 0; j < scp[i].size(); j++)
 		{
-			invertedSCP[scp[i][j]].push_back(i);
+			int pos;
+			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == scp[i][j]) { pos = k; break; } }
+			invertedSCP[pos].push_back(i);
 		}
 	}
 	if (verbose) cout << "\n Matriz de cobertura invertida criada";
@@ -1333,6 +1335,7 @@ void AutoPlanning::removeAlreadyCoveredMeters(vector<Position*> &DAPs)
 		{ 
 			if (meters[j]->index == toRemove[i])
 			{ 
+				delete meters[j];
 				meters.erase(meters.begin()+j); 
 				break;
 			} 

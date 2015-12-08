@@ -43,6 +43,7 @@ var heatmap = [];
 
 var taxiData = [];
 var heatmapPoints = [];
+var drawHeatmapPoints = false;
 var heatGrids = [];
 var efficiencyRadio = 30; //30metros
 

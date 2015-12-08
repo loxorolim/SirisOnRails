@@ -96,8 +96,10 @@ function readKMLResponse(data){
     
 }
 function readAutoPlanResponse(data){
-	while(daps.length > 0)
-        daps[0].remove();
+    if (autoPlanOverwrite) {
+        while (daps.length > 0)
+            daps[0].remove();
+    }
 	for(var i = 0 ; i < data.ChosenDAPs.length; i++){
 		var toAdd = data.ChosenDAPs[i];
 		var latLng = poles[toAdd].position;
@@ -286,9 +288,10 @@ function createObjectToSend(type){
         case AUTO_PLAN_FILE_ID:
             obj_to_send["meters"] = getLatLngObject(meters);
             obj_to_send["poles"] = getLatLngObject(poles);
-            if (autoPlanOverwrite) {
+            obj_to_send["overwrite"] = true;
+            if (!autoPlanOverwrite) {
                 obj_to_send["DAPs"] = getLatLngObject(daps);
-                obj_to_send["overwrite"] = true;
+                obj_to_send["overwrite"] = false;
             }
             break;
         case DRAW_FILE_ID:
