@@ -81,7 +81,12 @@
 						  <input type="checkbox" id="rangeview"><label for="rangeview">Visão por alcance</label>
             </div>
             <div class="menuButton squareButton">
-						  <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Mapa de Calor</label>
+						  <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Mapa de Calor</label>
+              <div id="heatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 160px; left: -65px; position:relative;" >
+                <span class="selections" style="margin-left: 5%">Mostrar pontos: </span>
+                <input type="checkbox" id="heatmapCheckbox" style="margin-top: 4%">
+                  <label for="check"></label>
+              </div>
             </div>
             <div class="menuButton squareButton">
 						  <button id="upload">Upload de arquivo</button>
@@ -112,16 +117,17 @@
 		</table>
 		<div id="uploadDialog" class = "hidden" title="Upload">
 			<input id= "uploadFile" type="file"/>
-			<button id = "submitButton">Submit</button>	
-			<div style="margin: 10px;">
+			<button id = "submitButton">Submit</button>
+      <input type="checkbox" id="resetOnUpload">
+        <label for="resetOnUpload">Sobrescrever</label>
+			<div style="width: 80%; margin: 10px auto;">
 				<input type="radio" id="spFormatRadio" name="format" checked="checked"><label for="fileFormatRadio">Formatado</label>
 				<input type="radio" id="dapFormatRadio" name="format"><label for="fileFormatRadio">DAPs</label>
 				<input type="radio" id="meterFormatRadio" name="format"><label for="fileFormatRadio">Medidores</label>
 				<input type="radio" id="poleFormatRadio" name="format"><label for="fileFormatRadio">Postes</label>
 				<input type="radio" id="heatmapFormatRadio" name="format"><label for="fileFormatRadio">Mapa de calor</label>
-			</div>
-			<input type="checkbox" id="resetOnUpload"><label for="resetOnUpload">Resetar ao inserir</label>
-        </div>
+			</div>	
+    </div>
 		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
 			<div id="redundancySliderDiv"  style="height: 26px; width: 300px;" >
 				<span class="selections" style="float: left;  margin-left: 5%">Redundância: </span>		

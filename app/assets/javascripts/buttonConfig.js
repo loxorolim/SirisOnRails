@@ -262,21 +262,7 @@ function setButtons()
          }
      });
 
-	$("#meshSlider").slider({
-         value: 0,
-         min: 1,
-         max: 5,
-         step: 1,
-         slide: function (event, ui) {
-              $("#mesh").text(ui.value + " Saltos");
-         }
-     }); 
-     $("#meshSlider").slider({
-         stop: function (event, ui) {
-            setMeshHops(ui.value);
-            sendDrawRequest();
-         }
-     });
+	
 	 //	$("#meshSliderDiv").slider({
      //    value: 0,
      //    min: 1,
@@ -322,19 +308,8 @@ function setButtons()
 	   });
    });
 
-    $('#checkHeatmap').button({
-        icons: {
-            primary: "heatmap"
-        },
-        text: false
+   
 
-    }).click(function () {      
-        $(this).blur();
-		toggleHeatgrid();	       
-    });
-    $('#autoPlanningCheckbox').click(function () {
-        toggleAutoPlanningOverwrite();
-    });
 
     $('#settings').button({
         icons: {
@@ -398,56 +373,10 @@ function setButtons()
          
 
     });
-    $('#autoPlanning').button().click(function () {
-        $(this).blur();
-        sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
-    });
-    $('#autoPlanning').mouseenter(function () {
-        clearTimeout($(this).data('timeoutId'));
-        $('#autoPlanningCheckboxDiv').show();
-    }).mouseleave(function () {
-        var someElement = $(this),
-        timeoutId = setTimeout(function () {
-            $('#autoPlanningCheckboxDiv').hide();
-        }, 1);
-        someElement.data('timeoutId', timeoutId);
-    });
-    $('#autoPlanningCheckboxDiv').mouseenter(function () {
-        clearTimeout($('#autoPlanning').data('timeoutId'));
-    }).mouseleave(function () {
-        var someElement = $('#autoPlanning'),
-        timeoutId = setTimeout(function () {
-            $('#autoPlanningCheckboxDiv').hide();
-        }, 1);
-        someElement.data('timeoutId', timeoutId);
-    });
-    $('#meshButton').button({
-        icons: {
-            primary: "mesh"
-        },
-        text: true
-    });
-	$('#meshButton').mouseenter(function(){
-		clearTimeout($(this).data('timeoutId'));
-		$('#meshSliderDiv').show();
-	}).mouseleave(function(){
-		var someElement = $(this),
-        timeoutId = setTimeout(function(){
-             $('#meshSliderDiv').hide();
-        }, 1);
-		someElement.data('timeoutId', timeoutId);
-	});
-	$('#meshSliderDiv').mouseenter(function () {
-	    clearTimeout($('#meshButton').data('timeoutId'));
-	}).mouseleave(function () {
-	    var someElement = $('#meshButton'),
-        timeoutId = setTimeout(function () {
-            $('#meshSliderDiv').hide();
-        }, 1);
-	    someElement.data('timeoutId', timeoutId);
-	    //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
-
-	});
+     setAutoplanningButton();
+     setMeshButton();
+     setHeatmapButton();
+   
 
 	$('#statistic').button({
 	icons: {
@@ -477,15 +406,14 @@ function setButtons()
 					duration: 500
 					},
 					resizable: false,
-					width: 471,
-					height: 170
+					width: 580,
+					
 				});
 			});     
 		});
-		
-  $('#submitButton').button({
+    $('#submitButton').button({
     text: "Submit"
-  }).click(function () {
+    }).click(function () {
 		if($("#resetOnUpload").is(':checked')){
 			while(meters.length > 0){
 				meters[0].remove();
@@ -496,10 +424,10 @@ function setButtons()
 			while(poles.length > 0){
 				poles[0].remove();
 			}		
-      while(heatmapPoints.length > 0){
+        while(heatmapPoints.length > 0){
         heatmapPoints.pop();
-      } 
-      setHeatmap();
+        } 
+        setHeatmap();
 		}
 		upload($("#uploadFile").get(0));
 
@@ -731,6 +659,111 @@ function EraseRangeView() {
     if (coveragePolygon != null)
         coveragePolygon.setMap(null);
 }
+function setAutoplanningButton() {
+    $('#autoPlanning').button().click(function () {
+        $(this).blur();
+        sendDataToServer(serverAddress, 'POST', AUTO_PLAN_FILE_ID);
+    });
+    $('#autoPlanning').mouseenter(function () {
+        clearTimeout($(this).data('timeoutId'));
+        $('#autoPlanningCheckboxDiv').show();
+    }).mouseleave(function () {
+        var someElement = $(this),
+        timeoutId = setTimeout(function () {
+            $('#autoPlanningCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+    $('#autoPlanningCheckboxDiv').mouseenter(function () {
+        clearTimeout($('#autoPlanning').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#autoPlanning'),
+        timeoutId = setTimeout(function () {
+            $('#autoPlanningCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+    $('#autoPlanningCheckbox').click(function () {
+        toggleAutoPlanningOverwrite();
+    });
+}
+function setMeshButton() {
+    $('#meshButton').button({
+        icons: {
+            primary: "mesh"
+        },
+        text: true
+    });
+    $('#meshButton').mouseenter(function () {
+        clearTimeout($(this).data('timeoutId'));
+        $('#meshSliderDiv').show();
+    }).mouseleave(function () {
+        var someElement = $(this),
+        timeoutId = setTimeout(function () {
+            $('#meshSliderDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+    $('#meshSliderDiv').mouseenter(function () {
+        clearTimeout($('#meshButton').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#meshButton'),
+        timeoutId = setTimeout(function () {
+            $('#meshSliderDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+        //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
 
+    });
+    $("#meshSlider").slider({
+        value: 0,
+        min: 1,
+        max: 5,
+        step: 1,
+        slide: function (event, ui) {
+            $("#mesh").text(ui.value + " Saltos");
+        }
+    });
+    $("#meshSlider").slider({
+        stop: function (event, ui) {
+            setMeshHops(ui.value);
+            sendDrawRequest();
+        }
+    });
+
+}
+function setHeatmapButton() {
+    $('#checkHeatmap').button({
+        icons: {
+            primary: "heatmap"
+        },
+        text: false
+
+    }).click(function () {
+        $(this).blur();
+        toggleHeatgrid();
+    });
+    $('#heatmapLabel').mouseenter(function () {
+        clearTimeout($(this).data('timeoutId'));
+        $('#heatmapCheckboxDiv').show();
+    }).mouseleave(function () {
+        var someElement = $(this),
+        timeoutId = setTimeout(function () {
+            $('#heatmapCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+    $('#heatmapCheckboxDiv').mouseenter(function () {
+        clearTimeout($('#heatmapLabel').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#heatmapLabel'),
+        timeoutId = setTimeout(function () {
+            $('#heatmapCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+        //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
+
+    });
+}
 
   
