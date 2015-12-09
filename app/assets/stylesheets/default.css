@@ -114,8 +114,9 @@ background-repeat:no-repeat;
      background-image: url(help.png); 
 }
 #menu {
-  position: absolute;
-  margin-top: 64px;
+  position: relative;
+  width:90%;
+  margin: 0 auto;
 }
 
 #menu div {

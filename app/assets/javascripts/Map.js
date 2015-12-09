@@ -93,7 +93,7 @@ function initialize() {
   });
    
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(
-	document.getElementById('trapezoid'));
+	document.getElementById('controller'));
     markerCluster = new MarkerClusterer(map,[], {
         maxZoom: 16,
         minimumClusterSize: 1,
