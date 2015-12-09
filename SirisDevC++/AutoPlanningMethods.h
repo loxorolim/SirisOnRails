@@ -128,7 +128,8 @@ class AutoPlanning: public FatherMethods
 {
 	private:
 		double gridLimiter;
-		vector<Position*> meters, poles; //DAPs é apenas se o 
+		vector<Position*> meters, poles;
+		vector<int> coveredMetersIndexes;
 			//vector<Position*> meters;
 			//vector<Position*> poles;
 			//int scenario, technology, SRD, meshEnabled;
@@ -216,7 +217,8 @@ class AutoPlanning: public FatherMethods
 		int getPolesSize();
 		void setGridSize(double gridSize);
 		void setRegionLimiter(double rl);
-		void removeAlreadyCoveredMeters(vector<Position*> &daps);
+		//void removeAlreadyCoveredMeters(vector<Position*> &daps);
+		void setCoveredMeters(vector<Position*> &daps);
 };
 
 //void RolimLocalSearch(vector<vector<int> > &scp, int * solution);

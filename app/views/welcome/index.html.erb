@@ -2,7 +2,7 @@
     <div id="map_canvas" >       
     </div>
     <div id="over_map">
-		<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+		<input id="pac-input" class="controls" type="text" placeholder="Search Box"></input>
 		
 		<div id="controller">
 			
@@ -59,7 +59,7 @@
                 <button id="autoPlanning" >Auto Planning</button>
                 <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px; left: -21.5px; position:relative;" >
                 <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
-                <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%">
+                <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%"></input>
                   <label for="check"></label>
                 </div>
             </div>
@@ -78,13 +78,15 @@
               <button id="statistic" >Coletar Métricas</button>
             </div>
             <div class="menuButton squareButton">
-						  <input type="checkbox" id="rangeview"><label for="rangeview">Visão por alcance</label>
+              <input type="checkbox" id="rangeview">
+                <label for="rangeview">Visão por alcance</label>
+              </input>
             </div>
             <div class="menuButton squareButton">
-						  <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Mapa de Calor</label>
+						  <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Mapa de Calor</label></input>
               <div id="heatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 160px; left: -65px; position:relative;" >
                 <span class="selections" style="margin-left: 5%">Mostrar pontos: </span>
-                <input type="checkbox" id="heatmapCheckbox" style="margin-top: 4%">
+                <input type="checkbox" id="heatmapCheckbox" style="margin-top: 4%"></input>
                   <label for="check"></label>
               </div>
             </div>
@@ -118,14 +120,14 @@
 		<div id="uploadDialog" class = "hidden" title="Upload">
 			<input id= "uploadFile" type="file"/>
 			<button id = "submitButton">Submit</button>
-      <input type="checkbox" id="resetOnUpload">
+      <input type="checkbox" id="resetOnUpload"></input>
         <label for="resetOnUpload">Sobrescrever</label>
 			<div style="width: 80%; margin: 10px auto;">
-				<input type="radio" id="spFormatRadio" name="format" checked="checked"><label for="fileFormatRadio">Formatado</label>
-				<input type="radio" id="dapFormatRadio" name="format"><label for="fileFormatRadio">DAPs</label>
-				<input type="radio" id="meterFormatRadio" name="format"><label for="fileFormatRadio">Medidores</label>
-				<input type="radio" id="poleFormatRadio" name="format"><label for="fileFormatRadio">Postes</label>
-				<input type="radio" id="heatmapFormatRadio" name="format"><label for="fileFormatRadio">Mapa de calor</label>
+				<input type="radio" id="spFormatRadio" name="format" checked="checked"><label for="fileFormatRadio">Formatado</label></input>
+				<input type="radio" id="dapFormatRadio" name="format"><label for="fileFormatRadio">DAPs</label></input>
+				<input type="radio" id="meterFormatRadio" name="format"><label for="fileFormatRadio">Medidores</label></input>
+				<input type="radio" id="poleFormatRadio" name="format"><label for="fileFormatRadio">Postes</label></input>
+				<input type="radio" id="heatmapFormatRadio" name="format"><label for="fileFormatRadio">Mapa de calor</label></input>
 			</div>	
     </div>
 		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
@@ -139,12 +141,12 @@
 				<div id="limitSlider" style="float: left; width:80px; margin-top: 8px; margin-left: 3%"></div>
 				<span id="limit" style="float: left; margin-left: 5%" class="selections">100</span>					
 			</div>	
-			<input style="margin-left:4%" type="checkbox" id="considerLimit"><label for="considerLimit">Considerar limite por DAP</label>	
+			<input style="margin-left:4%" type="checkbox" id="considerLimit"><label for="considerLimit">Considerar limite por DAP</label></input>
 				
         </div>
 		<div id="helpDialog" class = "hidden" title="Ajuda">
-			<img id="helpmenu"src="" >
-        </div>
+      <img id="helpmenu" src="" ></img>
+    </div>
 
 
 		   

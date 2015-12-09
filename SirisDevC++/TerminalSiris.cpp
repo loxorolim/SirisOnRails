@@ -7,6 +7,7 @@
 #include "MetricCalculationMethods.h"
 #include "KMLMethods.h"
 #include "HataSRD.h"
+#include "MainMethods.h"
 #include <stdio.h>
 
 
@@ -400,72 +401,69 @@ void printPlanningResume(int mSize, int pSize, int sSize)
 	cout << "\nLimite de tempo por instancia: " << TIME_LIMIT;
 	
 }
-//int main(int argc, char* argv[])
-//{
-//	//convertMeterAndPolesToKml("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\filemeters9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\filepoles9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\Floripa.kml");
-//
-//	int e = 0;
-//	e += getInputFileOption(argc, argv);
-//	e += getOutputFileOption(argc, argv);
-//	e += getTechnologyOption(argc, argv);
-//	switch (tech)
-//	{
-//		case t802_11_g:
-//			power = T80211G_POWER_DEFAULT;
-//			bit_rate = T80211G_BIT_RATE_DEFAULT;
-//			break;
-//		case t802_15_4:
-//			power = T802154_POWER_DEFAULT;
-//			bit_rate = T802154_BIT_RATE_DEFAULT;
-//			break;
-//		default:
-//			break;
-//
-//	}
-//	e += getScenarioOption(argc, argv);
-//	e += getPowerOption(argc, argv);
-//	e += getMeshHopsOption(argc, argv);
-//	e += getTimeLimitOption(argc, argv);
-//	e += getMemLimitOption(argc, argv);
-//	getVerboseOption(argc, argv);
-//	getHelpMessageOption(argc, argv);
-//	if (e)
-//		return 0;
-//	else
-//	{
-//		if (!check_if_can_write(outputFile.c_str()))
-//		{
-//			cerr << "\nNao e possivel escrever no arquivo de saida";
-//			return 0;
-//		}
-//		vector<Position*> daps, meters, poles, coverageArea;
-//		if (verbose) cout << "\nLendo KML de entrada";
-//		int e_read = readKML(inputFile.c_str(), daps,meters,poles,coverageArea);
-//		
-//		if (!e_read)
-//		{
-//			if (verbose) cout << "\nKML de entrada lido com sucesso";
-//			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
-//			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, 500, "",verbose);
-//			//string ret = res->clusterAutoPlanning(true, redundancy);
-//			string ret = res->graspAutoPlanning(1000, 0.9);
-//			cout << "\n"+ret;
-//			vector<string> chosenDaps = split(ret, ' ');
-//			for (int i = 0; i < chosenDaps.size(); i++)
-//			{
-//				int pos = stoi(chosenDaps[i]);
-//				double lat = poles[pos]->latitude;
-//				double lng = poles[pos]->longitude;
-//				Position *newDap = new Position(lat, lng, daps.size());
-//				daps.push_back(newDap);
-//			}
-//			KMLMethods* kmethods = new KMLMethods(meters, daps, poles, coverageArea,scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, "",verbose);
-//			kmethods->saveKmlToFile(outputFile);
-//			delete kmethods;
-//		}
-//	}
-//		
-//	
-//	return 0;
-//
-//}
+int TerminalMain(int argc, char* argv[])
+{
+	//convertMeterAndPolesToKml("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\filemeters9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\filepoles9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\Floripa.kml");
+
+	int e = 0;
+	e += getInputFileOption(argc, argv);
+	e += getOutputFileOption(argc, argv);
+	e += getTechnologyOption(argc, argv);
+	switch (tech)
+	{
+		case t802_11_g:
+			power = T80211G_POWER_DEFAULT;
+			bit_rate = T80211G_BIT_RATE_DEFAULT;
+			break;
+		case t802_15_4:
+			power = T802154_POWER_DEFAULT;
+			bit_rate = T802154_BIT_RATE_DEFAULT;
+			break;
+		default:
+			break;
+
+	}
+	e += getScenarioOption(argc, argv);
+	e += getPowerOption(argc, argv);
+	e += getMeshHopsOption(argc, argv);
+	e += getTimeLimitOption(argc, argv);
+	e += getMemLimitOption(argc, argv);
+	getVerboseOption(argc, argv);
+	getHelpMessageOption(argc, argv);
+	if (e)
+		return 0;
+	else
+	{
+		if (!check_if_can_write(outputFile.c_str()))
+		{
+			cerr << "\nNao e possivel escrever no arquivo de saida";
+			return 0;
+		}
+		vector<Position*> daps, meters, poles, coverageArea;
+		if (verbose) cout << "\nLendo KML de entrada";
+		int e_read = readKML(inputFile.c_str(), daps,meters,poles,coverageArea);
+		
+		if (!e_read)
+		{
+			if (verbose) cout << "\nKML de entrada lido com sucesso";
+			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
+			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, 500, "",verbose);
+			//string ret = res->clusterAutoPlanning(true, redundancy);
+			string ret = res->graspAutoPlanning(1000, 0.9);
+			cout << "\n"+ret;
+			vector<string> chosenDaps = split(ret, ' ');
+			for (int i = 0; i < chosenDaps.size(); i++)
+			{
+				int pos = stoi(chosenDaps[i]);
+				double lat = poles[pos]->latitude;
+				double lng = poles[pos]->longitude;
+				Position *newDap = new Position(lat, lng, daps.size());
+				daps.push_back(newDap);
+			}
+			KMLMethods* kmethods = new KMLMethods(meters, daps, poles, coverageArea,scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, "",verbose);
+			kmethods->saveKmlToFile(outputFile);
+			delete kmethods;
+		}
+	}		
+	return 0;
+}

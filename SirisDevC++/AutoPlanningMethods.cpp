@@ -255,16 +255,21 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
 	//Pois se não, o método retornaria que a solução é impossível!
 	//A formatação você ve no arquivo GlpkFile.txt
-
+	vector<Position*> metersToConsider;
+	for (int i = 0; i < meters.size(); i++)
+	{
+		if (!(find(coveredMetersIndexes.begin(), coveredMetersIndexes.end(), meters[i]->index) != coveredMetersIndexes.end()))
+			metersToConsider.push_back(meters[i]);
+	}
 	vector<int> covInfo;
-	for (int i = 0; i < meters.size(); i++){ covInfo.push_back(0); }
+	for (int i = 0; i < metersToConsider.size(); i++){ covInfo.push_back(0); }
 	for (int i = 0; i < SCP.size(); i++)
 	{
 		for (int j = 0; j < SCP[i].size(); j++)
 		{
 			int pos=-1;
-			for (int k = 0; k < meters.size(); k++){
-				if (meters[k]->index == SCP[i][j])
+			for (int k = 0; k < metersToConsider.size(); k++){
+				if (metersToConsider[k]->index == SCP[i][j])
 				{ 
 					pos = k; break;
 				} 
@@ -272,12 +277,14 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 			covInfo[pos]++;
 		}
 	}
+
+
 	string resp;
 	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default "+to_string(redundancy)+", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
-	for (int i = 0; i < meters.size(); i++)
+	for (int i = 0; i < metersToConsider.size(); i++)
 	{
-		resp += "Z" + to_string(meters[i]->index) + " ";
+		resp += "Z" + to_string(metersToConsider[i]->index) + " ";
 	}
 
 	resp += ";\n";
@@ -288,16 +295,16 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	resp += ";\n";
 	resp += "param A := ";
 	resp += "\n";
-	for (int i = 0; i < meters.size(); i++)
+	for (int i = 0; i < metersToConsider.size(); i++)
 	{
 		for (int j = 0; j < poles.size(); j++)
 		{
 			//bool um = false;
 			//for (int k = 0; k < SCP.size(); k++)
 			int cov = -1;
-			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+			cov = (find(SCP[j].begin(), SCP[j].end(), metersToConsider[i]->index) != SCP[j].end());
 			if (cov)
-				resp += "[Z" + to_string(meters[i]->index) + ",Y" + to_string(poles[j]->index) + "] 1";
+				resp += "[Z" + to_string(metersToConsider[i]->index) + ",Y" + to_string(poles[j]->index) + "] 1";
 
 		}
 	}
@@ -306,10 +313,10 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	resp += "\n";
 	resp += "param B := ";
 	resp += "\n";
-	for (int i = 0; i < meters.size(); i++)
+	for (int i = 0; i < metersToConsider.size(); i++)
 	{
 		if (covInfo[i] < redundancy)
-			resp += "[Z" + to_string(meters[i]->index) + "] "+to_string(covInfo[i]);
+			resp += "[Z" + to_string(metersToConsider[i]->index) + "] "+to_string(covInfo[i]);
 	}
 	resp += "\n;\nend;\n";
 
@@ -324,15 +331,20 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
 	//Pois se não, o método retornaria que a solução é impossível!
 	//A formatação você ve no arquivo GlpkFile.txt
-
-	int* covInfo = new int[meters.size()];
-	for (int i = 0; i < meters.size(); i++){ covInfo[i] = 0; }
+	vector<Position*> metersToConsider;
+	for (int i = 0; i < meters.size(); i++)
+	{
+		if (!(find(coveredMetersIndexes.begin(), coveredMetersIndexes.end(), meters[i]->index) != coveredMetersIndexes.end()))
+			metersToConsider.push_back(meters[i]);
+	}
+	int* covInfo = new int[metersToConsider.size()];
+	for (int i = 0; i < metersToConsider.size(); i++){ covInfo[i] = 0; }
 	for (int i = 0; i < SCP.size(); i++)
 	{
 		for (int j = 0; j < SCP[i].size(); j++)
 		{
 			int pos = -1;
-			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == SCP[i][j]){ pos = k; break; } }
+			for (int k = 0; k < metersToConsider.size(); k++){ if (metersToConsider[k]->index == SCP[i][j]){ pos = k; break; } }
 			covInfo[pos]++;
 		}
 	}
@@ -350,9 +362,9 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] <= 1;\n ";
 	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
 	resp += "set Z:= ";
-	for (int i = 0; i < meters.size(); i++)
+	for (int i = 0; i < metersToConsider.size(); i++)
 	{
-		resp += "Z" + to_string(meters[i]->index + 1) + " ";
+		resp += "Z" + to_string(metersToConsider[i]->index + 1) + " ";
 	}
 
 	resp += ";\n";
@@ -363,16 +375,16 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += ";\n";
 	resp += "param A := ";
 	resp += "\n";
-	for (int i = 0; i < meters.size(); i++)
+	for (int i = 0; i < metersToConsider.size(); i++)
 	{
 		for (int j = 0; j < poles.size(); j++)
 		{
 			//bool um = false;
 			//for (int k = 0; k < SCP.size(); k++)
 			int cov = -1;
-			cov = (find(SCP[j].begin(), SCP[j].end(), meters[i]->index) != SCP[j].end());
+			cov = (find(SCP[j].begin(), SCP[j].end(), metersToConsider[i]->index) != SCP[j].end());
 			if (cov)
-				resp += "[Z" + to_string(meters[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
+				resp += "[Z" + to_string(metersToConsider[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
 
 		}
 	}
@@ -381,10 +393,10 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += "\n";
 	resp += "param B := ";
 	resp += "\n";
-	for (int i = 0; i < meters.size(); i++)
+	for (int i = 0; i < metersToConsider.size(); i++)
 	{
 		if (covInfo[i] < redundancy)
-			resp += "[Z" + to_string(meters[i]->index + 1) + "] " + to_string(covInfo[i]);
+			resp += "[Z" + to_string(metersToConsider[i]->index + 1) + "] " + to_string(covInfo[i]);
 	}
 	resp += "\n;\nend;\n";
 	delete covInfo;
@@ -1316,7 +1328,7 @@ vector<vector<int> > AutoPlanning::coverageList(vector<Position*> &daps)
 	delete g;
 	return sM;
 }
-void AutoPlanning::removeAlreadyCoveredMeters(vector<Position*> &DAPs)
+void AutoPlanning::setCoveredMeters(vector<Position*> &DAPs)
 {
 	vector<vector<int>> covList = coverageList(DAPs);
 	vector<int> toRemove;
@@ -1329,18 +1341,7 @@ void AutoPlanning::removeAlreadyCoveredMeters(vector<Position*> &DAPs)
 	}
 	sort(toRemove.begin(), toRemove.end());
 	toRemove.erase(unique(toRemove.begin(), toRemove.end()), toRemove.end());
-	for (int i = 0; i < toRemove.size(); i++)
-	{
-		for (int j = 0; j < meters.size(); j++)
-		{ 
-			if (meters[j]->index == toRemove[i])
-			{ 
-				delete meters[j];
-				meters.erase(meters.begin()+j); 
-				break;
-			} 
-		}
-	}
+	coveredMetersIndexes = toRemove;
 }
 
 
