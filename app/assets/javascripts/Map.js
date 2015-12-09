@@ -31,7 +31,7 @@ function initialize() {
 	
     map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
     var input = (document.getElementById('pac-input'));
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
     var searchBox = new google.maps.places.SearchBox((input));
 
     //directionsService = new google.maps.DirectionsService();

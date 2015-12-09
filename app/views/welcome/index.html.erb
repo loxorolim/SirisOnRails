@@ -1,15 +1,11 @@
-<div id="wrapper" style="min-width:	1125px; overflow:true;">
+<div id="wrapper" style="min-width:	1189px; overflow:true;">
     <div id="map_canvas" >       
     </div>
     <div id="over_map">
-		<input id="pac-input" class="controls" type="text" placeholder="Search Box"></input>
-		
-		<div id="controller">
-			
-            <div id="trapezoid" >
-
+		<input id="pac-input" class="controls" type="text" placeholder="Search Box"></input>	
+		    <div id="controller">		
+            <div id="trapezoid">
                 <div id="insideTrapezoid">
-
                     <div id="chooseScenario" class="insideOptions">
                         <div style=" display: table; margin: 0 auto;">
                             <div id="scenario" class="selections">Urbano</div>
@@ -38,77 +34,76 @@
                         </div>
 
                         <div id="slider" style=" display: table; margin: 0 auto;"></div>
+                    </div>     
+                </div>
+				        <div id="menu"  >
+                  <div class="menuButton">
+							        <select name="mouseOptions" id="mouseOptions" class="TFOlstFiltreImg"  >
+								        <option value="view" selected="selected"> Visualização</option>
+								        <option value="dap"> DAP </option>
+								        <option value="meter"  > Medidor </option>
+								        <option value="pole" > Poste </option>
+								        <option value="eraser"> Apagar </option>
+								        <option value="eraserSelection"  > Apagar por Seleção </option>
+								        <option value="dapEraserSelection" > Apagar por Seleção (DAP) </option>
+								        <option value="meterEraserSelection" > Apagar por Seleção (Medidor) </option>
+								        <option value="poleEraserSelection"> Apagar por Seleção (Poste)</option>
+							        </select>
+						        </div>
+                    <div style="width:107px;" class="menuButton">
+                        <button id="autoPlanning" >Auto Planning</button>
+                        <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px; left: -21.5px; position:relative;" >
+                        <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
+                        <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%"></input>
+                          <label for="check"></label>
+                        </div>
                     </div>
-                    
-                </div>
-				<div id="menu" >
-          <div class="menuButton">
-							<select name="mouseOptions" id="mouseOptions" class="TFOlstFiltreImg"  >
-								<option value="view" selected="selected"> Visualização</option>
-								<option value="dap"> DAP </option>
-								<option value="meter"  > Medidor </option>
-								<option value="pole" > Poste </option>
-								<option value="eraser"> Apagar </option>
-								<option value="eraserSelection"  > Apagar por Seleção </option>
-								<option value="dapEraserSelection" > Apagar por Seleção (DAP) </option>
-								<option value="meterEraserSelection" > Apagar por Seleção (Medidor) </option>
-								<option value="poleEraserSelection"> Apagar por Seleção (Poste)</option>
-							</select>
-						</div>
-            <div style="width:107px;" class="menuButton">
-                <button id="autoPlanning" >Auto Planning</button>
-                <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px; left: -21.5px; position:relative;" >
-                <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
-                <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%"></input>
-                  <label for="check"></label>
-                </div>
-            </div>
-            <div style="width:87px;" class="menuButton">          
-              <button id="meshButton">RF-Mesh</button>
-              <div id="meshSliderDiv" class = "hidden belowButtonDiv" style="width: 305px; left:-109px; position:relative" >
-                <span class="selections" style="margin-left: 5%">Saltos Mesh: </span>
-                <div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
-                <span id="mesh" style="margin-left: 5%" class="selections">0 Saltos</span>
-              </div>
-            </div>
-            <!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
-						<!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
+                    <div style="width:87px;" class="menuButton">          
+                      <button id="meshButton">RF-Mesh</button>
+                      <div id="meshSliderDiv" class = "hidden belowButtonDiv" style="width: 305px; left:-109px; position:relative" >
+                        <span class="selections" style="margin-left: 5%">Saltos Mesh: </span>
+                        <div id="meshSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
+                        <span id="mesh" style="margin-left: 5%" class="selections">0 Saltos</span>
+                      </div>
+                    </div>
+                    <!-- <input type="checkbox" id="checkHeatmap"><label for="checkHeatmap">Heatmap</label> -->
+						        <!-- <input type="checkbox" id="checkCluster"><label for="checkCluster">Junção de componentes</label>-->
 
-            <div class="menuButton squareButton">
-              <button id="statistic" >Coletar Métricas</button>
-            </div>
-            <div class="menuButton squareButton">
-              <input type="checkbox" id="rangeview">
-                <label for="rangeview">Visão por alcance</label>
-              </input>
-            </div>
-            <div class="menuButton squareButton">
-						  <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Mapa de Calor</label></input>
-              <div id="heatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 160px; left: -65px; position:relative;" >
-                <span class="selections" style="margin-left: 5%">Mostrar pontos: </span>
-                <input type="checkbox" id="heatmapCheckbox" style="margin-top: 4%"></input>
-                  <label for="check"></label>
-              </div>
-            </div>
-            <div class="menuButton squareButton">
-						  <button id="upload">Upload de arquivo</button>
-            </div>
-            <div class="menuButton squareButton">
-						  <button id="download">Download de planejamento</button>
-            </div>
-						<!--<button id ="settings"> Configurações Avançadas</button>-->
-            <div class="menuButton squareButton">
-						  <button id="help">Botão de Ajuda</button>
-            </div>
+                    <div class="menuButton squareButton">
+                      <button id="statistic" >Coletar Métricas</button>
+                    </div>
+                    <div class="menuButton squareButton">
+                      <input type="checkbox" id="rangeview">
+                        <label for="rangeview">Visão por alcance</label>
+                      </input>
+                    </div>
+                    <div class="menuButton squareButton">
+						          <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Mapa de Calor</label></input>
+                      <div id="heatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 160px; left: -65px; position:relative;" >
+                        <span class="selections" style="margin-left: 5%">Mostrar pontos: </span>
+                        <input type="checkbox" id="heatmapCheckbox" style="margin-top: 4%"></input>
+                          <label for="check"></label>
+                      </div>
+                    </div>
+                    <div class="menuButton squareButton">
+						          <button id="upload">Upload de arquivo</button>
+                    </div>
+                    <div class="menuButton squareButton">
+						          <button id="download">Download de planejamento</button>
+                    </div>
+						        <!--<button id ="settings"> Configurações Avançadas</button>-->
+                    <div class="menuButton squareButton">
+						          <button id="help">Botão de Ajuda</button>
+                    </div>
  
 
 
-            <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
+                    <!-- <button id="generator">Gerar Vizinhança Entre Pontos</button>-->
 						
-					</div>
-				</div>
-            </div>
+					        </div>
+				    </div>
         </div>
+   </div>
         <div id="statisticDialog" class = "hidden"  title="Estatísticas"> 
 		<div id="metricsTableDiv">
 		  <table id="metricsTable" class="ui-widget ui-widget-content">

@@ -268,7 +268,7 @@ box-shadow: -3px 3px 11px 0px #575757;
 html, body, #map_canvas {
         margin: 0;
         padding: 0;
-        height: 800px;
+        height: 100%;
       }
 
 html
