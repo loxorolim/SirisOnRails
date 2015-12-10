@@ -38,11 +38,12 @@ const string BIT_RATE_CMD = "-b -bitrate";
 const string TIME_LIMIT_CMD = "-tmlim";
 const string MEM_LIMIT_CMD = "-memlim";
 const string VERBOSE_CMD = "-verbose -v -V";
+const string OVERWRITE_CMD = "-ow -overwrite -OW";
 
-const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + TIME_LIMIT_CMD + " : Tempo limite para o solver resolver cada sub-instancia \n " + MEM_LIMIT_CMD + " : Memoria maxima limite para o metodo exato \n " + VERBOSE_CMD + " : Ativa modo verboso \n " + HELP_CMD + " : Esta mensagem de ajuda";
+const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + TIME_LIMIT_CMD + " : Tempo limite para o solver resolver cada sub-instancia \n " + MEM_LIMIT_CMD + " : Memoria maxima limite para o metodo exato \n " + VERBOSE_CMD + " : Ativa modo verboso \n " + OVERWRITE_CMD + " : Ativa sobrescrita de DAPs já posicionados\n " + HELP_CMD + " : Esta mensagem de ajuda";
 int tech = TECHNOLOGY_DEFAULT, scenario = SCENARIO_DEFAULT, power = T80211G_POWER_DEFAULT, meshHops = MESH_HOPS_DEFAULT, redundancy = REDUNDANCY_DEFAULT;
 double h_tx = H_TX_DEFAULT, h_rx = H_RX_DEFAULT, bit_rate = T802154_BIT_RATE_DEFAULT;
-bool verbose = false;
+bool verbose = false, overwrite = false;
 string inputFile = "", outputFile = "";
 
 bool check_if_can_write(string filename)
@@ -383,6 +384,16 @@ void getVerboseOption(int argc, char* argv[])
 		}
 	}
 }
+void getOverwriteOption(int argc, char* argv[])
+{
+	for (int i = 1; i < argc; i++)
+	{
+		if (is_cmd(argv[i], OVERWRITE_CMD))
+		{
+			overwrite = true;
+		}
+	}
+}
 void printPlanningResume(int mSize, int pSize, int sSize)
 {
 	cout << "\nIniciando planejamento com as seguintes configuracoes:";
@@ -429,6 +440,7 @@ int TerminalMain(int argc, char* argv[])
 	e += getTimeLimitOption(argc, argv);
 	e += getMemLimitOption(argc, argv);
 	getVerboseOption(argc, argv);
+	getOverwriteOption(argc, argv);
 	getHelpMessageOption(argc, argv);
 	if (e)
 		return 0;
@@ -448,13 +460,22 @@ int TerminalMain(int argc, char* argv[])
 			if (verbose) cout << "\nKML de entrada lido com sucesso";
 			printPlanningResume(meters.size(), poles.size(), coverageArea.size());
 			AutoPlanning* res = new AutoPlanning(meters, poles, scenario, tech, bit_rate, power, h_tx, h_rx, 1, meshHops, 500, "",verbose);
-			//string ret = res->clusterAutoPlanning(true, redundancy);
-			string ret = res->graspAutoPlanning(1000, 0.9);
+			vector<int> chosenDaps = res->clusterAutoPlanning(true, redundancy);
+			string ret = "";
+			for (int i = 0; i < chosenDaps.size(); i++)
+				ret += to_string(chosenDaps[i]) + " ";
+			//string ret = res->graspAutoPlanning(1000, 0.9);
 			cout << "\n"+ret;
-			vector<string> chosenDaps = split(ret, ' ');
+			//vector<string> chosenDaps = split(ret, ' ');
+			if (overwrite)
+			{
+				for (int i = 0; i < daps.size(); i++)
+					delete daps[i];
+				daps.clear();
+			}
 			for (int i = 0; i < chosenDaps.size(); i++)
 			{
-				int pos = stoi(chosenDaps[i]);
+				int pos = chosenDaps[i];
 				double lat = poles[pos]->latitude;
 				double lng = poles[pos]->longitude;
 				Position *newDap = new Position(lat, lng, daps.size());

@@ -23,7 +23,11 @@ vector<Position*> getPositionArrayFromJson(string json, string type)
 		double lat, lng;
 		lat = aux[i]["lat"].GetDouble();
 		lng = aux[i]["lng"].GetDouble();
-		Position* p = new Position(lat, lng, i);
+		vector<string> opIds;
+		for (SizeType j = 0; j < aux[i]["signal_info"].Size(); j++)
+			opIds.push_back(aux[i]["signal_info"][j].GetString());
+
+		Position* p = new Position(lat, lng, i,opIds);
 		ret.push_back(p);
 	}
 	return ret;
@@ -67,7 +71,17 @@ string getResponse(string input, string rP)
 		daps = getPositionArrayFromJson(input, "DAPs");
 		KMLMethods* kml = new KMLMethods(meters, daps, poles, signal_info, scenario, technology, bit_rate, power, h_tx, h_rx, 1, mesh, rP);
 		ret = kml->generateKML();
+		Document document;
+		document.SetObject();
+		Value v;
+		rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+		v.SetString(ret.c_str(), allocator);
+		document.AddMember("KML", v, allocator);
+		StringBuffer strbuf;
+		Writer<StringBuffer> writer(strbuf);
+		document.Accept(writer);
 		delete kml;
+		return strbuf.GetString();
 		break;
 	}
 	case AUTOPLAN:

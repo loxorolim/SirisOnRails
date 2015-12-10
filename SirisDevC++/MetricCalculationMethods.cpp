@@ -460,9 +460,9 @@ string MetricCalculation::executeMetricCalculation()
 	document.AddMember("MaxMetersPerDAP", vAux, allocator);
 	vAux.SetString(to_string(v4[0]).c_str(), allocator);
 	document.AddMember("MinRedundancy", vAux, allocator);
-	vAux.SetString(to_string(v4[0]).c_str(), allocator);
+	vAux.SetString(to_string(v4[1]).c_str(), allocator);
 	document.AddMember("MedRedundancy", vAux, allocator);
-	vAux.SetString(to_string(v4[0]).c_str(), allocator);
+	vAux.SetString(to_string(v4[2]).c_str(), allocator);
 	document.AddMember("MaxRedundancy", vAux, allocator);
 
 	StringBuffer strbuf;
@@ -476,6 +476,43 @@ string MetricCalculation::executeMetricCalculation()
 	}
 
 	return strbuf.GetString();
+}
+string MetricCalculation::getMetricCalculationString()
+{
+	vector<sComponent*> sL = statisticalList();
+	vector<vector<int> > cL = coverageList();
+	vector<double > v = linkQualityPerHop(sL);
+	vector<int > v2 = meterPerHop(sL);
+	vector<double> v3 = minMedMaxMetersPerDap(cL);
+	vector<double> v4 = minMedMaxRedundancyPerMeter(cL);
+	vector<double > v5 = linkDelayPerHop(sL);
+	int coveredMeters = 0;
+	for (int i = 0; i < mesh + 1; i++)
+	{
+		coveredMeters += v2[i];
+	}
+	string ret = "<Statistics>\n";
+	ret += statisticFormat("DAPQnt", to_string(daps.size()));
+	ret += statisticFormat("MeterQnt", to_string(meters.size()));
+	ret += statisticFormat("UncoveredMeters", to_string(meters.size() - coveredMeters));
+
+	for (int i = 0; i < mesh + 1; i++){
+		ret += statisticFormat("QualityPerHop", to_string(v[i], 3), i + 1);
+		ret += statisticFormat("MetersPerHop", to_string(v2[i], 3), i + 1);
+	}
+	vector<string> v3_string;
+	v3_string.push_back(to_string(v3[0]));	v3_string.push_back(to_string(v3[1]));	v3_string.push_back(to_string(v3[2]));
+	ret += statisticFormat("MetersPerDap", v3_string);
+
+	vector<string> v4_string;
+	v4_string.push_back(to_string(v4[0]));	v4_string.push_back(to_string(v4[1]));	v4_string.push_back(to_string(v4[2]));
+	ret += statisticFormat("Redundancy", v4_string);
+	ret += "</Statistics>";
+
+	for (int i = 0; i < sL.size(); i++)	
+		delete sL[i];
+
+	return ret;
 }
 MetricResult* MetricCalculation::executeMetricCalculationTest()
 {

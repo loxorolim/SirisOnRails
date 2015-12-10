@@ -149,7 +149,7 @@ string KMLMethods::generateKML()
 		 cout << "\n Calculando estatisticas";
 	}
 	MetricCalculation* res = new MetricCalculation(meters, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
-	string metrics = res->executeMetricCalculation();
+	string metrics = res->getMetricCalculationString();
 	if (verbose) cout << "\n Estatisticas calculadas";
 	//delete res;
 
@@ -170,16 +170,7 @@ string KMLMethods::generateKML()
 	init += "</kml>";
 	if (verbose) cout << "\n KML gerado";
 
-	Document document;
-	document.SetObject();
-	Value v;
-	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
-	v.SetString(init.c_str(),allocator);
-	document.AddMember("KML", v, allocator);
-	StringBuffer strbuf;
-	Writer<StringBuffer> writer(strbuf);
-	document.Accept(writer);
-	return strbuf.GetString();
+	return init;
 }
 void KMLMethods::saveKmlToFile(string filename)
 {

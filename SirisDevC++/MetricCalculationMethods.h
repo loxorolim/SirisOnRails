@@ -85,6 +85,7 @@ class MetricCalculation: public FatherMethods
 		sComponent* chooseDeviceToConnect(Position* meter, vector<Position*> &devices, vector<sComponent*> sC, int meshHop);
 		string executeMetricCalculation();
 		MetricResult* executeMetricCalculationTest();
+		string getMetricCalculationString();
 		vector<vector<int> > coverageList();
 		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 

@@ -269,7 +269,8 @@ function getLatLngObject(array){
     var aux = [];
     for(var i = 0; i < array.length; i++){
         var aux_obj = { "lat": array[i].getPosition().lat(),
-                        "lng": array[i].getPosition().lng() 
+                        "lng": array[i].getPosition().lng(),
+                        "signal_info": array[i].opIds
                    };
         aux.push(aux_obj);
     }

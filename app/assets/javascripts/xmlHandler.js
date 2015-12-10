@@ -131,7 +131,7 @@ function loadFromKMLText(kml){
 	tech = parseInt(tech);
 	setTechnology(tech);	
 	var mHops = $(kml).find('MeshHops').text();
-	mHops = parseInt(mHops);
+	mHops = parseInt(mHops)+1;
 	setMeshHops(mHops);
 	var mEnabled = $(kml).find('MeshEnabled').text();
 	mEnabled = parseInt(mEnabled);
