@@ -206,13 +206,13 @@ class AutoPlanning: public FatherMethods
 		//string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
 		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
 		string graspAutoPlanning(int iterations, double alpha);
-		TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha);
+		TestResult* graspAutoPlanningTestMode(int iterations, double alpha);
 
 		//Metodos Teste
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
-		TestResult* AutoPlanning::executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
-		TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
+		TestResult* executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
+		TestResult* graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
 		int getMetersSize();
 		int getPolesSize();
 		void setGridSize(double gridSize);

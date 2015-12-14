@@ -790,7 +790,7 @@ void executeGLPK(string filename,double timeLimit, double* solverTime, double* m
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
 	glp_mem_limit(5800);
-
+	double gap = 0;
 	if (ret != 0)
 	{
 		fprintf(stderr, "Error on translating model\n");
@@ -807,7 +807,6 @@ void executeGLPK(string filename,double timeLimit, double* solverTime, double* m
 	glp_iocp parm;
 	glp_init_iocp(&parm);
 	parm.cb_func = get_mip_gap;
-	double gap = 0;
 	parm.cb_info = &gap;
 	parm.presolve = GLP_ON;
 	parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE EM SEGUNDOS
@@ -856,7 +855,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		tran = glp_mpl_alloc_wksp();
 		ret = glp_mpl_read_model(tran, filename.c_str(), 0);
 		glp_mem_limit(5800);
-
+		double gap = 0;
 		if (ret != 0)
 		{
 			fprintf(stderr, "Error on translating model\n");
@@ -873,7 +872,6 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 		glp_iocp parm;
 		glp_init_iocp(&parm);
 		parm.cb_func = get_mip_gap;
-		double gap = 0;
 		parm.cb_info = &gap;
 		parm.presolve = GLP_ON;
 		parm.tm_lim = timeLimit*1000; //TEMPO LIMITE DE 60 SEGUNDOS
