@@ -1,3 +1,9 @@
 #!/bin/bash
-export LD_LIBRARY_PATH="VLFEAT/bin/glnxa64/" 
+ARCH = $(shell getconf LONG_BIT)
+ifeq ($(ARCH),32)
+	VLFEAT_DIR = VLFEAT/bin/glnx86/
+else
+	VLFEAT_DIR = VLFEAT/bin/glnxa64/
+endif
+export LD_LIBRARY_PATH="$(VLFEAT_DIR)" 
 ./CompiledSiris $@ 

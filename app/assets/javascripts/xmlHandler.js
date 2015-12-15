@@ -173,28 +173,27 @@ function loadFromKMLText(kml){
 			if(longitude >= ne_lng || first == true)	
 				ne_lng = longitude;
 			first = false;
-
+			type = type.toUpperCase();
 			switch(type){
-				case "Medidor":
+				case "MEDIDOR":
 					var meter = createMeter();
 					meter.placeOnMap(latitude, longitude);
 				break;
-				case "Poste":
+				case "POSTE":
 					var pole = createPole();
 					pole.placeOnMap(latitude, longitude);
 				break;
-				case "Agregador":
+				case "AGREGADOR":
 					var dap = createDAP();
 					dap.placeOnMap(latitude, longitude);
 				break;
-				case "Ponto de coleta":					
+				case "PONTO DE COLETA":					
 					insertHeatmapPoint(latitude, longitude, weight, operators);
 				break;
 				default:
 				break;
 			}
 		});
-		
 	})
 	var pos1 = new google.maps.LatLng(sw_lat,sw_lng);
 	var pos2 = new google.maps.LatLng(ne_lat,ne_lng);
