@@ -40,7 +40,7 @@ const string MEM_LIMIT_CMD = "-memlim";
 const string VERBOSE_CMD = "-verbose -v -V";
 const string OVERWRITE_CMD = "-ow -overwrite -OW";
 
-const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + TIME_LIMIT_CMD + " : Tempo limite para o solver resolver cada sub-instancia \n " + MEM_LIMIT_CMD + " : Memoria maxima limite para o metodo exato \n " + VERBOSE_CMD + " : Ativa modo verboso \n " + OVERWRITE_CMD + " : Ativa sobrescrita de DAPs já posicionados\n " + HELP_CMD + " : Esta mensagem de ajuda";
+const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + TIME_LIMIT_CMD + " : Tempo limite para o solver resolver cada sub-instancia \n " + MEM_LIMIT_CMD + " : Memoria maxima limite para o metodo exato \n " + VERBOSE_CMD + " : Ativa modo verboso \n " + OVERWRITE_CMD + " : Ativa sobrescrita de DAPs ja posicionados\n " + HELP_CMD + " : Esta mensagem de ajuda";
 int tech = TECHNOLOGY_DEFAULT, scenario = SCENARIO_DEFAULT, power = T80211G_POWER_DEFAULT, meshHops = MESH_HOPS_DEFAULT, redundancy = REDUNDANCY_DEFAULT;
 double h_tx = H_TX_DEFAULT, h_rx = H_RX_DEFAULT, bit_rate = T802154_BIT_RATE_DEFAULT;
 bool verbose = false, overwrite = false;
@@ -442,6 +442,7 @@ int TerminalMain(int argc, char* argv[])
 	getVerboseOption(argc, argv);
 	getOverwriteOption(argc, argv);
 	getHelpMessageOption(argc, argv);
+	cout << "\n";
 	if (e)
 		return 0;
 	else
