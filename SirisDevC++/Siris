@@ -1,9 +1,12 @@
 #!/bin/bash
-ARCH = $(shell getconf LONG_BIT)
-ifeq ($(ARCH),32)
-	VLFEAT_DIR = VLFEAT/bin/glnx86/
+
+ARCH=$(uname -i)
+if [ "$ARCH" == "x86_64" ]
+then
+	VLFEAT_DIR="VLFEAT/bin/glnxa64/"
 else
-	VLFEAT_DIR = VLFEAT/bin/glnxa64/
-endif
-export LD_LIBRARY_PATH="$(VLFEAT_DIR)" 
-./CompiledSiris $@ 
+	VLFEAT_DIR="VLFEAT/bin/glnx86/"
+fi
+export LD_LIBRARY_PATH="$VLFEAT_DIR" 
+./CompiledSiris $@
+
