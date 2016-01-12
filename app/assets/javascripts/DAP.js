@@ -72,16 +72,9 @@ function createDAP() {
         },
 
         displayInfoWindow: function () {
-            var content = 'ID: ' + this.ID +
-                '<br>Latitude: ' + this.position.lat() +
-                '<br>Longitude: ' + this.position.lng() +
-                '<br>Coberto por: ';
-            for(var i = 0; i < signalInfo.length;i++)
-            {
-                content+= signalInfo[i];
-                if(i != signalInfo.length-1)
-                    content += ", ";
-            }
+            var content =
+                'Latitude: ' + this.position.lat() +
+                '<br>Longitude: ' + this.position.lng();
 
 
             infowindow.setContent(content);

@@ -1,5 +1,4 @@
-const heatmapEffectRange = 20; //20 metros
-const heatmapEfficiencyLimit = 0.8; //90%
+
 
 function setHeatmap(){
 	if(heatmapPolygon)

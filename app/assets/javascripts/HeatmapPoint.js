@@ -8,7 +8,7 @@ function createHeatmapPoint() {
         opIds: [],
         map: null,
         zIndex: 2,
-        draggable: true,
+        draggable: false,
         ghost: null,
         radius: 1,
         center: null,
@@ -60,9 +60,12 @@ function createHeatmapPoint() {
         },
 
         displayInfoWindow: function () {
-            var content = 'ID: ' + this.ID +
-                '<br>Latitude: ' + this.position.lat() +
-                '<br>Longitude: ' + this.position.lng();
+            var content = 
+                'Latitude: ' + this.position.lat() +
+                '<br>Longitude: ' + this.position.lng() +
+                '<br>Operadoras: ';
+            for (var i = 0; i < this.opIds.length; i++)
+                content += this.opIds[i] + " ";
             // '<br>Quantidade de vizinhos: ' + this.neighbours.length +
             // '<br>Carga: ' + this.load +
             // '<br>Conectado?: ' + this.connected;

@@ -39,11 +39,15 @@ var LIMIT = 100;
 var drawHeatmap = false;
 var drawRangeView = false;
 var autoPlanOverwrite = false;
+var autoPlanHeatmap = false;
 var heatmap = [];
 
 var taxiData = [];
 var heatmapPoints = [];
 var drawHeatmapPoints = false;
+
+const heatmapEffectRange = 20; //20 metros
+
 var heatGrids = [];
 var efficiencyRadio = 30; //30metros
 

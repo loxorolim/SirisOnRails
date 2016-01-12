@@ -601,6 +601,9 @@ function toggleAutoPlanningOverwrite()
 {
     autoPlanOverwrite = !autoPlanOverwrite;
 }
+function toggleAutoPlanningHeatmapOverwrite() {
+    autoPlanHeatmap = !autoPlanHeatmap;
+}
 function toggleRangeView(){
   drawRangeView = !drawRangeView;
 
@@ -691,10 +694,12 @@ function setAutoplanningButton() {
     $('#autoPlanning').mouseenter(function () {
         clearTimeout($(this).data('timeoutId'));
         $('#autoPlanningCheckboxDiv').show();
+        $('#autoPlanningHeatmapCheckboxDiv').show();
     }).mouseleave(function () {
         var someElement = $(this),
         timeoutId = setTimeout(function () {
             $('#autoPlanningCheckboxDiv').hide();
+            $('#autoPlanningHeatmapCheckboxDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
     });
@@ -704,11 +709,26 @@ function setAutoplanningButton() {
         var someElement = $('#autoPlanning'),
         timeoutId = setTimeout(function () {
             $('#autoPlanningCheckboxDiv').hide();
+            $('#autoPlanningHeatmapCheckboxDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
     });
     $('#autoPlanningCheckbox').click(function () {
         toggleAutoPlanningOverwrite();
+    });
+
+    $('#autoPlanningHeatmapCheckboxDiv').mouseenter(function () {
+        clearTimeout($('#autoPlanning').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#autoPlanning'),
+        timeoutId = setTimeout(function () {
+            $('#autoPlanningCheckboxDiv').hide();
+            $('#autoPlanningHeatmapCheckboxDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+    $('#autoPlanningHeatmapCheckbox').click(function () {
+        toggleAutoPlanningHeatmapOverwrite();
     });
 }
 function setMeshButton() {

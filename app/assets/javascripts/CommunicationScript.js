@@ -7,6 +7,8 @@ const KML_CREATION_FILE_ID = 5;
 const GET_RANGE_FILE_ID = 6;
 const KML_FILE_ID = 7;
 
+var newPolesAux = [];
+
 function sendDrawRequest(){
     sendDataToServer(serverAddress, 'POST', DRAW_FILE_ID);
 }
@@ -101,8 +103,12 @@ function readAutoPlanResponse(data){
             daps[0].remove();
     }
 	for(var i = 0 ; i < data.ChosenDAPs.length; i++){
-		var toAdd = data.ChosenDAPs[i];
-		var latLng = poles[toAdd].position;
+	    var toAdd = data.ChosenDAPs[i];
+	    var latLng;
+	    if (!autoPlanHeatmap) 
+	        latLng = poles[toAdd].position;
+	    else
+	        latLng = newPolesAux[toAdd].position;
 		var newDap = createDAP();
 		newDap.placeOnMap(latLng.lat(),latLng.lng());
 	}
@@ -276,6 +282,21 @@ function getLatLngObject(array){
     }
     return aux;
 }
+function selectPolesWithSignal() {
+    var newpoles = [];
+    for (var i = 0; i < poles.length; i++) {
+        var consider = false;
+        for (var j = 0; j < heatmapPoints.length; j++) {
+            var dist = google.maps.geometry.spherical.computeDistanceBetween(poles[i].getPosition(), heatmapPoints[j].getPosition());
+            if (dist <= heatmapEffectRange) {
+                newpoles.push(poles[i]);
+                consider = true;
+                break;
+            }
+        }
+    }
+    newPolesAux = newpoles;
+}
 function createObjectToSend(type){
     var obj_to_send = propagationValuesToSendObject();
     obj_to_send["action_id"] = type;
@@ -285,10 +306,17 @@ function createObjectToSend(type){
             obj_to_send["meters"] = getLatLngObject(meters);
             obj_to_send["poles"] = getLatLngObject(poles);
             obj_to_send["DAPs"] = getLatLngObject(daps);
+               
             break;
         case AUTO_PLAN_FILE_ID:
             obj_to_send["meters"] = getLatLngObject(meters);
-            obj_to_send["poles"] = getLatLngObject(poles);
+            //obj_to_send["poles"] = getLatLngObject(poles);
+            if (autoPlanHeatmap) {
+                selectPolesWithSignal();
+                obj_to_send["poles"] = getLatLngObject(newPolesAux);
+            } else {
+                obj_to_send["poles"] = getLatLngObject(poles);
+            }
             obj_to_send["overwrite"] = true;
             if (!autoPlanOverwrite) {
                 obj_to_send["DAPs"] = getLatLngObject(daps);
