@@ -6,6 +6,7 @@ const TEST_COLLECTION_FILE_ID = 4;
 const KML_CREATION_FILE_ID = 5;
 const GET_RANGE_FILE_ID = 6;
 const KML_FILE_ID = 7;
+const PROCCESS_FILE_ID = 8;
 
 var newPolesAux = [];
 
@@ -267,7 +268,9 @@ function propagationValuesToSendObject(){
                 "rate": rate,
                 "h_tx": H_TX,
                 "h_rx": H_RX,
-                "redundancy": REDUNDANCY };
+                "redundancy": REDUNDANCY,
+                "valid_cell_radius": validCellRadius
+    };
 
     return ret;
 }
@@ -288,7 +291,7 @@ function selectPolesWithSignal() {
         var consider = false;
         for (var j = 0; j < heatmapPoints.length; j++) {
             var dist = google.maps.geometry.spherical.computeDistanceBetween(poles[i].getPosition(), heatmapPoints[j].getPosition());
-            if (dist <= heatmapEffectRange) {
+            if (dist <= validCellRadius) {
                 newpoles.push(poles[i]);
                 consider = true;
                 break;

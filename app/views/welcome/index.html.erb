@@ -50,14 +50,14 @@
 								        <option value="poleEraserSelection"> Apagar por Seleção (Poste)</option>
 							        </select>
 						        </div>
-                    <div style="width:107px;" class="menuButton">
-                        <button id="autoPlanning" >Auto Planning</button>
-                        <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px; left: -21.5px; position:relative;" >
+                    <div style="width: 136px;" class="menuButton">
+                        <button id="autoPlanning" >Auto-Planejamento</button>
+                        <div id="autoPlanningCheckboxDiv" class = "hidden belowButtonDiv" style="width: 150px; left: -9.0px; position:relative;" >
                         <span class="selections" style="margin-left: 5%">Sobrescrever: </span>
                         <input type="checkbox" id="autoPlanningCheckbox" style="margin-top: 4%"></input>
                           <label for="check"></label>
                         </div>
-                        <div id="autoPlanningHeatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 230px; left: -57.5px; position:relative;" >
+                        <div id="autoPlanningHeatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 230px; left: -50.5px; position:relative;" >
                         <span class="selections" style="margin-left: 5%">Apenas postes c/ sinal: </span>
                         <input type="checkbox" id="autoPlanningHeatmapCheckbox" style="margin-top: 3%"></input>
                           <label for="check"></label>
@@ -83,11 +83,16 @@
                       </input>
                     </div>
                     <div class="menuButton squareButton">
-						          <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Mapa de Calor</label></input>
-                      <div id="heatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 160px; left: -65px; position:relative;" >
+						          <input type="checkbox" id="checkHeatmap"><label id="heatmapLabel" for="checkHeatmap">Sinal 3G/4G/GPRS</label></input>
+                      <div id="heatmapCheckboxDiv" class = "hidden belowButtonDiv" style="width: 170px; left: -65px; position:relative;" >
                         <span class="selections" style="margin-left: 5%">Mostrar pontos: </span>
                         <input type="checkbox" id="heatmapCheckbox" style="margin-top: 4%"></input>
                           <label for="check"></label>
+                      </div>
+                      <div id="SignalRadiusSliderDiv" class = "hidden belowButtonDiv" style="width: 335px; left:-150px; position:relative" >
+                        <span class="selections" style="margin-left: 5%">Área de efeito: </span>
+                        <div id="SignalRadiusSlider" style="width:80px; margin-top: 8px; margin-left: 3%"></div>
+                        <span id="SignalRadius" style="margin-left: 2%" class="selections">20 metros</span>
                       </div>
                     </div>
                     <div class="menuButton squareButton">
@@ -99,10 +104,8 @@
                     <div class="menuButton squareButton">
 						          <button id="help">Botão de Ajuda</button>
                     </div>
-						        <button id ="settings"> Configurações Avançadas</button>             
+						        <!--<button id ="settings"> Configurações Avançadas</button>-->             
 					        </div>
-       
-
         </div>
    </div>
         <div id="statisticDialog" class = "hidden"  title="Estatísticas"> 
@@ -126,7 +129,7 @@
 				<input type="radio" id="heatmapFormatRadio" name="format"><label for="fileFormatRadio">Mapa de calor</label></input>
 			</div>	
     </div>
-		<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
+		<!--<div id="settingsDialog" class = "hidden" title="Configurações Avançadas">
 			<div id="SignalRadiusDiv"  style="height: 26px; width: 300px;" >
 				<span class="selections" style="float: left;  margin-left: 5%">Área do ponto de coleta: </span>		
 				<div id="SignalRadiusSlider" style="float: left; width:80px; margin-top: 8px; margin-left: 3%"></div>
@@ -137,15 +140,11 @@
 				<div id="limitSlider" style="float: left; width:80px; margin-top: 8px; margin-left: 3%"></div>
 				<span id="limit" style="float: left; margin-left: 5%" class="selections">100</span>					
 			</div>	
-			<input style="margin-left:4%" type="checkbox" id="considerLimit"><label for="considerLimit">Considerar limite por DAP</label></input>
-				
-        </div>
+			<input style="margin-left:4%" type="checkbox" id="considerLimit"><label for="considerLimit">Considerar limite por DAP</label></input>			
+    </div>-->
 		<div id="helpDialog" class = "hidden" title="Ajuda">
       <img id="helpmenu" src="" ></img>
-    </div>
-
-
-		   
+    </div>		   
   </div>
 </div>
 

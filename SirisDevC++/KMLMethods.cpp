@@ -160,6 +160,7 @@ string KMLMethods::generateKML()
 	init += "<Technology>" + to_string(technology) + "</Technology>\n";
 	init += "<Power>" + to_string(t_power) + "</Power>\n";
 	init += "<MeshHops>" + to_string(mesh) + "</MeshHops>\n";
+	init += "<ValidCellRadius>" + to_string(valid_cell_radius) + "</ValidCellRadius>\n";
 	//init += "<Metrics>"+metrics+"</Metrics>\n";
 	init += metrics + "\n";
 	init += getMetersKMLFormat();

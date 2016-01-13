@@ -133,9 +133,9 @@ function loadFromKMLText(kml){
 	var mHops = $(kml).find('MeshHops').text();
 	mHops = parseInt(mHops)+1;
 	setMeshHops(mHops);
-	var mEnabled = $(kml).find('MeshEnabled').text();
-	mEnabled = parseInt(mEnabled);
-	setMeshActivation(mEnabled);
+	var mVCR = $(kml).find('ValidCellRadius').text();
+	mVCR = parseInt(mVCR);
+	setValidCellRadius(mVCR);
 	var first = true;
 	var sw_lat = -1,sw_lng=-1,ne_lat=-1,ne_lng=-1;
 

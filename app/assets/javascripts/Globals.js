@@ -46,7 +46,7 @@ var taxiData = [];
 var heatmapPoints = [];
 var drawHeatmapPoints = false;
 
-const heatmapEffectRange = 20; //20 metros
+var validCellRadius = 20; //20 metros
 
 var heatGrids = [];
 var efficiencyRadio = 30; //30metros

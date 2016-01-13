@@ -28,7 +28,28 @@ class KMLMethods : public FatherMethods
 {
 private:
 	vector<Position*> meters, daps, poles, coverageArea;
+	int valid_cell_radius;
 public:
+	KMLMethods(vector<Position*> &meters, vector<Position*> &daps, vector<Position*> &poles, vector<Position*> &coverageArea, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, int valid_cell_radius, string rubyPath, bool verbose = 0)
+	{
+		this->meters = meters;
+		this->daps = daps;
+		this->poles = poles;
+		this->coverageArea = coverageArea;
+		this->scenario = scenario;
+		this->technology = technology;
+		this->bit_rate = bit_rate;
+		this->t_power = t_power;
+		this->h_tx = h_tx;
+		this->h_rx = h_rx;
+		this->srd = srd;
+		this->mesh = mesh;
+		this->valid_cell_radius = valid_cell_radius;
+		this->rubyPath = rubyPath;
+		this->verbose = verbose;
+		this->regionLimiter = getRegionLimiter();
+
+	};
 	KMLMethods(vector<Position*> &meters, vector<Position*> &daps, vector<Position*> &poles, vector<Position*> &coverageArea, int scenario, int technology, double bit_rate, double t_power, double h_tx, double h_rx, int srd, int mesh, string rubyPath, bool verbose = 0)
 	{
 		this->meters = meters;

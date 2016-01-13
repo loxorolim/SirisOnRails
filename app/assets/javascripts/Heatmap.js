@@ -5,7 +5,7 @@ function setHeatmap(){
         heatmapPolygon.setMap(null);
     var circles = [];
 	for(var i = 0; i < heatmapPoints.length; i++){
-			circles.push(drawCircle(heatmapPoints[i].position,heatmapEffectRange/1609.344,1)) ;
+			circles.push(drawCircle(heatmapPoints[i].position,validCellRadius/1609.344,1)) ;
 	}
     heatmapPolygon = new google.maps.Polygon({
                  paths: circles,

@@ -356,7 +356,7 @@ function setButtons()
             duration: 500
             },
             resizable: false,
-            width: 1170
+            width: 600
             
           });
         });            
@@ -686,6 +686,11 @@ function toggleHeatmapPointVisibility(){
     else
         makeHeatmapPointsInvisible();
 }
+function setSignalRadius(val){
+    validCellRadius = val;
+    setHeatmap();
+    DrawHeatmap();
+}
 function setAutoplanningButton() {
     $('#autoPlanning').button().click(function () {
         $(this).blur();
@@ -790,10 +795,12 @@ function setHeatmapButton() {
     $('#heatmapLabel').mouseenter(function () {
         clearTimeout($(this).data('timeoutId'));
         $('#heatmapCheckboxDiv').show();
+        $('#SignalRadiusSliderDiv').show();
     }).mouseleave(function () {
         var someElement = $(this),
         timeoutId = setTimeout(function () {
             $('#heatmapCheckboxDiv').hide();
+            $('#SignalRadiusSliderDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
     });
@@ -803,14 +810,42 @@ function setHeatmapButton() {
         var someElement = $('#heatmapLabel'),
         timeoutId = setTimeout(function () {
             $('#heatmapCheckboxDiv').hide();
+            $('#SignalRadiusSliderDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
-        //set the timeoutId, allowing us to clear this trigger if the mouse comes back over
-
+    });
+    $('#SignalRadiusSliderDiv').mouseenter(function () {
+        clearTimeout($('#heatmapLabel').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#heatmapLabel'),
+        timeoutId = setTimeout(function () {
+            $('#heatmapCheckboxDiv').hide();
+            $('#SignalRadiusSliderDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
     });
     $('#heatmapCheckbox').click(function () {
         toggleHeatmapPointVisibility();
     });
+    $("#SignalRadiusSlider").slider({
+        value: validCellRadius,
+        min: 1,
+        max: 50,
+        step: 1,
+        slide: function (event, ui) {
+            $("#SignalRadius").text(ui.value + " metros");
+            
+        }
+    });
+    $("#SignalRadiusSlider").slider({
+        stop: function (event, ui) {
+            setSignalRadius(ui.value);
+        }
+    });
+}
+function setValidCellRadius(val) {
+    $("#SignalRadius").text(val + " metros");
+    validCellRadius = val;
 }
 
 

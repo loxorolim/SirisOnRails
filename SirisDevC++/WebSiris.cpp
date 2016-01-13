@@ -38,7 +38,7 @@ string getResponse(string input, string rP)
 
 	d.Parse(input.c_str());
 	int action_id, scenario, technology, mesh = 0, redundancy = 1;
-	double h_tx, h_rx, bit_rate, power;
+	double h_tx, h_rx, bit_rate, power, valid_cell_radius;
 	// 2. Modify it by DOM.
 	Value& s = d["action_id"];
 	action_id = s.GetInt();
@@ -58,6 +58,8 @@ string getResponse(string input, string rP)
 	bit_rate = s.GetDouble();
 	s = d["power"];
 	power = s.GetDouble();
+	s = d["valid_cell_radius"];
+	valid_cell_radius = s.GetInt();
 
 	vector<Position*> signal_info, meters, poles, daps;
 	string ret;
@@ -69,7 +71,7 @@ string getResponse(string input, string rP)
 		meters = getPositionArrayFromJson(input, "meters");
 		poles = getPositionArrayFromJson(input, "poles");
 		daps = getPositionArrayFromJson(input, "DAPs");
-		KMLMethods* kml = new KMLMethods(meters, daps, poles, signal_info, scenario, technology, bit_rate, power, h_tx, h_rx, 1, mesh, rP);
+		KMLMethods* kml = new KMLMethods(meters, daps, poles, signal_info, scenario, technology, bit_rate, power, h_tx, h_rx, 1, mesh, valid_cell_radius, rP);
 		ret = kml->generateKML();
 		Document document;
 		document.SetObject();
