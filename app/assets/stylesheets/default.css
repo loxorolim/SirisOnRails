@@ -114,9 +114,12 @@ background-repeat:no-repeat;
      background-image: url(help.png); 
 }
 #menu {
-  position: relative;
-  width:95%;
-  margin: 0 auto;
+    position:absolute;
+    width: 95%;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 #menu div {

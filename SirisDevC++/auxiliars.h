@@ -60,8 +60,8 @@ using namespace rapidjson;
 #define Rural  2
 
 #define t802_15_4  0
-#define t802_11_a  1
-#define t802_11_g  2
+#define t802_11_g  1
+#define t802_11_a  2
 #define t802_11_b  3
 
 

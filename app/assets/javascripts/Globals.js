@@ -8,8 +8,8 @@ const Urbano = 0;
 const Suburbano = 1;
 const Rural = 2;
 const t802_15_4 = 0;
-const t802_11_a = 1;
-const t802_11_g = 2;
+const t802_11_g = 1;
+const t802_11_a = 2;
 const serverAddress = document.URL+"/autoplan";
 
 const REMOVE_ALL = 0;
