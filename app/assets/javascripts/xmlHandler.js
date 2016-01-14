@@ -13,7 +13,39 @@ function sendKMLToBeProcessed(url, method, kml) {
         },
         dataType: "json",
         success: function (data) {
-            
+            setScenario(data.scenario);
+            setPower(data.power);
+            setTechnology(data.technology);
+            setMeshHops(data.mesh_hops+1);
+            setValidCellRadius(data.valid_cell_radius);
+            var meters = data.meters, daps = data.daps, poles = data.poles, coverage_area = data.coverage_area;
+            var aux=[];
+            for (i = 0; i < meters.length; i++) {
+                aux = meters[i].split('/');
+                var meter = createMeter();
+                meter.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]));
+            }
+            for (i = 0; i < daps.length; i++) {
+                aux = daps[i].split('/');
+                var dap = createDAP();
+                dap.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]));
+            }
+            for (i = 0; i < poles.length; i++) {
+                aux = poles[i].split('/');
+                var pole = createPole();
+                pole.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]));
+            }
+            for (i = 0; i < coverage_area.length; i++) {
+                aux = coverage_area[i].split('/');
+                var signal_info = [];
+                for (j = 2; j < aux.length; j++) {
+                    signal_info.push(aux[j]);
+                }
+                var heatmapPoint = createHeatmapPoint();
+                heatmapPoint.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]),signal_info);
+            }
+            sendDrawRequest();
+            DrawHeatmap();
         }
     });
 }
@@ -140,6 +172,13 @@ function loadPolesTeste(file) {
 function loadFromKMLText(kml){
 	
     sendKMLToBeProcessed(serverAddress, 'POST', kml);
+    var pos1 = new google.maps.LatLng(sw_lat, sw_lng);
+    var pos2 = new google.maps.LatLng(ne_lat, ne_lng);
+    var bounds = new google.maps.LatLngBounds(pos2, pos1);
+    map.fitBounds(bounds);
+    for (var i = 0; i < daps.length; i++) {
+        daps[i].signalInfo = getSignalInfo(daps[i].position);
+    }
     return;
 	var sce = $(kml).find('Scenario').text();
 	sce = parseInt(sce);
@@ -207,8 +246,9 @@ function loadFromKMLText(kml){
 					var dap = createDAP();
 					dap.placeOnMap(latitude, longitude);
 				break;
-				case "PONTO DE COLETA":					
-					insertHeatmapPoint(latitude, longitude, weight, operators);
+			    case "PONTO DE COLETA":
+			        var hmPoint = createHeatmapPoint();
+			        hmPoint.push(latitude, longitude, operators);
 				break;
 				default:
 				break;

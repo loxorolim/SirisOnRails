@@ -275,21 +275,26 @@ void convertMeterAndPolesToKml(string metersFilePath, string polesFilePath, stri
 string processKML(string kml)
 {
 	//Este método processa o KML recebido pelo Cliente, pois fazer isso no Javascript estava demorando demais!
-
+	
 	xml_document doc;
 	xml_parse_result result = doc.load_string(kml.c_str());
 	if (result.status)
 		return "";
 
 	
-
+	
 	vector<Position> meters, poles, daps, coverageArea;
-
-	int scenario = stoi(doc.child("kml").child("Scenario").child_value());
-	int technology = stoi(doc.child("kml").child("Technology").child_value());
-	int mesh_hops = stoi(doc.child("kml").child("MeshHops").child_value());
-	int valid_cell_radius = stoi(doc.child("kml").child("ValidCellRadius").child_value());
-	double power = stof(doc.child("kml").child("Power").child_value());
+	int scenario = 0; int technology = 0; int mesh_hops = 0; int valid_cell_radius = 20; double power = 20;
+	if (!doc.child("kml").child("Scenario").empty())
+		scenario = stoi(doc.child("kml").child("Scenario").child_value());
+	if (!doc.child("kml").child("Technology").empty())
+		technology = stoi(doc.child("kml").child("Technology").child_value());
+	if (!doc.child("kml").child("MeshHops").empty())
+		mesh_hops = stoi(doc.child("kml").child("MeshHops").child_value());
+	if (!doc.child("kml").child("ValidCellRadius").empty())
+		valid_cell_radius = stoi(doc.child("kml").child("ValidCellRadius").child_value());
+	if (!doc.child("kml").child("Power").empty())
+		power = stof(doc.child("kml").child("Power").child_value());
 	xml_node tools = doc.child("kml").child("Folder");
 	for (xml_node tool = tools; tool; tool = tool.next_sibling())
 	{
@@ -348,7 +353,7 @@ string processKML(string kml)
 	Value meter_array(rapidjson::kArrayType);
 	for (int i = 0; i < meters.size(); i++)
 	{
-		string meter_pos = to_string(meters[i].latitude) + " " + to_string(meters[i].latitude);
+		string meter_pos = to_string(meters[i].latitude) + "/" + to_string(meters[i].longitude);
 		Value v;
 		v.SetString(meter_pos.c_str(),allocator);
 		meter_array.PushBack(v, allocator);
@@ -357,7 +362,7 @@ string processKML(string kml)
 	Value pole_array(rapidjson::kArrayType);
 	for (int i = 0; i < poles.size(); i++)
 	{
-		string pole_pos = to_string(poles[i].latitude) + "/" + to_string(poles[i].latitude);
+		string pole_pos = to_string(poles[i].latitude) + "/" + to_string(poles[i].longitude);
 		Value v;
 		v.SetString(pole_pos.c_str(), allocator);
 		pole_array.PushBack(v, allocator);
@@ -366,7 +371,7 @@ string processKML(string kml)
 	Value dap_array(rapidjson::kArrayType);
 	for (int i = 0; i < daps.size(); i++)
 	{
-		string dap_pos = to_string(daps[i].latitude) + "/" + to_string(daps[i].latitude);
+		string dap_pos = to_string(daps[i].latitude) + "/" + to_string(daps[i].longitude);
 		Value v;
 		v.SetString(dap_pos.c_str(), allocator);
 		dap_array.PushBack(v, allocator);
@@ -375,7 +380,7 @@ string processKML(string kml)
 	Value coverage_area_array(rapidjson::kArrayType);
 	for (int i = 0; i < coverageArea.size(); i++)
 	{
-		string coverage_area_pos = to_string(coverageArea[i].latitude) + "/" + to_string(coverageArea[i].latitude);
+		string coverage_area_pos = to_string(coverageArea[i].latitude) + "/" + to_string(coverageArea[i].longitude);
 		for (int j = 0; j < coverageArea[i].signalInfo.size(); j++)
 		{
 			coverage_area_pos += "/" + coverageArea[i].signalInfo[j];
