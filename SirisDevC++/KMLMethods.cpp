@@ -183,20 +183,20 @@ void KMLMethods::saveKmlToFile(string filename)
 }
 int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea )
 {
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(inputFilename.c_str());
+	xml_document doc;
+	xml_parse_result result = doc.load_file(inputFilename.c_str());
 	if (result.status)
 	{
 		cerr << "\nErro ao ler o arquivo. Verifique se o diretorio e o nome estao corretos.";
 		return 1;
 	}
-	pugi::xml_node	tools = doc.child("kml").child("Folder");
-	for (pugi::xml_node tool = tools; tool; tool = tool.next_sibling())
+	xml_node	tools = doc.child("kml").child("Folder");
+	for (xml_node tool = tools; tool; tool = tool.next_sibling())
 	{
 		string type = tool.first_child().child_value();
 		if (type == MetersTag || type == DAPsTag || type == PolesTag || type == SignalsTag)
 		{
-			for (pugi::xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
+			for (xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
 			{
 				string coordinates = placemark.child("Point").child("coordinates").child_value();
 				vector<string> coordinatesVector = split(coordinates, ',');
@@ -219,7 +219,7 @@ int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& me
 				if (type == SignalsTag)
 				{
 					vector<string> ids;
-					for (pugi::xml_node i = placemark.child("Operators").child("id"); i; i = i.next_sibling())
+					for (xml_node i = placemark.child("Operators").child("id"); i; i = i.next_sibling())
 					{
 						string signal_op = i.child_value();
 						ids.push_back(signal_op);
@@ -271,4 +271,123 @@ void convertMeterAndPolesToKml(string metersFilePath, string polesFilePath, stri
 	KMLMethods* kmethods = new KMLMethods(meters, nullVec, poles, nullVec, 0, 0, 0, 0, 0, 0, 0, 0, "");
 	kmethods->saveKmlToFile(toSave);
 	delete kmethods;
+}
+string processKML(string kml)
+{
+	//Este método processa o KML recebido pelo Cliente, pois fazer isso no Javascript estava demorando demais!
+
+	xml_document doc;
+	xml_parse_result result = doc.load_string(kml.c_str());
+	if (result.status)
+		return "";
+
+	
+
+	vector<Position> meters, poles, daps, coverageArea;
+
+	int scenario = stoi(doc.child("kml").child("Scenario").child_value());
+	int technology = stoi(doc.child("kml").child("Technology").child_value());
+	int mesh_hops = stoi(doc.child("kml").child("MeshHops").child_value());
+	int valid_cell_radius = stoi(doc.child("kml").child("ValidCellRadius").child_value());
+	double power = stof(doc.child("kml").child("Power").child_value());
+	xml_node tools = doc.child("kml").child("Folder");
+	for (xml_node tool = tools; tool; tool = tool.next_sibling())
+	{
+		string type = tool.first_child().child_value();
+		if (type == MetersTag || type == DAPsTag || type == PolesTag || type == SignalsTag)
+		{
+			for (xml_node placemark = tool.child("Placemark"); placemark; placemark = placemark.next_sibling())
+			{
+				string coordinates = placemark.child("Point").child("coordinates").child_value();
+				vector<string> coordinatesVector = split(coordinates, ',');
+				double lat = stof(coordinatesVector[1]), lng = stof(coordinatesVector[0]);
+				if (type == MetersTag)
+				{
+					Position p = Position(lat, lng, meters.size());
+					meters.push_back(p);
+				}
+				if (type == DAPsTag)
+				{
+					Position p = Position(lat, lng, daps.size());
+					daps.push_back(p);
+				}
+				if (type == PolesTag)
+				{
+					Position p = Position(lat, lng, poles.size());
+					poles.push_back(p);
+				}
+				if (type == SignalsTag)
+				{
+					vector<string> ids;
+					for (xml_node i = placemark.child("Operators").child("id"); i; i = i.next_sibling())
+					{
+						string signal_op = i.child_value();
+						ids.push_back(signal_op);
+					}
+					Position p = Position(lat, lng, coverageArea.size(), ids);
+					coverageArea.push_back(p);
+				}
+			}
+		}
+	}
+	Document document;
+	document.SetObject();
+	Document::AllocatorType& allocator = document.GetAllocator();
+	Value v;
+	v.SetInt(scenario);
+	document.AddMember("scenario", v, allocator);
+	v.SetInt(technology);
+	document.AddMember("technology", v, allocator);
+	v.SetInt(mesh_hops);
+	document.AddMember("mesh_hops", v, allocator);
+	v.SetInt(valid_cell_radius);
+	document.AddMember("valid_cell_radius", v, allocator);
+	v.SetDouble(power);
+	document.AddMember("power", v, allocator);
+
+	Value meter_array(rapidjson::kArrayType);
+	for (int i = 0; i < meters.size(); i++)
+	{
+		string meter_pos = to_string(meters[i].latitude) + " " + to_string(meters[i].latitude);
+		Value v;
+		v.SetString(meter_pos.c_str(),allocator);
+		meter_array.PushBack(v, allocator);
+	}
+	document.AddMember("meters", meter_array, allocator);
+	Value pole_array(rapidjson::kArrayType);
+	for (int i = 0; i < poles.size(); i++)
+	{
+		string pole_pos = to_string(poles[i].latitude) + "/" + to_string(poles[i].latitude);
+		Value v;
+		v.SetString(pole_pos.c_str(), allocator);
+		pole_array.PushBack(v, allocator);
+	}
+	document.AddMember("poles", pole_array, allocator);
+	Value dap_array(rapidjson::kArrayType);
+	for (int i = 0; i < daps.size(); i++)
+	{
+		string dap_pos = to_string(daps[i].latitude) + "/" + to_string(daps[i].latitude);
+		Value v;
+		v.SetString(dap_pos.c_str(), allocator);
+		dap_array.PushBack(v, allocator);
+	}
+	document.AddMember("daps", dap_array, allocator);
+	Value coverage_area_array(rapidjson::kArrayType);
+	for (int i = 0; i < coverageArea.size(); i++)
+	{
+		string coverage_area_pos = to_string(coverageArea[i].latitude) + "/" + to_string(coverageArea[i].latitude);
+		for (int j = 0; j < coverageArea[i].signalInfo.size(); j++)
+		{
+			coverage_area_pos += "/" + coverageArea[i].signalInfo[j];
+		}
+		Value v;
+		v.SetString(coverage_area_pos.c_str(), allocator);
+		coverage_area_array.PushBack(v, allocator);
+	}
+	document.AddMember("coverage_area", coverage_area_array, allocator);
+	StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	document.Accept(writer);
+	return strbuf.GetString();
+
 }

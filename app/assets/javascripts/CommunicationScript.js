@@ -6,7 +6,7 @@ const TEST_COLLECTION_FILE_ID = 4;
 const KML_CREATION_FILE_ID = 5;
 const GET_RANGE_FILE_ID = 6;
 const KML_FILE_ID = 7;
-const PROCCESS_FILE_ID = 8;
+
 
 var newPolesAux = [];
 

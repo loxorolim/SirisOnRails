@@ -1,4 +1,23 @@
-function loadMetersFromTxt( file)
+const PROCESS_FILE_ID = 8;
+function sendKMLToBeProcessed(url, method, kml) {
+
+    var obj = new Object();
+    obj["KML"] = kml;
+    obj["action_id"] = PROCESS_FILE_ID;
+
+    $.ajax({
+        url: url,
+        type: method,
+        data: {
+            'data': JSON.stringify(obj),
+        },
+        dataType: "json",
+        success: function (data) {
+            
+        }
+    });
+}
+function loadMetersFromTxt(file)
 {
 	$(document).ready(function()
 	{
@@ -120,7 +139,8 @@ function loadPolesTeste(file) {
 }
 function loadFromKMLText(kml){
 	
-
+    sendKMLToBeProcessed(serverAddress, 'POST', kml);
+    return;
 	var sce = $(kml).find('Scenario').text();
 	sce = parseInt(sce);
 	setScenario(sce);

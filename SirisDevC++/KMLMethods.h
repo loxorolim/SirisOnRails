@@ -24,6 +24,8 @@ const string pole_name = "Poste";
 const string signal_name = "Ponto de Coleta";
 const string link_name = "Enlace";
 
+using namespace pugi;
+
 class KMLMethods : public FatherMethods
 {
 private:
@@ -105,5 +107,6 @@ public:
 };
 int readKML(string inputFilename, vector<Position*>& daps, vector<Position*>& meters, vector<Position*>& poles, vector<Position*>& coverageArea);
 void convertMeterAndPolesToKml(string metersFilePath, string polesFilePath, string toSave);
+string processKML(string kml);
 
 #endif

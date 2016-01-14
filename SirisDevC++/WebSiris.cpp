@@ -34,6 +34,7 @@ vector<Position*> getPositionArrayFromJson(string json, string type)
 }
 string getResponse(string input, string rP)
 {
+
 	Document d;
 
 	d.Parse(input.c_str());
@@ -152,6 +153,16 @@ string getResponse(string input, string rP)
 		ret = strbuf.GetString();
 		break;
 	}
+	case PROCESS_KML:
+	{
+		
+		string received_kml = "";
+		Value& s = d["KML"];
+		received_kml = s.GetString();
+		ret = processKML(received_kml);
+		
+		break;
+	}
 	default:
 		break;
 	}
@@ -159,6 +170,7 @@ string getResponse(string input, string rP)
 }
 int WebMain(int argc, char** argv)
 {
+	
 	string line, rP, input="";
 	getline(cin, rP);
 	rP += "/";

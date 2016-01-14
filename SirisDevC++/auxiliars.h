@@ -54,6 +54,7 @@ using namespace rapidjson;
 #define TEST 4
 #define GET_RANGE 6
 #define KML 7
+#define PROCESS_KML 8
 
 #define Urbano  0
 #define Suburbano  1
