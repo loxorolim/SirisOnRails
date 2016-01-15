@@ -19,31 +19,62 @@ function sendKMLToBeProcessed(url, method, kml) {
             setMeshHops(data.mesh_hops+1);
             setValidCellRadius(data.valid_cell_radius);
             var meters = data.meters, daps = data.daps, poles = data.poles, coverage_area = data.coverage_area;
-            var aux=[];
-            for (i = 0; i < meters.length; i++) {
-                aux = meters[i].split('/');
-                var meter = createMeter();
-                meter.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]));
-            }
-            for (i = 0; i < daps.length; i++) {
-                aux = daps[i].split('/');
-                var dap = createDAP();
-                dap.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]));
-            }
-            for (i = 0; i < poles.length; i++) {
-                aux = poles[i].split('/');
-                var pole = createPole();
-                pole.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]));
-            }
-            for (i = 0; i < coverage_area.length; i++) {
-                aux = coverage_area[i].split('/');
-                var signal_info = [];
-                for (j = 2; j < aux.length; j++) {
-                    signal_info.push(aux[j]);
+            var aux = [];
+            var sw_lat = -1, sw_lng = -1, ne_lat = -1, ne_lng = -1;
+            var first = true;
+            var arrays = [];
+            arrays.push(meters);
+            arrays.push(daps);
+            arrays.push(poles);
+            arrays.push(coverage_area);
+            var current_array;
+            var i = 0;
+            for (a = 0; a < arrays.length; a++) {
+                current_array = arrays[a];
+                for (i = 0; i < current_array.length;i++) {
+                    aux = current_array[i].split('/');
+                    var longitude = parseFloat(aux[1]);
+                    var latitude = parseFloat(aux[0]);
+                    //Para centralizar a tela nas posições inseridas
+                    if (latitude < sw_lat || first == true)
+                        sw_lat = latitude;
+                    if (latitude >= ne_lat || first == true)
+                        ne_lat = latitude;
+                    if (longitude < sw_lng || first == true)
+                        sw_lng = longitude;
+                    if (longitude >= ne_lng || first == true)
+                        ne_lng = longitude;
+                    first = false;
+                    switch (current_array) {
+                        case meters:
+                            var meter = createMeter();
+                            meter.placeOnMap(latitude, longitude);
+                            break;
+                        case daps:
+                            var dap = createDAP();
+                            dap.placeOnMap(latitude, longitude);
+                            break;
+                        case poles:
+                            var pole = createPole();
+                            pole.placeOnMap(latitude, longitude);
+                            break;
+                        case coverage_area:
+                            var signal_info = [];
+                            for (j = 2; j < aux.length; j++) {
+                                signal_info.push(aux[j]);
+                            }
+                            var heatmapPoint = createHeatmapPoint();
+                            heatmapPoint.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]), signal_info);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                var heatmapPoint = createHeatmapPoint();
-                heatmapPoint.placeOnMap(parseFloat(aux[0]), parseFloat(aux[1]),signal_info);
             }
+            var pos1 = new google.maps.LatLng(sw_lat, sw_lng);
+            var pos2 = new google.maps.LatLng(ne_lat, ne_lng);
+            var bounds = new google.maps.LatLngBounds(pos1, pos2);
+            map.fitBounds(bounds);
             sendDrawRequest();
             DrawHeatmap();
         }
@@ -172,13 +203,13 @@ function loadPolesTeste(file) {
 function loadFromKMLText(kml){
 	
     sendKMLToBeProcessed(serverAddress, 'POST', kml);
-    var pos1 = new google.maps.LatLng(sw_lat, sw_lng);
-    var pos2 = new google.maps.LatLng(ne_lat, ne_lng);
-    var bounds = new google.maps.LatLngBounds(pos2, pos1);
-    map.fitBounds(bounds);
-    for (var i = 0; i < daps.length; i++) {
-        daps[i].signalInfo = getSignalInfo(daps[i].position);
-    }
+    //var pos1 = new google.maps.LatLng(sw_lat, sw_lng);
+    //var pos2 = new google.maps.LatLng(ne_lat, ne_lng);
+    //var bounds = new google.maps.LatLngBounds(pos2, pos1);
+    //map.fitBounds(bounds);
+    //for (var i = 0; i < daps.length; i++) {
+    //    daps[i].signalInfo = getSignalInfo(daps[i].position);
+    //}
     return;
 	var sce = $(kml).find('Scenario').text();
 	sce = parseInt(sce);

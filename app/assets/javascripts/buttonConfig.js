@@ -406,7 +406,8 @@ function setButtons()
 					duration: 500
 					},
 					resizable: false,
-					width: 580,
+					width: 460,
+                    height:120,
 					
 				});
 			});     
