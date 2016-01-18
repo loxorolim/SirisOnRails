@@ -171,7 +171,6 @@ string getResponse(string input, string rP)
 }
 int WebMain(int argc, char** argv)
 {
-	
 	string line, rP, input="";
 	getline(cin, rP);
 	rP += "/";

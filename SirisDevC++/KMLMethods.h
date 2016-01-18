@@ -15,7 +15,7 @@
 const string MetersTag = "Medidores";
 const string DAPsTag = "Agregadores";
 const string PolesTag = "Postes";
-const string SignalsTag = "Mapa de Calor";
+const string SignalsTag = "Sinal 3G/4G/GPRS";
 const string LinksTag = "Enlaces";
 
 const string meter_name = "Medidor";

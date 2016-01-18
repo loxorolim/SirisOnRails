@@ -277,6 +277,7 @@ string processKML(string kml)
 	//Este método processa o KML recebido pelo Cliente, pois fazer isso no Javascript estava demorando demais!
 	
 	xml_document doc;
+
 	xml_parse_result result = doc.load_string(kml.c_str());
 	if (result.status)
 		return "";
@@ -296,6 +297,7 @@ string processKML(string kml)
 	if (!doc.child("kml").child("Power").empty())
 		power = stof(doc.child("kml").child("Power").child_value());
 	xml_node tools = doc.child("kml").child("Folder");
+	
 	for (xml_node tool = tools; tool; tool = tool.next_sibling())
 	{
 		string type = tool.first_child().child_value();
