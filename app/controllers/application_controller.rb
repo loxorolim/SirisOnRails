@@ -18,10 +18,10 @@ class ApplicationController < ActionController::Base
 	end
 	if(OS.posix?)
 		if(OS.bits == 32)	
-			execPath = 'LD_LIBRARY_PATH='+path+'/Siris/glnx86/ ' + path+'/Siris/glnx86/SirisOnRailsC++'
+			execPath = 'LD_LIBRARY_PATH='+path+'/SirisDevC++/VLFEAT/bin/glnx86/ ' + path+'/Siris/glnx86/SirisOnRailsC++'
 		end
 		if(OS.bits == 64)
-			execPath = 'LD_LIBRARY_PATH='+path+'/Siris/glnxa64/ ' + path+'/Siris/glnxa64/SirisOnRailsC++'
+			execPath = 'LD_LIBRARY_PATH='+path+'/SirisDevC++/VLFEAT/bin/glnxa64/ ' + path+'/Siris/glnxa64/SirisOnRailsC++'
 		end
 	end
 
