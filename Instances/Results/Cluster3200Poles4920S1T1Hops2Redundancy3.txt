@@ -1,0 +1,23 @@
+Dimension: 3200 x 4920
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 2739
+Time: 57.932999
+Hop1Quantity: 3161
+Hop2Quantity: 39
+Hop1Quality: 0.998711
+Hop2Quality: 0.988923
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 3.733844
+Max Meters per DAP: 7.000000
+Min Redundancy: 1.000000
+Med Redundancy: 3.195937
+Max Redundancy: 7.000000
+3200x4920:
+Número de 1's na Matriz de Cobertura15291.000000:
+Densidade: 0.000971
+Cobertura média por DAP: 3.107927
+Desvio padrão da cobertura: 1.651169
+Memória utilizada: 2426.691991
+Tempo utilizado: 0.267000

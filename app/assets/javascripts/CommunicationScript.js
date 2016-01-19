@@ -288,12 +288,10 @@ function getLatLngObject(array){
 function selectPolesWithSignal() {
     var newpoles = [];
     for (var i = 0; i < poles.length; i++) {
-        var consider = false;
         for (var j = 0; j < heatmapPoints.length; j++) {
             var dist = google.maps.geometry.spherical.computeDistanceBetween(poles[i].getPosition(), heatmapPoints[j].getPosition());
             if (dist <= validCellRadius) {
                 newpoles.push(poles[i]);
-                consider = true;
                 break;
             }
         }

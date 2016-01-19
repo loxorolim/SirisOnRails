@@ -1,0 +1,19 @@
+set Z;
+ set Y;
+ param A{r in Z, m in Y} default 0, binary;
+param B{r in Z} default 1, integer;
+ var Route{m in Y}, binary;
+ minimize cost: sum{m in Y} Route[m];
+ subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];
+ solve; 
+ printf {m in Y:  Route[m] == 1} "%s ", m > "Results.txt";
+ data;
+set Z:= Z0 Z1 Z2 Z3 Z4 Z5 Z6 Z7 Z8 Z9 Z10 Z11 Z12 Z13 Z14 Z15 Z16 Z17 Z18 Z19 Z20 Z21 Z22 Z23 Z24 Z25 Z26 Z27 Z28 Z29 Z30 Z31 Z32 Z33 Z34 Z35 Z36 Z37 Z38 Z39 Z40 Z41 Z42 Z43 Z44 Z45 Z46 Z47 Z48 ;
+set Y:= Y0 Y1 Y2 Y3 Y4 Y5 Y6 Y7 ;
+param A := 
+[Z0,Y0] 1[Z1,Y0] 1[Z1,Y1] 1[Z3,Y1] 1[Z3,Y7] 1[Z4,Y7] 1[Z21,Y4] 1[Z23,Y5] 1[Z23,Y6] 1[Z24,Y6] 1[Z25,Y7] 1[Z26,Y6] 1[Z27,Y5] 1[Z30,Y4] 1[Z31,Y4] 1[Z36,Y3] 1[Z37,Y3] 1[Z39,Y3] 1[Z43,Y2] 1
+;
+param B := 
+[Z2] 0[Z5] 0[Z6] 0[Z7] 0[Z8] 0[Z9] 0[Z10] 0[Z11] 0[Z12] 0[Z13] 0[Z14] 0[Z15] 0[Z16] 0[Z17] 0[Z18] 0[Z19] 0[Z20] 0[Z22] 0[Z28] 0[Z29] 0[Z32] 0[Z33] 0[Z34] 0[Z35] 0[Z38] 0[Z40] 0[Z41] 0[Z42] 0[Z44] 0[Z45] 0[Z46] 0[Z47] 0[Z48] 0
+;
+end;

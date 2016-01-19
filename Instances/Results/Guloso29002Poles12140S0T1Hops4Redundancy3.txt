@@ -1,0 +1,37 @@
+Dimension: 29002 x 12140
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 3510
+Time: 85.435997
+Hop1Quantity: 20797
+Hop2Quantity: 5154
+Hop3Quantity: 2387
+Hop4Quantity: 664
+Hop1Quality: 0.998491
+Hop2Quality: 0.966674
+Hop3Quality: 0.952881
+Hop4Quality: 0.914680
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 30.890313
+Max Meters per DAP: 664.000000
+Min Redundancy: 1.000000
+Med Redundancy: 3.738535
+Max Redundancy: 13.000000
+
+P.O Solution Quality: 3440
+P.O Time: 97.639000
+Hop1Quantity: 20718
+Hop2Quantity: 5361
+Hop3Quantity: 2360
+Hop4Quantity: 563
+Hop1Quality: 0.998429
+Hop2Quality: 0.966670
+Hop3Quality: 0.953146
+Hop4Quality: 0.913885
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 29.347093
+Max Meters per DAP: 664.000000
+Min Redundancy: 1.000000
+Med Redundancy: 3.480932
+Max Redundancy: 11.000000
