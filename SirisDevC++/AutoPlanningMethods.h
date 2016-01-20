@@ -176,7 +176,7 @@ class AutoPlanning: public FatherMethods
 		vector<vector<int> > createScp();
 		vector<vector<int> > createInvertedScp();
 		vector<vector<int> > coverageList(vector<Position*> &daps);
-
+		
 		//Funções planejamento básico
 		//void saveGLPKFile(vector<vector<int> > &scp);
 		void saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy);
@@ -184,7 +184,7 @@ class AutoPlanning: public FatherMethods
 		
 		//Funções planejamento com limite (provavelmente não será utilizado)
 		void saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit);
-
+		int getBestCellSize();
 		//Planejamento com cluster (usa o K-MEANS)
 		vector<int> clusterAutoPlanning(bool usePostOptimization, int redundancy);
 

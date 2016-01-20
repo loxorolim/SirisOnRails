@@ -1015,6 +1015,38 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 	if (verbose) cout << "\n Planejamento por clusters finalizado";
 	return result;
 }
+int AutoPlanning::getBestCellSize()
+{
+	int size = regionLimiter;
+	int variation = 10;
+	while (true)
+	{
+		Grid* metergrid = new Grid(meters, poles,size);//cria o grid dos medidores, bla bla bla.
+		metergrid->putPositions(meters);
+		Grid* polegrid = new Grid(poles, meters, size);//cria o grid dos postes
+		polegrid->putPositions(poles);
+		map<pair<int, int>, vector<Position*> > meterCells = metergrid->getCells();
+		
+		for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
+		{
+			vector<Position*> cellsMeters, cellsPoles;
+
+			cellsMeters = it->second; //Recebe todas as posições dos medidores que estão na célula
+			cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posição de um desses medidores e usa como referência pra pegar os postes da mesma célula e das células vizinhas.
+			
+			double memEst = memEstimation(cellsMeters.size(), cellsPoles.size());
+			if (memEst*MEM_EST_SAFETY >= MEM_LIMIT)
+				return (size-variation);
+			else if (meterCells.size() == 1)
+				return size;
+		}
+		delete metergrid;
+		delete polegrid;
+		size+=variation;
+		cout << size << "\n";
+	}
+
+}
 //Essa aqui é minha heurística que faz o método exato pra cada célula.
 string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 {

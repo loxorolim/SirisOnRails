@@ -433,6 +433,7 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 	string fileToSave = to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + "Redundancy"+to_string(redundancy)+ ".txt";
 
 	TestResult* ret;
+	int size=1;
 	switch (type)
 	{
 	case 0:
@@ -452,6 +453,14 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 		ret = AP->executeGraspAutoPlanTestMode(iterations, alpha, redundancy, true);
 		result = ret->toString();
 		delete(ret);
+		break;
+	case 3:
+		fileToSave = pathToSave + "Cell" + fileToSave;
+		size = AP->getBestCellSize();
+		result = gridPlanningTest(AP, size, true, 1);
+		
+		//result = ret->toString();
+		//delete(ret);
 		break;
 	default:
 		break;
@@ -1351,7 +1360,12 @@ int TestMain(int argc, char** argv)
 	srand(time(NULL));
 
 	string metersFile = "", polesFile = "";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+
+	metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
+	polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
+	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 3);
+	return 0;
 
 	int hops = 1;
 	for (hops; hops <= 3; hops++)
