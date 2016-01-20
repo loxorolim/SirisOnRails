@@ -14,6 +14,8 @@
 //#include <Windows.h>
 using namespace std;
 using namespace rapidjson;
+
+#define TIME_LIM_DEFAULT 3600
 // Check windows
 #if _WIN32 || _WIN64
 #if _WIN64

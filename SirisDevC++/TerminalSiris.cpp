@@ -43,7 +43,23 @@ const string CONSIDER_CELL_RADIUS_CMD = "-ccr";
 const string VERBOSE_CMD = "-verbose -v -V";
 const string OVERWRITE_CMD = "-ow -overwrite -OW";
 
-const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + POWER_CMD + " : Potencia dos dispositivos \n " + MESH_HOPS_CMD + " : Numero de saltos mesh \n " + REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor \n " + HTX_CMD + " : Altura dos medidores em metros \n " + HRX_CMD + " : Altura dos agregadores em metros\n " + BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo \n " + TIME_LIMIT_CMD + " : Tempo limite para o solver resolver cada sub-instancia \n " + MEM_LIMIT_CMD + " : Memoria maxima limite para o metodo exato \n " + CONSIDER_CELL_RADIUS_CMD + " : Planejar considerando apenas os postes que possuem sinal 3G/4G/GPRS \n " + VALID_CELL_RADIUS_CMD + " : Alcance de efeito de cada ponto de sinal 3G/4G/GPRS \n " + VERBOSE_CMD + " : Ativa modo verboso \n " + OVERWRITE_CMD + " : Ativa sobrescrita de DAPs ja posicionados\n " + HELP_CMD + " : Esta mensagem de ajuda";
+const string helpMessage = "\n " + INPUT_CMD + " : Arquivo .kml de entrada. Ex: Input.kml \n " + 
+OUTPUT_CMD + " : Arquivo .kml de saida. Ex: Output.kml \n " + 
+TECHNOLOGY_CMD + " : Tecnologia considerada. \n \t0: 802.11g \n \t1: ZigBee \n " + 
+SCENARIO_CMD + " : Cenario considerado. \n \t" + to_string(Urbano) + ": Urbano \n \t" + to_string(Suburbano) + ": Suburbano \n \t" + to_string(Rural) + ": Rural \n " + 
+POWER_CMD + " : Potencia dos dispositivos (Numero real) \n " + 
+MESH_HOPS_CMD + " : Numero de saltos mesh (Inteiro) \n " + 
+REDUNDANCY_CMD + " : Redundancia de cobertura para cada medidor (Inteiro)\n " + 
+HTX_CMD + " : Altura dos medidores em metros (Numero real)\n " + 
+HRX_CMD + " : Altura dos agregadores em metros (Numero real)\n " + 
+BIT_RATE_CMD + " : Taxa de transmissao dos dispositivos em megabits por segundo (Numero real) \n " + 
+TIME_LIMIT_CMD + " : Tempo limite para o solver resolver cada sub-instancia (Numero real) \n " + 
+MEM_LIMIT_CMD + " : Memoria maxima limite para o metodo exato (Numero real) \n " + 
+CONSIDER_CELL_RADIUS_CMD + " : Planejar considerando apenas os postes que possuem sinal 3G/4G/GPRS \n " + 
+VALID_CELL_RADIUS_CMD + " : Alcance de efeito de cada ponto de sinal 3G/4G/GPRS (Inteiro) \n " + 
+VERBOSE_CMD + " : Ativa modo verboso \n " +
+OVERWRITE_CMD + " : Ativa sobrescrita de DAPs ja posicionados\n " + 
+HELP_CMD + " : Esta mensagem de ajuda";
 int tech = TECHNOLOGY_DEFAULT, scenario = SCENARIO_DEFAULT, power = T80211G_POWER_DEFAULT, meshHops = MESH_HOPS_DEFAULT, redundancy = REDUNDANCY_DEFAULT, valid_cell_radius = VALID_CELL_RADIUS_DEFAULT;
 double h_tx = H_TX_DEFAULT, h_rx = H_RX_DEFAULT, bit_rate = T802154_BIT_RATE_DEFAULT;
 bool verbose = false, ccr = false, overwrite = false;
@@ -60,9 +76,18 @@ bool check_if_can_write(string filename)
 }
 bool is_number(const std::string& s)
 {
-	std::string::const_iterator it = s.begin();
-	while (it != s.end() && isdigit(*it)) ++it;
-	return !s.empty() && it == s.end();
+	try
+	{
+		double value = std::stod(s);
+		return true;
+	}
+	catch (std::exception& e)
+	{
+		return false;
+	}
+//	std::string::const_iterator it = s.begin();
+//	while (it != s.end() && isdigit(*it)) ++it;
+//	return !s.empty() && it == s.end();
 }
 bool is_cmd(char* cmd, string str)
 {
@@ -190,12 +215,20 @@ int getTimeLimitOption(int argc, char* argv[])
 			if (is_number(argv[i + 1]))
 			{
 				int	val = atoi(argv[i + 1]);
-				TIME_LIMIT = val;
-				return 0;
+				if (val > 0)
+				{
+					TIME_LIMIT = val;
+					return 0;
+				}
+				else
+				{
+					cerr << "\nERRO: Valor para o tempo limite deve ser superior a 0!";
+					return 1;
+				}
 			}
 			else
 			{
-				cerr << "\nERRO: Digite um numero no valor de potencia!";
+				cerr << "\nERRO: Digite um numero para o tempo limite!";
 				return 1;
 			}
 		}
@@ -210,13 +243,23 @@ int getMemLimitOption(int argc, char* argv[])
 		{
 			if (is_number(argv[i + 1]))
 			{
+
 				int	val = atoi(argv[i + 1]);
-				MEM_LIMIT = val;
-				return 0;
+				if (val > 0)
+				{
+					MEM_LIMIT = val;
+					return 0;
+				}
+				else
+				{
+					cerr << "\nERRO: Valor para o limite de memoria deve ser maior que 0. ";
+					return 1;
+				}
+
 			}
 			else
 			{
-				cerr << "\nERRO: Digite um numero no valor de potencia!";
+				cerr << "\nERRO: Digite um numero para o limite de memoria!";
 				return 1;
 			}
 		}
@@ -236,7 +279,7 @@ int getRedundancyOption(int argc, char* argv[])
 					redundancy = val;
 				else
 				{
-					cerr << "\nERRO: Valor deve ser maior ou igual a 1. ";
+					cerr << "\nERRO: Valor de redundancia deve ser maior ou igual a 1. ";
 					return 1;
 				}
 				if (val > 3)
@@ -267,7 +310,7 @@ int getHTXOption(int argc, char* argv[])
 					h_tx = val;
 				else
 				{
-					cerr << "\nERRO: Valor deve ser maior ou igual a 0. ";
+					cerr << "\nERRO: Valor de altura dos medidores deve ser maior ou igual a 0. ";
 					return 1;
 				}
 				return 0;
@@ -294,14 +337,14 @@ int getHRXOption(int argc, char* argv[])
 					h_rx = val;
 				else
 				{
-					cerr << "\nERRO: Valor deve ser maior ou igual a 0. ";
+					cerr << "\nERRO: Valor de altura dos agregadores deve ser maior ou igual a 0. ";
 					return 1;
 				}
 				return 0;
 			}
 			else
 			{
-				cerr << "\nERRO: Digite um numero no valor de altura dos medidores!";
+				cerr << "\nERRO: Digite um numero no valor de altura dos agregadores!";
 				return 1;
 			}
 		}
@@ -321,7 +364,7 @@ int getValidCellRadiusOption(int argc, char* argv[])
 					valid_cell_radius = val;
 				else
 				{
-					cerr << "\nERRO: Valor deve ser maior ou igual a 1. ";
+					cerr << "\nERRO: Valor para a area de efeito dos pontos de sinal deve ser maior ou igual a 1. ";
 					return 1;
 				}
 				return 0;
@@ -394,15 +437,17 @@ int getMeshHopsOption(int argc, char* argv[])
 	}
 	return 0;
 }
-void getHelpMessageOption(int argc, char* argv[])
+bool getHelpMessageOption(int argc, char* argv[])
 {
 	for (int i = 1; i < argc; i++)
 	{
 		if (is_cmd(argv[i], HELP_CMD))
 		{
 			cout << helpMessage;
+			return true;
 		}
 	}
+	return false;
 }
 void getVerboseOption(int argc, char* argv[])
 {
@@ -447,6 +492,9 @@ void printPlanningResume(int mSize, int pSize, int sSize)
 	cout << "\nAltura dos medidores: " + to_string(h_tx) + " m";
 	cout << "\nAltura dos agregadores: " + to_string(h_rx)+" m";
 	cout << "\nNumeros de saltos maximos: " + to_string(meshHops+1) + ", onde "+ to_string(meshHops)+" sao saltos Mesh";
+	cout << "\nConsiderar apenas postes com sinal 3G/4G/GPRS: " << ccr;
+	if (ccr)
+		cout << "\nArea de efeito de um ponto de sinal 3G/4G/GPRS: " + to_string(valid_cell_radius);
 	cout << "\nResultado sera gravado em: " << outputFile;
 	cout << "\nLimite de memoria por instancia: " << MEM_LIMIT;
 	cout << "\nLimite de tempo por instancia: " << TIME_LIMIT;
@@ -476,6 +524,8 @@ int TerminalMain(int argc, char* argv[])
 	//convertMeterAndPolesToKml("C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\filemeters9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\filepoles9999999.txt", "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\arqsTeste\\Floripa.kml");
 
 	int e = 0;
+	if (getHelpMessageOption(argc, argv))
+		return 0;
 	e += getInputFileOption(argc, argv);
 	e += getOutputFileOption(argc, argv);
 	e += getTechnologyOption(argc, argv);
@@ -502,7 +552,7 @@ int TerminalMain(int argc, char* argv[])
 	getConsiderCellRadiusOption(argc, argv);
 	getVerboseOption(argc, argv);
 	getOverwriteOption(argc, argv);
-	getHelpMessageOption(argc, argv);
+	
 	cout << "\n";
 	if (e)
 		return 0;

@@ -1,7 +1,7 @@
 #include "auxiliars.h"
 
 
-double TIME_LIMIT = 3600;
+double TIME_LIMIT = TIME_LIM_DEFAULT;
 double MEM_LIMIT = MEM_LIM_DEFAULT;
 //Essa classe tem umas funçõezinhas auxiliares.
 double getNumberOfRetries(double quality)
