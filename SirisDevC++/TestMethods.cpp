@@ -357,13 +357,13 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 
 
 }
-string gridPlanningTest(AutoPlanning *AP,int gridSize, int usePostOptimization, int redundancy)
+TestResult* gridPlanningTest(AutoPlanning *AP,int gridSize, int usePostOptimization, int redundancy)
 {
 	AP->setGridSize(gridSize);
 	
 	cout << "\nIniciando teste com célula de tamanho " << to_string(gridSize) << " com " << to_string(AP->getMetersSize()) << " medidores e " << to_string(AP->getPolesSize()) << " postes\n";
 	TestResult* ret = AP->executeAutoPlanTestMode(usePostOptimization,redundancy);
-	return "";
+	return ret;
 }
 void executeTest(string meterFile, string poleFile, string pathToSave,int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh)
 {
@@ -385,7 +385,7 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 	//result += gridPlanningTest(AP, 1000, true, 1);
 	//result += gridPlanningTest(AP, 5000, false, 1);
 	//result += gridPlanningTest(AP, 5000, true, 1);
-	result += gridPlanningTest(AP, 10000, false, 1);
+	//result += gridPlanningTest(AP, 10000, false, 1);
 	//result + "\n------------------------------\n";
 	//result += gridPlanningTest(AP, 100, 0, 2);
 	//result += gridPlanningTest(AP, 100, 2, 2);
@@ -457,10 +457,10 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 	case 3:
 		fileToSave = pathToSave + "Cell" + fileToSave;
 		size = AP->getBestCellSize();
-		result = gridPlanningTest(AP, size, true, 1);
+		ret = gridPlanningTest(AP, size, true, redundancy);
 		
-		//result = ret->toString();
-		//delete(ret);
+		result = ret->toString();
+		delete(ret);
 		break;
 	default:
 		break;
@@ -1360,42 +1360,46 @@ int TestMain(int argc, char** argv)
 	srand(time(NULL));
 
 	string metersFile = "", polesFile = "";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
 	metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
 	polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
-	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 3);
-	return 0;
+	//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 3);
+	//return 0;
 
-	int hops = 1;
+	int hops = 0;
 	for (hops; hops <= 3; hops++)
 	{
 		cout << "HOPS: " << hops;
 		for (int i = 1; i < 4; i++)
 		{
-			metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
-			polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
+			//metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
+			//polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 2, 1000, 0.9);
-
-			metersFile = rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt";
-			polesFile = rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt";
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
+			
+			//metersFile = rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt";
+			//polesFile = rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt";
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 2, 1000, 0.9);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
 
 			metersFile = rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt";
 			polesFile = rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt";
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 2, 1000, 0.8);
+			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
 
 			metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
 			polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 2, 1000, 0.8);
+			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
 		}
 	}
 	

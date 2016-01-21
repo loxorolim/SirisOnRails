@@ -1273,6 +1273,7 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 	result->qualityPerHop = metricResult->linkQualityPerHop;
 	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
 	result->uncoveredMeters = metricResult->uncoveredMeters;
+	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
 	delete metricResult;
 	delete mc;
 	//Calcula métricas com pos-opt
@@ -1296,6 +1297,7 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 		result->poMetersPerHop = metricResult->meterPerHop;
 		result->poQualityPerHop = metricResult->linkQualityPerHop;
 		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
 		delete metricResult;
 		delete mc;
 	}
