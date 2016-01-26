@@ -567,7 +567,7 @@ skip: glp_mpl_free_wksp(tran);
 
 vector<pair<double,double> > getClusters(double *data, int numData)
 {
-	VlRand rand;
+	//VlRand rand;
 	vl_size dimension = 2;
 	vl_size numCenters = 2;
 	vl_size maxiter = 100;
@@ -582,8 +582,8 @@ vector<pair<double,double> > getClusters(double *data, int numData)
 	VlVectorComparisonType distance = VlDistanceL2;
 	VlKMeans * kmeans = vl_kmeans_new(VL_TYPE_DOUBLE, distance);
 
-	vl_rand_init(&rand);
-	vl_rand_seed(&rand, 1000);
+	//vl_rand_init(&rand);
+	//vl_rand_seed(&rand, 1000);
 	vl_kmeans_set_verbosity(kmeans, 1);
 	vl_kmeans_set_max_num_iterations(kmeans, maxiter);
 	vl_kmeans_set_max_num_comparisons(kmeans, maxComp);
@@ -1137,10 +1137,17 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posição de um desses medidores e usa como referência pra pegar os postes da mesma célula e das células vizinhas.
 		meters = cellsMeters;
 		poles = cellsPoles;
+
 		vector<vector<int> > cellSCP = createScp();
+	
 		saveGLPKFileReduced(cellSCP,redundancy);
 		double memUsageInCell= -1;
 		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
+		subProblem* sp = new subProblem();
+		evaluateSCP(cellSCP, meters.size(), sp);
+		sp->solverTime = solverTime;
+		sp->memUsed = memUsageInCell;
+		result->subProblemStats.push_back(sp);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
 		for (int i = 0; i < answer.size(); i++)

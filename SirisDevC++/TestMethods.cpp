@@ -430,14 +430,14 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 
 	string result = "";
 
-	string fileToSave = to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + "Redundancy"+to_string(redundancy)+ ".txt";
+	string fileToSave = to_string(AP->getMetersSize()) + "Poles" + to_string(AP->getPolesSize()) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + "Redundancy" + to_string(redundancy) + "MemLim" + to_string(MEM_LIMIT) + ".txt";
 
 	TestResult* ret;
 	int size=1;
 	switch (type)
 	{
 	case 0:
-		fileToSave = pathToSave + "Cluster" + fileToSave;
+		fileToSave = pathToSave + "Cluster" + fileToSave ;
 		ret = AP->executeClusterAutoPlanTestMode(true, redundancy);
 		result = ret->toString();
 		delete(ret);
@@ -1362,13 +1362,27 @@ int TestMain(int argc, char** argv)
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
-	metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
-	polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
-	//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 3);
-	//return 0;
-
-	int hops = 0;
-	for (hops; hops <= 3; hops++)
+//	metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
+//	polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
+//	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 3);
+//	return 0;
+	//metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
+	//polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
+	metersFile = rubyPath + "/Instances/FloripaMeters15000.txt";
+	polesFile = rubyPath + "/Instances/FloripaPoles15000.txt";
+	MEM_LIMIT = 100;
+	cout << MEM_LIMIT;
+	while (true)
+	{
+		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 0);
+		if (MEM_LIMIT == 500)
+			return 0;
+		MEM_LIMIT += 100;
+	}
+	return 0;
+	int hops = 1;
+	int maxHops = 1;
+	for (hops; hops <= maxHops; hops++)
 	{
 		cout << "HOPS: " << hops;
 		for (int i = 1; i < 4; i++)
@@ -1392,7 +1406,7 @@ int TestMain(int argc, char** argv)
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 2, 1000, 0.8);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
 
 			metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
 			polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";

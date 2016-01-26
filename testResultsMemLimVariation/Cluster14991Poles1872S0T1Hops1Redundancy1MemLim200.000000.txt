@@ -1,0 +1,81 @@
+Dimension: 14991 x 1872
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 1384
+Time: 15.422000
+Hop1Quantity: 14991
+Hop1Quality: 0.999787
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 12.382225
+Max Meters per DAP: 226.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.143153
+Max Redundancy: 4.000000
+
+P.O Solution Quality: 1384
+P.O Time: 15.426000
+Hop1Quantity: 14991
+Hop1Quality: 0.999787
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 12.382225
+Max Meters per DAP: 226.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.143153
+Max Redundancy: 4.000000
+619x172:
+Número de 1's na Matriz de Cobertura790.000000:
+Densidade: 0.007420
+Cobertura média por DAP: 4.593023
+Desvio padrão da cobertura: 5.506609
+Memória utilizada: 17.068692
+Tempo utilizado: 0.000000
+2248x425:
+Número de 1's na Matriz de Cobertura2894.000000:
+Densidade: 0.003029
+Cobertura média por DAP: 6.809412
+Desvio padrão da cobertura: 10.188986
+Memória utilizada: 149.011121
+Tempo utilizado: 0.003000
+1514x272:
+Número de 1's na Matriz de Cobertura2351.000000:
+Densidade: 0.005709
+Cobertura média por DAP: 8.643382
+Desvio padrão da cobertura: 10.784386
+Memória utilizada: 64.792897
+Tempo utilizado: 0.003000
+3446x269:
+Número de 1's na Matriz de Cobertura5228.000000:
+Densidade: 0.005640
+Cobertura média por DAP: 19.434944
+Desvio padrão da cobertura: 29.726893
+Memória utilizada: 145.552060
+Tempo utilizado: 0.008000
+2621x283:
+Número de 1's na Matriz de Cobertura5924.000000:
+Densidade: 0.007987
+Cobertura média por DAP: 20.932862
+Desvio padrão da cobertura: 23.090215
+Memória utilizada: 116.554784
+Tempo utilizado: 0.005000
+1181x112:
+Número de 1's na Matriz de Cobertura2145.000000:
+Densidade: 0.016217
+Cobertura média por DAP: 19.151786
+Desvio padrão da cobertura: 19.321162
+Memória utilizada: 21.493787
+Tempo utilizado: 0.001000
+1984x185:
+Número de 1's na Matriz de Cobertura6272.000000:
+Densidade: 0.017088
+Cobertura média por DAP: 33.902703
+Desvio padrão da cobertura: 37.221198
+Memória utilizada: 58.470197
+Tempo utilizado: 0.007000
+1378x164:
+Número de 1's na Matriz de Cobertura2664.000000:
+Densidade: 0.011788
+Cobertura média por DAP: 16.243902
+Desvio padrão da cobertura: 27.161244
+Memória utilizada: 36.103139
+Tempo utilizado: 0.003000

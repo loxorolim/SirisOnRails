@@ -1,0 +1,53 @@
+Dimension: 14991 x 1872
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 1068
+Time: 26.643999
+Hop1Quantity: 14991
+Hop1Quality: 0.999523
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 16.886704
+Max Meters per DAP: 283.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.203055
+Max Redundancy: 4.000000
+
+P.O Solution Quality: 1068
+P.O Time: 26.650000
+Hop1Quantity: 14991
+Hop1Quality: 0.999523
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 16.886704
+Max Meters per DAP: 283.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.203055
+Max Redundancy: 4.000000
+2867x595:
+Número de 1's na Matriz de Cobertura4731.000000:
+Densidade: 0.002773
+Cobertura média por DAP: 7.951261
+Desvio padrão da cobertura: 10.196192
+Memória utilizada: 265.026509
+Tempo utilizado: 0.017000
+4960x539:
+Número de 1's na Matriz de Cobertura11476.000000:
+Densidade: 0.004293
+Cobertura média por DAP: 21.291280
+Desvio padrão da cobertura: 32.191947
+Memória utilizada: 415.634244
+Tempo utilizado: 0.095000
+3802x398:
+Número de 1's na Matriz de Cobertura13451.000000:
+Densidade: 0.008889
+Cobertura média por DAP: 33.796482
+Desvio padrão da cobertura: 34.568718
+Memória utilizada: 236.609136
+Tempo utilizado: 0.104000
+3362x358:
+Número de 1's na Matriz de Cobertura12555.000000:
+Densidade: 0.010431
+Cobertura média por DAP: 35.069832
+Desvio padrão da cobertura: 43.467938
+Memória utilizada: 188.639104
+Tempo utilizado: 0.048000
