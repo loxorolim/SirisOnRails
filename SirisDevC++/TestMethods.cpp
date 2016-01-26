@@ -1355,33 +1355,78 @@ void fullFixedDensityTest(double density, int mSize,int pSize, int variation, in
 		delete incResults[i];
 	}
 }
+void VaryMemLimTest(int init, int var, int max, string rubyPath, string metersFile, string polesFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, int redundancy)
+{
+	int aux = MEM_LIMIT;
+	MEM_LIMIT = init;
+	cout << MEM_LIMIT;
+	int meterSize=0, poleSize=0;
+	
+
+	vector<vector<double>> vec;
+	while (true)
+	{
+		AutoPlanning* AP = setAutoPlanningFromFile(metersFile.c_str(), polesFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
+		TestResult* ret = AP->executeClusterAutoPlanTestMode(true, redundancy);
+		//resp += to_string(MEM_LIMIT) + " " + to_string(ret->solutionQuality) + " " + to_string(ret->time) + " " + to_string(ret->poSolutionQuality) + " " + to_string(ret->poTime) + " " + to_string(ret->subProblemStats.size()) + "\n";
+		vector<double> res;
+		res.push_back(MEM_LIMIT);
+		res.push_back(ret->solutionQuality);
+		res.push_back(ret->time); 
+		res.push_back(ret->poSolutionQuality);
+		res.push_back(ret->poTime);
+		res.push_back(ret->subProblemStats.size());
+		vec.push_back(res);
+		meterSize = AP->getMetersSize(); poleSize = AP->getPolesSize();
+		delete AP;
+		delete ret;
+		if (MEM_LIMIT >= max)
+			break;
+		MEM_LIMIT += var;
+	}
+	int best_solution = vec[vec.size()-1][1];
+	for (int i = 0; i < vec.size(); i++)
+	{
+		vec[i].push_back(vec[i][3] / best_solution);
+	}
+	MEM_LIMIT = aux;
+	string fileToSave = pathToSave+ "ClusterMeters"+to_string(meterSize) + "Poles" + to_string(poleSize) + "S" + to_string(scenario) + "T" + to_string(tech) + "Hops" + to_string(mesh + 1) + "Redundancy" + to_string(redundancy) + ".txt";
+	ofstream f(fileToSave.c_str());
+	string resp = "";
+	for (int i = 0; i < vec.size(); i++)
+	{
+		for (int j = 0; j < vec[i].size(); j++)
+		{
+			resp += to_string(vec[i][j]) + " ";
+		}
+		resp += "\n";
+	}
+	f << resp;
+	f.close();
+}
 int TestMain(int argc, char** argv)
 {
 	srand(time(NULL));
 
 	string metersFile = "", polesFile = "";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 
 //	metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
 //	polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
 //	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 3);
 //	return 0;
-	//metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
-	//polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
-	metersFile = rubyPath + "/Instances/FloripaMeters15000.txt";
-	polesFile = rubyPath + "/Instances/FloripaPoles15000.txt";
-	MEM_LIMIT = 100;
-	cout << MEM_LIMIT;
-	while (true)
-	{
-		executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 0, 1, 0);
-		if (MEM_LIMIT == 500)
-			return 0;
-		MEM_LIMIT += 100;
-	}
+	metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
+	polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
+	//metersFile = rubyPath + "/Instances/FloripaMeters15000.txt";
+	//polesFile = rubyPath + "/Instances/FloripaPoles15000.txt";
+	//MEM_LIMIT = 100;
+	//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3, 1, 0);
+	//return 0;
+	for (int i = 0; i < 4; i++)
+		VaryMemLimTest(50, 50, 100, rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, i, 1);
 	return 0;
 	int hops = 1;
-	int maxHops = 1;
+	int maxHops = 4;
 	for (hops; hops <= maxHops; hops++)
 	{
 		cout << "HOPS: " << hops;

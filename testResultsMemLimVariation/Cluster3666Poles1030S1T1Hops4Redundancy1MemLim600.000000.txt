@@ -1,0 +1,27 @@
+Dimension: 3666 x 1030
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 131
+Time: 17.304001
+Hop1Quantity: 1151
+Hop2Quantity: 983
+Hop3Quantity: 926
+Hop4Quantity: 606
+Hop1Quality: 0.994995
+Hop2Quality: 0.981753
+Hop3Quality: 0.974089
+Hop4Quality: 0.960745
+Min Meters per DAP: 4.000000
+Med Meters per DAP: 34.595420
+Max Meters per DAP: 101.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.236225
+Max Redundancy: 3.000000
+3666x1030:
+Número de 1's na Matriz de Cobertura40445.000000:
+Densidade: 0.010711
+Cobertura média por DAP: 39.266990
+Desvio padrão da cobertura: 17.392543
+Memória utilizada: 409.434019
+Tempo utilizado: 1.610000
