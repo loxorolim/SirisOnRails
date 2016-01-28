@@ -1366,6 +1366,7 @@ void VaryMemLimTest(int init, int var, int max, string rubyPath, string metersFi
 	vector<vector<double>> vec;
 	while (true)
 	{
+		cout << "\nTESTANDO PARA MEM_LIM = " + to_string(MEM_LIMIT);
 		AutoPlanning* AP = setAutoPlanningFromFile(metersFile.c_str(), polesFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
 		TestResult* ret = AP->executeClusterAutoPlanTestMode(true, redundancy);
 		//resp += to_string(MEM_LIMIT) + " " + to_string(ret->solutionQuality) + " " + to_string(ret->time) + " " + to_string(ret->poSolutionQuality) + " " + to_string(ret->poTime) + " " + to_string(ret->subProblemStats.size()) + "\n";
@@ -1406,10 +1407,11 @@ void VaryMemLimTest(int init, int var, int max, string rubyPath, string metersFi
 }
 int TestMain(int argc, char** argv)
 {
+
 	srand(time(NULL));
 
 	string metersFile = "", polesFile = "";
-	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
 //	metersFile = rubyPath + "/Instances/FloripaMetersCompleto29002.txt";
 //	polesFile = rubyPath + "/Instances/FloripaPolesCompleto12140.txt";
@@ -1417,16 +1419,27 @@ int TestMain(int argc, char** argv)
 //	return 0;
 	metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
 	polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
+	//metersFile = rubyPath + "/Instances/FloripaMeters1000.txt";
+	//polesFile = rubyPath + "/Instances/FloripaPoles1000.txt";
+	//for (int i = 3; i < 4; i++)
+	//{
+	//	cout << "\nINICIANDO TESTE MEM_LIM HOP: " + i;
+	//	VaryMemLimTest(10, 10, 700, rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, i, 1);
+	//}
+	//return 0;
 	//metersFile = rubyPath + "/Instances/FloripaMeters15000.txt";
 	//polesFile = rubyPath + "/Instances/FloripaPoles15000.txt";
-	//MEM_LIMIT = 100;
-	//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3, 1, 0);
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	cout << "\nINICIANDO TESTE MEM_LIM HOP: " + i;
+	//	VaryMemLimTest(100, 100, 6000, rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 3, 1);
+	//}
 	//return 0;
-	for (int i = 0; i < 4; i++)
-		VaryMemLimTest(50, 50, 100, rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, i, 1);
-	return 0;
-	int hops = 1;
-	int maxHops = 4;
+
+	
+	int hops = 0;
+	int maxHops = 3;
 	for (hops; hops <= maxHops; hops++)
 	{
 		cout << "HOPS: " << hops;
@@ -1727,7 +1740,7 @@ int TestMain(int argc, char** argv)
 	//	std::cout << val;
 	}
 
-	//_CrtDumpMemoryLeaks();
+
 	return 0;
 
 }

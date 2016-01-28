@@ -584,7 +584,7 @@ vector<pair<double,double> > getClusters(double *data, int numData)
 
 	//vl_rand_init(&rand);
 	//vl_rand_seed(&rand, 1000);
-	vl_kmeans_set_verbosity(kmeans, 1);
+	vl_kmeans_set_verbosity(kmeans, 0);
 	vl_kmeans_set_max_num_iterations(kmeans, maxiter);
 	vl_kmeans_set_max_num_comparisons(kmeans, maxComp);
 	vl_kmeans_set_num_repetitions(kmeans, maxrep);
