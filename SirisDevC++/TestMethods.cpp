@@ -371,7 +371,7 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(),poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD,  mesh, rubyPath);
 
-//	AP->saveGLPKFileReducedWithLimit(scp,1, 5);
+//	AP->saveGLPKFileWithLimit(scp,1, 5);
 
 	string result = "";
 
@@ -426,7 +426,7 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 	//string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh, rubyPath);
 
-	//	AP->saveGLPKFileReducedWithLimit(scp,1, 5);
+	//	AP->saveGLPKFileWithLimit(scp,1, 5);
 
 	string result = "";
 
@@ -444,13 +444,13 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 		break;
 	case 1:
 		fileToSave = pathToSave + "Guloso" + fileToSave;
-		ret = AP->executeGraspAutoPlanTestMode(1, 1, redundancy, true);
+		ret = AP->graspAutoPlanningTestMode(1, 1, redundancy, true);
 		result = ret->toString();
 		delete(ret);
 		break;
 	case 2:
 		fileToSave = pathToSave + "Grasp" + fileToSave;
-		ret = AP->executeGraspAutoPlanTestMode(iterations, alpha, redundancy, true);
+		ret = AP->graspAutoPlanningTestMode(iterations, alpha, redundancy, true);
 		result = ret->toString();
 		delete(ret);
 		break;
@@ -713,7 +713,7 @@ void increaseRangeTest(string meterFile, string poleFile, string pathToSave, int
 	f << toSave;
 	f.close();
 }
-void saveGLPKFileReduced(vector<vector<int> > &SCP, int mSize, int pSize, int redundancy, string rubyPath)
+void saveGLPKFile(vector<vector<int> > &SCP, int mSize, int pSize, int redundancy, string rubyPath)
 {
 	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
 	//Pois se não, o método retornaria que a solução é impossível!
@@ -846,7 +846,7 @@ void increaseDensityTest(int mSize, int pSize, string rubyPath, string id, int t
 	{
 		double solverTime = -1, maxMem = -1;
 		
-		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		saveGLPKFile(scp, mSize, pSize, 1, rubyPath);
 		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
@@ -921,7 +921,7 @@ DensityTestResult* varyDensityTest(int mSize, int pSize, string rubyPath, int ti
 	while (true)
 	{		
 		double solverTime = -1, maxMem = -1;
-		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		saveGLPKFile(scp, mSize, pSize, 1, rubyPath);
 		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
@@ -979,7 +979,7 @@ DensityTestResult* varySCPCoverageTest(int mSize, int pSize, string rubyPath, in
 	while (true)
 	{
 		double solverTime = -1, maxMem = -1;
-		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		saveGLPKFile(scp, mSize, pSize, 1, rubyPath);
 		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
@@ -1199,7 +1199,7 @@ DensityTestResult* fixedDensityTest(double density, int mSize,int pSize, int var
 
 		vector<vector<int> > scp = SCPGenerator(mSize, pSize, density);
 		double solverTime = -1, maxMem = -1;
-		saveGLPKFileReduced(scp, mSize, pSize, 1, rubyPath);
+		saveGLPKFile(scp, mSize, pSize, 1, rubyPath);
 		//string access = rubyPath + "glpk-4.54/w64/glpsol.exe  --math " + filename + " --memlim 5800 > " + rubyPath +"wow.txt";
 		//string access = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\sirisSCPCalculator\\SirisSCPCalculator\\SirisSCPCalculator\\glpk-4.54\\w64\\glpsol.exe  --math " + filename + " --memlim " + to_string(memlimit) + " > wow.txt";
 		//system(access.c_str());
@@ -1409,7 +1409,7 @@ int TestMain(int argc, char** argv)
 {
 
 	srand(time(NULL));
-
+	double estMem = memEstimation(29002, 12140);
 	string metersFile = "", polesFile = "";
 	string rubyPath = "C:/Users/Guilherme/Documents/GitHub/SirisOnRails";
 
@@ -1603,7 +1603,7 @@ int TestMain(int argc, char** argv)
 
 	//return 0;
 	//vector<vector<int> > scp = SCPGenerator(300, 300,0.10);
-	//saveGLPKFileReduced(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
+	//saveGLPKFile(scp, 300, 300, 1, "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails");
 	
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(368619);

@@ -172,47 +172,44 @@ class AutoPlanning: public FatherMethods
 		}
 		
 		//Funções de criação do SCP;
-		vector<vector<int> > createScpWithLimit(int limit);
 		vector<vector<int> > createScp();
 		vector<vector<int> > createInvertedScp();
 		vector<vector<int> > coverageList(vector<Position*> &daps);
 		
 		//Funções planejamento básico
-		//void saveGLPKFile(vector<vector<int> > &scp);
-		void saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy);
-		//void saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToConsider, int redundancy);
+		void saveGLPKFile(vector<vector<int> > &SCP, int redundancy);
 		
-		//Funções planejamento com limite (provavelmente não será utilizado)
-		void saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit);
 		int getBestCellSize();
-		//Planejamento com cluster (usa o K-MEANS)
+		
+		//Planejamento com cluster (usa o K-MEANS).
 		vector<int> clusterAutoPlanning(bool usePostOptimization, int redundancy);
-
 		TestResult* clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy);
-		string gridAutoPlanning(int redundancy, int limit);
+		//Planejamento com células.
+		vector<int> gridAutoPlanning(bool usePostOptimization, int redundancy);
 		TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
+		//Planejamento com Grasp
+		vector<int> graspAutoPlanning(int iterations, double alpha, int redundancy, bool usePostOptimization);
+		TestResult* graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
 
 		vector<vector<int> > createMeterNeighbourhood(Grid *g);
 
 		string executeAutoPlan(int redundancy, int limit);
 		//vector<Position*> getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP);
 	
-		//vector<int> uncoverableMeters(vector<vector<int> > &SCP, int redundancy);
-		//vector<int> coverableMeters(vector<vector<int> > &SCP, int redundancy);
+		//Executa o solver GLPK
 		vector<int> executeGlpk(string filename);
 		vector<int> executeGlpk(string filename, double &maxmem, double &solverTime);
 
 		
 		//string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
 		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
-		string graspAutoPlanning(int iterations, double alpha);
-		TestResult* graspAutoPlanningTestMode(int iterations, double alpha);
+
 
 		//Metodos Teste
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
-		TestResult* executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
-		TestResult* graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
+		//TestResult* executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
+		//TestResult* graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
 		int getMetersSize();
 		int getPolesSize();
 		void setGridSize(double gridSize);
