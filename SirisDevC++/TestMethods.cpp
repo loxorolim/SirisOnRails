@@ -444,13 +444,13 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 		break;
 	case 1:
 		fileToSave = pathToSave + "Guloso" + fileToSave;
-		ret = AP->graspAutoPlanningTestMode(1, 1, redundancy, true);
+		ret = AP->executeGraspAutoPlanTestMode(1, 1, redundancy, true);
 		result = ret->toString();
 		delete(ret);
 		break;
 	case 2:
 		fileToSave = pathToSave + "Grasp" + fileToSave;
-		ret = AP->graspAutoPlanningTestMode(iterations, alpha, redundancy, true);
+		ret = AP->executeGraspAutoPlanTestMode(iterations, alpha, redundancy, true);
 		result = ret->toString();
 		delete(ret);
 		break;

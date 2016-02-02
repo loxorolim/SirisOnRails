@@ -194,34 +194,21 @@ class AutoPlanning: public FatherMethods
 		vector<vector<int> > createMeterNeighbourhood(Grid *g);
 
 		string executeAutoPlan(int redundancy, int limit);
-		//vector<Position*> getMetersThatSatisfyRedundancy(int redundancy, vector< vector< int > > invertedSCP);
-	
+
 		//Executa o solver GLPK
 		vector<int> executeGlpk(string filename);
 		vector<int> executeGlpk(string filename, double &maxmem, double &solverTime);
-
-		
-		//string planWithRedundancy(vector<vector<int> > &scp, int redundancy);
-		//vector<int> concatVectors(vector<int> &v1, vector<int> &v2);
-
-
 		//Metodos Teste
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
-		//TestResult* executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
-		//TestResult* graspAutoPlanningTestMode(int iterations, double alpha, int redundancy, bool usePostOptimization);
+		TestResult* executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
+
 		int getMetersSize();
 		int getPolesSize();
 		void setGridSize(double gridSize);
 		void setRegionLimiter(double rl);
-		//void removeAlreadyCoveredMeters(vector<Position*> &daps);
 		void setCoveredMeters(vector<Position*> &daps);
 };
-
-//void RolimLocalSearch(vector<vector<int> > &scp, int * solution);
-//void RolimEGuerraLocalSearch(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> solution);
 void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, vector<int> &solution,int redundancy);
-//void RolimEGuerraLocalSearchWithRedundancy2(vector<vector<int> > &scp, vector<vector<int> > &invertedSCP, int * &solution, int redundancy);
-//void WalkSat(vector<vector<int> > &scp, int * solution);
 
 #endif

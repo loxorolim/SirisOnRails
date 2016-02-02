@@ -3,30 +3,6 @@
 //Antes de começar leia os comentários do método statisticalList
 
 
-
-
-////Junta dois vetores igual ao do AutoPlanning, mas não lembro bem porque tenoh outro método igual aqui.
-//vector<int> MetricCalculation::concatVectors(vector<int> &v1, vector<int> &v2)
-//{
-//	vector<int> ret;
-//	for (int i = 0; i < v1.size(); i++)
-//		ret.push_back(v1[i]);
-//	for (int i = 0; i < v2.size(); i++)
-//	{
-//		bool add = true;
-//		for (int j = 0; j < v1.size(); j++)
-//		if (v1[j] == v2[i])
-//		{
-//			add = false;
-//			break;
-//		}
-//		if (add)
-//			ret.push_back(v2[i]);
-//
-//	}
-//	return ret;
-//
-//}
 //A partir da lista de cobertura (Coverage List - cL) determina-se quantos medidores cada DAP cobre.
 // A lista de cobertura é simplesmente um vetor de vetores, que relaciona cada DAP com os medidores que ele alcança.
 // O método simplesmente percorre a lista e calcula a média e descobre o mínimo e o máximo.
@@ -286,31 +262,6 @@ vector<vector<int> > MetricCalculation::coverageList()
 	delete g;
 	return sM;
 }
-//vector<vector<sComponent*> > MetricCalculation::createStatisticalMeterNeighbourhood(Grid *g)
-//{
-//	vector<vector<sComponent*> > M;
-//
-//	for (int i = 0; i < meters.size(); i++)
-//	{
-//		vector<sComponent*> pointsCovered;
-//		//vector<Position*> meterRegion = getActiveRegion(meters, meters[i]);
-//		vector<Position*> meterRegion = g->getCell(meters[i]);
-//		for (int j = 0; j < meterRegion.size(); j++)
-//		{
-//			double dist = getDistance(meters[i], meterRegion[j]);
-//			double eff = getHataSRDSuccessRate(dist, scenario, technology, BIT_RATE, TRANSMITTER_POWER,H_TX, H_RX, SRD);
-//			if (i != j && eff >= MARGIN_VALUE)
-//			{
-//				sComponent* component = new sComponent(meterRegion[j]->index, dist, eff, 0, NULL);
-//				pointsCovered.push_back(component);
-//			}
-//
-//		}
-//		M.push_back(pointsCovered);
-//	}
-//
-//	return M;
-//}
 //Mesmo coisa que no AutoPlanning
 vector<vector<int> > MetricCalculation::createMeterNeighbourhood(Grid *g)
 {

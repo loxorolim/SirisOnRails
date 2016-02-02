@@ -1,4 +1,4 @@
-#include "AutoPlanningMethods.h"
+Ôªø#include "AutoPlanningMethods.h"
 
 int AutoPlanning::getMetersSize()
 {
@@ -16,39 +16,39 @@ void AutoPlanning::setRegionLimiter(double rl)
 {
 	regionLimiter = rl;
 }
-//Esse mÈtodo cria uma matriz que relaciona quais medidores alcanÁam outors medidores.
-//A matriz È bem parecida ‡ matriz de cobertura do SCP.
-//A informaÁ„o dessa matriz ser· utilizada nos c·lculos Mesh para que j· tenha prÈ-calculado quem alcanÁa quem.
+//Esse m√©todo cria uma matriz que relaciona quais medidores alcan√ßam outors medidores.
+//A matriz √© bem parecida √† matriz de cobertura do SCP.
+//A informa√ß√£o dessa matriz ser√° utilizada nos c√°lculos Mesh para que j√° tenha pr√©-calculado quem alcan√ßa quem.
 //Por exemplo:
 //
 // 0 - 1, 2
 // 1 - 0
 // 2 - 0
-// No caso, o medidor de Ìndice 0 alcanÁa os medidores 1 e 2 e os medidores 1 e 2 alcanÁam 0. Obviamente, se um
-// medidor "a" alcanÁa "b", "b" deve alcanÁar "a".
+// No caso, o medidor de √≠ndice 0 alcan√ßa os medidores 1 e 2 e os medidores 1 e 2 alcan√ßam 0. Obviamente, se um
+// medidor "a" alcan√ßa "b", "b" deve alcan√ßar "a".
 vector<vector<int> > AutoPlanning::createMeterNeighbourhood(Grid *g)
 {
 	vector<vector<int> > M;
 	for (int i = 0; i < meters.size(); i++) 
 	{
 		vector<int> pointsCovered;
-		vector<Position*> meterRegion = g->getCell(meters[i]); //IMPORTANTE: Obviamente um medidor n„o precisa verificar
-		//TODOS os outros. Por isso que se utiliza o GRID! Esse meterRegion s„o cÈlulas adjacentes a celula do
-		//medidor que est· sendo analisado. Assim ele sÛ analisa uma quantidade limitada de medidores e o processamento
-		//fica mais r·pido
+		vector<Position*> meterRegion = g->getCell(meters[i]); //IMPORTANTE: Obviamente um medidor n√£o precisa verificar
+		//TODOS os outros. Por isso que se utiliza o GRID! Esse meterRegion s√£o c√©lulas adjacentes a celula do
+		//medidor que est√° sendo analisado. Assim ele s√≥ analisa uma quantidade limitada de medidores e o processamento
+		//fica mais r√°pido
 		for (int j = 0; j < meterRegion.size(); j++)
 		{
 			double dist = getDistance(meters[i], meterRegion[j]);
 			double eff = getLinkQualityBetweenMeters(dist);
-			if (meters[i]->index != meterRegion[j]->index && eff >= MARGIN_VALUE) //Se a eficiencia for superior a 90%(MARGIN_VALUE) ent„o È vizinho!
+			if (meters[i]->index != meterRegion[j]->index && eff >= MARGIN_VALUE) //Se a eficiencia for superior a 90%(MARGIN_VALUE) ent√£o √© vizinho!
 				pointsCovered.push_back(meterRegion[j]->index);
 		}
 		M.push_back(pointsCovered);
 	}
 	return M;
 }
-//Esse mÈtodo cria a matriz de cobertura que ser· utilizada no solver e assim obter o resultado do planejamento
-//autom·tico.
+//Esse m√©todo cria a matriz de cobertura que ser√° utilizada no solver e assim obter o resultado do planejamento
+//autom√°tico.
 vector<vector<int> > AutoPlanning::createScp()
 {
 	Grid* g = new Grid(meters,poles, regionLimiter); //Primeiro cria-se um grid.
@@ -59,34 +59,34 @@ vector<vector<int> > AutoPlanning::createScp()
 	for (int i = 0; i < poles.size(); i++)
 	{
 		vector<int> metersCovered;
-		vector<Position*> metersReduced = g->getCell(poles[i]);//Pega os medidores das cÈlulas vizinhas e da sua
-		// prÛpria cÈlula para fazer a an·lise.
+		vector<Position*> metersReduced = g->getCell(poles[i]);//Pega os medidores das c√©lulas vizinhas e da sua
+		// pr√≥pria c√©lula para fazer a an√°lise.
 		for (int j = 0; j < metersReduced.size(); j++)
 		{
 			double dist = getDistance(poles[i], metersReduced[j]);
 			double eff = getLinkQuality(dist);
-			if (eff >= MARGIN_VALUE)//Se a eficiencia for superior a 90%(MARGIN_VALUE) ent„o o poste cobre esse medidor.
+			if (eff >= MARGIN_VALUE)//Se a eficiencia for superior a 90%(MARGIN_VALUE) ent√£o o poste cobre esse medidor.
 				metersCovered.push_back(metersReduced[j]->index);
 		}
 		sM.push_back(metersCovered);
 	}
 	if (mesh)
 	{
-		vector<vector<int> > nM = createMeterNeighbourhood(g); //Cria a matriz de vizinhanÁa para se analisar o mesh
+		vector<vector<int> > nM = createMeterNeighbourhood(g); //Cria a matriz de vizinhan√ßa para se analisar o mesh
 		for (int i = 0; i < sM.size(); i++)//Essa etapa incrementa a matriz de cobertura para considerar o mesh.
 		{
 			vector<int> neighbours = sM[i];//Conjunto de medidores que o poste "i" cobre.
 			for (int j = 0; j < mesh; j++)//Para cada salto
 			{
 				vector<int> newNeighbours;
-				for (int k = 0; k < neighbours.size(); k++)//Os vizinhos dos medidores que o poste cobre tambÈm ser„o
-				//considerados como cobertos! Isso se repete X vezes, onde X È o n˙mero de saltos mesh.
+				for (int k = 0; k < neighbours.size(); k++)//Os vizinhos dos medidores que o poste cobre tamb√©m ser√£o
+				//considerados como cobertos! Isso se repete X vezes, onde X √© o n√∫mero de saltos mesh.
 				{
 					int toFind = neighbours[k];
 					int pos = 0;
 					for (int l = 0; l < meters.size(); l++){ if (meters[l]->index == toFind){ pos = l; break; }}
-					//Esse for aÌ em cima serve para localizar a posiÁ„o do medidor com o respectivo index, pois
-					// a matriz de vizinhanÁa dos medidores n„o È organizada por index, mas sim 0,1,2...n.
+					//Esse for a√≠ em cima serve para localizar a posi√ß√£o do medidor com o respectivo index, pois
+					// a matriz de vizinhan√ßa dos medidores n√£o √© organizada por index, mas sim 0,1,2...n.
 					//sM[i] = concatVectors(sM[i], nM[pos]);//Os vizinhos agora fazem parte da cobertura do poste!
 					sM[i].insert(sM[i].end(), nM[pos].begin(), nM[pos].end());
 					sort(sM[i].begin(), sM[i].end());
@@ -95,11 +95,11 @@ vector<vector<int> > AutoPlanning::createScp()
 					newNeighbours.insert(newNeighbours.end(), nM[pos].begin(), nM[pos].end());
 					sort(newNeighbours.begin(), newNeighbours.end());
 					newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
-					//prÛximo salto. Esse newNeighbours vai ser a uni„o de todos os vizinhos de todos os medidores
-					//do salto em quest„o. Por exemplo, para o primeiro salto newNeighbours comeÁa vazio, pois ser·
-					//analisado os vizinhos dos medidores que o poste cobre. Para o segundo salto, o mÈtodo tem que
+					//pr√≥ximo salto. Esse newNeighbours vai ser a uni√£o de todos os vizinhos de todos os medidores
+					//do salto em quest√£o. Por exemplo, para o primeiro salto newNeighbours come√ßa vazio, pois ser√°
+					//analisado os vizinhos dos medidores que o poste cobre. Para o segundo salto, o m√©todo tem que
 					//analisar o vizinho desses vizinhos. Por isso que o neighbours recebe newNeighbours. newNeighbours
-					// È a junÁ„o de todos os vizinhos sem repetiÁ„o.
+					// √© a jun√ß√£o de todos os vizinhos sem repeti√ß√£o.
 				}
 				neighbours = newNeighbours;
 			}
@@ -110,9 +110,9 @@ vector<vector<int> > AutoPlanning::createScp()
 }
 void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP, int redundancy)
 {
-	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//SÛ consideramos os medidores que s„o cobrÌveis(existe essa palavra?)
-	//Pois se n„o, o mÈtodo retornaria que a soluÁ„o È impossÌvel!
-	//A formataÁ„o vocÍ ve no arquivo GlpkFile.txt
+	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//S√≥ consideramos os medidores que s√£o cobr√≠veis(existe essa palavra?)
+	//Pois se n√£o, o m√©todo retornaria que a solu√ß√£o √© imposs√≠vel!
+	//A formata√ß√£o voc√™ ve no arquivo GlpkFile.txt
 	vector<Position*> metersToConsider;
 	for (int i = 0; i < meters.size(); i++)
 	{
@@ -184,7 +184,7 @@ void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP, int redundancy)
 	f << resp;
 	f.close();
 }
-//Esse mÈtodo faz um system call ao GLPK
+//Esse m√©todo faz um system call ao GLPK
 vector<int> AutoPlanning::executeGlpk(string filename)
 {
 	vector<int> answer;
@@ -478,13 +478,13 @@ vector<int> AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 	}
 	meters = metersAux;
 	poles = polesAux;
-	//Remove redund‚ncias
+	//Remove redund√¢ncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
 
-	if (usePostOptimization && subProblems.size() > 1)//P”S OTIMIZA«√O
+	if (usePostOptimization && subProblems.size() > 1)//P√ìS OTIMIZA√á√ÉO
 	{
-		if(verbose) cout << "\n Iniciando pÛs otimizaÁ„o\n";
+		if(verbose) cout << "\n Iniciando p√≥s otimiza√ß√£o\n";
 		vector<int> chosen;
 		for (int i = 0; i < poles.size(); i++)
 			chosen.push_back(0);
@@ -603,7 +603,7 @@ TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, 
 	}
 	meters = metersAux;
 	poles = polesAux;
-	//Remove redund‚ncias
+	//Remove redund√¢ncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
 
@@ -611,9 +611,9 @@ TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, 
 	result->chosenPoles = chosenDaps;
 	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 	result->time = secondsgp;
-	if (usePostOptimization && subProblems.size() > 1)//P”S OTIMIZA«√O
+	if (usePostOptimization && subProblems.size() > 1)//P√ìS OTIMIZA√á√ÉO
 	{
-		if(verbose) cout << "\nIniciando pÛs otimizaÁ„o";
+		if(verbose) cout << "\nIniciando p√≥s otimiza√ß√£o";
 		vector<int> chosen;
 		for (int i = 0; i < poles.size(); i++)
 			chosen.push_back(0);
@@ -665,7 +665,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
 		daps.push_back(dapToInsert);
 	}
-	////Calcula mÈtricas sem pos-opt
+	////Calcula m√©tricas sem pos-opt
 	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
 	MetricResult* metricResult = mc->executeMetricCalculationTest();
 	result->metersPerHop = metricResult->meterPerHop;
@@ -675,7 +675,7 @@ TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization
 	result->uncoveredMeters = metricResult->uncoveredMeters;
 	delete metricResult;
 	delete mc;
-	//Calcula mÈtricas com pos-opt
+	//Calcula m√©tricas com pos-opt
 	metersCopy.clear();
 	daps.clear();
 	if (usePostOptimization)
@@ -720,8 +720,8 @@ int AutoPlanning::getBestCellSize()
 		{
 			vector<Position*> cellsMeters, cellsPoles;
 
-			cellsMeters = it->second; //Recebe todas as posiÁıes dos medidores que est„o na cÈlula
-			cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posiÁ„o de um desses medidores e usa como referÍncia pra pegar os postes da mesma cÈlula e das cÈlulas vizinhas.
+			cellsMeters = it->second; //Recebe todas as posi√ß√µes dos medidores que est√£o na c√©lula
+			cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posi√ß√£o de um desses medidores e usa como refer√™ncia pra pegar os postes da mesma c√©lula e das c√©lulas vizinhas.
 			
 			double memEst = memEstimation(cellsMeters.size(), cellsPoles.size());
 			if (memEst*MEM_EST_SAFETY >= MEM_LIMIT)
@@ -736,7 +736,7 @@ int AutoPlanning::getBestCellSize()
 	}
 
 }
-//Essa aqui È minha heurÌstica que faz o mÈtodo exato pra cada cÈlula.
+//Essa aqui √© minha heur√≠stica que faz o m√©todo exato pra cada c√©lula.
 vector<int> AutoPlanning::gridAutoPlanning(bool usePostOptimization, int redundancy)
 {
 
@@ -754,8 +754,8 @@ vector<int> AutoPlanning::gridAutoPlanning(bool usePostOptimization, int redunda
 	{
 		vector<Position*> cellsMeters, cellsPoles;
 
-		cellsMeters = it->second; //Recebe todas as posiÁıes dos medidores que est„o na cÈlula
-		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posiÁ„o de um desses medidores e usa como referÍncia pra pegar os postes da mesma cÈlula e das cÈlulas vizinhas.
+		cellsMeters = it->second; //Recebe todas as posi√ß√µes dos medidores que est√£o na c√©lula
+		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posi√ß√£o de um desses medidores e usa como refer√™ncia pra pegar os postes da mesma c√©lula e das c√©lulas vizinhas.
 		meters = cellsMeters;
 		poles = cellsPoles;
 
@@ -772,12 +772,12 @@ vector<int> AutoPlanning::gridAutoPlanning(bool usePostOptimization, int redunda
 	}
 	meters = metersAux;
 	poles = polesAux;
-	//Remove redund‚ncias
+	//Remove redund√¢ncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
-	if (usePostOptimization && meterCells.size() > 1)//P”S OTIMIZA«√O
+	if (usePostOptimization && meterCells.size() > 1)//P√ìS OTIMIZA√á√ÉO
 	{
-		cout << "Iniciando pÛs otimizaÁ„o\n";
+		cout << "Iniciando p√≥s otimiza√ß√£o\n";
 		vector<int> chosen;
 		for (int i = 0; i < poles.size(); i++)
 			chosen.push_back(0);
@@ -828,14 +828,14 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 
 	for (map<pair<int, int>, vector<Position*> >::iterator it = meterCells.begin(); it != meterCells.end(); ++it)
 	{
-		cout << "Planejando cÈlula " << to_string(numCel) << " de " << to_string(meterCells.size()) << "\n";
+		cout << "Planejando c√©lula " << to_string(numCel) << " de " << to_string(meterCells.size()) << "\n";
 		numCel++;
 		vector<Position*> cellsMeters;
 		vector<Position*> cellsPoles;
 
-		cellsMeters = it->second; //Recebe todas as posiÁıes dos medidores que est„o na cÈlula
+		cellsMeters = it->second; //Recebe todas as posi√ß√µes dos medidores que est√£o na c√©lula
 		//cellsPoles = polesAux;
-		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posiÁ„o de um desses medidores e usa como referÍncia pra pegar os postes da mesma cÈlula e das cÈlulas vizinhas.
+		cellsPoles = polegrid->getCell(cellsMeters[0]);//Pega a posi√ß√£o de um desses medidores e usa como refer√™ncia pra pegar os postes da mesma c√©lula e das c√©lulas vizinhas.
 		meters = cellsMeters;
 		poles = cellsPoles;
 
@@ -857,7 +857,7 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 	}
 	meters = metersAux;
 	poles = polesAux;
-	//Remove redund‚ncias
+	//Remove redund√¢ncias
 	sort(chosenDaps.begin(), chosenDaps.end());
 	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
 
@@ -865,9 +865,9 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 	result->chosenPoles = chosenDaps;
 	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
 	result->time = secondsgp;
-	if (usePostOptimization && meterCells.size() > 1)//P”S OTIMIZA«√O
+	if (usePostOptimization && meterCells.size() > 1)//P√ìS OTIMIZA√á√ÉO
 	{	
-		cout << "Iniciando pÛs otimizaÁ„o\n";
+		cout << "Iniciando p√≥s otimiza√ß√£o\n";
 		vector<int> chosen ;
 		for (int i = 0; i < poles.size(); i++)
 			chosen.push_back(0);
@@ -945,13 +945,13 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
 		metersCopy.push_back(copy);
 	}
-	cout << "Calculando mÈtricas\n";
+	cout << "Calculando m√©tricas\n";
 	for (int i = 0; i < xgp.size(); i++)
 	{
 		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
 		daps.push_back(dapToInsert);
 	}
-	//Calcula mÈtricas sem pos-opt
+	//Calcula m√©tricas sem pos-opt
 	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
 	MetricResult* metricResult = mc->executeMetricCalculationTest();
 	result->metersPerHop = metricResult->meterPerHop;
@@ -961,7 +961,7 @@ TestResult* AutoPlanning::executeAutoPlanTestMode(int usePostOptimization, int r
 	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
 	delete metricResult;
 	delete mc;
-	//Calcula mÈtricas com pos-opt
+	//Calcula m√©tricas com pos-opt
 	metersCopy.clear();
 	daps.clear();
 	if (usePostOptimization)
@@ -1034,7 +1034,7 @@ vector<vector<int> > AutoPlanning::coverageList(vector<Position*> &daps)
 					sort(sM[i].begin(), sM[i].end());
 					sM[i].erase(unique(sM[i].begin(), sM[i].end()), sM[i].end());
 
-					//newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI … PASSÕVEL DE OTIMIZA«√O! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
+					//newNeighbours = concatVectors(newNeighbours, nM[pos]); //ESSA PARTE AQUI √â PASS√çVEL DE OTIMIZA√á√ÉO! DIMINUIR NEWNEIGHBOURS DE SM[I]!!!
 					newNeighbours.insert(newNeighbours.end(), nM[pos].begin(), nM[pos].end());
 					sort(newNeighbours.begin(), newNeighbours.end());
 					newNeighbours.erase(unique(newNeighbours.begin(), newNeighbours.end()), newNeighbours.end());
@@ -1064,7 +1064,7 @@ void AutoPlanning::setCoveredMeters(vector<Position*> &DAPs)
 }
 
 
-//////////////////////////////////////////M…TODOS PRO GRASP////////////////////////////////////////////////
+//////////////////////////////////////////M√âTODOS PRO GRASP////////////////////////////////////////////////
 double p = 0.5;
 
 vector<int> generateRCL(vector<int> &polesCoverageValue, int* solution, double alpha)
@@ -1257,7 +1257,7 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 
 				if (redundancy > 1)
 				{
-					for (int j = 0; j < polesToCheck.size() - 1; j++)//ordenada b·sica de acordo com o tamanho de medidores em interseÁ„o com o poste analisado.
+					for (int j = 0; j < polesToCheck.size() - 1; j++)//ordenada b√°sica de acordo com o tamanho de medidores em interse√ß√£o com o poste analisado.
 					{
 						int aux = intersectionSize(scp[polesToCheck[j]], scp[i]);
 						int pos = -1;
@@ -1277,7 +1277,7 @@ void RolimEGuerraLocalSearchWithRedundancy(vector<vector<int> > &scp, vector<vec
 							polesToCheck[j] = polesToCheck[pos];
 							polesToCheck[pos] = aux3;
 						}
-					}//ORDENEI DE MENOR PRA MAIOR A QNT DE MEDIDORES EM INTERSE«√O COM O POSTE QUE TO ANALISANDO
+					}//ORDENEI DE MENOR PRA MAIOR A QNT DE MEDIDORES EM INTERSE√á√ÉO COM O POSTE QUE TO ANALISANDO
 				}
 				vector<int> toRemove;
 				for (int j = 0; j < polesToCheck.size(); j++)
@@ -1385,7 +1385,7 @@ vector<int> AutoPlanning::graspAutoPlanning(int iterations, double alpha, int re
 	}
 	sort(ret.begin(), ret.end());
 	ret.erase(unique(ret.begin(), ret.end()), ret.end());
-	if (usePostOptimization)//P”S OTIMIZA«√O
+	if (usePostOptimization)//P√ìS OTIMIZA√á√ÉO
 	{
 		vector<int> chosen;
 		for (int i = 0; i < poles.size(); i++)
@@ -1455,9 +1455,9 @@ TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha
 	tresult->solutionQuality = ret.size();
 	tresult->chosenPoles = ret;
 	tresult->time = secondsgp;
-	if (usePostOptimization)//P”S OTIMIZA«√O
+	if (usePostOptimization)//P√ìS OTIMIZA√á√ÉO
 	{
-		cout << "\n Iniciando pÛs otimizaÁ„o\n";
+		cout << "\n Iniciando p√≥s otimiza√ß√£o\n";
 		vector<int> chosen;
 		for (int i = 0; i < poles.size(); i++)
 			chosen.push_back(0);
@@ -1481,4 +1481,65 @@ TestResult* AutoPlanning::graspAutoPlanningTestMode(int iterations, double alpha
 		tresult->poTime = secondsgp;
 	}
 	return tresult;
+}
+TestResult* AutoPlanning::executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy, int usePostOptimization)
+{
+	TestResult* result;
+	//cout << "Iniciando planejamento\n";
+	result = graspAutoPlanningTestMode(iterations, alpha, redundancy, usePostOptimization);
+	result->gridSize = gridLimiter;
+	result->numMeters = meters.size();
+	result->numPoles = poles.size();
+	vector<int> xgp = result->chosenPoles;
+	vector<Position*> daps;
+	vector<Position*> metersCopy;
+
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+		metersCopy.push_back(copy);
+	}
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+		daps.push_back(dapToInsert);
+	}
+	////Calcula mÔøΩtricas sem pos-opt
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+	MetricResult* metricResult = mc->executeMetricCalculationTest();
+	result->metersPerHop = metricResult->meterPerHop;
+	result->qualityPerHop = metricResult->linkQualityPerHop;
+	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
+	result->uncoveredMeters = metricResult->uncoveredMeters;
+	delete metricResult;
+	delete mc;
+	//Calcula mÔøΩtricas com pos-opt
+	metersCopy.clear();
+	daps.clear();
+	if (usePostOptimization)
+	{
+		xgp = result->poChosenPoles;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+			metersCopy.push_back(copy);
+		}
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+			daps.push_back(dapToInsert);
+		}
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+		metricResult = mc->executeMetricCalculationTest();
+		result->poMetersPerHop = metricResult->meterPerHop;
+		result->poQualityPerHop = metricResult->linkQualityPerHop;
+		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
+		delete metricResult;
+		delete mc;
+	}
+	//cout << result->toString();
+	if (verbose) cout << "\n Planejamento por clusters finalizado";
+	return result;
 }
