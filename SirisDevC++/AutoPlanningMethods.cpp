@@ -280,7 +280,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 
 
 	string resp;
-	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default "+to_string(redundancy)+", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
+	resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\nparam B{r in Z} default "+to_string(redundancy)+", integer;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < metersToConsider.size(); i++)
 	{
@@ -320,7 +320,7 @@ void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, int redundancy
 	}
 	resp += "\n;\nend;\n";
 
-	string filename = rubyPath + "GlpkFile.txt";
+	string filename = rubyPath + "/GlpkFile.txt";
 	ofstream f(filename.c_str());
 
 	f << resp;
@@ -360,7 +360,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += "subject to linked{ m in Y }: sum{ r in Z } Link[r, m] <= "+to_string(limit)+";\n";
 	resp += "subject to decis{ r in Z, m in Y }: Link[r, m] <= A[r, m] * Route[m];\n";
 	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] <= 1;\n ";
-	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "Results.txt\";\n data;\n";
+	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
 	resp += "set Z:= ";
 	for (int i = 0; i < metersToConsider.size(); i++)
 	{
@@ -401,7 +401,7 @@ void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int r
 	resp += "\n;\nend;\n";
 	delete covInfo;
 
-	string filename = rubyPath + "GlpkFile.txt";
+	string filename = rubyPath + "/GlpkFile.txt";
 	ofstream f(filename.c_str());
 
 	f << resp;
@@ -525,7 +525,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	lp = glp_create_prob();
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
-	glp_mem_limit(MEM_LIMIT);
+	glp_mem_limit(MEM_LIMIT*MEM_EST_SAFETY);
 	
 	if (ret != 0)
 	{
@@ -777,7 +777,7 @@ vector<int> AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
 		double memUsageInCell = -1;
 		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
-		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
 		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
@@ -898,7 +898,7 @@ TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, 
 		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1)+ " salvo";
 		double memUsageInCell = -1;
 		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
-		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
 		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		sp->solverTime = solverTime;
 		sp->memUsed = memUsageInCell;
@@ -1076,8 +1076,8 @@ string AutoPlanning::gridAutoPlanning(int redundancy, int limit)
 			saveGLPKFileReduced(cellSCP, redundancy);
 		else
 			saveGLPKFileReducedWithLimit(cellSCP, redundancy, limit);
-		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt");
-		ifstream f((rubyPath + "Results.txt").c_str());
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt");
+		ifstream f((rubyPath + "/Results.txt").c_str());
 		string gridAnswer;
 		getline(f, gridAnswer);
 
@@ -1142,7 +1142,7 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 	
 		saveGLPKFileReduced(cellSCP,redundancy);
 		double memUsageInCell= -1;
-		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
 		subProblem* sp = new subProblem();
 		evaluateSCP(cellSCP, meters.size(), sp);
 		sp->solverTime = solverTime;

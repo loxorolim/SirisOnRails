@@ -1419,6 +1419,8 @@ int TestMain(int argc, char** argv)
 //	return 0;
 	metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
 	polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
+	VaryMemLimTest(10, 10, 700, rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResultsMemLimVariation/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, 3, 1);
+	return 0;
 	//metersFile = rubyPath + "/Instances/FloripaMeters1000.txt";
 	//polesFile = rubyPath + "/Instances/FloripaPoles1000.txt";
 	//for (int i = 3; i < 4; i++)
