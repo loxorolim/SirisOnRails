@@ -6,6 +6,7 @@
 #define FIXED_POLES 2
 
 
+
 #include <iostream>
 #include <sstream>
 #include "Grid.h"
@@ -23,6 +24,7 @@ extern "C"
 #include <vl/host.h>
 #include <vl/kdtree.h>
 }
+string const rubyPath =  "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
 
 struct DensityTestResult
 {

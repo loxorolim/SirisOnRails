@@ -23,7 +23,7 @@ using namespace rapidjson;
 #define MEM_LIM_DEFAULT 6000
 #else
 #define IS_64 0
-#define MEM_LIM_DEFAULT 3000
+#define MEM_LIM_DEFAULT 2000
 #endif
 #endif
 

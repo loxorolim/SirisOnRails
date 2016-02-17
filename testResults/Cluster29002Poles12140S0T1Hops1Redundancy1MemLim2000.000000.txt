@@ -1,0 +1,74 @@
+Dimension: 29002 x 12140
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 2980
+Time: 219.960999
+Hop1Quantity: 29002
+Hop1Quality: 0.999205
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 12.562416
+Max Meters per DAP: 240.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.290808
+Max Redundancy: 4.000000
+
+P.O Solution Quality: 2973
+P.O Time: 220.261993
+Hop1Quantity: 29002
+Hop1Quality: 0.999203
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 12.559031
+Max Meters per DAP: 240.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.287428
+Max Redundancy: 4.000000
+4888x2655:
+Número de 1's na Matriz de Cobertura45273.000000:
+Densidade: 0.003489
+Cobertura média por DAP: 17.051977
+Desvio padrão da cobertura: 26.352506
+Memória utilizada: 1398.210444
+Tempo utilizado: 1.086000
+2590x1600:
+Número de 1's na Matriz de Cobertura37605.000000:
+Densidade: 0.009075
+Cobertura média por DAP: 23.503125
+Desvio padrão da cobertura: 25.238586
+Memória utilizada: 448.525367
+Tempo utilizado: 0.178000
+5011x2029:
+Número de 1's na Matriz de Cobertura91776.000000:
+Densidade: 0.009027
+Cobertura média por DAP: 45.232134
+Desvio padrão da cobertura: 45.448619
+Memória utilizada: 1098.622207
+Tempo utilizado: 0.492000
+5561x1746:
+Número de 1's na Matriz de Cobertura61940.000000:
+Densidade: 0.006379
+Cobertura média por DAP: 35.475372
+Desvio padrão da cobertura: 35.635930
+Memória utilizada: 1048.267894
+Tempo utilizado: 0.560000
+2908x1374:
+Número de 1's na Matriz de Cobertura33815.000000:
+Densidade: 0.008463
+Cobertura média por DAP: 24.610626
+Desvio padrão da cobertura: 30.601665
+Memória utilizada: 432.464301
+Tempo utilizado: 0.175000
+1892x628:
+Número de 1's na Matriz de Cobertura29932.000000:
+Densidade: 0.025192
+Cobertura média por DAP: 47.662420
+Desvio padrão da cobertura: 37.546329
+Memória utilizada: 130.223159
+Tempo utilizado: 0.086000
+6152x2287:
+Número de 1's na Matriz de Cobertura112346.000000:
+Densidade: 0.007985
+Cobertura média por DAP: 49.123743
+Desvio padrão da cobertura: 35.757576
+Memória utilizada: 1518.854136
+Tempo utilizado: 1.022000

@@ -184,140 +184,8 @@ void AutoPlanning::saveGLPKFile(vector<vector<int> > &SCP, int redundancy)
 	f << resp;
 	f.close();
 }
-<<<<<<< HEAD
-void AutoPlanning::saveGLPKFileReducedWithLimit(vector<vector<int> > &SCP, int redundancy, int limit)
-{
-	//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
-	//Pois se não, o método retornaria que a solução é impossível!
-	//A formatação você ve no arquivo GlpkFile.txt
-	vector<Position*> metersToConsider;
-	for (int i = 0; i < meters.size(); i++)
-	{
-		if (!(find(coveredMetersIndexes.begin(), coveredMetersIndexes.end(), meters[i]->index) != coveredMetersIndexes.end()))
-			metersToConsider.push_back(meters[i]);
-	}
-	int* covInfo = new int[metersToConsider.size()];
-	for (int i = 0; i < metersToConsider.size(); i++){ covInfo[i] = 0; }
-	for (int i = 0; i < SCP.size(); i++)
-	{
-		for (int j = 0; j < SCP[i].size(); j++)
-		{
-			int pos = -1;
-			for (int k = 0; k < metersToConsider.size(); k++){ if (metersToConsider[k]->index == SCP[i][j]){ pos = k; break; } }
-			covInfo[pos]++;
-		}
-	}
-	string resp;
-	resp += "set Z;\n";
-	resp += "set Y;\n";
-	resp += "param A{ r in Z, m in Y } default 0, binary;\n";
-	resp += "param B{r in Z} default "+to_string(redundancy)+", integer;\n";
-	resp += "var Route{ m in Y }, binary;\n";
-	resp += "var Link{ r in Z, m in Y }, binary;\n";
-	resp += "minimize cost: (sum{m in Y} Route[m])/(card(Y)+1) + (card(Z)-sum{r in Z, m in Y} Link[r,m]);\n";
-	resp += "subject to covers{ r in Z }: sum{ m in Y } A[r, m] * Route[m] >= B[r];\n";
-	resp += "subject to linked{ m in Y }: sum{ r in Z } Link[r, m] <= "+to_string(limit)+";\n";
-	resp += "subject to decis{ r in Z, m in Y }: Link[r, m] <= A[r, m] * Route[m];\n";
-	resp += "subject to decis3{ r in Z }: sum{ m in Y } Link[r, m] <= 1;\n ";
-	resp += "solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath + "/Results.txt\";\n data;\n";
-	resp += "set Z:= ";
-	for (int i = 0; i < metersToConsider.size(); i++)
-	{
-		resp += "Z" + to_string(metersToConsider[i]->index + 1) + " ";
-	}
-
-	resp += ";\n";
-	resp += "set Y:= ";
-
-	for (int i = 0; i < poles.size(); i++)
-		resp += "Y" + to_string(poles[i]->index + 1) + " ";
-	resp += ";\n";
-	resp += "param A := ";
-	resp += "\n";
-	for (int i = 0; i < metersToConsider.size(); i++)
-	{
-		for (int j = 0; j < poles.size(); j++)
-		{
-			//bool um = false;
-			//for (int k = 0; k < SCP.size(); k++)
-			int cov = -1;
-			cov = (find(SCP[j].begin(), SCP[j].end(), metersToConsider[i]->index) != SCP[j].end());
-			if (cov)
-				resp += "[Z" + to_string(metersToConsider[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1) + "] 1";
-
-		}
-	}
-	resp += "\n";
-	resp += ";";
-	resp += "\n";
-	resp += "param B := ";
-	resp += "\n";
-	for (int i = 0; i < metersToConsider.size(); i++)
-	{
-		if (covInfo[i] < redundancy)
-			resp += "[Z" + to_string(metersToConsider[i]->index + 1) + "] " + to_string(covInfo[i]);
-	}
-	resp += "\n;\nend;\n";
-	delete covInfo;
-
-	string filename = rubyPath + "/GlpkFile.txt";
-	ofstream f(filename.c_str());
-
-	f << resp;
-	f.close();
-}
-////Esse método monta o arquivo de entrada pro GLPK.
-//void AutoPlanning::saveGLPKFileReduced(vector<vector<int> > &SCP, vector<Position*> metersToConsider, vector<Position*> polesToDisconsider, int redundancy)
-//{
-//		//vector<int> uncMeters = uncoverableMeters(SCP, redundancy);//Só consideramos os medidores que são cobríveis(existe essa palavra?)
-//		//Pois se não, o método retornaria que a solução é impossível!
-//		//A formatação você ve no arquivo GlpkFile.txt
-//		string resp;
-//		resp += "set Z;\n set Y;\n param A{r in Z, m in Y} default 0, binary;\n var Route{m in Y}, binary;\n minimize cost: sum{m in Y} Route[m];\n subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>="+to_string(redundancy)+";\n solve; \n printf {m in Y:  Route[m] == 1} \"%s \", m > \"" + rubyPath +"Results.txt\";\n data;\n";
-//		resp += "set Z:= ";
-//		for (int i = 0; i < metersToConsider.size(); i++)
-//		{
-//				resp += "Z" + to_string(metersToConsider[i]->index + 1) + " ";
-//		}
-//		
-//		resp += ";\n";
-//		resp += "set Y:= ";
-//
-//		for (int i = 0; i < poles.size(); i++)
-//			resp += "Y" + to_string(poles[i]->index + 1) + " ";
-//		resp += ";\n";
-//		resp += "param A := ";
-//		resp += "\n";
-//		for (int i = 0; i < metersToConsider.size(); i++)
-//		{
-//				for (int j = 0; j < poles.size(); j++)
-//				{
-//					//bool um = false;
-//					//for (int k = 0; k < SCP.size(); k++)
-//					int cov = -1;
-//					cov = (find(SCP[j].begin(), SCP[j].end(), metersToConsider[i]->index) != SCP[j].end());
-//					int covP = 1;
-//					for (int k = 0; k < polesToDisconsider.size(); k++){ if (polesToDisconsider[k]->index == poles[j]->index){ covP = -1; break; } }
-//					if (cov && covP)
-//						resp += "[Z" + to_string(metersToConsider[i]->index + 1) + ",Y" + to_string(poles[j]->index + 1)+"] 1";
-//
-//				}			
-//		}
-//		resp += "\n";
-//		resp += ";";
-//		resp += "end;\n";
-//		
-//		string filename = rubyPath + "GlpkFile.txt";
-//		ofstream f(filename.c_str());
-//
-//		f << resp;
-//		f.close();
-//}
-
-//Esse método faz um system call ao GLPK
-=======
 //Esse mÃ©todo faz um system call ao GLPK
->>>>>>> origin/master
+
 vector<int> AutoPlanning::executeGlpk(string filename)
 {
 	vector<int> answer;
@@ -419,11 +287,11 @@ skip: glp_mpl_free_wksp(tran);
 }
 
 
-vector<pair<double,double> > getClusters(double *data, int numData)
+vector<pair<double,double> > getClusters(double *data, int numData, vl_size numCenters=2)
 {
 	//VlRand rand;
 	vl_size dimension = 2;
-	vl_size numCenters = 2;
+	//vl_size numCenters = 2;
 	vl_size maxiter = 100;
 	vl_size maxComp = 100;
 	vl_size maxrep = 1;
@@ -442,7 +310,7 @@ vector<pair<double,double> > getClusters(double *data, int numData)
 	vl_kmeans_set_num_repetitions(kmeans, maxrep);
 	vl_kmeans_set_num_trees(kmeans, ntrees);
 	vl_kmeans_set_algorithm(kmeans, algorithm);
-	vl_kmeans_init_centers_plus_plus(kmeans, data, dimension, numData, numCenters);
+	//vl_kmeans_init_centers_plus_plus(kmeans, data, dimension, numData, numCenters);
 
 	vector<pair<double, double> > ret;
 	vl_kmeans_cluster(kmeans, data, dimension, numData, numCenters);
@@ -457,7 +325,7 @@ vector<pair<double,double> > getClusters(double *data, int numData)
 	return ret;
 }
 
-vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Position*> poles, vector<vector<int> > &invertedScp)
+vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Position*> poles, vector<vector<int> > &invertedScp, vl_size numCenters=2)
 {
 	double* data = (double*)vl_malloc(sizeof(double) * 2 * meters.size());
 	for (int i = 0; i < meters.size(); i++)
@@ -465,7 +333,7 @@ vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Posit
 		data[i * 2 + 0] = meters[i]->latitude;
 		data[i * 2 + 1] = meters[i]->longitude;
 	}
-	vector<pair<double, double> > clusters = getClusters(data, meters.size());
+	vector<pair<double, double> > clusters = getClusters(data, meters.size(),numCenters);
 	vector<ClusterProblem*> subProblems;
 	for (int i = 0; i < clusters.size(); i++)
 		subProblems.push_back(new ClusterProblem);
@@ -506,6 +374,7 @@ vector<ClusterProblem*> clusterizeProblem(vector<Position*> meters, vector<Posit
 	vl_free(data);
 	return subProblems;
 }
+
 void evaluateSCP(vector<vector<int> > &SCP, int metersSize, subProblem* sp )
 {
 	int numOfMeters, nummOfPoles;
@@ -645,6 +514,123 @@ vector<int> AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 	return chosenDaps;
 	
 }
+bool isFeasible(vector<ClusterProblem*> clusters)
+{
+	for (int i = 0; i < clusters.size(); i++)
+	{
+		double memEst = memEstimation(clusters[i]->meters.size(), clusters[i]->poles.size());
+		if (memEst*MEM_EST_SAFETY >= MEM_LIMIT)
+			return false;
+	}
+	return true;
+}
+vector<int> AutoPlanning::clusterVariableAutoPlanning(bool usePostOptimization, int redundancy)
+{
+	if (verbose) cout << "\n Iniciando planejamento por clusters";
+	const clock_t begin_time = clock();
+	double solverTime;
+	if (verbose) cout << "\n Criando matriz de cobertura";
+	vector<vector<int> > scp = createScp();
+	if (verbose)
+	{
+		cout << "\n Matriz de cobertura criada";
+		cout << "\n Criando matriz de cobertura invertida";
+	}
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			int pos;
+			for (int k = 0; k < meters.size(); k++){ if (meters[k]->index == scp[i][j]) { pos = k; break; } }
+			invertedSCP[pos].push_back(i);
+		}
+	}
+	if (verbose) cout << "\n Matriz de cobertura invertida criada";
+	vector<ClusterProblem*> subProblems;
+	ClusterProblem* init = new ClusterProblem;
+	init->meters = meters; init->poles = poles;
+	subProblems.push_back(init);
+	bool cont = true;
+	vl_size num_of_clusters = 2;
+	while (!isFeasible(subProblems))
+	{		
+		vector<ClusterProblem*> clusterized = clusterizeProblem(meters, poles, invertedSCP, num_of_clusters);
+		for (int i = 0; i < subProblems.size(); i++)
+		{
+			delete subProblems[i];
+		}
+		subProblems.clear();
+		for (int i = 0; i < clusterized.size(); i++)
+		{
+			subProblems.push_back(clusterized[i]);
+		}
+		num_of_clusters++;
+	}
+	double maxMem = -1;
+	vector<int> chosenDaps;
+	vector<Position*> metersAux = meters, polesAux = poles;
+	if (verbose) cout << "\n A instancia inicial foi dividida em  " + to_string(subProblems.size()) + " sub-instancias ";
+	for (int i = 0; i < subProblems.size(); i++)
+	{
+		if (verbose) cout << "\n Iniciando planejamento para sub-instancia de numero " + to_string(i + 1);
+		meters = subProblems[i]->meters;
+		poles = subProblems[i]->poles;
+		if (verbose) cout << "\n Criando matriz de cobertura para a sub-instancia de numero " + to_string(i + 1);
+		vector<vector<int> > cellSCP = createScp();
+		if (verbose) cout << "\n Matriz de cobertura para sub-instancia de numero " + to_string(i + 1) + " criada";
+		subProblem* sp = new subProblem();
+		evaluateSCP(cellSCP, meters.size(), sp);
+		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
+		saveGLPKFile(cellSCP, redundancy);
+		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
+		double memUsageInCell = -1;
+		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
+		if (memUsageInCell > maxMem)
+			maxMem = memUsageInCell;
+		for (int i = 0; i < answer.size(); i++)
+			chosenDaps.push_back(answer[i]);
+
+	}
+	meters = metersAux;
+	poles = polesAux;
+	//Remove redundÃ¢ncias
+	sort(chosenDaps.begin(), chosenDaps.end());
+	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+
+	if (usePostOptimization && subProblems.size() > 1)//PÃ“S OTIMIZAÃ‡ÃƒO
+	{
+		if (verbose) cout << "\n Iniciando pÃ³s otimizaÃ§Ã£o\n";
+		vector<int> chosen;
+		for (int i = 0; i < poles.size(); i++)
+			chosen.push_back(0);
+		for (int i = 0; i < chosenDaps.size(); i++)
+		{
+			chosen[chosenDaps[i]] = 1;
+		}
+
+		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen, redundancy);
+
+		vector<int> resultPosOpt;
+		for (int i = 0; i < poles.size(); i++)
+		{
+			if (chosen[i] == 1)
+				resultPosOpt.push_back(i);
+		}
+		chosenDaps = resultPosOpt;
+
+	}
+	for (int i = 0; i < subProblems.size(); i++)
+	{
+		delete(subProblems[i]);
+	}
+	if (verbose) cout << "\n Planejamento concluido";
+	return chosenDaps;
+
+}
 TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy)
 {
 	const clock_t begin_time = clock();
@@ -775,12 +761,190 @@ TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, 
 	}
 	return result;
 }
+TestResult* AutoPlanning::clusterVariableAutoPlanningTestMode(bool usePostOptimization, int redundancy)
+{
+	const clock_t begin_time = clock();
+	double solverTime;
+	if (verbose) cout << "\n Criando matriz de cobertura";
+	vector<vector<int> > scp = createScp();
+	if (verbose)
+	{
+		cout << "\n Matriz de cobertura criada";
+		cout << "\n Criando matriz de cobertura invertida";
+	}
+	vector<vector<int> > invertedSCP;
+	invertedSCP.resize(meters.size());
+	for (int i = 0; i < scp.size(); i++)
+	{
+		for (int j = 0; j < scp[i].size(); j++)
+		{
+			invertedSCP[scp[i][j]].push_back(i);
+		}
+	}
+	if (verbose) cout << "\n Matriz de cobertura invertida criada";
+	vector<ClusterProblem*> subProblems;
+	ClusterProblem* init = new ClusterProblem;
+	init->meters = meters; init->poles = poles;
+	subProblems.push_back(init);
+	bool cont = true;
+	vl_size num_of_clusters = 2;
+	while (!isFeasible(subProblems))
+	{
+		vector<ClusterProblem*> clusterized = clusterizeProblem(meters, poles, invertedSCP, num_of_clusters);
+		for (int i = 0; i < subProblems.size(); i++)
+		{
+			delete subProblems[i];
+		}
+		subProblems.clear();
+		for (int i = 0; i < clusterized.size(); i++)
+		{
+			subProblems.push_back(clusterized[i]);
+		}
+		num_of_clusters++;
+	}
+	double maxMem = -1;
+	vector<int> chosenDaps;
+	vector<Position*> metersAux = meters, polesAux = poles;
+	TestResult* result = new TestResult();
+	if (verbose) cout << "\n A instancia inicial foi dividida em  " + to_string(subProblems.size()) + " sub-instancias ";
+	for (int i = 0; i < subProblems.size(); i++)
+	{
+		if (verbose) cout << "Iniciando planejamento para sub-instancia de numero " + to_string(i + 1);
+
+
+		meters = subProblems[i]->meters;
+		poles = subProblems[i]->poles;
+		if (verbose) cout << "\n Criando matriz de cobertura para a sub-instancia de numero " + to_string(i + 1);
+		vector<vector<int> > cellSCP = createScp();
+		if (verbose) cout << "\n Matriz de cobertura para sub-instancia de numero " + to_string(i + 1) + " criada";
+		subProblem* sp = new subProblem();
+		evaluateSCP(cellSCP, meters.size(), sp);
+		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
+		saveGLPKFile(cellSCP, redundancy);
+		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
+		double memUsageInCell = -1;
+		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
+		sp->solverTime = solverTime;
+		sp->memUsed = memUsageInCell;
+		result->subProblemStats.push_back(sp);
+		result->solverTime = solverTime;
+		if (memUsageInCell > maxMem)
+			maxMem = memUsageInCell;
+		for (int i = 0; i < answer.size(); i++)
+			chosenDaps.push_back(answer[i]);
+
+	}
+	meters = metersAux;
+	poles = polesAux;
+	//Remove redundÃ¢ncias
+	sort(chosenDaps.begin(), chosenDaps.end());
+	chosenDaps.erase(unique(chosenDaps.begin(), chosenDaps.end()), chosenDaps.end());
+
+	result->solutionQuality = chosenDaps.size();
+	result->chosenPoles = chosenDaps;
+	double secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	result->time = secondsgp;
+	if (usePostOptimization && subProblems.size() > 1)//PÃ“S OTIMIZAÃ‡ÃƒO
+	{
+		if (verbose) cout << "\nIniciando pÃ³s otimizaÃ§Ã£o";
+		vector<int> chosen;
+		for (int i = 0; i < poles.size(); i++)
+			chosen.push_back(0);
+		for (int i = 0; i < chosenDaps.size(); i++)
+		{
+			chosen[chosenDaps[i]] = 1;
+		}
+
+		RolimEGuerraLocalSearchWithRedundancy(scp, invertedSCP, chosen, redundancy);
+
+		vector<int> resultPosOpt;
+		for (int i = 0; i < poles.size(); i++)
+		{
+			if (chosen[i] == 1)
+				resultPosOpt.push_back(i);
+		}
+		result->poChosenPoles = resultPosOpt;
+		result->poSolutionQuality = resultPosOpt.size();
+	}
+	secondsgp = float(clock() - begin_time) / CLOCKS_PER_SEC;
+	result->poTime = secondsgp;
+	result->maxMem = maxMem;
+	for (int i = 0; i < subProblems.size(); i++)
+	{
+		delete(subProblems[i]);
+	}
+	return result;
+}
 TestResult* AutoPlanning::executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy)
 {
 	if (verbose) cout << "\n Iniciando planejamento por clusters";
 	TestResult* result;
 	//cout << "Iniciando planejamento\n";
 	result = clusterAutoPlanningTestMode(usePostOptimization, redundancy);
+	result->gridSize = gridLimiter;
+	result->numMeters = meters.size();
+	result->numPoles = poles.size();
+	vector<int> xgp = result->chosenPoles;
+	vector<Position*> daps;
+	vector<Position*> metersCopy;
+
+	for (int i = 0; i < meters.size(); i++)
+	{
+		Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+		metersCopy.push_back(copy);
+	}
+	for (int i = 0; i < xgp.size(); i++)
+	{
+		Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+		daps.push_back(dapToInsert);
+	}
+	////Calcula mÃ©tricas sem pos-opt
+	MetricCalculation* mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+	MetricResult* metricResult = mc->executeMetricCalculationTest();
+	result->metersPerHop = metricResult->meterPerHop;
+	result->qualityPerHop = metricResult->linkQualityPerHop;
+	result->redundancy = metricResult->minMedMaxRedundancyPerMeter;
+	result->metersPerDap = metricResult->minMedMaxMetersPerDap;
+	result->uncoveredMeters = metricResult->uncoveredMeters;
+	delete metricResult;
+	delete mc;
+	//Calcula mÃ©tricas com pos-opt
+	metersCopy.clear();
+	daps.clear();
+	if (usePostOptimization)
+	{
+		xgp = result->poChosenPoles;
+		for (int i = 0; i < meters.size(); i++)
+		{
+			Position* copy = new Position(meters[i]->latitude, meters[i]->longitude, meters[i]->index);
+			metersCopy.push_back(copy);
+		}
+		for (int i = 0; i < xgp.size(); i++)
+		{
+			Position* dapToInsert = new Position(poles[xgp[i]]->latitude, poles[xgp[i]]->longitude, i);
+			daps.push_back(dapToInsert);
+		}
+		mc = new MetricCalculation(metersCopy, daps, scenario, technology, bit_rate, t_power, h_tx, h_rx, srd, mesh, rubyPath);
+		metricResult = mc->executeMetricCalculationTest();
+		result->poMetersPerHop = metricResult->meterPerHop;
+		result->poQualityPerHop = metricResult->linkQualityPerHop;
+		result->poRedundancy = metricResult->minMedMaxRedundancyPerMeter;
+		result->poMetersPerDap = metricResult->minMedMaxMetersPerDap;
+		delete metricResult;
+		delete mc;
+	}
+	//cout << result->toString();
+	if (verbose) cout << "\n Planejamento por clusters finalizado";
+	return result;
+}
+TestResult* AutoPlanning::executeClusterVariableAutoPlanTestMode(int usePostOptimization, int redundancy)
+{
+	if (verbose) cout << "\n Iniciando planejamento por clusters";
+	TestResult* result;
+	//cout << "Iniciando planejamento\n";
+	result = clusterVariableAutoPlanningTestMode(usePostOptimization, redundancy);
 	result->gridSize = gridLimiter;
 	result->numMeters = meters.size();
 	result->numPoles = poles.size();
@@ -893,18 +1057,6 @@ vector<int> AutoPlanning::gridAutoPlanning(bool usePostOptimization, int redunda
 		poles = cellsPoles;
 
 		vector<vector<int> > cellSCP = createScp();
-<<<<<<< HEAD
-		if (limit == -1)
-			saveGLPKFileReduced(cellSCP, redundancy);
-		else
-			saveGLPKFileReducedWithLimit(cellSCP, redundancy, limit);
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt");
-		ifstream f((rubyPath + "/Results.txt").c_str());
-		string gridAnswer;
-		getline(f, gridAnswer);
-=======
->>>>>>> origin/master
-
 		saveGLPKFile(cellSCP, redundancy);
 		double memUsageInCell = -1;
 		vector<int> answer = executeGlpk(rubyPath + "GlpkFile.txt");

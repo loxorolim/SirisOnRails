@@ -183,7 +183,9 @@ class AutoPlanning: public FatherMethods
 		
 		//Planejamento com cluster (usa o K-MEANS).
 		vector<int> clusterAutoPlanning(bool usePostOptimization, int redundancy);
+		vector<int> clusterVariableAutoPlanning(bool usePostOptimization, int redundancy);
 		TestResult* clusterAutoPlanningTestMode(bool usePostOptimization, int redundancy);
+		TestResult* clusterVariableAutoPlanningTestMode(bool usePostOptimization, int redundancy);
 		//Planejamento com células.
 		vector<int> gridAutoPlanning(bool usePostOptimization, int redundancy);
 		TestResult* gridAutoPlanningTestMode(bool usePostOptimization, int redundancy);
@@ -201,6 +203,7 @@ class AutoPlanning: public FatherMethods
 		//Metodos Teste
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);
+		TestResult* executeClusterVariableAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeGraspAutoPlanTestMode(int iterations, double alpha, int redundancy,int usePostOptimization);
 
 		int getMetersSize();
