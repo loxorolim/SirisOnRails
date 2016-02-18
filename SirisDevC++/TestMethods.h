@@ -24,7 +24,7 @@ extern "C"
 #include <vl/host.h>
 #include <vl/kdtree.h>
 }
-string const rubyPath =  "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails";
+string const rubyPath =  "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/";
 
 struct DensityTestResult
 {

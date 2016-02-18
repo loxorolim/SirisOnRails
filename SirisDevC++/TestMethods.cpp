@@ -1391,14 +1391,14 @@ void VaryMemLimTest(int init, int var, int max,  string metersFile, string poles
 void MemoryTests()
 {
 	//memoryEstimationTestWithFixedMeters(1000, 1, 5000);
-	memoryEstimationTestWithFixedMeters(2000, 8001, 1000);
+//	memoryEstimationTestWithFixedMeters(2000, 1, 1000);
 	//memoryEstimationTestWithFixedMeters(3000, 1, 1000);
 	//memoryEstimationTestWithFixedMeters(4000, 1, 1000);
 
-	//memoryEstimationTestWithFixedPoles(1000, 1, 5000);
-	//memoryEstimationTestWithFixedPoles(2000, 1, 1000);
-	//memoryEstimationTestWithFixedPoles(3000, 1, 1000);
-	//memoryEstimationTestWithFixedPoles(4000, 1, 1000);
+//	memoryEstimationTestWithFixedPoles(1000, 1, 5000);
+//	memoryEstimationTestWithFixedPoles(2000, 1, 1000);
+	memoryEstimationTestWithFixedPoles(3000, 1, 1000);
+	memoryEstimationTestWithFixedPoles(4000, 1, 1000);
 	
 }
 void DensityTests()
