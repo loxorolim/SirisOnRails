@@ -24,9 +24,11 @@ vector<Position*> getPositionArrayFromJson(string json, string type)
 		lat = aux[i]["lat"].GetDouble();
 		lng = aux[i]["lng"].GetDouble();
 		vector<string> opIds;
-		for (SizeType j = 0; j < aux[i]["signal_info"].Size(); j++)
-			opIds.push_back(aux[i]["signal_info"][j].GetString());
-
+		if (type == "signal_info")
+		{
+			for (SizeType j = 0; j < aux[i]["signal_info"].Size(); j++)
+				opIds.push_back(aux[i]["signal_info"][j].GetString());
+		}
 		Position* p = new Position(lat, lng, i,opIds);
 		ret.push_back(p);
 	}
