@@ -101,32 +101,32 @@ function setOption(opt){
 
 function setButtons()
 {
-//TEEEEEEEEEEEEESTE
-  $(function() {
-    $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
-      _renderItem: function( ul, item ) {
-        var li = $( "<li>", { text: item.label } );
+////TEEEEEEEEEEEEESTE
+//  $(function() {
+//      $.widget("custom.iconselectmenu", $.ui.selectmenu, {
+
+//      _renderItem: function( ul, item ) {
+//        var li = $( "<li>", { text: item.label } );
+//        if ( item.disabled ) {
+//          li.addClass( "ui-state-disabled" );
+//        }
  
-        if ( item.disabled ) {
-          li.addClass( "ui-state-disabled" );
-        }
+//        $( "<span>", {
+//          style: item.element.attr( "data-style" ),
+//          "class": "ui-icon " + item.element.attr( "data-class" )
+//        })
+//          .appendTo( li );
  
-        $( "<span>", {
-          style: item.element.attr( "data-style" ),
-          "class": "ui-icon " + item.element.attr( "data-class" )
-        })
-          .appendTo( li );
+//        return li.appendTo( ul );
+//      }
+//    });
  
-        return li.appendTo( ul );
-      }
-    });
+  //  $( "#filesB" )
+  //    .iconselectmenu()
+  //    .iconselectmenu( "menuWidget" )
+  //      .addClass( "ui-menu-icons customicons" );
  
-    $( "#filesB" )
-      .iconselectmenu()
-      .iconselectmenu( "menuWidget" )
-        .addClass( "ui-menu-icons customicons" );
- 
-  });
+  //});
 
 
   $('#helpmenu').attr('src', document.URL+'/assets/helpmenu.png');
@@ -140,17 +140,17 @@ function setButtons()
 	$('option[value=meterEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/meterremoveselectionicon.png);');
 	$('option[value=poleEraserSelection]').attr('data-style', 'background-image: url('+document.URL+'/assets/poleremoveselectionicon.png);');
     $.widget("custom.TFOiconSelectImg", $.ui.selectmenu, {
-            _renderItem: function (ul, item) {
-                var li = $("<li>", { html: item.element.html() });
-                var attr = item.element.attr("data-style");
-                if (typeof attr !== typeof undefined && attr !== false) {
-                    $("<span>", {
-                        style: item.element.attr("data-style"),
-                        "class": "ui-icon TFOOptlstFiltreImg"
-                    }).appendTo(li);
-                }
-                return li.appendTo(ul);
+        _renderItem: function (ul, item) {
+            var li = $("<li>", { html: item.element.html() });
+            var attr = item.element.attr("data-style");
+            if (typeof attr !== typeof undefined && attr !== false) {
+                $("<span>", {
+                    style: item.element.attr("data-style"),
+                    "class": "ui-icon TFOOptlstFiltreImg"
+                }).appendTo(li);
             }
+            return li.appendTo(ul);
+        }
         });
 
         $("#mouseOptions")
@@ -162,8 +162,6 @@ function setButtons()
               },
               change: function (event, ui) {
                   $("#" + this.id + 'ImgSelected').attr("style", ui.item.element.data("style"));
-                  var opt = ui.item.value
-                  setOption(opt);
               }
           }).TFOiconSelectImg("menuWidget").addClass("ui-menu-icons customicons");
 
