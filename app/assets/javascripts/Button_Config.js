@@ -1,4 +1,4 @@
-
+//teste
 function setInfoWindowNull()
 {
     infowindow.setMap(null);
@@ -101,33 +101,6 @@ function setOption(opt){
 
 function setButtons()
 {
-////TEEEEEEEEEEEEESTE
-//  $(function() {
-//      $.widget("custom.iconselectmenu", $.ui.selectmenu, {
-
-//      _renderItem: function( ul, item ) {
-//        var li = $( "<li>", { text: item.label } );
-//        if ( item.disabled ) {
-//          li.addClass( "ui-state-disabled" );
-//        }
- 
-//        $( "<span>", {
-//          style: item.element.attr( "data-style" ),
-//          "class": "ui-icon " + item.element.attr( "data-class" )
-//        })
-//          .appendTo( li );
- 
-//        return li.appendTo( ul );
-//      }
-//    });
- 
-  //  $( "#filesB" )
-  //    .iconselectmenu()
-  //    .iconselectmenu( "menuWidget" )
-  //      .addClass( "ui-menu-icons customicons" );
- 
-  //});
-
 
   $('#helpmenu').attr('src', document.URL+'/assets/helpmenu.png');
 	$('option[value=view]').attr('data-style', 'background-image: url('+document.URL+'/assets/viewicon.png);');
@@ -150,7 +123,7 @@ function setButtons()
                 }).appendTo(li);
             }
             return li.appendTo(ul);
-            }
+        }
         });
 
         $("#mouseOptions")
@@ -162,6 +135,8 @@ function setButtons()
               },
               change: function (event, ui) {
                   $("#" + this.id + 'ImgSelected').attr("style", ui.item.element.data("style"));
+                  var opt = ui.item.value
+                  setOption(opt);
               }
           }).TFOiconSelectImg("menuWidget").addClass("ui-menu-icons customicons");
 
