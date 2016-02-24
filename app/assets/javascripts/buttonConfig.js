@@ -150,7 +150,7 @@ function setButtons()
                 }).appendTo(li);
             }
             return li.appendTo(ul);
-        }
+            }
         });
 
         $("#mouseOptions")
