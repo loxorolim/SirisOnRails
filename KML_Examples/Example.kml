@@ -1,0 +1,3957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Scenario>1</Scenario>
+<Technology>1</Technology>
+<Power>20.000000</Power>
+<MeshHops>0</MeshHops>
+<ValidCellRadius>37</ValidCellRadius>
+<Statistics>
+<metric type = "DAPQnt">1</metric>
+<metric type = "MeterQnt">49</metric>
+<metric type = "UncoveredMeters">42</metric>
+<metric type = "QualityPerHop" hop = "1">0.997</metric>
+<metric type = "MetersPerHop" hop = "1">7</metric>
+<metric type = "MetersPerDap" range = "min">7.000000</metric>
+<metric type = "MetersPerDap" range = "med">7.000000</metric>
+<metric type = "MetersPerDap" range = "max">7.000000</metric>
+<metric type = "Redundancy" range = "min">0.000000</metric>
+<metric type = "Redundancy" range = "med">0.142857</metric>
+<metric type = "Redundancy" range = "max">1.000000</metric>
+</Statistics>
+<Folder><name>Medidores</name>
+<Placemark>
+<name>Medidor</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.064891,-22.956459,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.064762,-22.956477,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.064665,-22.956373,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<efficiency>0.999973</efficiency>
+<delay>0.508640</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.064572,-22.956622,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<efficiency>0.993812</efficiency>
+<delay>0.511793</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.064513,-22.956758,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<efficiency>0.988250</efficiency>
+<delay>0.514674</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.065022,-22.956482,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<meshHop>0</meshHop>
+<Point>
+<coordinates>-43.065092,-22.956422,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065210,-22.956467,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065253,-22.956521,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065435,-22.956699,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065510,-22.956788,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065376,-22.957084,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065269,-22.957218,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065033,-22.957272,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064888,-22.957326,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.065210,-22.957104,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064942,-22.957139,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064770,-22.957213,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064480,-22.957302,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064164,-22.957336,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063735,-22.957376,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063719,-22.957163,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063847,-22.957163,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064244,-22.957065,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064432,-22.956961,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064411,-22.956655,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064185,-22.956852,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063971,-22.956941,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063847,-22.956976,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063697,-22.957040,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063488,-22.957109,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063509,-22.957257,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064545,-22.956338,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064427,-22.956111,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063998,-22.956289,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063692,-22.956561,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063515,-22.956694,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063386,-22.956823,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063139,-22.956803,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063402,-22.956630,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063531,-22.956482,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063783,-22.956235,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.063901,-22.956111,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064164,-22.955914,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064507,-22.955731,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064513,-22.955864,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064684,-22.955978,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064797,-22.956082,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Medidor</name>
+<Point>
+<coordinates>-43.064910,-22.956210,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+<Folder><name>Postes</name>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064810,-22.956556,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064733,-22.956652,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064931,-22.956588,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064926,-22.956403,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064674,-22.956235,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064497,-22.956136,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064384,-22.956042,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064271,-22.955914,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.063815,-22.956383,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064057,-22.956185,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.063601,-22.956506,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.063418,-22.956689,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.063595,-22.957178,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064089,-22.957035,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064314,-22.956926,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064475,-22.956778,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065248,-22.956605,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065360,-22.956748,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065441,-22.956857,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065344,-22.956981,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065124,-22.956660,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065264,-22.957158,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.065113,-22.957193,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064963,-22.957223,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064813,-22.957297,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064378,-22.957366,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.064196,-22.957425,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Poste</name>
+<Point>
+<coordinates>-43.063955,-22.957499,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+<Folder><name>Agregadores</name>
+<Placemark>
+<name>Agregador</name>
+<Point>
+<coordinates>-43.064824,-22.956366,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+<Folder><name>Enlaces</name>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-43.064891,-22.956459,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-43.064762,-22.956477,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-43.064665,-22.956373,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>0.999973</efficiency>
+<delay>0.508640</delay>
+<LineString>
+<coordinates>
+-43.065022,-22.956482,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>0.993812</efficiency>
+<delay>0.511793</delay>
+<LineString>
+<coordinates>
+-43.065092,-22.956422,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>0.988250</efficiency>
+<delay>0.514674</delay>
+<LineString>
+<coordinates>
+-43.064545,-22.956338,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+<Placemark>
+<name>Enlace</name>
+<efficiency>1.000000</efficiency>
+<delay>0.508626</delay>
+<LineString>
+<coordinates>
+-43.064910,-22.956210,0
+-43.064824,-22.956366,0
+</coordinates>
+</LineString>
+</Placemark>
+</Folder>
+<Folder><name>Sinal 3G/4G/GPRS</name>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065084,-22.956531,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065375,-22.956815,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065245,-22.957072,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.065077,-22.957141,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064841,-22.957216,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064397,-22.957324,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064192,-22.957351,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957413,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063686,-22.957283,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063578,-22.957212,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063716,-22.957113,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063896,-22.957099,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064101,-22.957028,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064218,-22.956962,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064348,-22.956934,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064454,-22.956868,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064514,-22.956753,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064581,-22.956681,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064702,-22.956619,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064773,-22.956547,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064845,-22.956430,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064856,-22.956343,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064987,-22.956598,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064695,-22.956340,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064580,-22.956196,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064699,-22.956096,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064447,-22.955899,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064258,-22.955910,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.064082,-22.956058,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063885,-22.956243,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063814,-22.956315,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063692,-22.956418,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063472,-22.956618,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063375,-22.956702,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Ponto de Coleta</name>
+<Operators>
+<id> Claro </id>
+<id> Oi </id>
+<id> Tim </id>
+<id> Vivo </id>
+</Operators>
+<Point>
+<coordinates>-43.063222,-22.956841,0</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</kml>
