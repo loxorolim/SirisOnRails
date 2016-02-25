@@ -1,19 +1,19 @@
 set Z;
  set Y;
  param A{r in Z, m in Y} default 0, binary;
-param B{r in Z} default 1, integer;
+param B{r in Z} default 2, integer;
  var Route{m in Y}, binary;
  minimize cost: sum{m in Y} Route[m];
  subject to covers{r in Z}: sum{m in Y} A[r,m]*Route[m]>=B[r];
  solve; 
- printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails//Results.txt";
+ printf {m in Y:  Route[m] == 1} "%s ", m > "C:/Users/Guilherme/Documents/GitHub/SirisOnRails/SirisOnRails//Results.txt";
  data;
-set Z:= ;
-set Y:= ;
+set Z:= Z0 Z1 Z2 ;
+set Y:= Y0 Y1 ;
 param A := 
-
+[Z0,Y0] 1[Z0,Y1] 1[Z1,Y0] 1[Z1,Y1] 1[Z2,Y0] 1[Z2,Y1] 1
 ;
 param B := 
-
+[Z0] 1[Z1] 1[Z2] 1
 ;
 end;

@@ -209,12 +209,16 @@ function setButtons()
      $("#RedundancySlider").slider({
          value: 1,
          min: 1,
-         max: 5,
+         max: 3,
          step: 1,
          slide: function (event, ui) {
              $("#Redundancy").text(ui.value);
-         }
+         },
+         stop: function (event, ui) {
+         REDUNDANCY = ui.value;
+     }
      });
+
      $("#limitSlider").slider({
          stop: function (event, ui) {
              LIMIT = ui.value;
@@ -229,28 +233,6 @@ function setButtons()
              $("#limit").text(ui.value);
          }
      });
-     $("#RedundancySlider").slider({
-         stop: function (event, ui) {
-             REDUNDANCY = ui.value;
-         }
-     });
-
-	
-	 //	$("#meshSliderDiv").slider({
-     //    value: 0,
-     //    min: 1,
-     //    max: 5,
-     //    step: 1,
-     //    slide: function (event, ui) {
-     //         $("#mesh").text(ui.value + " Saltos");
-     //    }
-     //}); 
-     //$("#meshSliderDiv").slider({
-     //    stop: function (event, ui) {
-     //       setMeshHops(ui.value);
-     //       sendDrawRequest();
-     //    }
-     //});
 
    $("#choosePower").hover(function () {
 	   $("#slider").css({ opacity: 1.0 });
