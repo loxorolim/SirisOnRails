@@ -20,11 +20,11 @@ vector<Position*> getPositionArrayFromJson(string json, string type)
 	vector<Position*> ret;
 	for (rapidjson::SizeType i = 0; i < aux.Size(); i++)
 	{
-		double lat, lng;
-		lat = aux[i]["lat"].GetDouble();
-		lng = aux[i]["lng"].GetDouble();
+		double lat=0, lng=0;
+		if (aux[i].HasMember("lat")) lat = aux[i]["lat"].GetDouble();
+		if (aux[i].HasMember("lng")) lng = aux[i]["lng"].GetDouble();
 		vector<string> opIds;
-		if (type == "signal_info")
+		if (aux[i].HasMember("signal_info"))
 		{
 			for (SizeType j = 0; j < aux[i]["signal_info"].Size(); j++)
 				opIds.push_back(aux[i]["signal_info"][j].GetString());
@@ -43,26 +43,17 @@ string getResponse(string input, string rP)
 	int action_id, scenario, technology, mesh = 0, redundancy = 1;
 	double h_tx, h_rx, bit_rate, power, valid_cell_radius;
 	// 2. Modify it by DOM.
-	Value& s = d["action_id"];
-	action_id = s.GetInt();
-	s = d["scenario"];
-	scenario = s.GetInt();
-	s = d["technology"];
-	technology = s.GetInt();
-	s = d["redundancy"];
-	redundancy = s.GetInt();
-	s = d["mesh_hops"];
-	mesh = s.GetInt();
-	s = d["h_tx"];
-	h_tx = s.GetDouble();
-	s = d["h_rx"];
-	h_rx = s.GetDouble();
-	s = d["rate"];
-	bit_rate = s.GetDouble();
-	s = d["power"];
-	power = s.GetDouble();
-	s = d["valid_cell_radius"];
-	valid_cell_radius = s.GetInt();
+	//Value& s = ;
+	if (d.HasMember("action_id")) action_id = d["action_id"].GetInt();
+	if (d.HasMember("scenario")) scenario = d["scenario"].GetInt();
+	if (d.HasMember("technology")) technology = d["technology"].GetInt();
+	if (d.HasMember("redundancy")) redundancy = d["redundancy"].GetInt();
+	if (d.HasMember("mesh_hops")) mesh = d["mesh_hops"].GetInt();
+	if (d.HasMember("h_tx")) h_tx = d["h_tx"].GetDouble();
+	if (d.HasMember("h_rx")) h_rx = d["h_rx"].GetDouble();
+	if (d.HasMember("rate")) bit_rate = d["rate"].GetDouble();
+	if (d.HasMember("power")) power = d["power"].GetDouble();
+	if (d.HasMember("valid_cell_radius")) valid_cell_radius = d["valid_cell_radius"].GetInt();
 
 	vector<Position*> signal_info, meters, poles, daps;
 	string ret;
@@ -91,8 +82,8 @@ string getResponse(string input, string rP)
 	}
 	case AUTOPLAN:
 	{
-		Value& s = d["overwrite"];
-		bool overwrite = s.GetBool();
+		bool overwrite = false;
+		if (d.HasMember("overwrite")) overwrite = d["overwrite"].GetBool();
 
 		meters = getPositionArrayFromJson(input, "meters");
 		poles = getPositionArrayFromJson(input, "poles");
@@ -159,9 +150,7 @@ string getResponse(string input, string rP)
 	{		
 					
 		string received_kml = "";
-		Value& s = d["KML"];
-		
-		received_kml = s.GetString();
+		if(d.HasMember("KML")) received_kml = d["KML"].GetString();
 		ret = processKML(received_kml);
 		
 		break;
