@@ -206,13 +206,13 @@ function setButtons()
 	           sendDrawRequest();
 	       }
 	   });
-     $("#redundancySlider").slider({
+     $("#RedundancySlider").slider({
          value: 1,
          min: 1,
          max: 5,
          step: 1,
          slide: function (event, ui) {
-             $("#redundancy").text(ui.value);
+             $("#Redundancy").text(ui.value);
          }
      });
      $("#limitSlider").slider({
@@ -229,7 +229,7 @@ function setButtons()
              $("#limit").text(ui.value);
          }
      });
-     $("#redundancySlider").slider({
+     $("#RedundancySlider").slider({
          stop: function (event, ui) {
              REDUNDANCY = ui.value;
          }
@@ -674,11 +674,13 @@ function setAutoplanningButton() {
         clearTimeout($(this).data('timeoutId'));
         $('#autoPlanningCheckboxDiv').show();
         $('#autoPlanningHeatmapCheckboxDiv').show();
+        $('#RedundancySliderDiv').show();
     }).mouseleave(function () {
         var someElement = $(this),
         timeoutId = setTimeout(function () {
             $('#autoPlanningCheckboxDiv').hide();
             $('#autoPlanningHeatmapCheckboxDiv').hide();
+            $('#RedundancySliderDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
     });
@@ -689,6 +691,7 @@ function setAutoplanningButton() {
         timeoutId = setTimeout(function () {
             $('#autoPlanningCheckboxDiv').hide();
             $('#autoPlanningHeatmapCheckboxDiv').hide();
+            $('#RedundancySliderDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
     });
@@ -703,12 +706,26 @@ function setAutoplanningButton() {
         timeoutId = setTimeout(function () {
             $('#autoPlanningCheckboxDiv').hide();
             $('#autoPlanningHeatmapCheckboxDiv').hide();
+            $('#RedundancySliderDiv').hide();
         }, 1);
         someElement.data('timeoutId', timeoutId);
     });
     $('#autoPlanningHeatmapCheckbox').click(function () {
         toggleAutoPlanningHeatmapOverwrite();
     });
+
+    $('#RedundancySliderDiv').mouseenter(function () {
+        clearTimeout($('#autoPlanning').data('timeoutId'));
+    }).mouseleave(function () {
+        var someElement = $('#autoPlanning'),
+        timeoutId = setTimeout(function () {
+            $('#autoPlanningCheckboxDiv').hide();
+            $('#autoPlanningHeatmapCheckboxDiv').hide();
+            $('#RedundancySliderDiv').hide();
+        }, 1);
+        someElement.data('timeoutId', timeoutId);
+    });
+
 }
 function setMeshButton() {
     $('#meshButton').button({
