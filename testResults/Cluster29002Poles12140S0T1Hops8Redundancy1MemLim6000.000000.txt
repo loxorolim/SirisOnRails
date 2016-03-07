@@ -1,0 +1,81 @@
+Dimension: 29002 x 12140
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 1425
+Time: 826.101013
+Hop1Quantity: 10095
+Hop2Quantity: 5798
+Hop3Quantity: 4310
+Hop4Quantity: 3584
+Hop5Quantity: 2707
+Hop6Quantity: 1503
+Hop7Quantity: 776
+Hop8Quantity: 229
+Hop1Quality: 0.996856
+Hop2Quality: 0.964646
+Hop3Quality: 0.952894
+Hop4Quality: 0.932375
+Hop5Quality: 0.916586
+Hop6Quality: 0.887709
+Hop7Quality: 0.874200
+Hop8Quality: 0.864520
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 24.414737
+Max Meters per DAP: 666.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.199607
+Max Redundancy: 6.000000
+
+P.O Solution Quality: 1420
+P.O Time: 827.018005
+Hop1Quantity: 10023
+Hop2Quantity: 5766
+Hop3Quantity: 4209
+Hop4Quantity: 3661
+Hop5Quantity: 2817
+Hop6Quantity: 1522
+Hop7Quantity: 767
+Hop8Quantity: 237
+Hop1Quality: 0.996864
+Hop2Quality: 0.965506
+Hop3Quality: 0.954413
+Hop4Quality: 0.932782
+Hop5Quality: 0.915423
+Hop6Quality: 0.888298
+Hop7Quality: 0.880136
+Hop8Quality: 0.866993
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 23.757746
+Max Meters per DAP: 666.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.163230
+Max Redundancy: 4.000000
+7478x4234:
+Número de 1's na Matriz de Cobertura258703.000000:
+Densidade: 0.008171
+Cobertura média por DAP: 61.101323
+Desvio padrão da cobertura: 85.474598
+Memória utilizada: 4894.188209
+Tempo utilizado: 1.356000
+8469x3201:
+Número de 1's na Matriz de Cobertura370918.000000:
+Densidade: 0.013682
+Cobertura média por DAP: 115.875664
+Desvio padrão da cobertura: 128.491839
+Memória utilizada: 4203.102958
+Tempo utilizado: 1.625000
+4976x2169:
+Número de 1's na Matriz de Cobertura360274.000000:
+Densidade: 0.033381
+Cobertura média por DAP: 166.101429
+Desvio padrão da cobertura: 188.548274
+Memória utilizada: 1691.538375
+Tempo utilizado: 0.845000
+8079x3042:
+Número de 1's na Matriz de Cobertura683606.000000:
+Densidade: 0.027816
+Cobertura média por DAP: 224.722551
+Desvio padrão da cobertura: 162.129121
+Memória utilizada: 3837.474410
+Tempo utilizado: 1.803000

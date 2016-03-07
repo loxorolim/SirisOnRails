@@ -1,0 +1,55 @@
+Dimension: 3666 x 1030
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 21
+Time: 53.485001
+Hop1Quantity: 146
+Hop2Quantity: 151
+Hop3Quantity: 168
+Hop4Quantity: 184
+Hop5Quantity: 211
+Hop6Quantity: 220
+Hop7Quantity: 253
+Hop8Quantity: 264
+Hop9Quantity: 301
+Hop10Quantity: 267
+Hop11Quantity: 275
+Hop12Quantity: 296
+Hop13Quantity: 267
+Hop14Quantity: 237
+Hop15Quantity: 185
+Hop16Quantity: 132
+Hop17Quantity: 76
+Hop18Quantity: 33
+Hop1Quality: 0.993378
+Hop2Quality: 0.977054
+Hop3Quality: 0.966801
+Hop4Quality: 0.951566
+Hop5Quality: 0.952218
+Hop6Quality: 0.938617
+Hop7Quality: 0.930110
+Hop8Quality: 0.923631
+Hop9Quality: 0.911107
+Hop10Quality: 0.905621
+Hop11Quality: 0.899742
+Hop12Quality: 0.890891
+Hop13Quality: 0.879841
+Hop14Quality: 0.870677
+Hop15Quality: 0.871746
+Hop16Quality: 0.881353
+Hop17Quality: 0.861396
+Hop18Quality: 0.866177
+Min Meters per DAP: 4.000000
+Med Meters per DAP: 243.857143
+Max Meters per DAP: 647.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.396890
+Max Redundancy: 3.000000
+3666x1030:
+Número de 1's na Matriz de Cobertura375109.000000:
+Densidade: 0.099341
+Cobertura média por DAP: 364.183495
+Desvio padrão da cobertura: 207.734372
+Memória utilizada: 612.570563
+Tempo utilizado: 1.050000

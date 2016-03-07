@@ -288,7 +288,7 @@ vector<vector<Position*> > gridInstanceGenerator(double latStart, double lngStar
 //	}
 //	delete ap;
 //}
-AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePath, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled)
+AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePath, int scenario, int technology, double BIT_RATE, double TRANSMITTER_POWER, double H_TX, double H_RX, int SRD, int meshEnabled, int verbose = 0)
 {
 
 	//string completeMetersFile = rubyPath + "arqsTeste/" + metersFile;
@@ -327,7 +327,7 @@ AutoPlanning* setAutoPlanningFromFile(string metersFilePath, string polesFilePat
 	fclose(file2);
 
 	int gridSize = 500;
-	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize, rubyPath);
+	AutoPlanning* res = new AutoPlanning(meters, poles, scenario, technology, BIT_RATE, TRANSMITTER_POWER, H_TX, H_RX, SRD, meshEnabled, gridSize, rubyPath,verbose);
 	return res;
 
 
@@ -391,9 +391,9 @@ void executeTest(string meterFile, string poleFile, string pathToSave,int scenar
 
 }
 //0 cluster 1 guloso 2 grasp
-void executePlanningTest(string rubyPath,string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, int redundancy, int type, int iterations = 500, double alpha = 0.9)
+string executePlanningTest(string rubyPath,string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh, int redundancy, int type, int iterations = 500, double alpha = 0.9)
 {
-	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh);
+	AutoPlanning* AP = setAutoPlanningFromFile(meterFile.c_str(), poleFile.c_str(), scenario, tech, bitrate, power, hx, rx, SRD, mesh,1);
 
 	//	AP->saveGLPKFileWithLimit(scp,1, 5);
 
@@ -447,6 +447,7 @@ void executePlanningTest(string rubyPath,string meterFile, string poleFile, stri
 	f.close();
 
 	delete AP;
+	return result;
 }
 void kmeansTest(string meterFile, string poleFile, string pathToSave, int scenario, int tech, int bitrate, int power, int hx, int rx, int SRD, int mesh)
 {
@@ -1420,6 +1421,10 @@ void SolutionTests()
 	int hops = 0;
 	int maxHops = 3;
 	string metersFile = "", polesFile = "";
+	metersFile = rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt";
+	polesFile = rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt";
+	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, 50, 1, 0);
+	return;
 	for (hops; hops <= maxHops; hops++)
 	{
 		cout << "HOPS: " << hops;
@@ -1427,10 +1432,10 @@ void SolutionTests()
 		{
 			metersFile = rubyPath + "/Instances/NikitiMeters3666.txt";
 			polesFile = rubyPath + "/Instances/NikitiPoles1030.txt";
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
+		//	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 0);
+			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 1);
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 2, 1000, 0.9);
-			executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
+		//	executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Suburbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
 
 			//metersFile = rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt";
 			//polesFile = rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt";
@@ -1454,6 +1459,66 @@ void SolutionTests()
 			//executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", Urbano, t802_11_g, 6, 20, 3, 5, 1, hops, i, 3);
 		}
 	}
+}
+void HopVariationTest(string metersFile, string polesFile, int scenario, int tech, int startHop)
+{
+	int currentSol = 0;
+	while (true)
+	{
+		cout << "HOPS: " << startHop;
+		string result = executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", scenario, tech, 6, 20, 3, 5, 1, startHop, 1, 0);
+		int val = -1;
+		string aux = "";
+		int pos = result.find("Solution Quality: ");
+		aux = result.substr(pos);
+		aux = aux.substr(aux.find(":")+2);
+		aux = aux.substr(0, aux.find("\n"));
+		val = stoi(aux);
+		
+		int pos2 = result.find("P.O Solution Quality: ");
+		if (pos2 != -1)
+		{
+			aux = result.substr(pos2);
+			aux = aux.substr(aux.find(":") + 2);
+			aux = aux.substr(0, aux.find("\n"));
+			val = stoi(aux);
+		}
+		if (val == currentSol)
+			break;
+		currentSol = val;		
+		startHop++;
+
+	}
+	
+}
+void HopVariationTestMaxHops(string metersFile, string polesFile, int scenario, int tech, int startHop, int maxHops)
+{
+	//int currentSol = 0;
+	while (startHop <= maxHops)
+	{
+		cout << "HOPS: " << startHop;
+		string result = executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", scenario, tech, 6, 20, 3, 5, 1, startHop, 1, 0);
+		int val = -1;
+		string aux = "";
+		int pos = result.find("Solution Quality: ");
+		aux = result.substr(pos);
+		aux = aux.substr(aux.find(":") + 2);
+		aux = aux.substr(0, aux.find("\n"));
+		val = stoi(aux);
+
+		int pos2 = result.find("P.O Solution Quality: ");
+		if (pos2 != -1)
+		{
+			aux = result.substr(pos2);
+			aux = aux.substr(aux.find(":") + 2);
+			aux = aux.substr(0, aux.find("\n"));
+			val = stoi(aux);
+		}
+
+		startHop++;
+
+	}
+
 }
 
 double GetSubInstancesSolvingTime(string path)
@@ -1574,7 +1639,28 @@ int TestMain(int argc, char** argv)
 {
 
 	srand(time(NULL));
-	SolutionTests();
+	string path = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\testResults";
+	int meters_size = 8000, poles_size = 12200, sce = Urbano, tech = t802_11_g ;
+	string wow = "";
+	for (int i = 1; i < 26; i++)
+	{
+		double exTime = GetExecutionTimeFromFile(path + "\\Cluster" + to_string(meters_size) + "Poles" + to_string(poles_size) + "S" + to_string(sce) + "T" + to_string(tech) + "Hops" + to_string(i) + "Redundancy" + to_string(1) + "MemLim6000.000000.txt");
+		cout << i << ": " << exTime << "\n";
+		wow += to_string(exTime) + "\n";
+	}
+	string filename = "C:\\Users\\Guilherme\\Desktop\\wow.txt";
+	ofstream f(filename.c_str());
+
+	f << wow;
+	f.close();
+	cout << "wow";
+	//SolutionTests();
+	//HopVariationTest(rubyPath + "/Instances/NikitiMeters3666.txt", rubyPath + "/Instances/NikitiPoles1030.txt", Suburbano, t802_11_g, 4);
+	//HopVariationTest(rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt", rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt", Urbano, t802_11_g, 4);
+	//HopVariationTest(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 1);
+	//HopVariationTestMaxHops(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 0,0);
+	//HopVariationTest(rubyPath + "/Instances/FloripaMetersCompleto29002.txt", rubyPath + "/Instances/FloripaPolesCompleto12140.txt", Urbano, t802_11_g, 4);
+
 	return 0;
 	//MemoryTests();
 	//return 0;
