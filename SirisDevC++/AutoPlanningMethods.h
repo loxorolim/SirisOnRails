@@ -30,7 +30,7 @@ struct ClusterProblem
 struct subProblem
 {
 	int numOfMeters, numOfPoles;
-	double solverTime, memUsed, density, avgCoverage, coverageDeviation, numOfCoverage;
+	double solverTime, memUsed, density, avgCoverage, coverageDeviation, numOfCoverage, gap;
 	string toString()
 	{
 		string ret = "";
@@ -41,6 +41,7 @@ struct subProblem
 		ret += "Desvio padrão da cobertura: " + to_string(coverageDeviation) + "\n";
 		ret += "Memória utilizada: " + to_string(memUsed) + "\n";
 		ret += "Tempo utilizado: " + to_string(solverTime) + "\n";
+		ret += "Gap máximo: " + to_string(gap) + "\n";
 		return ret;
 	}
 };
@@ -199,7 +200,7 @@ class AutoPlanning: public FatherMethods
 
 		//Executa o solver GLPK
 		vector<int> executeGlpk(string filename);
-		vector<int> executeGlpk(string filename, double &maxmem, double &solverTime);
+		vector<int> executeGlpk(string filename, double &maxmem, double &solverTime, double &gap);
 		//Metodos Teste
 		TestResult* executeAutoPlanTestMode(int usePostOptimization, int redundancy);
 		TestResult* executeClusterAutoPlanTestMode(int usePostOptimization, int redundancy);

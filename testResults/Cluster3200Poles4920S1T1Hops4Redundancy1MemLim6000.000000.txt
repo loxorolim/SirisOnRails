@@ -3,7 +3,7 @@ Grid Size: 500
 Uncovered meters: 0
 
 Solution Quality: 709
-Time: 72.057999
+Time: 126.685997
 Hop1Quantity: 1933
 Hop2Quantity: 874
 Hop3Quantity: 295
@@ -24,4 +24,5 @@ Densidade: 0.001166
 Cobertura média por DAP: 3.729878
 Desvio padrão da cobertura: 2.271152
 Memória utilizada: 2426.929450
-Tempo utilizado: 10.389000
+Tempo utilizado: 60.460999
+Gap máximo: 1.551481

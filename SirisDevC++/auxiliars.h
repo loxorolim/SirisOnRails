@@ -15,7 +15,7 @@
 using namespace std;
 using namespace rapidjson;
 
-#define TIME_LIM_DEFAULT 10*1000
+#define TIME_LIM_DEFAULT 60*1000
 // Check windows
 #if _WIN32 || _WIN64
 #if _WIN64

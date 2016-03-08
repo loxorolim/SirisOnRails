@@ -751,11 +751,11 @@ void saveGLPKFile(vector<vector<int> > &SCP, int mSize, int pSize, int redundanc
 	f << resp;
 	f.close();
 }
-void get_mip_gap(glp_tree *T, void *info)
-{
-	double gap = glp_ios_mip_gap(T);
-	*(double*)info = gap;
-}
+//void get_mip_gap(glp_tree *T, void *info)
+//{
+//	double gap = glp_ios_mip_gap(T);
+//	*(double*)info = gap;
+//}
 void executeGLPK(string filename,double timeLimit, double* solverTime, double* maxMem)
 {
 	glp_term_out(GLP_ON);
@@ -788,8 +788,8 @@ void executeGLPK(string filename,double timeLimit, double* solverTime, double* m
 	glp_mpl_build_prob(tran, lp);
 	glp_iocp parm;
 	glp_init_iocp(&parm);
-	parm.cb_func = get_mip_gap;
-	parm.cb_info = &gap;
+//	parm.cb_func = get_mip_gap;
+//	parm.cb_info = &gap;
 	parm.presolve = GLP_ON;
 	parm.tm_lim = timeLimit * 1000; //TEMPO LIMITE EM SEGUNDOS
 
@@ -853,8 +853,8 @@ void increaseDensityTest(int mSize, int pSize, string id, int timeLimit)
 		glp_mpl_build_prob(tran, lp);
 		glp_iocp parm;
 		glp_init_iocp(&parm);
-		parm.cb_func = get_mip_gap;
-		parm.cb_info = &gap;
+		//parm.cb_func = get_mip_gap;
+	//	parm.cb_info = &gap;
 		parm.presolve = GLP_ON;
 		parm.tm_lim = timeLimit*1000; //TEMPO LIMITE DE 60 SEGUNDOS
 
@@ -1639,26 +1639,26 @@ int TestMain(int argc, char** argv)
 {
 
 	srand(time(NULL));
-	string path = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\testResults";
-	int meters_size = 8000, poles_size = 12200, sce = Urbano, tech = t802_11_g ;
-	string wow = "";
-	for (int i = 1; i < 26; i++)
-	{
-		double exTime = GetExecutionTimeFromFile(path + "\\Cluster" + to_string(meters_size) + "Poles" + to_string(poles_size) + "S" + to_string(sce) + "T" + to_string(tech) + "Hops" + to_string(i) + "Redundancy" + to_string(1) + "MemLim6000.000000.txt");
-		cout << i << ": " << exTime << "\n";
-		wow += to_string(exTime) + "\n";
-	}
-	string filename = "C:\\Users\\Guilherme\\Desktop\\wow.txt";
-	ofstream f(filename.c_str());
+	//string path = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\testResults";
+	//int meters_size = 8000, poles_size = 12200, sce = Urbano, tech = t802_11_g ;
+	//string wow = "";
+	//for (int i = 1; i < 26; i++)
+	//{
+	//	double exTime = GetExecutionTimeFromFile(path + "\\Cluster" + to_string(meters_size) + "Poles" + to_string(poles_size) + "S" + to_string(sce) + "T" + to_string(tech) + "Hops" + to_string(i) + "Redundancy" + to_string(1) + "MemLim6000.000000.txt");
+	//	cout << i << ": " << exTime << "\n";
+	//	wow += to_string(exTime) + "\n";
+	//}
+	//string filename = "C:\\Users\\Guilherme\\Desktop\\wow.txt";
+	//ofstream f(filename.c_str());
 
-	f << wow;
-	f.close();
-	cout << "wow";
+	//f << wow;
+	//f.close();
+	//cout << "wow";
 	//SolutionTests();
 	//HopVariationTest(rubyPath + "/Instances/NikitiMeters3666.txt", rubyPath + "/Instances/NikitiPoles1030.txt", Suburbano, t802_11_g, 4);
 	//HopVariationTest(rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt", rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt", Urbano, t802_11_g, 4);
 	//HopVariationTest(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 1);
-	//HopVariationTestMaxHops(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 0,0);
+	HopVariationTestMaxHops(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 0,20);
 	//HopVariationTest(rubyPath + "/Instances/FloripaMetersCompleto29002.txt", rubyPath + "/Instances/FloripaPolesCompleto12140.txt", Urbano, t802_11_g, 4);
 
 	return 0;

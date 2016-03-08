@@ -1,5 +1,10 @@
 ﻿#include "AutoPlanningMethods.h"
 
+void get_mip_gap(glp_tree *T, void *info)
+{
+	double gap = glp_ios_mip_gap(T);
+	*(double*)info = gap;
+}
 int AutoPlanning::getMetersSize()
 {
 	return meters.size();
@@ -232,6 +237,7 @@ vector<int> AutoPlanning::executeGlpk(string filename)
 	glp_init_iocp(&parm);
 	parm.presolve = GLP_ON;
 	err = glp_intopt(lp, &parm);
+	
 	for (int i = 1; i < poles.size() + 1; i++)
 	{
 		if (glp_mip_col_val(lp, i))
@@ -245,7 +251,7 @@ skip: glp_mpl_free_wksp(tran);
 	glp_delete_prob(lp);
 	return answer;
 }
-vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &solverTime)
+vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &solverTime, double &gap)
 {
 	glp_term_out(GLP_OFF);
 	if (verbose) { cout << "\n"; glp_term_out(GLP_ON); }
@@ -262,7 +268,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	tran = glp_mpl_alloc_wksp();
 	ret = glp_mpl_read_model(tran, filename.c_str(), 0);
 	glp_mem_limit(MEM_LIMIT*MEM_EST_SAFETY);
-	
+	double gap_aux = -1;
 	if (ret != 0)
 	{
 		fprintf(stderr, "Error on translating model\n");
@@ -278,6 +284,8 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	glp_mpl_build_prob(tran, lp);
 	glp_iocp parm;
 	glp_init_iocp(&parm);
+	parm.cb_func = get_mip_gap;
+	parm.cb_info = &gap_aux;
 	parm.presolve = GLP_ON;
 	parm.tm_lim = TIME_LIMIT;
 	
@@ -293,6 +301,7 @@ vector<int> AutoPlanning::executeGlpk(string filename, double &maxMem, double &s
 	glp_mem_usage(&count, &cpeak, &total, &tpeak);
 	totalInMb = ((double)total / (1024 * 1024));
 	tpeakInMb = ((double)tpeak / (1024 * 1024));
+	gap = gap_aux * 100;
 	maxMem = totalInMb;
 skip: glp_mpl_free_wksp(tran);
 	glp_delete_prob(lp);
@@ -481,9 +490,9 @@ vector<int> AutoPlanning::clusterAutoPlanning(bool usePostOptimization, int redu
 		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
 		saveGLPKFile(cellSCP, redundancy);
 		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
-		double memUsageInCell = -1;
+		double memUsageInCell = -1, gap = 0;
 		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime, gap);
 		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
@@ -598,9 +607,9 @@ vector<int> AutoPlanning::clusterVariableAutoPlanning(bool usePostOptimization, 
 		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
 		saveGLPKFile(cellSCP, redundancy);
 		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
-		double memUsageInCell = -1;
+		double memUsageInCell = -1, gap = 0;
 		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime,gap);
 		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		if (memUsageInCell > maxMem)
 			maxMem = memUsageInCell;
@@ -719,12 +728,13 @@ TestResult* AutoPlanning::clusterAutoPlanningTestMode(bool usePostOptimization, 
 		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
 		saveGLPKFile(cellSCP, redundancy);
 		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1)+ " salvo";
-		double memUsageInCell = -1;
+		double memUsageInCell = -1, gap = 0;
 		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime, gap);
 		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		sp->solverTime = solverTime;
 		sp->memUsed = memUsageInCell;
+		sp->gap = gap;
 		result->subProblemStats.push_back(sp);
 		result->solverTime = solverTime;
 		if (memUsageInCell > maxMem)
@@ -835,12 +845,13 @@ TestResult* AutoPlanning::clusterVariableAutoPlanningTestMode(bool usePostOptimi
 		if (verbose) cout << "\n Salvando arquivo GLPK para a sub-instancia de numero " + to_string(i + 1);
 		saveGLPKFile(cellSCP, redundancy);
 		if (verbose) cout << "\n Arquivo GLPK para a sub-instancia de numero " + to_string(i + 1) + " salvo";
-		double memUsageInCell = -1;
+		double memUsageInCell = -1,gap=0;
 		if (verbose) cout << "\n Executando metodo exato no GLPK para a sub-instancia de numero " + to_string(i + 1);
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime,gap);
 		if (verbose) cout << "\n Solucao obitada para a sub-instancia de numero " + to_string(i + 1);
 		sp->solverTime = solverTime;
 		sp->memUsed = memUsageInCell;
+		sp->gap = gap;
 		result->subProblemStats.push_back(sp);
 		result->solverTime = solverTime;
 		if (memUsageInCell > maxMem)
@@ -1151,8 +1162,8 @@ TestResult* AutoPlanning::gridAutoPlanningTestMode( bool usePostOptimization, in
 		vector<vector<int> > cellSCP = createScp();
 	
 		saveGLPKFile(cellSCP,redundancy);
-		double memUsageInCell= -1;
-		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime);
+		double memUsageInCell= -1,gap=0;
+		vector<int> answer = executeGlpk(rubyPath + "/GlpkFile.txt", memUsageInCell, solverTime,gap);
 		subProblem* sp = new subProblem();
 		evaluateSCP(cellSCP, meters.size(), sp);
 		sp->solverTime = solverTime;
