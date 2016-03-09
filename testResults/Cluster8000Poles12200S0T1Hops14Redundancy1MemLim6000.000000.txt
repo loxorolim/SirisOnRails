@@ -1,0 +1,93 @@
+Dimension: 8000 x 12200
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 969
+Time: 261.514008
+Hop1Quantity: 2627
+Hop2Quantity: 2007
+Hop3Quantity: 1253
+Hop4Quantity: 821
+Hop5Quantity: 486
+Hop6Quantity: 306
+Hop7Quantity: 173
+Hop8Quantity: 124
+Hop9Quantity: 90
+Hop10Quantity: 63
+Hop11Quantity: 24
+Hop12Quantity: 15
+Hop13Quantity: 9
+Hop14Quantity: 2
+Hop1Quality: 0.991369
+Hop2Quality: 0.981232
+Hop3Quality: 0.970708
+Hop4Quality: 0.960615
+Hop5Quality: 0.951624
+Hop6Quality: 0.939539
+Hop7Quality: 0.930700
+Hop8Quality: 0.918010
+Hop9Quality: 0.913934
+Hop10Quality: 0.903912
+Hop11Quality: 0.891888
+Hop12Quality: 0.906674
+Hop13Quality: 0.930290
+Hop14Quality: 0.931150
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 8.435501
+Max Meters per DAP: 35.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.021750
+Max Redundancy: 2.000000
+
+P.O Solution Quality: 969
+P.O Time: 261.526001
+Hop1Quantity: 2627
+Hop2Quantity: 2007
+Hop3Quantity: 1253
+Hop4Quantity: 821
+Hop5Quantity: 486
+Hop6Quantity: 306
+Hop7Quantity: 173
+Hop8Quantity: 124
+Hop9Quantity: 90
+Hop10Quantity: 63
+Hop11Quantity: 24
+Hop12Quantity: 15
+Hop13Quantity: 9
+Hop14Quantity: 2
+Hop1Quality: 0.991369
+Hop2Quality: 0.981232
+Hop3Quality: 0.970708
+Hop4Quality: 0.960615
+Hop5Quality: 0.951624
+Hop6Quality: 0.939539
+Hop7Quality: 0.930700
+Hop8Quality: 0.918010
+Hop9Quality: 0.913934
+Hop10Quality: 0.903912
+Hop11Quality: 0.891888
+Hop12Quality: 0.906674
+Hop13Quality: 0.930290
+Hop14Quality: 0.931150
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 8.435501
+Max Meters per DAP: 35.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.021750
+Max Redundancy: 2.000000
+4000x4236:
+Número de 1's na Matriz de Cobertura33766.000000:
+Densidade: 0.001993
+Cobertura média por DAP: 7.971199
+Desvio padrão da cobertura: 4.864949
+Memória utilizada: 2612.583625
+Tempo utilizado: 60.464001
+Gap máximo: 1.212121
+4000x4221:
+Número de 1's na Matriz de Cobertura33730.000000:
+Densidade: 0.001998
+Cobertura média por DAP: 7.990997
+Desvio padrão da cobertura: 4.322622
+Memória utilizada: 2603.353316
+Tempo utilizado: 60.466000
+Gap máximo: 1.476793

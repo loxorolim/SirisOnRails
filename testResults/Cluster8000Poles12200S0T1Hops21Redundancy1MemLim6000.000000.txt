@@ -1,0 +1,121 @@
+Dimension: 8000 x 12200
+Grid Size: 500
+Uncovered meters: 0
+
+Solution Quality: 968
+Time: 272.104004
+Hop1Quantity: 2626
+Hop2Quantity: 2000
+Hop3Quantity: 1249
+Hop4Quantity: 817
+Hop5Quantity: 484
+Hop6Quantity: 306
+Hop7Quantity: 169
+Hop8Quantity: 126
+Hop9Quantity: 91
+Hop10Quantity: 63
+Hop11Quantity: 27
+Hop12Quantity: 18
+Hop13Quantity: 12
+Hop14Quantity: 7
+Hop15Quantity: 3
+Hop16Quantity: 2
+Hop17Quantity: 0
+Hop18Quantity: 0
+Hop19Quantity: 0
+Hop20Quantity: 0
+Hop21Quantity: 0
+Hop1Quality: 0.991469
+Hop2Quality: 0.981280
+Hop3Quality: 0.970706
+Hop4Quality: 0.960436
+Hop5Quality: 0.951982
+Hop6Quality: 0.939951
+Hop7Quality: 0.930556
+Hop8Quality: 0.917887
+Hop9Quality: 0.914682
+Hop10Quality: 0.906930
+Hop11Quality: 0.897589
+Hop12Quality: 0.907491
+Hop13Quality: 0.925611
+Hop14Quality: 0.907121
+Hop15Quality: 0.892136
+Hop16Quality: 0.923353
+Hop17Quality: 0.000000
+Hop18Quality: 0.000000
+Hop19Quality: 0.000000
+Hop20Quality: 0.000000
+Hop21Quality: 0.000000
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 8.423554
+Max Meters per DAP: 33.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.019250
+Max Redundancy: 2.000000
+
+P.O Solution Quality: 968
+P.O Time: 272.117004
+Hop1Quantity: 2626
+Hop2Quantity: 2000
+Hop3Quantity: 1249
+Hop4Quantity: 817
+Hop5Quantity: 484
+Hop6Quantity: 306
+Hop7Quantity: 169
+Hop8Quantity: 126
+Hop9Quantity: 91
+Hop10Quantity: 63
+Hop11Quantity: 27
+Hop12Quantity: 18
+Hop13Quantity: 12
+Hop14Quantity: 7
+Hop15Quantity: 3
+Hop16Quantity: 2
+Hop17Quantity: 0
+Hop18Quantity: 0
+Hop19Quantity: 0
+Hop20Quantity: 0
+Hop21Quantity: 0
+Hop1Quality: 0.991469
+Hop2Quality: 0.981280
+Hop3Quality: 0.970706
+Hop4Quality: 0.960436
+Hop5Quality: 0.951982
+Hop6Quality: 0.939951
+Hop7Quality: 0.930556
+Hop8Quality: 0.917887
+Hop9Quality: 0.914682
+Hop10Quality: 0.906930
+Hop11Quality: 0.897589
+Hop12Quality: 0.907491
+Hop13Quality: 0.925611
+Hop14Quality: 0.907121
+Hop15Quality: 0.892136
+Hop16Quality: 0.923353
+Hop17Quality: 0.000000
+Hop18Quality: 0.000000
+Hop19Quality: 0.000000
+Hop20Quality: 0.000000
+Hop21Quality: 0.000000
+Min Meters per DAP: 1.000000
+Med Meters per DAP: 8.423554
+Max Meters per DAP: 33.000000
+Min Redundancy: 1.000000
+Med Redundancy: 1.019250
+Max Redundancy: 2.000000
+4000x4221:
+Número de 1's na Matriz de Cobertura33732.000000:
+Densidade: 0.001998
+Cobertura média por DAP: 7.991471
+Desvio padrão da cobertura: 4.324213
+Memória utilizada: 2603.353316
+Tempo utilizado: 60.486000
+Gap máximo: 1.691332
+4000x4236:
+Número de 1's na Matriz de Cobertura33779.000000:
+Densidade: 0.001994
+Cobertura média por DAP: 7.974268
+Desvio padrão da cobertura: 4.873620
+Memória utilizada: 2612.591285
+Tempo utilizado: 60.494999
+Gap máximo: 1.212121
