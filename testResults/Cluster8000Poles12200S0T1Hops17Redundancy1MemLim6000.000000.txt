@@ -3,7 +3,7 @@ Grid Size: 500
 Uncovered meters: 0
 
 Solution Quality: 968
-Time: 270.234985
+Time: 274.895996
 Hop1Quantity: 2626
 Hop2Quantity: 2000
 Hop3Quantity: 1249
@@ -46,7 +46,7 @@ Med Redundancy: 1.019250
 Max Redundancy: 2.000000
 
 P.O Solution Quality: 968
-P.O Time: 270.250000
+P.O Time: 274.907990
 Hop1Quantity: 2626
 Hop2Quantity: 2000
 Hop3Quantity: 1249
@@ -93,7 +93,7 @@ Densidade: 0.001994
 Cobertura média por DAP: 7.974268
 Desvio padrão da cobertura: 4.873620
 Memória utilizada: 2612.591285
-Tempo utilizado: 60.443001
+Tempo utilizado: 60.504002
 Gap máximo: 1.212121
 4000x4221:
 Número de 1's na Matriz de Cobertura33732.000000:
@@ -101,5 +101,5 @@ Densidade: 0.001998
 Cobertura média por DAP: 7.991471
 Desvio padrão da cobertura: 4.324213
 Memória utilizada: 2603.353316
-Tempo utilizado: 60.470001
+Tempo utilizado: 60.478001
 Gap máximo: 1.691332

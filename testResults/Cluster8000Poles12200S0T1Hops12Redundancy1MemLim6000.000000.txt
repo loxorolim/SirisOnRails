@@ -2,82 +2,84 @@ Dimension: 8000 x 12200
 Grid Size: 500
 Uncovered meters: 0
 
-Solution Quality: 976
-Time: 137.529999
-Hop1Quantity: 2640
-Hop2Quantity: 2008
-Hop3Quantity: 1246
-Hop4Quantity: 820
-Hop5Quantity: 487
-Hop6Quantity: 318
-Hop7Quantity: 170
-Hop8Quantity: 134
-Hop9Quantity: 92
-Hop10Quantity: 55
-Hop11Quantity: 20
-Hop12Quantity: 10
-Hop1Quality: 0.991487
-Hop2Quality: 0.981321
-Hop3Quality: 0.970397
-Hop4Quality: 0.960716
-Hop5Quality: 0.951336
-Hop6Quality: 0.940202
-Hop7Quality: 0.930281
-Hop8Quality: 0.919740
-Hop9Quality: 0.917670
-Hop10Quality: 0.902732
-Hop11Quality: 0.882341
-Hop12Quality: 0.895921
+Solution Quality: 974
+Time: 267.566010
+Hop1Quantity: 2636
+Hop2Quantity: 2009
+Hop3Quantity: 1255
+Hop4Quantity: 824
+Hop5Quantity: 490
+Hop6Quantity: 309
+Hop7Quantity: 171
+Hop8Quantity: 129
+Hop9Quantity: 91
+Hop10Quantity: 59
+Hop11Quantity: 19
+Hop12Quantity: 8
+Hop1Quality: 0.991490
+Hop2Quality: 0.981300
+Hop3Quality: 0.970434
+Hop4Quality: 0.960228
+Hop5Quality: 0.951255
+Hop6Quality: 0.939203
+Hop7Quality: 0.929620
+Hop8Quality: 0.919598
+Hop9Quality: 0.917040
+Hop10Quality: 0.903326
+Hop11Quality: 0.885406
+Hop12Quality: 0.905876
 Min Meters per DAP: 1.000000
-Med Meters per DAP: 8.365779
-Max Meters per DAP: 24.000000
+Med Meters per DAP: 8.387064
+Max Meters per DAP: 35.000000
 Min Redundancy: 1.000000
-Med Redundancy: 1.020625
+Med Redundancy: 1.021125
 Max Redundancy: 2.000000
 
-P.O Solution Quality: 975
-P.O Time: 137.533005
-Hop1Quantity: 2638
-Hop2Quantity: 2008
-Hop3Quantity: 1247
-Hop4Quantity: 821
-Hop5Quantity: 487
-Hop6Quantity: 318
-Hop7Quantity: 170
-Hop8Quantity: 134
-Hop9Quantity: 92
-Hop10Quantity: 55
-Hop11Quantity: 20
-Hop12Quantity: 10
-Hop1Quality: 0.991481
-Hop2Quality: 0.981322
-Hop3Quality: 0.970421
-Hop4Quality: 0.960764
-Hop5Quality: 0.951336
-Hop6Quality: 0.940202
-Hop7Quality: 0.930281
-Hop8Quality: 0.919740
-Hop9Quality: 0.917670
-Hop10Quality: 0.902732
-Hop11Quality: 0.882341
-Hop12Quality: 0.895921
+P.O Solution Quality: 974
+P.O Time: 267.575989
+Hop1Quantity: 2636
+Hop2Quantity: 2009
+Hop3Quantity: 1255
+Hop4Quantity: 824
+Hop5Quantity: 490
+Hop6Quantity: 309
+Hop7Quantity: 171
+Hop8Quantity: 129
+Hop9Quantity: 91
+Hop10Quantity: 59
+Hop11Quantity: 19
+Hop12Quantity: 8
+Hop1Quality: 0.991490
+Hop2Quality: 0.981300
+Hop3Quality: 0.970434
+Hop4Quality: 0.960228
+Hop5Quality: 0.951255
+Hop6Quality: 0.939203
+Hop7Quality: 0.929620
+Hop8Quality: 0.919598
+Hop9Quality: 0.917040
+Hop10Quality: 0.903326
+Hop11Quality: 0.885406
+Hop12Quality: 0.905876
 Min Meters per DAP: 1.000000
-Med Meters per DAP: 8.374359
-Max Meters per DAP: 24.000000
+Med Meters per DAP: 8.387064
+Max Meters per DAP: 35.000000
 Min Redundancy: 1.000000
-Med Redundancy: 1.020625
+Med Redundancy: 1.021125
 Max Redundancy: 2.000000
-4000x4225:
-Número de 1's na Matriz de Cobertura34382.000000:
-Densidade: 0.002034
-Cobertura média por DAP: 8.137751
-Desvio padrão da cobertura: 4.665620
-Memória utilizada: 2605.865798
-Tempo utilizado: 4.028000
-4000x4229:
-Número de 1's na Matriz de Cobertura32983.000000:
-Densidade: 0.001950
-Cobertura média por DAP: 7.799243
-Desvio padrão da cobertura: 4.433011
-Memória utilizada: 2608.232741
-Tempo utilizado: 4.025000
+4000x4236:
+Número de 1's na Matriz de Cobertura33662.000000:
+Densidade: 0.001987
+Cobertura média por DAP: 7.946648
+Desvio padrão da cobertura: 4.813420
+Memória utilizada: 2612.583625
+Tempo utilizado: 60.477001
+Gap máximo: 1.202405
+4000x4221:
+Número de 1's na Matriz de Cobertura33703.000000:
+Densidade: 0.001996
+Cobertura média por DAP: 7.984601
+Desvio padrão da cobertura: 4.307863
+Memória utilizada: 2603.353316
+Tempo utilizado: 60.501999
+Gap máximo: 1.684211
