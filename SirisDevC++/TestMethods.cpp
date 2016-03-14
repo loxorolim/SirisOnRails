@@ -1520,6 +1520,35 @@ void HopVariationTestMaxHops(string metersFile, string polesFile, int scenario, 
 	}
 
 }
+void RedundancyVariationTestmaxRedundancy(string metersFile, string polesFile, int scenario, int tech, int startRedundancy, int maxRedundancy)
+{
+	//int currentSol = 0;
+	while (startRedundancy <= maxRedundancy)
+	{
+		cout << "Redundancy: " << startRedundancy;
+		string result = executePlanningTest(rubyPath, metersFile.c_str(), polesFile.c_str(), rubyPath + "/testResults/", scenario, tech, 6, 20, 3, 5, 1, 0, startRedundancy, 0);
+		int val = -1;
+		string aux = "";
+		int pos = result.find("Solution Quality: ");
+		aux = result.substr(pos);
+		aux = aux.substr(aux.find(":") + 2);
+		aux = aux.substr(0, aux.find("\n"));
+		val = stoi(aux);
+
+		int pos2 = result.find("P.O Solution Quality: ");
+		if (pos2 != -1)
+		{
+			aux = result.substr(pos2);
+			aux = aux.substr(aux.find(":") + 2);
+			aux = aux.substr(0, aux.find("\n"));
+			val = stoi(aux);
+		}
+
+		startRedundancy++;
+
+	}
+
+}
 
 double GetSubInstancesSolvingTime(string path)
 {
@@ -1593,6 +1622,30 @@ double GetExecutionTimeFromFile(string path)
 	else cout << "Unable to open file";
 	return ret;
 }
+double GetFromFile(string att, string path)
+{
+	string line;
+	ifstream myfile(path.c_str());
+	double ret = 0;
+	if (myfile.is_open())
+	{
+		double solving_time = 0;
+		while (getline(myfile, line))
+		{
+			if (!line.find(att))
+			{
+				int pos = line.find(":");
+				string str = line.substr(pos + 1);
+				ret = stod(str);
+				//cout << pos;
+			}
+
+		}
+		myfile.close();
+	}
+	else cout << "Unable to open file";
+	return ret;
+}
 void HeuristicsComparison(string path, int meters_size, int poles_size, int sce, int tech)
 {
 	vector<vector<double>> SolResults, ExResults;
@@ -1639,28 +1692,35 @@ int TestMain(int argc, char** argv)
 {
 
 	srand(time(NULL));
-	//string path = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\testResults";
-	//int meters_size = 8000, poles_size = 12200, sce = Urbano, tech = t802_11_g ;
-	//string wow = "";
-	//for (int i = 1; i < 26; i++)
-	//{
-	//	double exTime = GetExecutionTimeFromFile(path + "\\Cluster" + to_string(meters_size) + "Poles" + to_string(poles_size) + "S" + to_string(sce) + "T" + to_string(tech) + "Hops" + to_string(i) + "Redundancy" + to_string(1) + "MemLim6000.000000.txt");
-	//	cout << i << ": " << exTime << "\n";
-	//	wow += to_string(exTime) + "\n";
-	//}
-	//string filename = "C:\\Users\\Guilherme\\Desktop\\wow.txt";
-	//ofstream f(filename.c_str());
+	string path = "C:\\Users\\Guilherme\\Documents\\GitHub\\SirisOnRails\\testResults";
+	//int meters_size = 3666, poles_size = 1030, sce = Suburbano, tech = t802_11_g ;
+	//int meters_size = 29002, poles_size = 12140, sce = Urbano, tech = t802_11_g;
+	//int meters_size = 8000, poles_size = 12200, sce = Urbano, tech = t802_11_g;
+	int meters_size = 3200, poles_size = 4920, sce = Suburbano, tech = t802_11_g;
+	string wow = "";
+	for (int i = 1; i < 26; i++)
+	{
+		double exTime = GetSolutionQualityFromFile(path + "\\Cluster" + to_string(meters_size) + "Poles" + to_string(poles_size) + "S" + to_string(sce) + "T" + to_string(tech) + "Hops" + to_string(1) + "Redundancy" + to_string(i) + "MemLim6000.000000.txt");
+		cout << i << ": " << exTime << "\n";
+		wow += to_string(exTime) + "\n";
+	}
+	string filename = "C:\\Users\\Guilherme\\Desktop\\wow.txt";
+	ofstream f(filename.c_str());
 
-	//f << wow;
-	//f.close();
+	f << wow;
+	f.close();
 	//cout << "wow";
 	//SolutionTests();
 	//HopVariationTest(rubyPath + "/Instances/NikitiMeters3666.txt", rubyPath + "/Instances/NikitiPoles1030.txt", Suburbano, t802_11_g, 4);
 	//HopVariationTest(rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt", rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt", Urbano, t802_11_g, 4);
 	//HopVariationTest(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 1);
-	HopVariationTestMaxHops(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 0,20);
+	//HopVariationTestMaxHops(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 0,20);
 	//HopVariationTest(rubyPath + "/Instances/FloripaMetersCompleto29002.txt", rubyPath + "/Instances/FloripaPolesCompleto12140.txt", Urbano, t802_11_g, 4);
-
+	
+	//RedundancyVariationTestmaxRedundancy(rubyPath + "/Instances/NikitiMeters3666.txt", rubyPath + "/Instances/NikitiPoles1030.txt", Suburbano, t802_11_g, 1, 20);
+	//RedundancyVariationTestmaxRedundancy(rubyPath + "/Instances/GridInstanceUrbanoMeters8000.txt", rubyPath + "/Instances/GridInstanceUrbanoPoles12200.txt", Urbano, t802_11_g, 1, 20);
+	//RedundancyVariationTestmaxRedundancy(rubyPath + "/Instances/GridInstanceSuburbanoMeters3200.txt", rubyPath + "/Instances/GridInstanceSuburbanoPoles4920.txt", Suburbano, t802_11_g, 1, 20);
+	//RedundancyVariationTestmaxRedundancy(rubyPath + "/Instances/FloripaMetersCompleto29002.txt", rubyPath + "/Instances/FloripaPolesCompleto12140.txt", Urbano, t802_11_g, 1, 20);
 	return 0;
 	//MemoryTests();
 	//return 0;
